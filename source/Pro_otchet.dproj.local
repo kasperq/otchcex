@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2010.05.14 14:42:30.859.pas,X:\PublicForms\Main.pas=</Transaction>
+    <Transaction>2010.05.14 14:42:30.875.dfm,X:\PublicForms\Main.dfm=</Transaction>
+    <Transaction>2010.05.14 14:52:02.187.pas,X:\PublicForms\Vibor_Faset.pas=</Transaction>
+    <Transaction>2010.05.14 14:52:02.187.dfm,X:\PublicForms\Vibor_Faset.dfm=</Transaction>
+    <Transaction>2010.05.14 14:52:16.515.pas,X:\PublicForms\Find_Sprof.pas=</Transaction>
+    <Transaction>2010.05.14 14:52:16.515.dfm,X:\PublicForms\Find_Sprof.dfm=</Transaction>
+    <Transaction>2010.05.14 14:52:30.953.pas,X:\PublicForms\Find_Kadry.pas=</Transaction>
+    <Transaction>2010.05.14 14:52:30.953.dfm,X:\PublicForms\Find_Kadry.dfm=</Transaction>
+    <Transaction>2010.05.14 14:52:37.859.pas,X:\PublicForms\Decode_Kadry.pas=</Transaction>
+    <Transaction>2010.05.14 14:52:37.859.dfm,X:\PublicForms\Decode_Kadry.dfm=</Transaction>
+    <Transaction>2010.05.14 14:57:31.656.pas,X:\PublicForms\Find_Ean.pas=</Transaction>
+    <Transaction>2010.05.14 14:57:31.671.dfm,X:\PublicForms\Find_Ean.dfm=</Transaction>
+    <Transaction>2010.05.14 14:58:38.640.pas,X:\PublicForms\Update_Matrop.pas=</Transaction>
+    <Transaction>2010.05.14 14:58:38.640.dfm,X:\PublicForms\Update_Matrop.dfm=</Transaction>
+    <Transaction>2010.05.14 15:03:16.296.pas,X:\PublicForms\Update_Sprof.pas=</Transaction>
+    <Transaction>2010.05.14 15:03:16.296.dfm,X:\PublicForms\Update_Sprof.dfm=</Transaction>
+    <Transaction>2010.05.20 14:38:16.109.pas,C:\OTCHCEX\Got_Prod.pas=</Transaction>
+    <Transaction>2010.05.20 14:38:16.109.dfm,C:\OTCHCEX\Got_Prod.dfm=</Transaction>
+    <Transaction>2010.12.03 11:20:31.140.pas,C:\OTCHCEX\Unit4.pas=C:\OTCHCEX\VibSyr.pas</Transaction>
+    <Transaction>2010.12.03 11:20:31.140.dfm,C:\OTCHCEX\Unit4.dfm=C:\OTCHCEX\VibSyr.dfm</Transaction>
+    <Transaction>2010.12.03 15:17:37.249.pas,C:\OTCHCEX\Unit4.pas=C:\OTCHCEX\vybprep.pas</Transaction>
+    <Transaction>2010.12.03 15:17:37.249.dfm,C:\OTCHCEX\Unit4.dfm=C:\OTCHCEX\vybprep.dfm</Transaction>
+    <Transaction>2011.01.26 13:03:58.907.pas,X:\PublicForms\Find_Account.pas=</Transaction>
+    <Transaction>2011.01.26 13:03:58.907.dfm,X:\PublicForms\Find_Account.dfm=</Transaction>
+    <Transaction>2011.02.15 10:13:45.750.pas,C:\OTCHCEX\Unit4.pas=C:\OTCHCEX\Otx_Spirt.pas</Transaction>
+    <Transaction>2011.02.15 10:13:45.750.dfm,C:\OTCHCEX\Unit4.dfm=C:\OTCHCEX\Otx_Spirt.dfm</Transaction>
+    <Transaction>2011.03.23 15:04:35.007.pas,C:\OTCHCEX\f_dokument.pas=</Transaction>
+    <Transaction>2011.03.23 15:04:35.007.dfm,C:\OTCHCEX\f_dokument.dfm=</Transaction>
+    <Transaction>2011.03.23 15:29:18.328.pas,C:\OTCHCEX\f_ostatki.pas=</Transaction>
+    <Transaction>2011.03.23 15:29:18.328.dfm,C:\OTCHCEX\f_ostatki.dfm=</Transaction>
+    <Transaction>2011.08.08 16:35:16.453.pas,C:\OTCHCEX\Unit4.pas=C:\OTCHCEX\act_aceton.pas</Transaction>
+    <Transaction>2011.08.08 16:35:16.453.dfm,C:\OTCHCEX\Unit4.dfm=C:\OTCHCEX\act_aceton.dfm</Transaction>
+    <Transaction>2011.10.07 11:15:53.458.pas,C:\OTCHCEX\Unit4.pas=C:\OTCHCEX\vibDocProd.pas</Transaction>
+    <Transaction>2011.10.07 11:15:53.458.dfm,C:\OTCHCEX\Unit4.dfm=C:\OTCHCEX\vibDocProd.dfm</Transaction>
+    <Transaction>2011.12.01 14:27:48.307.pas,C:\OTCHCEX\Unit4.pas=C:\OTCHCEX\Vipusk_Seria.pas</Transaction>
+    <Transaction>2011.12.01 14:27:48.307.dfm,C:\OTCHCEX\Unit4.dfm=C:\OTCHCEX\Vipusk_Seria.dfm</Transaction>
+    <Transaction>2012.10.04 14:19:32.390.pas,C:\MyProg\OTCHCEX 2\Unit4.pas=C:\MyProg\OTCHCEX 2\Num2Text.pas</Transaction>
+    <Transaction>2012.11.12 14:39:00.479.pas,C:\MyProg\OTCHCEX 2\Unit4.pas=C:\MyProg\OTCHCEX 2\Dm1Ost.pas</Transaction>
+    <Transaction>2012.11.12 14:39:00.479.dfm,C:\MyProg\OTCHCEX 2\Unit4.dfm=C:\MyProg\OTCHCEX 2\Dm1Ost.dfm</Transaction>
+    <Transaction>2012.11.21 12:01:24.734.pas,C:\MyProg\OTCHCEX 2\Unit4.pas=C:\MyProg\OTCHCEX 2\GotProd.pas</Transaction>
+    <Transaction>2012.11.21 12:01:24.734.dfm,C:\MyProg\OTCHCEX 2\Unit4.dfm=C:\MyProg\OTCHCEX 2\GotProd.dfm</Transaction>
+    <Transaction>2012.11.21 14:08:10.876.pas,C:\MyProg\OTCHCEX 2\Unit4.pas=C:\MyProg\OTCHCEX 2\GotProdNaklTbl.pas</Transaction>
+    <Transaction>2012.11.21 14:08:10.876.dfm,C:\MyProg\OTCHCEX 2\Unit4.dfm=C:\MyProg\OTCHCEX 2\GotProdNaklTbl.dfm</Transaction>
+    <Transaction>2012.11.22 16:34:38.423.pas,C:\MyProg\OTCHCEX 2\Unit4.pas=C:\MyProg\OTCHCEX 2\GotNaklView.pas</Transaction>
+    <Transaction>2012.11.22 16:34:38.423.dfm,C:\MyProg\OTCHCEX 2\Unit4.dfm=C:\MyProg\OTCHCEX 2\GotNaklView.dfm</Transaction>
+    <Transaction>2012.11.22 16:35:02.063.pas,C:\MyProg\OTCHCEX 2\GotNaklView.pas=C:\MyProg\OTCHCEX 2\GotProdNaklView.pas</Transaction>
+    <Transaction>2012.11.22 16:35:02.063.dfm,C:\MyProg\OTCHCEX 2\GotNaklView.dfm=C:\MyProg\OTCHCEX 2\GotProdNaklView.dfm</Transaction>
+    <Transaction>2012.12.05 14:13:14.031.pas,C:\MyProg\OTCHCEX 2\Unit4.pas=C:\MyProg\OTCHCEX 2\GotProdVipusk.pas</Transaction>
+    <Transaction>2012.12.05 14:13:14.031.dfm,C:\MyProg\OTCHCEX 2\Unit4.dfm=C:\MyProg\OTCHCEX 2\GotProdVipusk.dfm</Transaction>
+    <Transaction>2013.02.20 12:55:59.765.pas,C:\MyProg\OTCHCEX 2\Unit4.pas=C:\MyProg\OTCHCEX 2\PlanVipusk.pas</Transaction>
+    <Transaction>2013.02.20 12:55:59.765.dfm,C:\MyProg\OTCHCEX 2\Unit4.dfm=C:\MyProg\OTCHCEX 2\PlanVipusk.dfm</Transaction>
+    <Transaction>2013.04.19 12:58:31.296.pas,C:\MyProg\OTCHCEX 2\Unit4.pas=C:\MyProg\OTCHCEX 2\OstThread.pas</Transaction>
+    <Transaction>2013.04.19 12:58:38.484.pas,C:\MyProg\OTCHCEX 2\OstThread.pas=C:\MyProg\OTCHCEX 2\UOstThread.pas</Transaction>
+    <Transaction>2013.05.17 16:51:31.906.pas,C:\MyProg\OTCHCEX 2\Unit4.pas=C:\MyProg\OTCHCEX 2\Otpusk.pas</Transaction>
+    <Transaction>2013.05.17 16:51:31.906.dfm,C:\MyProg\OTCHCEX 2\Unit4.dfm=C:\MyProg\OTCHCEX 2\Otpusk.dfm</Transaction>
+    <Transaction>2013.12.26 14:08:12.578.pas,C:\MyProg\OTCHCEX 2\Unit4.pas=C:\MyProg\OTCHCEX 2\PrevInst.pas</Transaction>
+  </Transactions>
+</BorlandProject>

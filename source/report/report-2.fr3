@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TfrxReport Version="4.2.22" DotMatrixReport="True" EngineOptions.DoublePass="True" IniFile="\Software\Fast Reports" PreviewOptions.Buttons="2047" PreviewOptions.OutlineWidth="233" PreviewOptions.Zoom="1" PrintOptions.Printer="Epson LX-1050+" PrintOptions.PrintOnSheet="0" ReportOptions.CreateDate="38748,6114415046" ReportOptions.Description.Text="" ReportOptions.LastChange="39493,5535689699" ScriptLanguage="PascalScript" ScriptText.Text="procedure MasterData1OnBeforePrint(Sender: TfrxComponent);&#13;&#10;begin&#13;&#10;  if &#60;Tochn&#62;=1 then TfrxDmpMemoView(Sender).DisplayFormat.FormatStr:='%2.1f';  &#13;&#10; if &#60;Tochn&#62;=2 then TfrxDmpMemoView(Sender).DisplayFormat.FormatStr:='%2.2f';  &#13;&#10; if &#60;Tochn&#62;=3 then TfrxDmpMemoView(Sender).DisplayFormat.FormatStr:='%2.3f';  &#13;&#10; if &#60;Tochn&#62;=4 then TfrxDmpMemoView(Sender).DisplayFormat.FormatStr:='%2.4f';  &#13;&#10; if &#60;Tochn&#62;=5 then TfrxDmpMemoView(Sender).DisplayFormat.FormatStr:='%2.5f';  &#13;&#10; if &#60;Tochn&#62;=6 then TfrxDmpMemoView(Sender).DisplayFormat.FormatStr:='%2.6f';  &#13;&#10;end;&#13;&#10;&#13;&#10;begin&#13;&#10;&#13;&#10;end." PropData="044C65667403B00103546F7003D00108446174617365747301010C3400000020446174615365743D22667278444244617461736574312220446174615365744E616D653D2266727844424461746173657431220000095661726961626C65730100055374796C650100">
+  <TfrxDataPage Name="Data" Height="1000" Left="0" Top="0" Width="1000"/>
+  <TfrxDMPPage Name="Page1" PaperWidth="591,819617783164" PaperHeight="287,866480752898" PaperSize="256" LeftMargin="0" RightMargin="0" TopMargin="0" BottomMargin="0" ColumnWidth="0" ColumnPositions.Text="" LargeDesignHeight="True" HGuides.Text="" VGuides.Text="" FontStyle="32">
+    <TfrxReportTitle Name="ReportTitle1" Font.Charset="204" Font.Color="0" Font.Height="-16" Font.Name="Courier New" Font.Style="0" Height="986" Left="0" ParentFont="False" Top="17" Width="2236,8">
+      <TfrxDMPMemoView Name="DMPMemo2" Left="0" Top="119" Width="2217,6" Height="68" HAlign="haCenter" Text="П Р О И З В О Д С Т В Е Н Н О - Т Е Х Н И Ч Е С К И Й   О Т Ч Е Т&#13;&#10;на производство продукции [lekkod] [nam_prep] [xarkt] [neiz_prep] по действующей технологии&#13;&#10;за [nammes] [god]г.&#13;&#10;[namorg] [reg]"/>
+      <TfrxDMPMemoView Name="DMPMemo3" Left="0" Top="0" Width="336" Height="17" Text="[stname]"/>
+      <TfrxDMPMemoView Name="DMPMemo4" Left="1545,6" Top="34" Width="691,2" Height="68" HAlign="haCenter" Text="УТВЕРЖДАЮ&#13;&#10;[s_dolgn]_______________ /[s_fio]/ &#13;&#10;&#34;____&#34;___________________200___г."/>
+      <TfrxDMPMemoView Name="DMPMemo5" Left="19,2" Top="204" Width="384" Height="17" Text="1. Выполнение производственной программы"/>
+      <TfrxDMPMemoView Name="DMPMemo11" Left="9,6" Top="306" Width="259,2" Height="119" Frame.Typ="15" Text=" 1. Задание по плану      &#13;&#10; 2. Выполнение            &#13;&#10; 3. Остаток в цехе на 1-е &#13;&#10; 4. Выработано за месяц   &#13;&#10; 5. Сдано                 &#13;&#10; 6. Остаток в цехе на 1-е &#13;&#10; 7. Получение отходов     "/>
+      <TfrxDMPMemoView Name="DMPMemo16" Left="278,4" Top="238" Width="969,6" Height="17" Frame.Typ="15" HAlign="haCenter" Text="За отчетный месяц"/>
+      <TfrxDMPMemoView Name="DMPMemo23" Left="278,4" Top="272" Width="297,6" Height="17" Frame.Typ="15" HAlign="haCenter" Text="Всего"/>
+      <TfrxDMPMemoView Name="DMPMemo78" Left="1257,6" Top="238" Width="969,6" Height="17" Frame.Typ="15" HAlign="haCenter" Text="С начала года"/>
+      <TfrxDMPMemoView Name="DMPMemo1" Left="336" Top="0" Width="1900,8" Height="17" HAlign="haRight" Text="Лист [&#60;Page#&#62;] из [&#60;TotalPages#&#62;]"/>
+      <TfrxDMPMemoView Name="DMPMemo6" Left="9,6" Top="238" Width="259,2" Height="17" Frame.Typ="15" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo7" Left="9,6" Top="272" Width="259,2" Height="17" Frame.Typ="15" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo9" Left="1257,6" Top="272" Width="297,6" Height="17" Frame.Typ="15" HAlign="haCenter" Text="Всего"/>
+      <TfrxDMPMemoView Name="DMPMemo10" Left="585,6" Top="272" Width="124,8" Height="17" Frame.Typ="15" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo13" Left="720" Top="272" Width="124,8" Height="17" Frame.Typ="15" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo14" Left="854,4" Top="272" Width="124,8" Height="17" Frame.Typ="15" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo15" Left="988,8" Top="272" Width="124,8" Height="17" Frame.Typ="15" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo17" Left="1123,2" Top="272" Width="124,8" Height="17" Frame.Typ="15" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo18" Left="1564,8" Top="272" Width="124,8" Height="17" Frame.Typ="15" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo19" Left="1699,2" Top="272" Width="124,8" Height="17" Frame.Typ="15" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo24" Left="1833,6" Top="272" Width="124,8" Height="17" Frame.Typ="15" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo8" Left="278,4" Top="306" Width="297,6" Height="119" Frame.Typ="15" HAlign="haCenter" Text="&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;[sdano_m]"/>
+      <TfrxDMPMemoView Name="DMPMemo12" Left="1968" Top="272" Width="124,8" Height="17" Frame.Typ="15" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo20" Left="2102,4" Top="272" Width="124,8" Height="17" Frame.Typ="15" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo21" Left="1257,6" Top="306" Width="297,6" Height="119" Frame.Typ="15" HAlign="haCenter" Text="&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;[sdano_g]"/>
+      <TfrxDMPMemoView Name="DMPMemo22" Left="585,6" Top="306" Width="124,8" Height="119" Frame.Typ="15" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo25" Left="720" Top="306" Width="124,8" Height="119" Frame.Typ="15" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo26" Left="854,4" Top="306" Width="124,8" Height="119" Frame.Typ="15" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo27" Left="988,8" Top="306" Width="124,8" Height="119" Frame.Typ="15" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo28" Left="1123,2" Top="306" Width="124,8" Height="119" Frame.Typ="15" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo29" Left="1564,8" Top="306" Width="124,8" Height="119" Frame.Typ="15" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo30" Left="1699,2" Top="306" Width="124,8" Height="119" Frame.Typ="15" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo31" Left="1833,6" Top="306" Width="124,8" Height="119" Frame.Typ="15" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo32" Left="1968" Top="306" Width="124,8" Height="119" Frame.Typ="15" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo34" Left="2102,4" Top="306" Width="124,8" Height="119" Frame.Typ="15" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo33" Left="0" Top="34" Width="1545,6" Height="68" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo35" Left="19,2" Top="459" Width="288" Height="17" Text="2. Производственные показатели"/>
+      <TfrxDMPMemoView Name="DMPMemo36" Left="9,6" Top="493" Width="297,6" Height="51" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="Наименование стадий"/>
+      <TfrxDMPMemoView Name="DMPMemo37" Left="316,8" Top="493" Width="220,8" Height="17" Frame.Typ="15" HAlign="haCenter" Text="Код операции"/>
+      <TfrxDMPMemoView Name="DMPMemo38" Left="316,8" Top="527" Width="105,6" Height="17" Frame.Typ="15" HAlign="haCenter" Text="план"/>
+      <TfrxDMPMemoView Name="DMPMemo39" Left="432" Top="527" Width="105,6" Height="17" Frame.Typ="15" HAlign="haCenter" Text="факт"/>
+      <TfrxDMPMemoView Name="DMPMemo40" Left="547,2" Top="493" Width="220,8" Height="17" Frame.Typ="15" HAlign="haCenter" Text="Продолж. опер. в час"/>
+      <TfrxDMPMemoView Name="DMPMemo41" Left="547,2" Top="527" Width="105,6" Height="17" Frame.Typ="15" HAlign="haCenter" Text="план"/>
+      <TfrxDMPMemoView Name="DMPMemo42" Left="662,4" Top="527" Width="105,6" Height="17" Frame.Typ="15" HAlign="haCenter" Text="факт"/>
+      <TfrxDMPMemoView Name="DMPMemo43" Left="777,6" Top="493" Width="364,8" Height="17" Frame.Typ="15" HAlign="haCenter" Text="Выход с операции"/>
+      <TfrxDMPMemoView Name="DMPMemo44" Left="921,6" Top="527" Width="105,6" Height="17" Frame.Typ="15" HAlign="haCenter" Text="план"/>
+      <TfrxDMPMemoView Name="DMPMemo45" Left="1036,8" Top="527" Width="105,6" Height="17" Frame.Typ="15" HAlign="haCenter" Text="факт"/>
+      <TfrxDMPMemoView Name="DMPMemo46" Left="777,6" Top="527" Width="134,4" Height="17" Frame.Typ="15" HAlign="haCenter" Text="ед. из."/>
+      <TfrxDMPMemoView Name="DMPMemo47" Left="1152" Top="493" Width="268,8" Height="51" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="Количество аппаратов"/>
+      <TfrxDMPMemoView Name="DMPMemo48" Left="1430,4" Top="493" Width="220,8" Height="17" Frame.Typ="15" HAlign="haCenter" Text="Кол-во аппарато-часов"/>
+      <TfrxDMPMemoView Name="DMPMemo49" Left="1430,4" Top="527" Width="105,6" Height="17" Frame.Typ="15" HAlign="haCenter" Text="план"/>
+      <TfrxDMPMemoView Name="DMPMemo50" Left="1545,6" Top="527" Width="105,6" Height="17" Frame.Typ="15" HAlign="haCenter" Text="факт"/>
+      <TfrxDMPMemoView Name="DMPMemo51" Left="1660,8" Top="493" Width="566,4" Height="17" Frame.Typ="15" HAlign="haCenter" Text="Простой произв. в аппарато-часах из-за отсутствия"/>
+      <TfrxDMPMemoView Name="DMPMemo52" Left="1660,8" Top="527" Width="105,6" Height="17" Frame.Typ="15" HAlign="haCenter" Text="сырья"/>
+      <TfrxDMPMemoView Name="DMPMemo53" Left="1776" Top="527" Width="105,6" Height="17" Frame.Typ="15" HAlign="haCenter" Text="электр."/>
+      <TfrxDMPMemoView Name="DMPMemo54" Left="1891,2" Top="527" Width="105,6" Height="17" Frame.Typ="15" HAlign="haCenter" Text="пара"/>
+      <TfrxDMPMemoView Name="DMPMemo55" Left="2006,4" Top="527" Width="105,6" Height="17" Frame.Typ="15" HAlign="haCenter" Text="воды"/>
+      <TfrxDMPMemoView Name="DMPMemo56" Left="2121,6" Top="527" Width="105,6" Height="17" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo57" Left="9,6" Top="561" Width="297,6" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo58" Left="9,6" Top="578" Width="297,6" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo59" Left="9,6" Top="595" Width="297,6" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo60" Left="9,6" Top="612" Width="297,6" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo61" Left="9,6" Top="629" Width="297,6" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo62" Left="316,8" Top="561" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo63" Left="316,8" Top="578" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo65" Left="316,8" Top="612" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo66" Left="316,8" Top="629" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo139" Left="19,2" Top="663" Width="134,4" Height="17" Text="3. Ферментация"/>
+      <TfrxDMPMemoView Name="DMPMemo140" Left="9,6" Top="697" Width="364,8" Height="153" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="Наименование штампа"/>
+      <TfrxDMPMemoView Name="DMPMemo64" Left="316,8" Top="595" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo67" Left="432" Top="561" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo68" Left="432" Top="578" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo69" Left="432" Top="612" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo70" Left="432" Top="629" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo71" Left="432" Top="595" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo72" Left="547,2" Top="561" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo73" Left="547,2" Top="578" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo74" Left="547,2" Top="612" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo75" Left="547,2" Top="629" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo76" Left="547,2" Top="595" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo77" Left="662,4" Top="561" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo79" Left="662,4" Top="578" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo80" Left="662,4" Top="612" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo81" Left="662,4" Top="629" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo82" Left="662,4" Top="595" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo83" Left="921,6" Top="561" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo84" Left="921,6" Top="578" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo85" Left="921,6" Top="612" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo86" Left="921,6" Top="629" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo87" Left="921,6" Top="595" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo88" Left="1036,8" Top="561" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo89" Left="1036,8" Top="578" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo90" Left="1036,8" Top="612" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo91" Left="1036,8" Top="629" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo92" Left="1036,8" Top="595" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo133" Left="777,6" Top="561" Width="134,4" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo134" Left="777,6" Top="578" Width="134,4" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo135" Left="777,6" Top="595" Width="134,4" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo136" Left="777,6" Top="612" Width="134,4" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo137" Left="777,6" Top="629" Width="134,4" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo93" Left="1152" Top="561" Width="268,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo94" Left="1152" Top="578" Width="268,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo95" Left="1152" Top="595" Width="268,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo96" Left="1152" Top="612" Width="268,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo97" Left="1152" Top="629" Width="268,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo98" Left="1430,4" Top="561" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo99" Left="1430,4" Top="578" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo100" Left="1430,4" Top="612" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo101" Left="1430,4" Top="629" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo102" Left="1430,4" Top="595" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo103" Left="1545,6" Top="561" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo104" Left="1545,6" Top="578" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo105" Left="1545,6" Top="612" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo106" Left="1545,6" Top="629" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo107" Left="1545,6" Top="595" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo108" Left="1660,8" Top="561" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo109" Left="1660,8" Top="578" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo110" Left="1660,8" Top="612" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo111" Left="1660,8" Top="629" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo112" Left="1660,8" Top="595" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo113" Left="1776" Top="561" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo114" Left="1776" Top="578" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo115" Left="1776" Top="612" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo116" Left="1776" Top="629" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo117" Left="1776" Top="595" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo118" Left="1891,2" Top="561" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo119" Left="1891,2" Top="578" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo120" Left="1891,2" Top="612" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo121" Left="1891,2" Top="629" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo122" Left="1891,2" Top="595" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo123" Left="2006,4" Top="561" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo124" Left="2006,4" Top="578" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo125" Left="2006,4" Top="612" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo126" Left="2006,4" Top="629" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo127" Left="2006,4" Top="595" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo128" Left="2121,6" Top="561" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo129" Left="2121,6" Top="578" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo130" Left="2121,6" Top="612" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo131" Left="2121,6" Top="629" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo132" Left="2121,6" Top="595" Width="105,6" Height="0" Frame.Typ="15" HAlign="haCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo141" Left="384" Top="697" Width="76,8" Height="153" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="Код операции"/>
+      <TfrxDMPMemoView Name="DMPMemo142" Left="470,4" Top="697" Width="163,2" Height="153" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="Среда"/>
+      <TfrxDMPMemoView Name="DMPMemo143" Left="643,2" Top="697" Width="508,8" Height="51" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="Количество среды"/>
+      <TfrxDMPMemoView Name="DMPMemo144" Left="1161,6" Top="697" Width="144" Height="153" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="% вых. за выч. брака"/>
+      <TfrxDMPMemoView Name="DMPMemo145" Left="1315,2" Top="697" Width="163,2" Height="51" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="Активность в 1 мл"/>
+      <TfrxDMPMemoView Name="DMPMemo146" Left="1488" Top="697" Width="182,4" Height="153" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="Всего млрд. ед. в слитой курт. ж-ти"/>
+      <TfrxDMPMemoView Name="DMPMemo147" Left="1680" Top="697" Width="163,2" Height="51" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="Выработано нативного р-ра млрд. ед."/>
+      <TfrxDMPMemoView Name="DMPMemo148" Left="1852,8" Top="697" Width="163,2" Height="51" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="Продолжительность в часах"/>
+      <TfrxDMPMemoView Name="DMPMemo149" Left="2025,6" Top="697" Width="201,6" Height="153" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="Среднее отношение &#13;&#10;объема к объему среды"/>
+      <TfrxDMPMemoView Name="DMPMemo150" Left="1852,8" Top="765" Width="76,8" Height="85" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="фермен-&#13;&#10;тации"/>
+      <TfrxDMPMemoView Name="DMPMemo151" Left="1939,2" Top="765" Width="76,8" Height="85" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="подгот. и вспом. опер."/>
+      <TfrxDMPMemoView Name="DMPMemo152" Left="1680" Top="765" Width="76,8" Height="85" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="всего"/>
+      <TfrxDMPMemoView Name="DMPMemo153" Left="1766,4" Top="765" Width="76,8" Height="85" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="с одной операции"/>
+      <TfrxDMPMemoView Name="DMPMemo154" Left="1315,2" Top="765" Width="76,8" Height="34" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="от_____"/>
+      <TfrxDMPMemoView Name="DMPMemo155" Left="1315,2" Top="816" Width="76,8" Height="34" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="до_____"/>
+      <TfrxDMPMemoView Name="DMPMemo156" Left="1401,6" Top="765" Width="76,8" Height="85" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="средн."/>
+      <TfrxDMPMemoView Name="DMPMemo157" Left="1075,2" Top="765" Width="76,8" Height="85" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="остаток незав. пр-ва на кон. месяца"/>
+      <TfrxDMPMemoView Name="DMPMemo158" Left="902,4" Top="765" Width="163,2" Height="34" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="брак"/>
+      <TfrxDMPMemoView Name="DMPMemo159" Left="902,4" Top="816" Width="76,8" Height="34" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="кол. опер."/>
+      <TfrxDMPMemoView Name="DMPMemo160" Left="816" Top="765" Width="76,8" Height="85" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="слито культу-&#13;&#10;ральной&#13;&#10; жк-ти"/>
+      <TfrxDMPMemoView Name="DMPMemo161" Left="729,6" Top="765" Width="76,8" Height="85" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="засеяно среды в отч. месяце"/>
+      <TfrxDMPMemoView Name="DMPMemo162" Left="643,2" Top="765" Width="76,8" Height="85" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="отстаток незав. пр-ва на нач. месяца"/>
+      <TfrxDMPMemoView Name="DMPMemo163" Left="988,8" Top="816" Width="76,8" Height="34" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="кол."/>
+      <TfrxDMPMemoView Name="DMPMemo164" Left="9,6" Top="867" Width="364,8" Height="17" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="01"/>
+      <TfrxDMPMemoView Name="DMPMemo165" Left="384" Top="867" Width="76,8" Height="17" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="02"/>
+      <TfrxDMPMemoView Name="DMPMemo166" Left="470,4" Top="867" Width="163,2" Height="17" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="03"/>
+      <TfrxDMPMemoView Name="DMPMemo167" Left="643,2" Top="867" Width="76,8" Height="17" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="04"/>
+      <TfrxDMPMemoView Name="DMPMemo168" Left="729,6" Top="867" Width="76,8" Height="17" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="05"/>
+      <TfrxDMPMemoView Name="DMPMemo169" Left="816" Top="867" Width="76,8" Height="17" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="06"/>
+      <TfrxDMPMemoView Name="DMPMemo170" Left="902,4" Top="867" Width="76,8" Height="17" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="07"/>
+      <TfrxDMPMemoView Name="DMPMemo171" Left="988,8" Top="867" Width="76,8" Height="17" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="08"/>
+      <TfrxDMPMemoView Name="DMPMemo172" Left="1075,2" Top="867" Width="76,8" Height="17" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="09"/>
+      <TfrxDMPMemoView Name="DMPMemo173" Left="1161,6" Top="867" Width="144" Height="17" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="10"/>
+      <TfrxDMPMemoView Name="DMPMemo174" Left="1315,2" Top="867" Width="76,8" Height="17" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="11"/>
+      <TfrxDMPMemoView Name="DMPMemo175" Left="1401,6" Top="867" Width="76,8" Height="17" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="12"/>
+      <TfrxDMPMemoView Name="DMPMemo176" Left="1488" Top="867" Width="182,4" Height="17" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="13"/>
+      <TfrxDMPMemoView Name="DMPMemo177" Left="1680" Top="867" Width="76,8" Height="17" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="14"/>
+      <TfrxDMPMemoView Name="DMPMemo178" Left="1766,4" Top="867" Width="76,8" Height="17" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="15"/>
+      <TfrxDMPMemoView Name="DMPMemo179" Left="1852,8" Top="867" Width="76,8" Height="17" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="16"/>
+      <TfrxDMPMemoView Name="DMPMemo180" Left="1939,2" Top="867" Width="76,8" Height="17" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="17"/>
+      <TfrxDMPMemoView Name="DMPMemo181" Left="2025,6" Top="867" Width="201,6" Height="17" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="18"/>
+      <TfrxDMPMemoView Name="DMPMemo182" Left="9,6" Top="901" Width="364,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo183" Left="9,6" Top="918" Width="364,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo184" Left="9,6" Top="935" Width="364,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo185" Left="9,6" Top="952" Width="364,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo187" Left="384" Top="901" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo188" Left="384" Top="918" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo189" Left="384" Top="935" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo190" Left="384" Top="952" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo192" Left="643,2" Top="901" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo193" Left="643,2" Top="918" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo194" Left="643,2" Top="935" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo195" Left="643,2" Top="952" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo197" Left="729,6" Top="901" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo198" Left="729,6" Top="918" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo199" Left="729,6" Top="935" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo200" Left="729,6" Top="952" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo202" Left="816" Top="901" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo203" Left="816" Top="918" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo204" Left="816" Top="935" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo205" Left="816" Top="952" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo207" Left="902,4" Top="901" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo208" Left="902,4" Top="918" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo209" Left="902,4" Top="935" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo210" Left="902,4" Top="952" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo212" Left="988,8" Top="901" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo213" Left="988,8" Top="918" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo214" Left="988,8" Top="935" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo215" Left="988,8" Top="952" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo217" Left="1075,2" Top="901" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo218" Left="1075,2" Top="918" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo219" Left="1075,2" Top="935" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo220" Left="1075,2" Top="952" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo222" Left="1315,2" Top="901" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo223" Left="1315,2" Top="918" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo224" Left="1315,2" Top="935" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo225" Left="1315,2" Top="952" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo227" Left="1401,6" Top="901" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo228" Left="1401,6" Top="918" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo229" Left="1401,6" Top="935" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo230" Left="1401,6" Top="952" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo232" Left="1680" Top="901" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo233" Left="1680" Top="918" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo234" Left="1680" Top="935" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo235" Left="1680" Top="952" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo237" Left="1766,4" Top="901" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo238" Left="1766,4" Top="918" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo239" Left="1766,4" Top="935" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo240" Left="1766,4" Top="952" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo242" Left="1852,8" Top="901" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo243" Left="1852,8" Top="918" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo244" Left="1852,8" Top="935" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo245" Left="1852,8" Top="952" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo247" Left="1939,2" Top="901" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo248" Left="1939,2" Top="918" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo249" Left="1939,2" Top="935" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo250" Left="1939,2" Top="952" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo252" Left="1488" Top="901" Width="182,4" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo253" Left="1488" Top="918" Width="182,4" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo254" Left="1488" Top="935" Width="182,4" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo255" Left="1488" Top="952" Width="182,4" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo257" Left="2025,6" Top="901" Width="201,6" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo258" Left="2025,6" Top="918" Width="201,6" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo259" Left="2025,6" Top="935" Width="201,6" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo260" Left="2025,6" Top="952" Width="201,6" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo262" Left="470,4" Top="901" Width="163,2" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo263" Left="470,4" Top="918" Width="163,2" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo264" Left="470,4" Top="935" Width="163,2" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo266" Left="470,4" Top="952" Width="163,2" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo267" Left="1161,6" Top="901" Width="144" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo268" Left="1161,6" Top="918" Width="144" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo269" Left="1161,6" Top="935" Width="144" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo270" Left="1161,6" Top="952" Width="144" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo393" Left="2284,8" Top="935" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo394" Left="2563,2" Top="935" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo395" Left="2649,6" Top="935" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo396" Left="2736" Top="935" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo397" Left="2822,4" Top="935" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo398" Left="2371,2" Top="935" Width="182,4" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo399" Left="2908,8" Top="935" Width="201,6" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo186" Left="9,6" Top="969" Width="364,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo191" Left="384" Top="969" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo196" Left="643,2" Top="969" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo201" Left="729,6" Top="969" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo206" Left="816" Top="969" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo211" Left="902,4" Top="969" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo216" Left="988,8" Top="969" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo221" Left="1075,2" Top="969" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo226" Left="1315,2" Top="969" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo231" Left="1401,6" Top="969" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo236" Left="1680" Top="969" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo241" Left="1766,4" Top="969" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo246" Left="1852,8" Top="969" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo251" Left="1939,2" Top="969" Width="76,8" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo256" Left="1488" Top="969" Width="182,4" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo261" Left="2025,6" Top="969" Width="201,6" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo265" Left="470,4" Top="969" Width="163,2" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo271" Left="1161,6" Top="969" Width="144" Height="0" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+    </TfrxReportTitle>
+    <TfrxPageFooter Name="PageFooter1" Height="34" Left="0" Top="1037" Width="2236,8">
+      <TfrxDMPMemoView Name="DMPMemo138" Left="0" Top="17" Width="2236,8" Height="17" DisplayFormat.DecimalSeparator="," HAlign="haRight" Text="Документ сформирован програмным обеспечением ОАСУ [Time] [Date]"/>
+    </TfrxPageFooter>
+  </TfrxDMPPage>
+  <TfrxDMPPage Name="Page2" PaperWidth="591,819617783164" PaperHeight="287,866480752898" PaperSize="256" LeftMargin="0" RightMargin="0" TopMargin="0" BottomMargin="0" ColumnWidth="0" ColumnPositions.Text="" LargeDesignHeight="True" HGuides.Text="" VGuides.Text="" FontStyle="32">
+    <TfrxReportTitle Name="ReportTitle2" Height="561" Left="0" Top="17" Width="2236,8">
+      <TfrxDMPMemoView Name="DMPMemo272" Left="355,2" Top="0" Width="1891,2" Height="17" DisplayFormat.DecimalSeparator="," HAlign="haRight" Text="Лист [&#60;Page#&#62;]"/>
+      <TfrxDMPMemoView Name="DMPMemo293" Left="0" Top="0" Width="345,6" Height="17" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo294" Left="1142,4" Top="17" Width="384" Height="17" Text="5. Стадия"/>
+      <TfrxDMPMemoView Name="DMPMemo295" Left="9,6" Top="51" Width="307,2" Height="85" Frame.Typ="15" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo296" Left="9,6" Top="153" Width="307,2" Height="187" Frame.Typ="15" Text="1. Остат. в н/з пр-ве на 1___&#13;&#10;2. Приход&#13;&#10;3. Расход&#13;&#10;4. Остат. в н/з пр-ве на 1___&#13;&#10;5. Выработано&#13;&#10;6. Выход&#13;&#10;7. Выход&#13;&#10;8. &#13;&#10;9.&#13;&#10;10.&#13;&#10;11."/>
+      <TfrxDMPMemoView Name="DMPMemo297" Left="326,4" Top="51" Width="96" Height="85" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="Ед. изм."/>
+      <TfrxDMPMemoView Name="DMPMemo298" Left="432" Top="51" Width="96" Height="85" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="Количество"/>
+      <TfrxDMPMemoView Name="DMPMemo299" Left="537,6" Top="51" Width="201,6" Height="17" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="Активность в 1 мл"/>
+      <TfrxDMPMemoView Name="DMPMemo300" Left="643,2" Top="85" Width="96" Height="51" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="средн."/>
+      <TfrxDMPMemoView Name="DMPMemo301" Left="748,8" Top="51" Width="201,6" Height="17" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="Активность в 1 мг"/>
+      <TfrxDMPMemoView Name="DMPMemo302" Left="748,8" Top="85" Width="96" Height="17" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="от_______"/>
+      <TfrxDMPMemoView Name="DMPMemo303" Left="748,8" Top="119" Width="96" Height="17" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="до______"/>
+      <TfrxDMPMemoView Name="DMPMemo304" Left="854,4" Top="85" Width="96" Height="51" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="средн."/>
+      <TfrxDMPMemoView Name="DMPMemo305" Left="960" Top="51" Width="144" Height="85" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="Всего млрд. ед."/>
+      <TfrxDMPMemoView Name="DMPMemo306" Left="537,6" Top="85" Width="96" Height="17" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="от_______"/>
+      <TfrxDMPMemoView Name="DMPMemo307" Left="537,6" Top="119" Width="96" Height="17" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="до______"/>
+      <TfrxDMPMemoView Name="DMPMemo308" Left="326,4" Top="153" Width="96" Height="187" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo309" Left="432" Top="153" Width="96" Height="187" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo310" Left="537,6" Top="153" Width="96" Height="187" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo311" Left="643,2" Top="153" Width="96" Height="187" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo312" Left="748,8" Top="153" Width="96" Height="187" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo313" Left="854,4" Top="153" Width="96" Height="187" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo314" Left="960" Top="153" Width="144" Height="187" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo315" Left="19,2" Top="17" Width="384" Height="17" Text="4. Стадия"/>
+      <TfrxDMPMemoView Name="DMPMemo316" Left="19,2" Top="374" Width="441,6" Height="17" Text="6. Движение сырья, материалов и полуфабрикатов"/>
+      <TfrxDMPMemoView Name="DMPMemo317" Left="9,6" Top="408" Width="48" Height="136" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="Код"/>
+      <TfrxDMPMemoView Name="DMPMemo318" Left="57,6" Top="408" Width="163,2" Height="136" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="Наименование"/>
+      <TfrxDMPMemoView Name="DMPMemo319" Left="220,8" Top="408" Width="48" Height="136" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text=" Е.и."/>
+      <TfrxDMPMemoView Name="DMPMemo320" Left="268,8" Top="408" Width="355,2" Height="34" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="Остаток на начало месяца"/>
+      <TfrxDMPMemoView Name="DMPMemo321" Left="268,8" Top="459" Width="115,2" Height="85" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="в сырье"/>
+      <TfrxDMPMemoView Name="DMPMemo322" Left="384" Top="459" Width="115,2" Height="85" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="в незав. произв."/>
+      <TfrxDMPMemoView Name="DMPMemo323" Left="499,2" Top="459" Width="124,8" Height="85" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="всего"/>
+      <TfrxDMPMemoView Name="DMPMemo324" Left="624" Top="408" Width="115,2" Height="136" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="Приход"/>
+      <TfrxDMPMemoView Name="DMPMemo325" Left="739,2" Top="408" Width="355,2" Height="34" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="Расход на производство"/>
+      <TfrxDMPMemoView Name="DMPMemo326" Left="739,2" Top="459" Width="115,2" Height="85" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="загружено"/>
+      <TfrxDMPMemoView Name="DMPMemo327" Left="854,4" Top="510" Width="115,2" Height="34" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="за отчет. месяц"/>
+      <TfrxDMPMemoView Name="DMPMemo328" Left="969,6" Top="510" Width="124,8" Height="34" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="с начала &#13;&#10;года"/>
+      <TfrxDMPMemoView Name="DMPMemo329" Left="854,4" Top="459" Width="240" Height="34" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="расход на выработку"/>
+      <TfrxDMPMemoView Name="DMPMemo330" Left="1094,4" Top="408" Width="230,4" Height="34" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="Передано"/>
+      <TfrxDMPMemoView Name="DMPMemo331" Left="1094,4" Top="459" Width="115,2" Height="85" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="из сырья"/>
+      <TfrxDMPMemoView Name="DMPMemo332" Left="1209,6" Top="459" Width="115,2" Height="85" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="из незав. произв."/>
+      <TfrxDMPMemoView Name="DMPMemo333" Left="1324,8" Top="408" Width="355,2" Height="34" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="Остаток на конец месяца"/>
+      <TfrxDMPMemoView Name="DMPMemo334" Left="1324,8" Top="459" Width="115,2" Height="85" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="в сырье"/>
+      <TfrxDMPMemoView Name="DMPMemo335" Left="1440" Top="459" Width="115,2" Height="85" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="в незав. произв."/>
+      <TfrxDMPMemoView Name="DMPMemo336" Left="1555,2" Top="459" Width="124,8" Height="85" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="всего"/>
+      <TfrxDMPMemoView Name="DMPMemo337" Left="1680" Top="408" Width="355,2" Height="34" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="Расход на единицу продукции"/>
+      <TfrxDMPMemoView Name="DMPMemo338" Left="1680" Top="459" Width="115,2" Height="85" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="по норме"/>
+      <TfrxDMPMemoView Name="DMPMemo339" Left="1795,2" Top="459" Width="115,2" Height="85" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="факт. за отчетн. месяц"/>
+      <TfrxDMPMemoView Name="DMPMemo340" Left="1910,4" Top="459" Width="124,8" Height="85" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="факт. с начала года"/>
+      <TfrxDMPMemoView Name="DMPMemo341" Left="2035,2" Top="408" Width="192" Height="34" Frame.Typ="14" HAlign="haCenter" Text="Перерасход (+)&#13;&#10;Экономия(-)"/>
+      <TfrxDMPMemoView Name="DMPMemo342" Left="2035,2" Top="459" Width="105,6" Height="85" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="за отчетн. месяц"/>
+      <TfrxDMPMemoView Name="DMPMemo343" Left="2140,8" Top="459" Width="86,4" Height="85" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text=" с начала &#13;&#10;года"/>
+      <TfrxDMPMemoView Name="DMPMemo273" Left="1132,8" Top="51" Width="307,2" Height="85" Frame.Typ="15" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo274" Left="1132,8" Top="153" Width="307,2" Height="187" Frame.Typ="15" Text="1. Остат. в н/з пр-ве на 1___&#13;&#10;2. Приход&#13;&#10;3. Расход&#13;&#10;4. Остат. в н/з пр-ве на 1___&#13;&#10;5. Выработано&#13;&#10;6. Выход&#13;&#10;7. Выход&#13;&#10;8. &#13;&#10;9.&#13;&#10;10.&#13;&#10;11."/>
+      <TfrxDMPMemoView Name="DMPMemo275" Left="1449,6" Top="51" Width="96" Height="85" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="Ед. изм."/>
+      <TfrxDMPMemoView Name="DMPMemo276" Left="1555,2" Top="51" Width="96" Height="85" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="Количество"/>
+      <TfrxDMPMemoView Name="DMPMemo277" Left="1660,8" Top="51" Width="201,6" Height="17" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="Активность в 1 мл"/>
+      <TfrxDMPMemoView Name="DMPMemo278" Left="1766,4" Top="85" Width="96" Height="51" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="средн."/>
+      <TfrxDMPMemoView Name="DMPMemo279" Left="1872" Top="51" Width="201,6" Height="17" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="Активность в 1 мг"/>
+      <TfrxDMPMemoView Name="DMPMemo280" Left="1872" Top="85" Width="96" Height="17" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="от_______"/>
+      <TfrxDMPMemoView Name="DMPMemo281" Left="1872" Top="119" Width="96" Height="17" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="до______"/>
+      <TfrxDMPMemoView Name="DMPMemo282" Left="1977,6" Top="85" Width="96" Height="51" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="средн."/>
+      <TfrxDMPMemoView Name="DMPMemo283" Left="2083,2" Top="51" Width="144" Height="85" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="Всего млрд. ед."/>
+      <TfrxDMPMemoView Name="DMPMemo284" Left="1660,8" Top="85" Width="96" Height="17" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="от_______"/>
+      <TfrxDMPMemoView Name="DMPMemo285" Left="1660,8" Top="119" Width="96" Height="17" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="до______"/>
+      <TfrxDMPMemoView Name="DMPMemo286" Left="1449,6" Top="153" Width="96" Height="187" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo287" Left="1555,2" Top="153" Width="96" Height="187" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo288" Left="1660,8" Top="153" Width="96" Height="187" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo289" Left="1766,4" Top="153" Width="96" Height="187" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo290" Left="1872" Top="153" Width="96" Height="187" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo291" Left="1977,6" Top="153" Width="96" Height="187" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo292" Left="2083,2" Top="153" Width="144" Height="187" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text=""/>
+    </TfrxReportTitle>
+    <TfrxHeader Name="Header1" Height="51" Left="0" Top="646" Width="2236,8" ReprintOnNewPage="True">
+      <TfrxDMPMemoView Name="DMPMemo345" Left="9,6" Top="17" Width="48" Height="17" Frame.Typ="15" HAlign="haCenter" VAlign="vaCenter" Text="01"/>
+      <TfrxDMPMemoView Name="DMPMemo346" Left="57,6" Top="17" Width="163,2" Height="17" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="02"/>
+      <TfrxDMPMemoView Name="DMPMemo347" Left="220,8" Top="17" Width="48" Height="17" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="03"/>
+      <TfrxDMPMemoView Name="DMPMemo349" Left="268,8" Top="17" Width="115,2" Height="17" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="04"/>
+      <TfrxDMPMemoView Name="DMPMemo350" Left="384" Top="17" Width="115,2" Height="17" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="05"/>
+      <TfrxDMPMemoView Name="DMPMemo351" Left="499,2" Top="17" Width="124,8" Height="17" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="06"/>
+      <TfrxDMPMemoView Name="DMPMemo352" Left="624" Top="17" Width="115,2" Height="17" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="07"/>
+      <TfrxDMPMemoView Name="DMPMemo354" Left="739,2" Top="17" Width="115,2" Height="17" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="08"/>
+      <TfrxDMPMemoView Name="DMPMemo355" Left="854,4" Top="17" Width="115,2" Height="17" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="09"/>
+      <TfrxDMPMemoView Name="DMPMemo356" Left="969,6" Top="17" Width="124,8" Height="17" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="10"/>
+      <TfrxDMPMemoView Name="DMPMemo359" Left="1094,4" Top="17" Width="115,2" Height="17" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="11"/>
+      <TfrxDMPMemoView Name="DMPMemo360" Left="1209,6" Top="17" Width="115,2" Height="17" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="12"/>
+      <TfrxDMPMemoView Name="DMPMemo362" Left="1324,8" Top="17" Width="115,2" Height="17" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="13"/>
+      <TfrxDMPMemoView Name="DMPMemo363" Left="1440" Top="17" Width="115,2" Height="17" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="14"/>
+      <TfrxDMPMemoView Name="DMPMemo364" Left="1555,2" Top="17" Width="124,8" Height="17" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="15"/>
+      <TfrxDMPMemoView Name="DMPMemo366" Left="1680" Top="17" Width="115,2" Height="17" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="16"/>
+      <TfrxDMPMemoView Name="DMPMemo367" Left="1795,2" Top="17" Width="115,2" Height="17" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="17"/>
+      <TfrxDMPMemoView Name="DMPMemo368" Left="1910,4" Top="17" Width="124,8" Height="17" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="18"/>
+      <TfrxDMPMemoView Name="DMPMemo370" Left="2035,2" Top="17" Width="105,6" Height="17" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="19"/>
+      <TfrxDMPMemoView Name="DMPMemo371" Left="2140,8" Top="17" Width="86,4" Height="17" Frame.Typ="14" HAlign="haCenter" VAlign="vaCenter" Text="20"/>
+    </TfrxHeader>
+    <TfrxGroupHeader Name="GroupHeader1" Height="51" Left="0" Top="714" Width="2236,8" Condition="frxDBDataset1.&#34;namraz&#34;">
+      <TfrxDMPMemoView Name="DMPMemo344" Left="67,2" Top="17" Width="489,6" Height="17" Text="[frxDBDataset1.&#34;namraz&#34;]"/>
+    </TfrxGroupHeader>
+    <TfrxMasterData Name="MasterData1" Height="17" Left="0" Top="782" Width="2236,8" ColumnWidth="0" ColumnGap="0" DataSet="frxDBDataset1" DataSetName="frxDBDataset1" RowCount="0">
+      <TfrxDMPMemoView Name="DMPMemo348" Left="0" Top="0" Width="57,6" Height="17" Text="[frxDBDataset1.&#34;ksm_id&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo353" Left="57,6" Top="0" Width="163,2" Height="17" Text="[frxDBDataset1.&#34;NMAT&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo357" Left="220,8" Top="0" Width="48" Height="17" Text="[frxDBDataset1.&#34;neis&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo358" Left="268,8" Top="0" Width="115,2" Height="17" OnBeforePrint="MasterData1OnBeforePrint" DisplayFormat.DecimalSeparator="," DisplayFormat.FormatStr="%2.3f" DisplayFormat.Kind="fkNumeric" HAlign="haRight" Text="[frxDBDataset1.&#34;Onm_s&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo361" Left="384" Top="0" Width="115,2" Height="17" OnBeforePrint="MasterData1OnBeforePrint" DisplayFormat.DecimalSeparator="," DisplayFormat.FormatStr="%2.3f" DisplayFormat.Kind="fkNumeric" HAlign="haRight" Text="[frxDBDataset1.&#34;Onm_nz&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo365" Left="499,2" Top="0" Width="124,8" Height="17" OnBeforePrint="MasterData1OnBeforePrint" DisplayFormat.DecimalSeparator="," DisplayFormat.FormatStr="%2.3f" DisplayFormat.Kind="fkNumeric" HAlign="haRight" Text="[&#60;frxDBDataset1.&#34;Onm_s&#34;&#62;+&#60;frxDBDataset1.&#34;Onm_nz&#34;&#62;]"/>
+      <TfrxDMPMemoView Name="DMPMemo369" Left="624" Top="0" Width="115,2" Height="17" OnBeforePrint="MasterData1OnBeforePrint" DisplayFormat.DecimalSeparator="," DisplayFormat.FormatStr="%2.3f" DisplayFormat.Kind="fkNumeric" HAlign="haRight" Text="[frxDBDataset1.&#34;kol_prih&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo372" Left="739,2" Top="0" Width="115,2" Height="17" OnBeforePrint="MasterData1OnBeforePrint" DisplayFormat.DecimalSeparator="," DisplayFormat.FormatStr="%2.3f" DisplayFormat.Kind="fkNumeric" HAlign="haRight" Text="[frxDBDataset1.&#34;zag&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo373" Left="854,4" Top="0" Width="115,2" Height="17" OnBeforePrint="MasterData1OnBeforePrint" DisplayFormat.DecimalSeparator="," DisplayFormat.FormatStr="%2.3f" DisplayFormat.Kind="fkNumeric" HAlign="haRight" Text="[frxDBDataset1.&#34;kol_rash&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo374" Left="969,6" Top="0" Width="115,2" Height="17" OnBeforePrint="MasterData1OnBeforePrint" DisplayFormat.DecimalSeparator="," DisplayFormat.FormatStr="%2.3f" DisplayFormat.Kind="fkNumeric" HAlign="haRight" Text="[frxDBDataset1.&#34;RASXG&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo375" Left="1084,8" Top="0" Width="124,8" Height="17" OnBeforePrint="MasterData1OnBeforePrint" DisplayFormat.DecimalSeparator="," DisplayFormat.FormatStr="%2.3f" DisplayFormat.Kind="fkNumeric" HAlign="haRight" Text="[frxDBDataset1.&#34;per_s&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo376" Left="1209,6" Top="0" Width="115,2" Height="17" OnBeforePrint="MasterData1OnBeforePrint" DisplayFormat.DecimalSeparator="," DisplayFormat.FormatStr="%2.3f" DisplayFormat.Kind="fkNumeric" HAlign="haRight" Text="[frxDBDataset1.&#34;per_nz&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo377" Left="1324,8" Top="0" Width="115,2" Height="17" OnBeforePrint="MasterData1OnBeforePrint" DisplayFormat.DecimalSeparator="," DisplayFormat.FormatStr="%2.3f" DisplayFormat.Kind="fkNumeric" HAlign="haRight" Text="[frxDBDataset1.&#34;Ot_s&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo378" Left="1440" Top="0" Width="115,2" Height="17" OnBeforePrint="MasterData1OnBeforePrint" DisplayFormat.DecimalSeparator="," DisplayFormat.FormatStr="%2.3f" DisplayFormat.Kind="fkNumeric" HAlign="haRight" Text="[frxDBDataset1.&#34;Ot_nz&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo379" Left="1555,2" Top="0" Width="124,8" Height="17" OnBeforePrint="MasterData1OnBeforePrint" DisplayFormat.DecimalSeparator="," DisplayFormat.FormatStr="%2.3f" DisplayFormat.Kind="fkNumeric" HAlign="haRight" Text="[&#60;frxDBDataset1.&#34;Ot_nz&#34;&#62;+&#60;frxDBDataset1.&#34;Ot_s&#34;&#62;]"/>
+      <TfrxDMPMemoView Name="DMPMemo380" Left="1680" Top="0" Width="115,2" Height="17" OnBeforePrint="MasterData1OnBeforePrint" DisplayFormat.DecimalSeparator="," DisplayFormat.FormatStr="%2.3f" DisplayFormat.Kind="fkNumeric" HAlign="haRight" Text="[frxDBDataset1.&#34;plnorm&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo381" Left="1795,2" Top="0" Width="115,2" Height="17" OnBeforePrint="MasterData1OnBeforePrint" DisplayFormat.DecimalSeparator="," DisplayFormat.FormatStr="%2.3f" DisplayFormat.Kind="fkNumeric" HAlign="haRight" Text="[frxDBDataset1.&#34;fnorm&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo382" Left="1910,4" Top="0" Width="124,8" Height="17" OnBeforePrint="MasterData1OnBeforePrint" DisplayFormat.DecimalSeparator="," DisplayFormat.FormatStr="%2.3f" DisplayFormat.Kind="fkNumeric" HAlign="haRight" Text="[frxDBDataset1.&#34;fnormg&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo383" Left="2035,2" Top="0" Width="105,6" Height="17" OnBeforePrint="MasterData1OnBeforePrint" DisplayFormat.DecimalSeparator="," DisplayFormat.FormatStr="%2.3f" DisplayFormat.Kind="fkNumeric" HAlign="haRight" Text="[frxDBDataset1.&#34;pereras&#34;]"/>
+      <TfrxDMPMemoView Name="DMPMemo384" Left="2140,8" Top="0" Width="96" Height="17" OnBeforePrint="MasterData1OnBeforePrint" DisplayFormat.DecimalSeparator="," DisplayFormat.FormatStr="%2.3f" DisplayFormat.Kind="fkNumeric" HAlign="haRight" Text="[frxDBDataset1.&#34;pererasg&#34;]"/>
+    </TfrxMasterData>
+    <TfrxPageFooter Name="PageFooter2" Height="34" Left="0" Top="1139" Width="2236,8">
+      <TfrxDMPMemoView Name="DMPMemo389" Left="0" Top="17" Width="2236,8" Height="17" DisplayFormat.DecimalSeparator="," HAlign="haRight" Text="Документ сформирован програмным обеспечением ОАСУ [Time] [Date]"/>
+    </TfrxPageFooter>
+    <TfrxPageHeader Name="PageHeader1" Height="17" Left="0" Top="595" Width="2236,8" PrintOnFirstPage="False">
+      <TfrxDMPMemoView Name="DMPMemo390" Left="336" Top="0" Width="1900,8" Height="17" DisplayFormat.DecimalSeparator="," HAlign="haRight" Text="Лист [&#60;Page#&#62;] "/>
+      <TfrxDMPMemoView Name="DMPMemo391" Left="0" Top="0" Width="336" Height="17" Text=""/>
+    </TfrxPageHeader>
+    <TfrxReportSummary Name="ReportSummary1" Height="289" Left="0" Top="833" Width="2236,8">
+      <TfrxDMPMemoView Name="DMPMemo385" Left="9,6" Top="34" Width="1104" Height="68" Text="Объяснительная записка&#13;&#10;________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________"/>
+      <TfrxDMPMemoView Name="DMPMemo386" Left="1123,2" Top="34" Width="1113,6" Height="68" Text="Мероприятия по обеспечению плана в следующем месяце&#13;&#10;________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________"/>
+      <TfrxDMPMemoView Name="DMPMemo387" Left="9,6" Top="136" Width="2227,2" Height="68" Text="Заключение о работе производства&#13;&#10;________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________"/>
+      <TfrxDMPMemoView Name="DMPMemo388" Left="9,6" Top="238" Width="1708,8" Height="51" Text="Расчет произвел__________________________         "/>
+      <TfrxDMPMemoView Name="DMPMemo392" Left="1718,4" Top="238" Width="518,4" Height="51" Text="Главный технолог____________________&#13;&#10;Зам. главного технолога_____________&#13;&#10;Инженер-технолог ОГТ________________"/>
+      <TfrxDMPMemoView Name="DMPMemo400" Left="9,6" Top="102" Width="1708,8" Height="34" Text=""/>
+      <TfrxDMPMemoView Name="DMPMemo401" Left="1718,4" Top="102" Width="518,4" Height="34" Text="Нач. цеха __________________________&#13;&#10;Зам. нач. цеха _____________________"/>
+    </TfrxReportSummary>
+  </TfrxDMPPage>
+</TfrxReport>
