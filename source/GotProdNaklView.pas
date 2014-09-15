@@ -408,7 +408,7 @@ type
     procedure createVipDocument(klientId : integer; strukId : integer;
                                                                 docDate : TDate);
     procedure createVipKart(docId : integer; kolRashEdiz : double; ksmId : integer;
-                            keiId, kartId, strokaId : integer);
+                            keiId, kartId : integer);
     procedure deleteVipKart(ksmId, kartId, docId : integer);
     procedure deleteVipusk(ksmId, kartId : integer; docDate : TDate;
                            strukId : integer);
@@ -1396,13 +1396,12 @@ begin
 end;
 
 procedure TFGotProdNaklView.createVipKart(docId: Integer; kolRashEdiz: Double;
-                                          ksmId, keiId, kartId, strokaId: Integer);
+                                          ksmId, keiId, kartId: Integer);
 begin
   VipKart.Close;
   VipKart.ParamByName('doc_id').AsInteger := docId;
   VipKart.ParamByName('kart_id').AsInteger := kartId;
   VipKart.ParamByName('ksm_id').AsInteger := ksmId;
-  VipKart.ParamByName('stroka_id').AsInteger := strokaId;
   dm1.startReadTrans;
   VipKart.Open;
   VipKart.FetchAll;
@@ -1469,7 +1468,7 @@ begin
                     GotDocumentDATE_DOK.AsDateTime);
   createVipKart(VipDocumentDOC_ID.AsInteger, GotKartQueryKOL_RASH_EDIZ.AsFloat,
                 GotKartQueryKSM_ID.AsInteger, GotKartQueryKEI_ID.AsInteger,
-                GotKartQueryKART_ID.AsInteger,0{ GotKartQuerySTROKA_ID_VIP.AsInteger});
+                GotKartQueryKART_ID.AsInteger);
 end;
 
 procedure TFGotProdNaklView.rollbackVipusk;
