@@ -865,7 +865,7 @@ object FGotProdNaklView: TFGotProdNaklView
       Left = 135
       Top = 30
       Width = 121
-      Height = 19
+      Height = 17
       Ctl3D = False
       EditButtons = <>
       Flat = True
@@ -880,7 +880,7 @@ object FGotProdNaklView: TFGotProdNaklView
       Left = 135
       Top = 53
       Width = 143
-      Height = 19
+      Height = 17
       Ctl3D = False
       DropDownBox.Rows = 13
       EditButtons = <>
@@ -962,7 +962,7 @@ object FGotProdNaklView: TFGotProdNaklView
       Left = 319
       Top = 16
       Width = 335
-      Height = 19
+      Height = 22
       Ctl3D = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -977,7 +977,7 @@ object FGotProdNaklView: TFGotProdNaklView
       Left = 773
       Top = 16
       Width = 250
-      Height = 19
+      Height = 22
       Ctl3D = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -7773,8 +7773,7 @@ object FGotProdNaklView: TFGotProdNaklView
       ''
       'where kart.doc_id = :doc_id'
       'and kart.kart_id = :kart_id'
-      'and kart.ksm_id = :ksm_id'
-      'and kart.stroka_id = :stroka_id')
+      'and kart.ksm_id = :ksm_id')
     UpdateObject = VipKartUpd
     Macros = <>
     Left = 264
@@ -7793,11 +7792,6 @@ object FGotProdNaklView: TFGotProdNaklView
       item
         DataType = ftUnknown
         Name = 'ksm_id'
-        ParamType = ptUnknown
-      end
-      item
-        DataType = ftUnknown
-        Name = 'stroka_id'
         ParamType = ptUnknown
       end>
     object VipKartDOC_ID: TIntegerField
