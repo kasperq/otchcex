@@ -1167,7 +1167,7 @@ begin
   end;
   BELMED.Connected := True;
   {$IFDEF RELEASE}
-  programPath := 'F:\Otchcex\Report\';
+  reportsPath := 'F:\Otchcex\Report\';
   {$ENDIF}
   {$IFDEF DEBUG}
   reportsPath := 'C:\MyProg\Otchcex_3\Source\Report\';
