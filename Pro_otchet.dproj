@@ -3,10 +3,10 @@
   <PropertyGroup>
     <ProjectGuid>{1f5e073e-7878-4df0-a47d-a47c9fd31a1d}</ProjectGuid>
     <MainSource>Pro_otchet.dpr</MainSource>
-    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
-    <DCC_DependencyCheckOutputName>Release\Exe\Pro_otchet.exe</DCC_DependencyCheckOutputName>
+    <DCC_DependencyCheckOutputName>Debug\Exe\Pro_otchet.exe</DCC_DependencyCheckOutputName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Version>7.0</Version>
@@ -15,24 +15,32 @@
     <DCC_MapFile>3</DCC_MapFile>
     <DCC_Define>EUREKALOG;RELEASE;EUREKALOG_VER6</DCC_Define>
     <DCC_SYMBOL_DEPRECATED>False</DCC_SYMBOL_DEPRECATED>
-    <DCC_ExeOutput>C:\MyProg\otchcex_3\Release\Exe</DCC_ExeOutput>
-    <DCC_DcuOutput>C:\MyProg\otchcex_3\Release\Dcu</DCC_DcuOutput>
-    <DCC_ObjOutput>C:\MyProg\otchcex_3\Release\Dcu</DCC_ObjOutput>
-    <DCC_HppOutput>C:\MyProg\otchcex_3\Release\Dcu</DCC_HppOutput>
-    <DCC_BplOutput>C:\MyProg\otchcex_3\Release\Pack</DCC_BplOutput>
-    <DCC_DcpOutput>C:\MyProg\otchcex_3\Release\Dcp</DCC_DcpOutput>
+    <DCC_ExeOutput>.\Release\Exe</DCC_ExeOutput>
+    <DCC_DcuOutput>.\Release\Dcu</DCC_DcuOutput>
+    <DCC_ObjOutput>.\Release\Dcu</DCC_ObjOutput>
+    <DCC_HppOutput>.\Release\Dcu</DCC_HppOutput>
+    <DCC_BplOutput>.\Release\Pack</DCC_BplOutput>
+    <DCC_DcpOutput>.\Release\Dcp</DCC_DcpOutput>
+    <DCC_UnitSearchPath>.\Release\Search</DCC_UnitSearchPath>
+    <DCC_ResourcePath>.\Release\Search</DCC_ResourcePath>
+    <DCC_ObjPath>.\Release\Search</DCC_ObjPath>
+    <DCC_IncludePath>.\Release\Search</DCC_IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <Version>7.0</Version>
     <DCC_MapFile>3</DCC_MapFile>
     <DCC_Define>EUREKALOG;DEBUG;EUREKALOG_VER6</DCC_Define>
     <DCC_SYMBOL_DEPRECATED>False</DCC_SYMBOL_DEPRECATED>
-    <DCC_ExeOutput>C:\MyProg\otchcex_3\Debug\Exe</DCC_ExeOutput>
-    <DCC_DcuOutput>C:\MyProg\otchcex_3\Debug\Dcu</DCC_DcuOutput>
-    <DCC_ObjOutput>C:\MyProg\otchcex_3\Debug\Dcu</DCC_ObjOutput>
-    <DCC_HppOutput>C:\MyProg\otchcex_3\Debug\Dcu</DCC_HppOutput>
-    <DCC_BplOutput>C:\MyProg\otchcex_3\Debug\Pack</DCC_BplOutput>
-    <DCC_DcpOutput>C:\MyProg\otchcex_3\Debug\Dcp</DCC_DcpOutput>
+    <DCC_ExeOutput>.\Debug\Exe</DCC_ExeOutput>
+    <DCC_DcuOutput>.\Debug\Dcu</DCC_DcuOutput>
+    <DCC_ObjOutput>.\Debug\Dcu</DCC_ObjOutput>
+    <DCC_HppOutput>.\Debug\Dcu</DCC_HppOutput>
+    <DCC_BplOutput>.\Debug\Pack</DCC_BplOutput>
+    <DCC_DcpOutput>.\Debug\Dcp</DCC_DcpOutput>
+    <DCC_UnitSearchPath>.\Debug\Search</DCC_UnitSearchPath>
+    <DCC_ResourcePath>.\Debug\Search</DCC_ResourcePath>
+    <DCC_ObjPath>.\Debug\Search</DCC_ObjPath>
+    <DCC_IncludePath>.\Debug\Search</DCC_IncludePath>
   </PropertyGroup>
   <ProjectExtensions>
     <Borland.Personality>Delphi.Personality</Borland.Personality>
@@ -58,6 +66,79 @@
       
       
       
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; develop
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+        
       
       
       
