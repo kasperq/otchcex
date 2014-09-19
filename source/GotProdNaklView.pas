@@ -2479,10 +2479,10 @@ procedure TFGotProdNaklView.loadUndersigns;
 var
   docParamId : string;
 begin
-  if (vStruk_id = 1) or (vStruk_id = 29) or (vStruk_id = 106) or (vStruk_id = 696) then
-    docParamId := ' 544 '
-  else
-    docParamId := ' 542 ';
+//  if (vStruk_id = 1) or (vStruk_id = 29) or (vStruk_id = 106) or (vStruk_id = 696) then
+    docParamId := ' 544 ';           // зам. нач. ОКК Сахарова Н.А. уволилась, все подписывает нач. ОКК Солодкова Г.С.
+//  else
+//    docParamId := ' 542 ';
   if (GotDocument.RecordCount > 0) then
   begin
     TempQuery.Active := false;
