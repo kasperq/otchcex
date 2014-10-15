@@ -2479,11 +2479,11 @@ procedure TFGotProdNaklView.loadUndersigns;
 var
   docParamId : string;
 begin
-//  if (vStruk_id = 1) or (vStruk_id = 29) or (vStruk_id = 106) or (vStruk_id = 696) then
+	if (vStruk_Id = 696) then		// для 2-го цеха надо ставить Галейшу Е.А., зам. нач. ОКК
+  	docParamId := ' 542 '
+  else
     docParamId := ' 544 ';           // зам. нач. ОКК Сахарова Н.А. уволилась, все подписывает нач. ОКК Солодкова Г.С.
-//  else
-//    docParamId := ' 542 ';
-  if (GotDocument.RecordCount > 0) then
+  if (GotDocument.RecordCount > 0) then   // пытаемся загрузить подписи для данного документа
   begin
     TempQuery.Active := false;
     TempQuery.SQL.Clear;
@@ -2494,7 +2494,7 @@ begin
     TempQuery.Active := true;
   end;
 
-  if (TempQuery.Eof) {or (GotDocument.Eof)} then
+  if (TempQuery.Eof) then				// если подписей нет, то загружаем подписи по умолчанию по docParamId
   begin
     TempQuery.Active := False;
     TempQuery.SQL.Clear;
@@ -2507,7 +2507,7 @@ begin
   end
   else
   begin
-    param1IsHere := true;
+    param1IsHere := true;      // если есть, то ставим в отпуск разрешил
     NachOkkEdit.Text := TempQuery.FieldByName('param_value').asstring;
   end;
   TempQuery.Active := False;
