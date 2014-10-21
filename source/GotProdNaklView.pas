@@ -2480,7 +2480,10 @@ var
   docParamId : string;
 begin
 	if (vStruk_Id = 696) then		// для 2-го цеха надо ставить Галейшу Е.А., зам. нач. ОКК
-  	docParamId := ' 542 '
+  begin
+  	docParamId := ' 542 ';
+    SdalEdit.Text := 'Нач. уч. упак. Ковалев А. И.';
+  end
   else
     docParamId := ' 544 ';           // зам. нач. ОКК Сахарова Н.А. уволилась, все подписывает нач. ОКК Солодкова Г.С.
   if (GotDocument.RecordCount > 0) then   // пытаемся загрузить подписи для данного документа
@@ -2526,7 +2529,7 @@ begin
   begin
     SdalEdit.Text := TempQuery.FieldByName('param_value').asstring;
     param2IsHere := true;
-  end;
+  end
 end;
 
 procedure TFGotProdNaklView.printForTisUpak(Sender: TObject);
