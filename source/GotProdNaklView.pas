@@ -1763,7 +1763,7 @@ begin
       RMUpak.Append;
       RMUpak.FieldByName('seria').asstring := v_seria1;
       RMUpak.FieldByName('kol_upak').AsInteger := v_kol_upak1;
-      vv := round(MD_Nakl_s.FieldByName('KOL_RASH').AsFloat);
+      vv := ceil(MD_Nakl_s.FieldByName('KOL_RASH').AsFloat);
       RMUpak.FieldByName('kol_trans').AsInteger := vv - (MD_Nakl_s.FieldByName('KOL_trans').AsInteger * v_kol_upak);
 
       if (MD_Nakl_s.FieldByName('KOL_grp').AsInteger <> 0) then
@@ -1885,7 +1885,7 @@ begin
       RMUpak.Append;
       RMUpak.FieldByName('seria').asstring := v_seria1;
       RMUpak.FieldByName('kol_upak').AsInteger := v_kol_upak1;
-      vv := round(MD_Nakl_s.FieldByName('KOL_RASH').AsFloat * 1000);
+      vv := ceil(MD_Nakl_s.FieldByName('KOL_RASH').AsFloat * 1000);
       RMUpak.FieldByName('kol_trans').AsFloat := vv - (MD_Nakl_s.FieldByName('KOL_trans').AsFloat * v_kol_upak);
 
       if (cbRF.Checked) then
