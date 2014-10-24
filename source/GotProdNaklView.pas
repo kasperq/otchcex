@@ -834,8 +834,15 @@ begin
     seriaArrKOD_PROD.AsString := GotKartQueryKOD_PROD.AsString;
     seriaArrKOL_RASH.AsFloat := GotKartQueryKOL_RASH_EDIZ.AsFloat;
     if (GotKartQuery.RecordCount = 1) then
-      seriaArrKOL_PROPIS.AsString := FloatToText(GotKartQueryKOL_RASH_EDIZ.AsFloat * 1000000, 2)
-                                     + ' единиц'
+    begin
+    	if ((keiId = 644) or (keiId = 646)) then
+        seriaArrKOL_PROPIS.AsString := FloatToText(GotKartQueryKOL_RASH_EDIZ.AsFloat * 1000000, 2)
+                                       + ' единиц'
+      else
+      	if ((keiId = 645) or (keiId = 650) or (keiId = 662)) then
+        	seriaArrKOL_PROPIS.AsString := FloatToText(GotKartQueryKOL_RASH_EDIZ.AsFloat * 1000000000, 2)
+                                       + ' единиц';
+    end
     else
       seriaArrKOL_PROPIS.AsString := '';
     seriaArr.Post;
@@ -2760,7 +2767,7 @@ begin
   if ((keiId = 166) or (keiId = 163) or (keiId = 170) or (keiId = 852)
      or (keiId = 125) or (keiId = 164) or (keiId = 851) or (keiId = 126)) then
     printForKgG(Sender);
-  if ((keiId = 644) or (keiId = 645) or (keiId = 646) ) then
+  if ((keiId = 644) or (keiId = 645) or (keiId = 646) or (keiId = 650) or (keiId = 662)) then
     printForMeds(Sender);
   if (keiId = 122) or (keiId = 123) then
     printForLiters(sender);
