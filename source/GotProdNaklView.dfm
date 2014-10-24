@@ -7543,7 +7543,7 @@ object FGotProdNaklView: TFGotProdNaklView
       OnClick = printForKgG
     end
     object N3: TMenuItem
-      Caption = #1055#1077#1095#1072#1090#1100' '#1076#1083#1103' '#1077#1076'. '#1080#1079#1084'. '#39#1052#1051#1053' '#1045#1044#39
+      Caption = #1055#1077#1095#1072#1090#1100' '#1076#1083#1103' '#1077#1076'. '#1080#1079#1084'. '#39#1052#1051#1053' '#1045#1044#39', '#39#1052#1051#1056#1044' '#1045#1044#39
       OnClick = printForMeds
     end
     object N4: TMenuItem
