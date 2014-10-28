@@ -10,6 +10,9 @@ uses
   function KolZnakovPosleZap(value : extended) : integer;
   function SumToString(x: Integer): string;
   function MesName(Mes: integer): string;
+  function MyTrunc(value : double) : Int64;
+	function MyFrac(value : double) : double;
+	function MyCeil(const X: Extended): Integer;
 
 implementation
 
@@ -293,6 +296,45 @@ begin
     11: Result:='Ноября';
     12: Result:='Декабря';
   end;
+end;
+
+function MyTrunc(value : double) : Int64;
+var
+  strValue, intStr : string;
+  i : integer;
+begin
+  result := 0;
+	strValue := FloatToStr(value);
+  for i := 1 to length(strValue) do
+	begin
+  	if (strValue[i] <> ',') then
+    	intStr := intStr + strValue[i]
+    else
+    	break;
+  end;
+  result := StrToInt64(intStr);
+end;
+
+function MyFrac(value : double) : double;
+var
+  strValue, intStr : string;
+  i : integer;
+begin
+  result := 0;
+	strValue := FloatToStr(value);
+  if (pos(',', strValue) <> 0) then
+    for i := pos(',', strValue) to length(strValue) do
+    	intStr := intStr + strValue[i]
+  else
+  	intStr := '0,0';
+  result := StrToFloat(intStr);
+end;
+
+function MyCeil(const X: Extended): Integer;
+begin
+  Result := Integer(MyTrunc(X));
+  if (MyFrac(X) > 0) then
+    Inc(Result);
 end;
 
 
