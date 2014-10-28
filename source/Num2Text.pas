@@ -147,12 +147,11 @@ function CountOfUnits(AUnit: TRusWord; N: Int64;
   Options: TNumberToTextOptions): string;
 function AmountOfUnits(AUnit: TRusWord; R: Double; Precision: Integer;
   Options: TNumberToTextOptions): string;
-function MyTrunc(value : double) : Int64;
 
 implementation
 
 uses
-  SysUtils;
+  SysUtils, CopyFiles;
 
 const
   TenIn: array[1..4] of Integer = (10, 100, 1000, 10000);
@@ -471,23 +470,6 @@ begin
   UnitWord := AUnit;
   Number := ANumber;
   Result := Convert;
-end;
-
-function MyTrunc(value : double) : Int64;
-var
-  strValue, intStr : string;
-  i : integer;
-begin
-  result := 0;
-	strValue := FloatToStr(value);
-  for i := 1 to length(strValue) do
-	begin
-  	if (strValue[i] <> ',') then
-    	intStr := intStr + strValue[i]
-    else
-    	break;
-  end;
-  result := StrToInt64(intStr);
 end;
 
 {------------------------------------------------------------------------------}
