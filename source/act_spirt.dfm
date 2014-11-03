@@ -254,7 +254,7 @@ object Fact_spirt: TFact_spirt
         Width = 29
       end
       item
-        DisplayFormat = '#######0.000'
+        DisplayFormat = '#######0.000###'
         EditButtons = <>
         FieldName = 'VIP'
         Footer.DisplayFormat = '#######0.000'
