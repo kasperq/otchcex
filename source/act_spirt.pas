@@ -303,10 +303,10 @@ begin
       DM1.IBQuery1.SQL.Add(' and kartv.ksm_id=' + inttostr(S_vip));
       DM1.IBQuery1.Active := true;
       Spirt_Otchet.Edit;
-      if (DM1.IBQuery1.Eof) then
+      if (DM1.IBQuery1.Eof) or (DM1.IBQuery1.FieldByName('vip').AsString = '') then
         Spirt_OtchetVip.AsFloat := 0
       else
-        Spirt_OtchetVip.AsFloat := DM1.IBQuery1.FieldByName('vip').AsFloat;
+        Spirt_OtchetVip.AsString := DM1.IBQuery1.FieldByName('vip').AsString;
       Spirt_Otchet.Post;
       if (Spirt_OtchetKodp.AsVariant = null) and (not Spirt_Otchet.Eof) then
       begin
