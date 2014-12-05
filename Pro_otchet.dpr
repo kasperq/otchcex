@@ -172,5 +172,5 @@ begin
   Application.CreateForm(TFAnalit_List, FAnalit_List);
   Application.CreateForm(TForm3, Form3);
   Application.CreateForm(TFPererasFolga, FPererasFolga);
-  Application.Run;
+  Application.Run;    
 end.
