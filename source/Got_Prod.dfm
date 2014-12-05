@@ -7286,19 +7286,6 @@ object FGot_Prod: TFGot_Prod
     UseFileCache = True
     ShowProgress = True
     OverwritePrompt = False
-    PrintOptimized = False
-    Outline = False
-    Background = False
-    HTMLTags = True
-    Author = 'FastReport'
-    Subject = 'FastReport PDF export'
-    ProtectionFlags = [ePrint, eModify, eCopy, eAnnot]
-    HideToolbar = False
-    HideMenubar = False
-    HideWindowUI = False
-    FitWindow = False
-    CenterWindow = False
-    PrintScaling = False
     Left = 552
     Top = 288
   end
@@ -7317,13 +7304,6 @@ object FGot_Prod: TFGot_Prod
     UseFileCache = True
     ShowProgress = True
     OverwritePrompt = False
-    ExportEMF = True
-    AsText = False
-    Background = True
-    FastExport = True
-    PageBreaks = True
-    EmptyLines = True
-    SuppressPageHeadersFooters = False
     Left = 648
     Top = 336
   end

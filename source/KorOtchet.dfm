@@ -121,7 +121,7 @@ object FKorOtchet: TFKorOtchet
     end
     object ComboBox1: TComboBox
       Left = 469
-      Top = 4
+      Top = 0
       Width = 111
       Height = 21
       Ctl3D = False
@@ -146,7 +146,7 @@ object FKorOtchet: TFKorOtchet
     end
     object ComboBox2: TComboBox
       Left = 580
-      Top = 4
+      Top = 0
       Width = 69
       Height = 21
       Ctl3D = False
@@ -1132,7 +1132,7 @@ object FKorOtchet: TFKorOtchet
     Left = 776
     Top = 212
     Bitmap = {
-      494C010108000900040018001800FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
+      494C0101080009000C0018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2027,7 +2027,8 @@ object FKorOtchet: TFKorOtchet
       80000000E00003E00003000000000000E00003E0000300000000000000000300
       0003000000000000000003000003000000000000000003000003000000000000
       000003000003FF8000800001E00003E00003FFE080FFFFFFE00003E00003FFFF
-      F0FFFFFFFFFFFFE1FFFFFFFFFFFFFFFF}
+      F0FFFFFFFFFFFFE1FFFFFFFFFFFFFFFF00000000000000000000000000000000
+      000000000000}
   end
   object FindDlgEh1: TFindDlgEh
     DBGrid = DBGridEh1
@@ -3548,6 +3549,75 @@ object FKorOtchet: TFKorOtchet
       Origin = '"KART"."SKID_CEN"'
       Precision = 9
       Size = 2
+    end
+    object KartKorrOtchetCOMMENT: TIBStringField
+      FieldName = 'COMMENT'
+      Origin = '"KART"."COMMENT"'
+      Size = 40
+    end
+    object KartKorrOtchetDOP_SUM: TIBBCDField
+      FieldName = 'DOP_SUM'
+      Origin = '"KART"."DOP_SUM"'
+      Precision = 9
+      Size = 4
+    end
+    object KartKorrOtchetDEBET: TIBStringField
+      FieldName = 'DEBET'
+      Origin = '"KART"."DEBET"'
+      FixedChar = True
+      Size = 5
+    end
+    object KartKorrOtchetDTYPESUB_ID: TSmallintField
+      FieldName = 'DTYPESUB_ID'
+      Origin = '"KART"."DTYPESUB_ID"'
+    end
+    object KartKorrOtchetDCODE: TIntegerField
+      FieldName = 'DCODE'
+      Origin = '"KART"."DCODE"'
+    end
+    object KartKorrOtchetCREDIT: TIBStringField
+      FieldName = 'CREDIT'
+      Origin = '"KART"."CREDIT"'
+      FixedChar = True
+      Size = 5
+    end
+    object KartKorrOtchetCTYPESUB_ID: TSmallintField
+      FieldName = 'CTYPESUB_ID'
+      Origin = '"KART"."CTYPESUB_ID"'
+    end
+    object KartKorrOtchetCCODE: TIntegerField
+      FieldName = 'CCODE'
+      Origin = '"KART"."CCODE"'
+    end
+    object KartKorrOtchetSROK: TSmallintField
+      FieldName = 'SROK'
+      Origin = '"KART"."SROK"'
+    end
+    object KartKorrOtchetDATE_VID: TDateField
+      FieldName = 'DATE_VID'
+      Origin = '"KART"."DATE_VID"'
+    end
+    object KartKorrOtchetDOP_RASH: TIBBCDField
+      FieldName = 'DOP_RASH'
+      Origin = '"KART"."DOP_RASH"'
+      Precision = 18
+      Size = 2
+    end
+    object KartKorrOtchetDOP_RASH_ID: TSmallintField
+      FieldName = 'DOP_RASH_ID'
+      Origin = '"KART"."DOP_RASH_ID"'
+    end
+    object KartKorrOtchetNORM_RASH: TFMTBCDField
+      FieldName = 'NORM_RASH'
+      Origin = '"KART"."NORM_RASH"'
+      Precision = 18
+      Size = 6
+    end
+    object KartKorrOtchetKOL_RAB: TFMTBCDField
+      FieldName = 'KOL_RAB'
+      Origin = '"KART"."KOL_RAB"'
+      Precision = 18
+      Size = 6
     end
   end
   object IBKartKorrOtchet: TIBUpdateSQLW

@@ -4,10 +4,10 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, Buttons, ExtCtrls, Mask, DBCtrlsEh, StdCtrls, DBGridEh, DBLookupEh,
+  Dialogs, Buttons, ExtCtrls, Mask, DBCtrlsEh, StdCtrls, DBGridEh, DBLookupEh, DBCtrls,
   DB, IBCustomDataSet, IBUpdateSQL, IBUpdSQLW, IBQuery, RxIBQuery, RxMemDS,
-  Grids, frxClass, frxDBSet, frxExportXLS, frXMLExl, frxExportImage, frxExportPDF,
-  Math, Menus, frxDCtrl, SplshWnd, RxStrUtils, DBCtrls, RxMenus;
+  Grids, frxClass, frxDBSet, frxExportXLS, frxExportImage, frxExportPDF,
+  Math, Menus, frxDCtrl, SplshWnd, RxStrUtils,  RxMenus;
 
 type
   TFGotProdNaklView = class(TForm)
@@ -2490,7 +2490,7 @@ var
 begin
 	if (vStruk_Id = 696) then		// для 2-го цеха надо ставить Галейшу Е.А., зам. нач. ОКК
   begin
-  	docParamId := ' 542 ';
+  	docParamId := ' 544 ';
     SdalEdit.Text := 'Нач. уч. упак. Ковалев А. И.';
   end
   else
