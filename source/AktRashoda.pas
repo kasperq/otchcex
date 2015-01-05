@@ -362,6 +362,10 @@ var
   curMonth, curYear : integer;
   Splash: TForm;
 begin
+  if (NormiMemDat.State = dsEdit)
+     or (NormiMemDat.State = dsInsert)
+     or (NormiMemDat.Modified) then
+     NormiMemDat.Post;
   if (nDocEdit.Text = '') then
     MessageDlg('Перед сохранением введите номер документа! ', mtWarning, [mbOK], 0)
   else
