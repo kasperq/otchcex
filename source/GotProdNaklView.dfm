@@ -2,12 +2,12 @@ object FGotProdNaklView: TFGotProdNaklView
   Left = 0
   Top = 0
   Caption = #1053#1072#1082#1083#1072#1076#1085#1072#1103' '#1085#1072' '#1074#1099#1087#1091#1089#1082' '#1075#1086#1090#1086#1074#1086#1081' '#1087#1088#1086#1076#1091#1082#1094#1080#1080
-  ClientHeight = 708
-  ClientWidth = 1588
+  ClientHeight = 657
+  ClientWidth = 1475
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -12
+  Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
@@ -16,20 +16,20 @@ object FGotProdNaklView: TFGotProdNaklView
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
-  PixelsPerInch = 106
-  TextHeight = 14
+  PixelsPerInch = 96
+  TextHeight = 13
   object ToolPanel: TPanel
     Left = 0
     Top = 0
-    Width = 1588
-    Height = 53
+    Width = 1475
+    Height = 49
     Align = alTop
     TabOrder = 0
     object DelRec: TSpeedButton
-      Left = 804
+      Left = 747
       Top = 1
-      Width = 145
-      Height = 51
+      Width = 134
+      Height = 47
       Hint = #1059#1076#1072#1083#1080#1090#1100' '#1089#1090#1088#1086#1082#1091
       Align = alLeft
       Caption = #1059#1076#1072#1083#1080#1090#1100' '#1089#1090#1088#1086#1082#1091
@@ -97,10 +97,10 @@ object FGotProdNaklView: TFGotProdNaklView
       OnClick = DelRecClick
     end
     object AddRec: TSpeedButton
-      Left = 660
+      Left = 613
       Top = 1
-      Width = 144
-      Height = 51
+      Width = 134
+      Height = 47
       Hint = #1044#1086#1073#1072#1074#1080#1090#1100' '#1089#1090#1088#1086#1082#1091
       Align = alLeft
       Caption = #1044#1086#1073#1072#1074#1080#1090#1100' '#1089#1090#1088#1086#1082#1091
@@ -168,10 +168,10 @@ object FGotProdNaklView: TFGotProdNaklView
       OnClick = AddRecClick
     end
     object SpeedButton3: TSpeedButton
-      Left = 516
+      Left = 479
       Top = 1
-      Width = 144
-      Height = 51
+      Width = 134
+      Height = 47
       Hint = #1059#1076#1072#1083#1080#1090#1100' '#1087#1088#1077#1087#1072#1088#1072#1090
       Align = alLeft
       Caption = #1059#1076#1072#1083#1080#1090#1100' '#1087#1088#1077#1087#1072#1088#1072#1090
@@ -239,10 +239,10 @@ object FGotProdNaklView: TFGotProdNaklView
       Visible = False
     end
     object PrintBtn: TSpeedButton
-      Left = 290
+      Left = 269
       Top = 1
-      Width = 82
-      Height = 51
+      Width = 76
+      Height = 47
       Hint = #1042#1099#1073#1086#1088' '#1074#1072#1088#1080#1072#1085#1090#1086#1074' '#1087#1077#1095#1072#1090#1080
       Align = alLeft
       Caption = #1042#1099#1073'. '#1087#1077#1095#1072#1090#1080
@@ -313,8 +313,8 @@ object FGotProdNaklView: TFGotProdNaklView
     object SaveBtn: TSpeedButton
       Left = 1
       Top = 1
-      Width = 144
-      Height = 51
+      Width = 134
+      Height = 47
       Hint = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1085#1072#1082#1083#1072#1076#1085#1091#1102
       Align = alLeft
       Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1085#1072#1082#1083#1072#1076#1085#1091#1102
@@ -382,10 +382,10 @@ object FGotProdNaklView: TFGotProdNaklView
       OnClick = SaveBtnClick
     end
     object SpeedButton6: TSpeedButton
-      Left = 372
+      Left = 345
       Top = 1
-      Width = 144
-      Height = 51
+      Width = 134
+      Height = 47
       Hint = #1044#1086#1073#1072#1074#1080#1090#1100' '#1087#1088#1077#1087#1072#1088#1072#1090
       Align = alLeft
       Caption = #1044#1086#1073#1072#1074#1080#1090#1100' '#1087#1088#1077#1087#1072#1088#1072#1090
@@ -453,10 +453,10 @@ object FGotProdNaklView: TFGotProdNaklView
       Visible = False
     end
     object DellAllRecs: TSpeedButton
-      Left = 949
+      Left = 881
       Top = 1
-      Width = 144
-      Height = 51
+      Width = 134
+      Height = 47
       Hint = #1059#1076#1072#1083#1080#1090#1100' '#1089#1090#1088#1086#1082#1091
       Align = alLeft
       Caption = #1059#1076#1072#1083#1080#1090#1100' '#1074#1089#1077' '#1089#1090#1088#1086#1082#1080
@@ -524,10 +524,10 @@ object FGotProdNaklView: TFGotProdNaklView
       OnClick = DellAllRecsClick
     end
     object closeNaklBtn: TSpeedButton
-      Left = 1093
+      Left = 1015
       Top = 1
-      Width = 144
-      Height = 51
+      Width = 134
+      Height = 47
       Hint = #1047#1072#1082#1088#1099#1090#1100' '#1085#1072#1082#1083#1072#1076#1085#1091#1102
       Align = alLeft
       Caption = #1047#1072#1082#1088#1099#1090#1100' '#1085#1072#1082#1083#1072#1076#1085#1091#1102
@@ -595,10 +595,10 @@ object FGotProdNaklView: TFGotProdNaklView
       OnClick = closeNaklBtnClick
     end
     object newPrintBtn: TSpeedButton
-      Left = 145
+      Left = 135
       Top = 1
-      Width = 145
-      Height = 51
+      Width = 134
+      Height = 47
       Hint = #1055#1077#1095#1072#1090#1100' '#1085#1072#1082#1083#1072#1076#1085#1086#1081
       Align = alLeft
       Caption = #1055#1077#1095#1072#1090#1100' '#1085#1072#1082#1083#1072#1076#1085#1086#1081
@@ -668,189 +668,189 @@ object FGotProdNaklView: TFGotProdNaklView
   end
   object CaptionPanel: TPanel
     Left = 0
-    Top = 53
-    Width = 1588
-    Height = 88
+    Top = 49
+    Width = 1475
+    Height = 82
     Align = alTop
     TabOrder = 1
     object Label1: TLabel
-      Left = 34
+      Left = 32
       Top = 6
-      Width = 101
-      Height = 14
+      Width = 89
+      Height = 13
       Margins.Bottom = 0
       Caption = #1053#1086#1084#1077#1088' '#1076#1086#1082#1091#1084#1077#1085#1090#1072
     end
     object Label2: TLabel
-      Left = 34
-      Top = 34
-      Width = 90
-      Height = 14
+      Left = 32
+      Top = 32
+      Width = 84
+      Height = 13
       Margins.Bottom = 0
       Caption = #1044#1072#1090#1072' '#1076#1086#1082#1091#1084#1077#1085#1090#1072
     end
     object Label3: TLabel
-      Left = 34
-      Top = 61
-      Width = 33
-      Height = 14
+      Left = 32
+      Top = 57
+      Width = 32
+      Height = 13
       Margins.Bottom = 0
       Caption = #1057#1082#1083#1072#1076
     end
     object nMatLbl: TLabel
-      Left = 552
+      Left = 513
       Top = 6
-      Width = 486
-      Height = 18
+      Width = 451
+      Height = 16
       Margins.Bottom = 0
       AutoSize = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clPurple
-      Font.Height = -15
+      Font.Height = -13
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentFont = False
     end
     object edizLblLbl: TLabel
-      Left = 854
-      Top = 27
-      Width = 38
-      Height = 14
+      Left = 793
+      Top = 25
+      Width = 36
+      Height = 13
       Margins.Bottom = 0
       Caption = #1045#1076'.'#1080#1079'.:'
     end
     object edizLbl: TLabel
-      Left = 897
-      Top = 27
+      Left = 833
+      Top = 25
       Width = 5
       Height = 13
       Margins.Bottom = 0
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clPurple
-      Font.Height = -12
+      Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentFont = False
     end
     object gostLblLbl: TLabel
-      Left = 552
-      Top = 27
+      Left = 513
+      Top = 25
       Width = 31
       Height = 13
       Margins.Bottom = 0
       Caption = #1043#1054#1057#1058':'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
-      Font.Height = -12
+      Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
     end
     object gostLbl: TLabel
-      Left = 592
-      Top = 27
-      Width = 212
-      Height = 14
+      Left = 550
+      Top = 25
+      Width = 197
+      Height = 13
       Margins.Bottom = 0
       AutoSize = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clPurple
-      Font.Height = -12
+      Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentFont = False
     end
     object firmaLblLbl: TLabel
-      Left = 845
-      Top = 48
+      Left = 785
+      Top = 45
       Width = 40
       Height = 13
       Margins.Bottom = 0
       Caption = #1060#1080#1088#1084#1072':'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
-      Font.Height = -12
+      Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
     end
     object firmaLbl: TLabel
-      Left = 897
-      Top = 48
+      Left = 833
+      Top = 45
       Width = 5
       Height = 13
       Margins.Bottom = 0
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clPurple
-      Font.Height = -12
+      Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentFont = False
     end
     object regionLblLbl: TLabel
-      Left = 554
-      Top = 61
-      Width = 44
-      Height = 14
+      Left = 514
+      Top = 57
+      Width = 39
+      Height = 13
       Margins.Bottom = 0
       Caption = #1056#1077#1075#1080#1086#1085':'
     end
     object regionLbl: TLabel
-      Left = 602
-      Top = 61
+      Left = 559
+      Top = 57
       Width = 5
       Height = 13
       Margins.Bottom = 0
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clPurple
-      Font.Height = -12
+      Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentFont = False
     end
     object harkLblLbl: TLabel
-      Left = 552
-      Top = 44
+      Left = 513
+      Top = 41
       Width = 40
       Height = 13
       Margins.Bottom = 0
       Caption = #1061#1072#1088'_'#1082#1072':'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
-      Font.Height = -12
+      Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
     end
     object harkLbl: TLabel
-      Left = 602
-      Top = 44
-      Width = 180
-      Height = 14
+      Left = 559
+      Top = 41
+      Width = 167
+      Height = 13
       Margins.Bottom = 0
       AutoSize = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clPurple
-      Font.Height = -12
+      Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentFont = False
     end
     object nDokEdit: TEdit
-      Left = 145
+      Left = 135
       Top = 5
-      Width = 131
-      Height = 20
+      Width = 121
+      Height = 19
       Ctl3D = False
       ParentCtl3D = False
       TabOrder = 0
       OnChange = nDokEditChange
     end
     object dokDateEdit: TDBDateTimeEditEh
-      Left = 145
-      Top = 32
-      Width = 131
-      Height = 18
+      Left = 135
+      Top = 30
+      Width = 121
+      Height = 17
       Ctl3D = False
       EditButtons = <>
       Flat = True
@@ -862,10 +862,10 @@ object FGotProdNaklView: TFGotProdNaklView
       OnKeyUp = dokDateEditKeyUp
     end
     object SkladCombo: TDBLookupComboboxEh
-      Left = 145
-      Top = 57
-      Width = 154
-      Height = 18
+      Left = 135
+      Top = 53
+      Width = 143
+      Height = 17
       Ctl3D = False
       DropDownBox.Rows = 13
       EditButtons = <>
@@ -884,10 +884,10 @@ object FGotProdNaklView: TFGotProdNaklView
       OnChange = SkladComboChange
     end
     object cbRF: TCheckBox
-      Left = 344
-      Top = 64
-      Width = 203
-      Height = 18
+      Left = 319
+      Top = 59
+      Width = 189
+      Height = 17
       Hint = #1058#1086#1083#1100#1082#1086' '#1076#1083#1103' '#1087#1077#1088#1074#1086#1075#1086' '#1094#1077#1093#1072
       Caption = #1055#1088#1077#1087#1072#1088#1072#1090' '#1085#1072' '#1056#1060' ('#1076#1083#1103' '#1094#1077#1093#1072' '#8470'1)'
       ParentShowHint = False
@@ -896,10 +896,10 @@ object FGotProdNaklView: TFGotProdNaklView
       OnClick = cbRFClick
     end
     object cbShowAdditionalCols: TCheckBox
-      Left = 344
+      Left = 319
       Top = 6
-      Width = 148
-      Height = 51
+      Width = 138
+      Height = 47
       Caption = #1055#1086#1082#1072#1079#1099#1074#1072#1090#1100' '#1076#1086#1087#1086#1083#1085#1080#1090#1077#1083#1100#1085#1099#1077' '#1075#1088#1072#1092#1099
       Checked = True
       State = cbChecked
@@ -910,48 +910,48 @@ object FGotProdNaklView: TFGotProdNaklView
   end
   object Panel2: TPanel
     Left = 0
-    Top = 655
-    Width = 1588
-    Height = 53
+    Top = 608
+    Width = 1475
+    Height = 49
     Align = alBottom
     TabOrder = 2
     object Label9: TLabel
-      Left = 778
-      Top = 17
-      Width = 50
-      Height = 24
+      Left = 722
+      Top = 16
+      Width = 45
+      Height = 20
       Margins.Bottom = 0
       Caption = #1057#1076#1072#1083':'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -18
+      Font.Height = -17
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
     end
     object Label8: TLabel
-      Left = 10
-      Top = 17
-      Width = 357
-      Height = 24
+      Left = 9
+      Top = 16
+      Width = 304
+      Height = 20
       Margins.Bottom = 0
       Caption = #1055#1086#1076#1087#1080#1089#1100' '#1085#1072#1095#1072#1083#1100#1085#1080#1082#1072' '#1080#1083#1080' '#1079#1072#1084'.'#1085#1072#1095'. .'#1054#1050#1050':'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -18
+      Font.Height = -17
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
     end
     object NachOkkEdit: TEdit
-      Left = 344
-      Top = 17
-      Width = 360
+      Left = 319
+      Top = 16
+      Width = 335
       Height = 22
       Ctl3D = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -15
+      Font.Height = -13
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentCtl3D = False
@@ -959,14 +959,14 @@ object FGotProdNaklView: TFGotProdNaklView
       TabOrder = 0
     end
     object SdalEdit: TEdit
-      Left = 832
-      Top = 17
-      Width = 270
+      Left = 773
+      Top = 16
+      Width = 250
       Height = 22
       Ctl3D = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -15
+      Font.Height = -13
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentCtl3D = False
@@ -976,9 +976,9 @@ object FGotProdNaklView: TFGotProdNaklView
   end
   object GotNaklGrid: TDBGridEh
     Left = 0
-    Top = 141
-    Width = 1588
-    Height = 385
+    Top = 131
+    Width = 1475
+    Height = 357
     Align = alClient
     AutoFitColWidths = True
     Ctl3D = False
@@ -987,13 +987,13 @@ object FGotProdNaklView: TFGotProdNaklView
     Flat = True
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
-    Font.Height = -12
+    Font.Height = -11
     Font.Name = 'MS Sans Serif'
     Font.Style = []
     FooterColor = clWindow
     FooterFont.Charset = DEFAULT_CHARSET
     FooterFont.Color = clWindowText
-    FooterFont.Height = -12
+    FooterFont.Height = -11
     FooterFont.Name = 'Tahoma'
     FooterFont.Style = []
     HorzScrollBar.Tracking = True
@@ -1006,7 +1006,7 @@ object FGotProdNaklView: TFGotProdNaklView
     TabOrder = 3
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
-    TitleFont.Height = -12
+    TitleFont.Height = -11
     TitleFont.Name = 'MS Sans Serif'
     TitleFont.Style = []
     UseMultiTitle = True
@@ -1020,7 +1020,6 @@ object FGotProdNaklView: TFGotProdNaklView
         FieldName = 'KSM_ID'
         Footers = <>
         Visible = False
-        Width = 69
       end
       item
         AlwaysShowEditButton = True
@@ -1047,7 +1046,6 @@ object FGotProdNaklView: TFGotProdNaklView
         Title.Caption = #1055#1088#1077#1087#1072#1088#1072#1090' | '#1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077
         Title.Color = clBtnHighlight
         ToolTips = True
-        Width = 392
         OnEditButtonClick = GotNaklGridColumns1EditButtonClick
       end
       item
@@ -1059,7 +1057,7 @@ object FGotProdNaklView: TFGotProdNaklView
         MinWidth = 60
         Title.Caption = #1057#1077#1088#1080#1103
         Title.Color = clBtnHighlight
-        Width = 80
+        Width = 74
         OnEditButtonClick = GotNaklGridColumns2EditButtonClick
       end
       item
@@ -1070,7 +1068,6 @@ object FGotProdNaklView: TFGotProdNaklView
         MinWidth = 60
         Title.Caption = #1044#1072#1090#1072' '#1085#1072#1088#1072#1073#1086#1090#1082#1080
         Title.Color = clBtnHighlight
-        Width = 69
       end
       item
         EditButtons = <>
@@ -1202,63 +1199,56 @@ object FGotProdNaklView: TFGotProdNaklView
         FieldName = 'TIP_OP_ID'
         Footers = <>
         Visible = False
-        Width = 69
       end
       item
         EditButtons = <>
         FieldName = 'DOC_ID'
         Footers = <>
         Visible = False
-        Width = 69
       end
       item
         EditButtons = <>
         FieldName = 'KART_ID'
         Footers = <>
         Visible = False
-        Width = 69
       end
       item
         EditButtons = <>
         FieldName = 'KOL_PRIH_EDIZ'
         Footers = <>
         Visible = False
-        Width = 69
       end
       item
         EditButtons = <>
         FieldName = 'TIP_DOK_ID'
         Footers = <>
         Visible = False
-        Width = 69
+        Width = 65
       end
       item
         EditButtons = <>
         FieldName = 'STROKA_ID'
         Footers = <>
         Visible = False
-        Width = 69
       end
       item
         EditButtons = <>
         FieldName = 'KEI_ID'
         Footers = <>
         Visible = False
-        Width = 69
       end
       item
         EditButtons = <>
         FieldName = 'SERIA_ID'
         Footers = <>
         Visible = False
-        Width = 69
       end>
   end
   object DBGridEh1: TDBGridEh
     Left = 0
-    Top = 526
-    Width = 1588
-    Height = 129
+    Top = 488
+    Width = 1475
+    Height = 120
     Align = alBottom
     AllowedOperations = []
     AutoFitColWidths = True
@@ -1266,13 +1256,13 @@ object FGotProdNaklView: TFGotProdNaklView
     Flat = True
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -12
+    Font.Height = -11
     Font.Name = 'Tahoma'
     Font.Style = []
     FooterColor = clWindow
     FooterFont.Charset = DEFAULT_CHARSET
     FooterFont.Color = clWindowText
-    FooterFont.Height = -12
+    FooterFont.Height = -11
     FooterFont.Name = 'Tahoma'
     FooterFont.Style = []
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
@@ -1284,7 +1274,7 @@ object FGotProdNaklView: TFGotProdNaklView
     TabOrder = 4
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
-    TitleFont.Height = -12
+    TitleFont.Height = -11
     TitleFont.Name = 'MS Sans Serif'
     TitleFont.Style = []
     UseMultiTitle = True
@@ -1294,63 +1284,54 @@ object FGotProdNaklView: TFGotProdNaklView
         FieldName = 'KOD_PROD'
         Footers = <>
         Title.Caption = #1055#1088#1077#1087#1072#1088#1072#1090'|'#1050#1086#1076
-        Width = 121
       end
       item
         EditButtons = <>
         FieldName = 'NMAT'
         Footers = <>
         Title.Caption = #1055#1088#1077#1087#1072#1088#1072#1090'|'#1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077
-        Width = 392
       end
       item
         EditButtons = <>
         FieldName = 'SERIA'
         Footers = <>
         Title.Caption = #1057#1077#1088#1080#1103
-        Width = 133
       end
       item
         EditButtons = <>
         FieldName = 'KOL_RASH_EDIZ'
         Footers = <>
         Title.Caption = #1050#1086#1083'-'#1074#1086
-        Width = 101
       end
       item
         EditButtons = <>
         FieldName = 'KOL_UPAK'
         Footers = <>
         Title.Caption = #1050#1086#1083'-'#1074#1086' '#1077#1076'. '#1090#1072#1088#1099', '#1096#1090
-        Width = 69
       end
       item
         EditButtons = <>
         FieldName = 'VOL_TRANS'
         Footers = <>
         Title.Caption = #1054#1073#1098#1077#1084', '#1084'3'
-        Width = 69
       end
       item
         EditButtons = <>
         FieldName = 'VES_UPAK'
         Footers = <>
         Title.Caption = #1052#1072#1089#1089#1072' '#1090#1072#1088#1099', '#1082#1075
-        Width = 127
       end
       item
         EditButtons = <>
         FieldName = 'VES_GRP'
         Footers = <>
         Title.Caption = #1052#1072#1089#1089#1072' '#1075#1088#1091#1087#1087#1086#1074#1086#1081' '#1091#1087#1072#1082#1086#1074#1082#1080', '#1082#1075
-        Width = 127
       end
       item
         EditButtons = <>
         FieldName = 'VES_TARA'
         Footers = <>
         Title.Caption = #1052#1072#1089#1089#1072' '#1090#1072#1088#1099' ('#1090#1072#1088#1072'+'#1075#1088'.'#1091#1087'.), '#1082#1075
-        Width = 127
       end>
   end
   object GotKartQuery: TRxIBQuery
@@ -1862,9 +1843,8 @@ object FGotProdNaklView: TFGotProdNaklView
     Version = '4.9.32'
     DotMatrixReport = False
     IniFile = '\Software\Fast Reports'
-    PreviewOptions.Buttons = []
+    PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator, pbExportQuick]
     PreviewOptions.Zoom = 1.000000000000000000
-    PreviewOptions.ZoomMode = zmPageWidth
     PrintOptions.Printer = #1055#1086' '#1091#1084#1086#1083#1095#1072#1085#1080#1102
     PrintOptions.PrintOnSheet = 0
     ReportOptions.CreateDate = 41967.564686562500000000
