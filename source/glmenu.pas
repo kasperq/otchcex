@@ -1135,18 +1135,19 @@ end;
 
 procedure TFGlMenu.N27Click(Sender: TObject);
 begin
-if RXLabel1.Caption='' then
-   begin
-  MessageDlg('Задайте подразделение !', mtWarning, [mbOK], 0);
-  Abort;
+  if (RXLabel1.Caption = '') then
+  begin
+    MessageDlg('Задайте подразделение !', mtWarning, [mbOK], 0);
+    Abort;
   end;
-  if Fvipusk=nil then Fvipusk:=tFvipusk.Create(Application);
-  if ActiveForm<>nil then
+  if (Fvipusk = nil) then
+    Fvipusk := tFvipusk.Create(Application);
+  if (ActiveForm <> nil) then
   ActiveForm.Close;
-  ActiveForm:=Fvipusk;
-  Label1.Caption:='Выпуск продукции';
+  ActiveForm := Fvipusk;
+  Label1.Caption := 'Выпуск продукции';
   Fvipusk.ShowModal;
-  Label1.Caption:='';
+  Label1.Caption := '';
 end;
 
 procedure TFGlMenu.N28Click(Sender: TObject);
