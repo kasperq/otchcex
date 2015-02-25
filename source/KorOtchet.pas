@@ -1292,7 +1292,8 @@ begin
     DM1.IBQuery1.SQL.Add('SELECT  KARTv.KOL_PRIH');
     DM1.IBQuery1.SQL.Add(' FROM KARTv');
     DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
-    DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID=' + INTTOSTR(VsTRUK_ID)
+    DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID=' + INTTOSTR(dm1.strukIdRela)
+                         + ' and document.klient_id = ' + IntToStr(dm1.klientId)
                          + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
                          + ' AND KARTv.KSM_ID=' + INTTOSTR(s_KODP)
                          + ' AND Document.Date_op between ' + '''' + s_dat1
@@ -1361,7 +1362,8 @@ begin
       DM1.IBQuery1.SQL.Add('SELECT  KARTv.KOL_PRIH');
       DM1.IBQuery1.SQL.Add(' FROM KARTv');
       DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
-      DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(VsTRUK_ID)
+      DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(dm1.strukIdRela)
+                           + ' and document.klient_id = ' + IntToStr(dm1.klientId)
       + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
       + ' AND KARTv.KSM_ID='+INTTOSTR(s_KODP)
       + ' AND Document.Date_op between '+''''+s_dat1+'''' +' and '+''''+s_dat2+'''');
@@ -1722,66 +1724,67 @@ begin
   FindSpprod.Usl_Struk := 'spprod.struk_id = ' + inttostr(vStruk_id);
   FindSpprod.ReadOnly := true;
   FindSpprod.ShowModal;
- if FindSpprod.ModalResult > 50 then
- begin
-  StartWait;
-  DM1.IBQuery1.Active := False;
-  DM1.IBQuery1.SQL.Clear;
-  DM1.IBQuery1.SQL.Add('SELECT SPPROD.STRUK_ID,SPPROD.NMAT, SPPROD.KOD_PROD, SPPROD.KEI_ID,SPPROD.KSM_ID,SPPROD.SPROD_ID,spprod.volumf,spprod.vol_ov,');
-  DM1.IBQuery1.SQL.Add('SPPROD.GOST,EDIZ.NEIS,SPPROD.KORG,SPPROD.XARKT,SPPROD.ACTIVP,SPRORG.NAM,SPPROD.LEK_ID,SPFORMV.NAMEFv,region.nam nam_reg');
-  DM1.IBQuery1.SQL.Add(' FROM SPPROD');
-  DM1.IBQuery1.SQL.Add('  INNER JOIN EDIZ ON (SPPROD.KEI_ID = EDIZ.KEI_ID)');
-  DM1.IBQuery1.SQL.Add('  LEFT JOIN SPRORG ON (SPPROD.KORG = SPRORG.KOD)');
-  DM1.IBQuery1.SQL.Add('  LEFT JOIN SPFORMV ON (SPPROD.SPFV = SPFORMV.SPFV)');
-  DM1.IBQuery1.SQL.Add('  LEFT JOIN region ON (SPPROD.reg = region.reg)');
-  DM1.IBQuery1.SQL.Add(' WHERE SPPROD.KSM_ID='+INTTOSTR(FindSpprod.ModalResult-50));
-  DM1.IBQuery1.Active := True;
-  EDIT1.OnChange:=nil;
-  edit1.text:=DM1.IBQuery1.FieldByName('kod_PROD').Asstring;
-  EDIT1.OnChange:=Edit1Change;
-  s_kodp:=DM1.IBQuery1.FieldByName('KSM_ID').value;
-  s_gost:=DM1.IBQuery1.FieldByName('GOST').AsString;
-  s_xarkt:=DM1.IBQuery1.FieldByName('XARKT').AsString;
-  s_nmat:=DM1.IBQuery1.FieldByName('NMAT').AsString;
-  s_kei:=DM1.IBQuery1.FieldByName('KEI_ID').VALUE;
-  s_korg:=DM1.IBQuery1.FieldByName('KORG').VALUE;
-  s_kodProd:=DM1.IBQuery1.FieldByName('KOD_PROD').AsString;
-  s_Lek_id:=DM1.IBQuery1.FieldByName('Lek_Id').VALUE;
-  s_namorg:=DM1.IBQuery1.FieldByName('NAM').AsString;
-  s_neiz:=DM1.IBQuery1.FieldByName('NEIS').AsString;
-  s_Formv:=DM1.IBQuery1.FieldByName('NAMEFV').AsString;
-  s_Sprod_id:=DM1.IBQuery1.FieldByName('Sprod_Id').VALUE;
-  s_namREG:=DM1.IBQuery1.FieldByName('NAM_ReG').AsString;
-  label1.Caption:=dm1.IBQuery1.FieldByName('Nam_reg').AsString;
-  label19.caption:=s_NMAT;
-  label29.caption:=s_namorg;
-  label21.caption:=s_Neiz;
-  label22.caption:=s_GOST;
-  label41.caption:=s_Xarkt;
-  DM1.IBQuery1.Active := False;
-  DM1.IBQuery1.SQL.Clear;
-  DM1.IBQuery1.SQL.Add('SELECT  KARTv.KOL_PRIH');
-  DM1.IBQuery1.SQL.Add(' FROM KARTv');
-  DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
-  DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(VsTRUK_ID)
-  + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
-  + ' AND KARTv.KSM_ID='+INTTOSTR(s_KODP)
-  + ' AND Document.Date_op between '+''''+s_dat1+'''' +' and '+''''+s_dat2+'''');
-  DM1.IBQuery1.Active := True;
-  if not dm1.IBQuery1.Eof then
+  if (FindSpprod.ModalResult > 50) then
   begin
-   V_VIPUSK:=DM1.IBQuery1.FieldByName('KOL_PRIH').AsFloat;
-   label20.caption:=FLOATTOSTR(V_VIPUSK)+'   '+S_NEIZ;
-  end
-  ELSE
-  BEGIN
-   V_VIPUSK:=0;
-   label20.caption:='0';
-  END;
-  if KartKorrOtchet.Active then KartKorrOtchet.Close;
-  KorSost;
-  StopWait;
- end;
+    StartWait;
+    DM1.IBQuery1.Active := False;
+    DM1.IBQuery1.SQL.Clear;
+    DM1.IBQuery1.SQL.Add('SELECT SPPROD.STRUK_ID,SPPROD.NMAT, SPPROD.KOD_PROD, SPPROD.KEI_ID,SPPROD.KSM_ID,SPPROD.SPROD_ID,spprod.volumf,spprod.vol_ov,');
+    DM1.IBQuery1.SQL.Add('SPPROD.GOST,EDIZ.NEIS,SPPROD.KORG,SPPROD.XARKT,SPPROD.ACTIVP,SPRORG.NAM,SPPROD.LEK_ID,SPFORMV.NAMEFv,region.nam nam_reg');
+    DM1.IBQuery1.SQL.Add(' FROM SPPROD');
+    DM1.IBQuery1.SQL.Add('  INNER JOIN EDIZ ON (SPPROD.KEI_ID = EDIZ.KEI_ID)');
+    DM1.IBQuery1.SQL.Add('  LEFT JOIN SPRORG ON (SPPROD.KORG = SPRORG.KOD)');
+    DM1.IBQuery1.SQL.Add('  LEFT JOIN SPFORMV ON (SPPROD.SPFV = SPFORMV.SPFV)');
+    DM1.IBQuery1.SQL.Add('  LEFT JOIN region ON (SPPROD.reg = region.reg)');
+    DM1.IBQuery1.SQL.Add(' WHERE SPPROD.KSM_ID='+INTTOSTR(FindSpprod.ModalResult-50));
+    DM1.IBQuery1.Active := True;
+    EDIT1.OnChange := nil;
+    edit1.text := DM1.IBQuery1.FieldByName('kod_PROD').Asstring;
+    EDIT1.OnChange := Edit1Change;
+    s_kodp := DM1.IBQuery1.FieldByName('KSM_ID').value;
+    s_gost := DM1.IBQuery1.FieldByName('GOST').AsString;
+    s_xarkt := DM1.IBQuery1.FieldByName('XARKT').AsString;
+    s_nmat := DM1.IBQuery1.FieldByName('NMAT').AsString;
+    s_kei := DM1.IBQuery1.FieldByName('KEI_ID').VALUE;
+    s_korg := DM1.IBQuery1.FieldByName('KORG').VALUE;
+    s_kodProd := DM1.IBQuery1.FieldByName('KOD_PROD').AsString;
+    s_Lek_id := DM1.IBQuery1.FieldByName('Lek_Id').VALUE;
+    s_namorg := DM1.IBQuery1.FieldByName('NAM').AsString;
+    s_neiz := DM1.IBQuery1.FieldByName('NEIS').AsString;
+    s_Formv := DM1.IBQuery1.FieldByName('NAMEFV').AsString;
+    s_Sprod_id := DM1.IBQuery1.FieldByName('Sprod_Id').VALUE;
+    s_namREG := DM1.IBQuery1.FieldByName('NAM_ReG').AsString;
+    label1.Caption := dm1.IBQuery1.FieldByName('Nam_reg').AsString;
+    label19.caption := s_NMAT;
+    label29.caption := s_namorg;
+    label21.caption := s_Neiz;
+    label22.caption := s_GOST;
+    label41.caption := s_Xarkt;
+    DM1.IBQuery1.Close;
+    DM1.IBQuery1.SQL.Clear;
+    DM1.IBQuery1.SQL.Add('SELECT  KARTv.KOL_PRIH');
+    DM1.IBQuery1.SQL.Add(' FROM KARTv');
+    DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
+    DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(dm1.strukIdRela)
+                         + ' and document.klient_id = ' + IntToStr(dm1.klientId)
+    + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
+    + ' AND KARTv.KSM_ID='+INTTOSTR(s_KODP)
+    + ' AND Document.Date_op between '+''''+s_dat1+'''' +' and '+''''+s_dat2+'''');
+    DM1.IBQuery1.Open;
+    if not dm1.IBQuery1.Eof then
+    begin
+     V_VIPUSK:=DM1.IBQuery1.FieldByName('KOL_PRIH').AsFloat;
+     label20.caption:=FLOATTOSTR(V_VIPUSK)+'   '+S_NEIZ;
+    end
+    ELSE
+    BEGIN
+     V_VIPUSK:=0;
+     label20.caption:='0';
+    END;
+    if KartKorrOtchet.Active then KartKorrOtchet.Close;
+    KorSost;
+    StopWait;
+  end;
 end;
 
 procedure TFKorOtchet.SpinEdit3Change(Sender: TObject);
@@ -1962,71 +1965,76 @@ begin
 end;
 
 procedure TFKorOtchet.ToolButton7Click(Sender: TObject);
-
 begin
- if FVybPrep=nil then FVybprep:=TfVybPrep.Create(Application);
- FVybPrep.ShowModal;
- if FVybPrep.ModalResult=mrOk then
- begin
-    s_kodp:=FVybPrep.vprepKsm_id.AsInteger;
+  if (FVybPrep = nil) then
+    FVybprep := TfVybPrep.Create(Application);
+  FVybPrep.ShowModal;
+  if (FVybPrep.ModalResult = mrOk) then
+  begin
+    s_kodp := FVybPrep.vprepKsm_id.AsInteger;
     StartWait;
-    DM1.IBQuery1.Active := False;
+    DM1.IBQuery1.Close;
     DM1.IBQuery1.SQL.Clear;
-    DM1.IBQuery1.SQL.Add('SELECT SPPROD.STRUK_ID,SPPROD.NMAT, SPPROD.KOD_PROD, SPPROD.KEI_ID,SPPROD.KSM_ID,SPPROD.SPROD_ID,spprod.volumf,spprod.vol_ov,');
-    DM1.IBQuery1.SQL.Add('SPPROD.GOST,EDIZ.NEIS,SPPROD.KORG,SPPROD.XARKT,SPPROD.ACTIVP,SPRORG.NAM,SPPROD.LEK_ID,SPFORMV.NAMEFv,region.nam nam_reg');
-    DM1.IBQuery1.SQL.Add(' FROM SPPROD');
-    DM1.IBQuery1.SQL.Add('  INNER JOIN EDIZ ON (SPPROD.KEI_ID = EDIZ.KEI_ID)');
-    DM1.IBQuery1.SQL.Add('  LEFT JOIN SPRORG ON (SPPROD.KORG = SPRORG.KOD)');
-    DM1.IBQuery1.SQL.Add('  LEFT JOIN SPFORMV ON (SPPROD.SPFV = SPFORMV.SPFV)');
-    DM1.IBQuery1.SQL.Add('  LEFT JOIN region ON (SPPROD.reg = region.reg)');
-    DM1.IBQuery1.SQL.Add(' WHERE SPPROD.KSM_ID='+INTTOSTR(s_kodp));
-    DM1.IBQuery1.Active := True;
-    EDIT1.OnChange:=nil;
-    edit1.text:=DM1.IBQuery1.FieldByName('kod_PROD').Asstring;
-    EDIT1.OnChange:=Edit1Change;
-    s_gost:=DM1.IBQuery1.FieldByName('GOST').AsString;
-    s_xarkt:=DM1.IBQuery1.FieldByName('XARKT').AsString;
-    s_nmat:=DM1.IBQuery1.FieldByName('NMAT').AsString;
-    s_kei:=DM1.IBQuery1.FieldByName('KEI_ID').VALUE;
-    s_korg:=DM1.IBQuery1.FieldByName('KORG').VALUE;
-    s_kodProd:=DM1.IBQuery1.FieldByName('KOD_PROD').AsString;
-    s_Lek_id:=DM1.IBQuery1.FieldByName('Lek_Id').VALUE;
-    s_namorg:=DM1.IBQuery1.FieldByName('NAM').AsString;
-    s_neiz:=DM1.IBQuery1.FieldByName('NEIS').AsString;
-    s_Formv:=DM1.IBQuery1.FieldByName('NAMEFV').AsString;
-    s_Sprod_id:=DM1.IBQuery1.FieldByName('Sprod_Id').VALUE;
-    s_namREG:=DM1.IBQuery1.FieldByName('NAM_ReG').AsString;
-    label1.Caption:=dm1.IBQuery1.FieldByName('Nam_reg').AsString;
-    label19.caption:=s_NMAT;
-    label29.caption:=s_namorg;
-    label21.caption:=s_Neiz;
-    label22.caption:=s_GOST;
-    label41.caption:=s_Xarkt;
-    DM1.IBQuery1.Active := False;
+    DM1.IBQuery1.SQL.Text := 'SELECT SPPROD.STRUK_ID, SPPROD.NMAT, SPPROD.KOD_PROD, '
+                             + 'SPPROD.KEI_ID, SPPROD.KSM_ID, SPPROD.SPROD_ID, '
+                             + 'spprod.volumf, spprod.vol_ov, SPPROD.GOST, EDIZ.NEIS, '
+                             + 'SPPROD.KORG, SPPROD.XARKT, SPPROD.ACTIVP, SPRORG.NAM, '
+                             + 'SPPROD.LEK_ID, SPFORMV.NAMEFv, region.nam nam_reg '
+                             + 'FROM SPPROD '
+                             + '  INNER JOIN EDIZ ON (SPPROD.KEI_ID = EDIZ.KEI_ID)'
+                             + '  LEFT JOIN SPRORG ON (SPPROD.KORG = SPRORG.KOD)'
+                             + '  LEFT JOIN SPFORMV ON (SPPROD.SPFV = SPFORMV.SPFV)'
+                             + '  LEFT JOIN region ON (SPPROD.reg = region.reg)'
+                             + ' WHERE SPPROD.KSM_ID = ' + INTTOSTR(s_kodp);
+    DM1.IBQuery1.Open;
+    EDIT1.OnChange := nil;
+    edit1.text := DM1.IBQuery1.FieldByName('kod_PROD').Asstring;
+    EDIT1.OnChange := Edit1Change;
+    s_gost := DM1.IBQuery1.FieldByName('GOST').AsString;
+    s_xarkt := DM1.IBQuery1.FieldByName('XARKT').AsString;
+    s_nmat := DM1.IBQuery1.FieldByName('NMAT').AsString;
+    s_kei := DM1.IBQuery1.FieldByName('KEI_ID').VALUE;
+    s_korg := DM1.IBQuery1.FieldByName('KORG').VALUE;
+    s_kodProd := DM1.IBQuery1.FieldByName('KOD_PROD').AsString;
+    s_Lek_id := DM1.IBQuery1.FieldByName('Lek_Id').VALUE;
+    s_namorg := DM1.IBQuery1.FieldByName('NAM').AsString;
+    s_neiz := DM1.IBQuery1.FieldByName('NEIS').AsString;
+    s_Formv := DM1.IBQuery1.FieldByName('NAMEFV').AsString;
+    s_Sprod_id := DM1.IBQuery1.FieldByName('Sprod_Id').VALUE;
+    s_namREG := DM1.IBQuery1.FieldByName('NAM_ReG').AsString;
+    label1.Caption := dm1.IBQuery1.FieldByName('Nam_reg').AsString;
+    label19.caption := s_NMAT;
+    label29.caption := s_namorg;
+    label21.caption := s_Neiz;
+    label22.caption := s_GOST;
+    label41.caption := s_Xarkt;
+    DM1.IBQuery1.Close;
     DM1.IBQuery1.SQL.Clear;
-    DM1.IBQuery1.SQL.Add('SELECT  KARTv.KOL_PRIH');
-    DM1.IBQuery1.SQL.Add(' FROM KARTv');
-    DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
-    DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(VsTRUK_ID)
-    + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
-    + ' AND KARTv.KSM_ID='+INTTOSTR(s_KODP)
-    + ' AND Document.Date_op between '+''''+s_dat1+'''' +' and '+''''+s_dat2+'''');
-    DM1.IBQuery1.Active := True;
-    if not dm1.IBQuery1.Eof then
+    DM1.IBQuery1.SQL.Text := 'SELECT  KARTv.KOL_PRIH '
+                             + ' FROM KARTv'
+                             + ' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)'
+                             + ' WHERE DOCUMENT.STRUK_ID=' + INTTOSTR(dm1.strukIdRela)
+                             + ' and document.klient_id = ' + IntToStr(dm1.klientId)
+                             + ' AND DOCUMENT.TIP_OP_ID = 36 and document.tip_dok_id = 74'
+                             + ' AND KARTv.KSM_ID = ' + INTTOSTR(s_KODP)
+                             + ' AND Document.Date_op between ' + '''' + s_dat1
+                             + '''' + ' and ' + '''' + s_dat2 + '''';
+    DM1.IBQuery1.Open;
+    if (not dm1.IBQuery1.Eof) then
     begin
-     V_VIPUSK:=DM1.IBQuery1.FieldByName('KOL_PRIH').AsFloat;
-     label20.caption:=FLOATTOSTR(V_VIPUSK)+'   '+S_NEIZ;
+      V_VIPUSK := DM1.IBQuery1.FieldByName('KOL_PRIH').AsFloat;
+      label20.caption := FLOATTOSTR(V_VIPUSK) + '   ' + S_NEIZ;
     end
     ELSE
     BEGIN
-     V_VIPUSK:=0;
-     label20.caption:='0';
+      V_VIPUSK := 0;
+      label20.caption := '0';
     END;
-    if KartKorrOtchet.Active then KartKorrOtchet.Close;
+    if (KartKorrOtchet.Active) then
+      KartKorrOtchet.Close;
     KorSost;
     StopWait;
   end;
-
 end;
 
 procedure TFKorOtchet.RaspSyrPrepKSM_IDValidate(Sender: TField);

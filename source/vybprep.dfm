@@ -35,7 +35,7 @@ object FVybPrep: TFVybPrep
     FooterFont.Height = -11
     FooterFont.Name = 'MS Sans Serif'
     FooterFont.Style = [fsBold]
-    Options = [dgEditing, dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
+    Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
     OptionsEh = [dghFixed3D, dghHighlightFocus, dghClearSelection, dghEnterAsTab, dghRowHighlight]
     ParentFont = False
     TabOrder = 0
@@ -103,21 +103,22 @@ object FVybPrep: TFVybPrep
     Transaction = DM1.IBT_Read
     SQL.Strings = (
       
-        'SELECT kart.kol_prih,SPPROD.NMAT, SPPROD.XARKT, SPPROD.KOD_PROD,' +
-        'SPPROD.STRUK_ID,'
+        'select kart.kol_prih, spprod.nmat, spprod.xarkt, spprod.kod_prod' +
+        ', spprod.struk_id,'
       
-        'KART.KSM_ID,ediz.neis neis,spprod.gost,sprorg.nam namorg,region.' +
-        'nam namreg'
-      ' FROM KARTv kart'
-      '  INNER JOIN SPPROD ON (KART.KSM_ID = SPPROD.KSM_ID)'
-      '  inner join document on (kart.doc_id=document.doc_id)'
-      '  left JOIN SProrg ON (spprod.Korg = SProrg.Kod)'
-      '  LEFT JOIN region ON (SPPROD.reg = region.reg)'
-      '  INNER JOIN ediz ON (spprod.Kei_ID = ediz.Kei_ID)'
-      ' where DOcUMENT.STRUK_ID=:struk'
-      '  AND DOCUMENT.TIP_OP_ID=36'
-      ' and document.tip_dok_id=74'
-      '  AND Document.Date_op between :dat1 and :dat2'
+        'kart.ksm_id, ediz.neis neis, spprod.gost, sprorg.nam namorg, reg' +
+        'ion.nam namreg'
+      'from kartv kart'
+      '  inner join spprod on (kart.ksm_id = spprod.ksm_id)'
+      '  inner join document on (kart.doc_id = document.doc_id)'
+      '  left join sprorg on (spprod.korg = sprorg.kod)'
+      '  left join region on (spprod.reg = region.reg)'
+      '  inner join ediz on (spprod.kei_id = ediz.kei_id)'
+      'where document.struk_id = :struk'
+      '  and document.klient_id = :klient_id'
+      '  and document.tip_op_id = 36'
+      '  and document.tip_dok_id = 74'
+      '  and document.date_op between :dat1 and :dat2'
       'order by spprod.nmat')
     Left = 199
     Top = 140
@@ -125,6 +126,11 @@ object FVybPrep: TFVybPrep
       item
         DataType = ftUnknown
         Name = 'STRUK'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'klient_id'
         ParamType = ptUnknown
       end
       item

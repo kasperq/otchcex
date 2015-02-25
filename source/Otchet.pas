@@ -176,35 +176,36 @@ implementation
 
 procedure TFOtchet.Edit1Change(Sender: TObject);
 var
-skod:string;
+  skod : string;
 begin
-if edit1.text<>''   then begin
- skod:=replacestr(edit1.text,',','.')+'%';
- DM1.IBQuery1.Active := False;
- DM1.IBQuery1.SQL.Clear;
- DM1.IBQuery1.SQL.Add('SELECT SPPROD.STRUK_ID,SPPROD.NMAT, SPPROD.KOD_PROD, SPPROD.KEI_ID,SPPROD.KSM_ID,');
- DM1.IBQuery1.SQL.Add('SPPROD.GOST,EDIZ.NEIS,SPPROD.KORG,SPPROD.XARKT,SPPROD.ACTIVP,SPRORG.NAM,region.nam nam_reg');
- DM1.IBQuery1.SQL.Add(' FROM SPPROD');
- DM1.IBQuery1.SQL.Add('  INNER JOIN EDIZ ON (SPPROD.KEI_ID = EDIZ.KEI_ID)');
- DM1.IBQuery1.SQL.Add('  left JOIN SPRORG ON (SPPROD.KORG = SPRORG.KOD)');
- DM1.IBQuery1.SQL.Add('  LEFT JOIN region ON (SPPROD.reg = region.reg)');
- DM1.IBQuery1.SQL.Add(' WHERE SPPROD.KOD_PROD like '+''''+skod+''''+' AND SPPROD.STRUK_ID='+INTTOSTR(vStruk_Id));
- DM1.IBQuery1.Active := True;
- if not dm1.IBQuery1.Eof then
+  if (edit1.text <> '') then
   begin
-   Label19.Caption:=DM1.IBQuery1.FieldByName('kod_PROD').Asstring+DM1.IBQuery1.FieldByName('nmat').AsString;
-   Label41.Caption:=DM1.IBQuery1.FieldByName('Xarkt').AsString;
-   Label17.Caption:=DM1.IBQuery1.FieldByName('Nam_reg').AsString;
-  end
-  else
-   Label19.Caption:='';
-   Label41.Caption:='';
-   Label17.Caption:='';
-  begin
+    skod := replacestr(edit1.text, ',', '.') + '%';
+    DM1.IBQuery1.Close;
+    DM1.IBQuery1.SQL.Clear;
+    DM1.IBQuery1.SQL.Add('SELECT SPPROD.STRUK_ID,SPPROD.NMAT, SPPROD.KOD_PROD, SPPROD.KEI_ID,SPPROD.KSM_ID,');
+    DM1.IBQuery1.SQL.Add('SPPROD.GOST,EDIZ.NEIS,SPPROD.KORG,SPPROD.XARKT,SPPROD.ACTIVP,SPRORG.NAM,region.nam nam_reg');
+    DM1.IBQuery1.SQL.Add(' FROM SPPROD');
+    DM1.IBQuery1.SQL.Add('  INNER JOIN EDIZ ON (SPPROD.KEI_ID = EDIZ.KEI_ID)');
+    DM1.IBQuery1.SQL.Add('  left JOIN SPRORG ON (SPPROD.KORG = SPRORG.KOD)');
+    DM1.IBQuery1.SQL.Add('  LEFT JOIN region ON (SPPROD.reg = region.reg)');
+    DM1.IBQuery1.SQL.Add(' WHERE SPPROD.KOD_PROD like ' + '''' + skod + '''' + ' AND SPPROD.STRUK_ID=' + INTTOSTR(vStruk_Id));
+    DM1.IBQuery1.Open;
+    if (not dm1.IBQuery1.Eof) then
+    begin
+      Label19.Caption := DM1.IBQuery1.FieldByName('kod_PROD').Asstring+DM1.IBQuery1.FieldByName('nmat').AsString;
+      Label41.Caption := DM1.IBQuery1.FieldByName('Xarkt').AsString;
+      Label17.Caption := DM1.IBQuery1.FieldByName('Nam_reg').AsString;
+    end
+    else
+      Label19.Caption := '';
+      Label41.Caption := '';
+      Label17.Caption := '';
+    begin
+    end;
+    Label19.Refresh;
+    Label41.Refresh;
   end;
- Label19.Refresh;
- Label41.Refresh;
- end;
 end;
 
 procedure TFOtchet.Edit1Click(Sender: TObject);
@@ -241,17 +242,18 @@ begin
       label22.caption := s_GOST;
       label41.caption := s_Xarkt;
     end;
-    DM1.IBQuery1.Active := False;
+    DM1.IBQuery1.Close;
     DM1.IBQuery1.SQL.Clear;
     DM1.IBQuery1.SQL.Add('SELECT  KARTv.KOL_PRIH');
     DM1.IBQuery1.SQL.Add(' FROM KARTv');
     DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
-    DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID = ' + INTTOSTR(VsTRUK_ID)
-                          + ' AND DOCUMENT.TIP_OP_ID = 36 and document.tip_dok_id = 74'
-                          + ' AND KARTv.KSM_ID = ' + INTTOSTR(s_KODP)
-                          + ' AND Document.Date_op between ' + '''' + s_dat1 + ''''
-                          + ' and ' + '''' + s_dat2 + '''');
-    DM1.IBQuery1.Active := True;
+    DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID = ' + INTTOSTR(dm1.strukIdRela)
+                         + ' and document.klient_id = ' + IntToStr(dm1.klientId)
+                         + ' AND DOCUMENT.TIP_OP_ID = 36 and document.tip_dok_id = 74'
+                         + ' AND KARTv.KSM_ID = ' + INTTOSTR(s_KODP)
+                         + ' AND Document.Date_op between ' + '''' + s_dat1 + ''''
+                         + ' and ' + '''' + s_dat2 + '''');
+    DM1.IBQuery1.Open;
     if (not dm1.IBQuery1.Eof) then
     begin
       V_VIPUSK := DM1.IBQuery1.FieldByName('KOL_PRIH').AsFloat;
@@ -268,7 +270,8 @@ begin
     DM1.IBQuery1.SQL.Add('SELECT  sum(KARTv.KOL_PRIH) vipusk_ng, KARTv.KSM_ID');
     DM1.IBQuery1.SQL.Add(' FROM KARTv');
     DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
-    DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID = ' + INTTOSTR(VsTRUK_ID)
+    DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID = ' + INTTOSTR(dm1.strukIdRela)
+                         + ' and document.klient_id = ' + IntToStr(dm1.klientId)
                           + ' AND DOCUMENT.TIP_OP_ID = 36 and document.tip_dok_id = 74'
                           + ' AND KARTv.KSM_ID = ' + INTTOSTR(s_KODP)
                           + ' AND Document.Date_op between ' + '''' + s_datn
@@ -305,7 +308,7 @@ begin
                        + 'NORM.KEI_ID KEI_idN, NORM.NMAT_KSM NMAT, RAZDEL.NAMRAZ, '
                        + 'NORM.razdel_id');
   DM1.IBQuery1.SQL.Add(' FROM norm_view(119,' + INTTOSTR(God) + ',' + INTTOSTR(mes)
-                       + ',' + INTTOSTR(s_KODP) + ',' + INTTOSTR(Vstruk_ID) + ',0) NORM');
+                       + ',' + INTTOSTR(s_KODP) + ',' + INTTOSTR(dm1.strukIdRela) + ',0) NORM');
   DM1.IBQuery1.SQL.Add(' INNER JOIN RAZDEL ON (NORM.KRAZ = RAZDEL.KRAZ)');
   DM1.IBQuery1.SQL.Add(' LEFT JOIN ostatki ON (NORM.Kodp = ostatki.Ksm_IDpr and '
                        + 'norm.ksm_id = ostatki.ksm_id and razdel.razdel_id = '
@@ -335,14 +338,14 @@ begin
   Otchet.EmptyTable;
   Otchet.LoadFromDataSet(DM1.IBQuery1, 0, lmAppend);
   S_DATN := '01.01.' + INTTOSTR(GOD);
-  Query_Otchet.Active := False;
-  Query_otchet.ParamByName('struk').AsInteger := vStruk_id;
+  Query_Otchet.Close;
+  Query_otchet.ParamByName('struk').AsInteger := dm1.klientId;
   Query_otchet.ParamByName('KODP').AsInteger := s_kodp;
   Query_otchet.MacroByName('DAT1').AsSTRING := '''' + s_DAT1 + '''';
   Query_otchet.MacroByName('DAT2').AsSTRING:= '''' + s_DAT2 + '''';
   Query_otchet.MacroByName('Mes').AsSTRING := inttostr(mes);
   Query_otchet.MacroByName('God').AsSTRING := inttostr(god);
-  Query_Otchet.Active := True;
+  Query_Otchet.Open;
   Otchet.Active := True;
   Otchet.DisableControls;
   While (not Query_Otchet.Eof) do
@@ -593,10 +596,11 @@ begin
   DM1.IBQuery1.SQL.Add('SELECT  KARTv.KOL_PRIH');
   DM1.IBQuery1.SQL.Add(' FROM KARTv');
   DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
-  DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(VsTRUK_ID)
-  + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
-  + ' AND KARTv.KSM_ID='+INTTOSTR(s_KODP)
-  + ' AND Document.Date_op between '+''''+s_dat1+'''' +' and '+''''+s_dat2+'''');
+  DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(dm1.strukIdRela)
+                       + ' and document.klient_id = ' + IntToStr(dm1.klientId)
+                       + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
+                       + ' AND KARTv.KSM_ID='+INTTOSTR(s_KODP)
+                       + ' AND Document.Date_op between '+''''+s_dat1+'''' +' and '+''''+s_dat2+'''');
   DM1.IBQuery1.Active := True;
   if not dm1.IBQuery1.Eof then
   begin
@@ -614,10 +618,11 @@ begin
   DM1.IBQuery1.SQL.Add('SELECT  sum(KARTv.KOL_PRIH) vipusk_ng,KARTv.KSM_ID');
   DM1.IBQuery1.SQL.Add(' FROM KARTv');
   DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
-  DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(VsTRUK_ID)
-  + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
-  + ' AND KARTv.KSM_ID='+INTTOSTR(s_KODP)
-  + ' AND Document.Date_op between '+''''+s_datn+'''' +' and '+''''+s_dat2+'''');
+  DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(dm1.strukIdRela)
+                       + ' and document.klient_id = ' + IntToStr(dm1.klientId)
+                       + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
+                       + ' AND KARTv.KSM_ID='+INTTOSTR(s_KODP)
+                       + ' AND Document.Date_op between '+''''+s_datn+'''' +' and '+''''+s_dat2+'''');
   DM1.IBQuery1.SQL.Add(' GROUP BY KARTv.KSM_ID');
   DM1.IBQuery1.Active := True;
   if not dm1.IBQuery1.Eof then
@@ -683,10 +688,11 @@ if FindSpprod=nil then FindSpprod:=TfindSpprod.Create(Application);
   DM1.IBQuery1.SQL.Add('SELECT  KARTv.KOL_PRIH');
   DM1.IBQuery1.SQL.Add(' FROM KARTv');
   DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
-  DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(VsTRUK_ID)
-  + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
-  + ' AND KARTv.KSM_ID='+INTTOSTR(s_KODP)
-  + ' AND Document.Date_op between '+''''+s_dat1+'''' +' and '+''''+s_dat2+'''');
+  DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(dm1.strukIdRela)
+                       + ' and document.klient_id = ' + IntToStr(dm1.klientId)
+                       + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
+                       + ' AND KARTv.KSM_ID='+INTTOSTR(s_KODP)
+                       + ' AND Document.Date_op between '+''''+s_dat1+'''' +' and '+''''+s_dat2+'''');
  DM1.IBQuery1.Active := True;
  if not dm1.IBQuery1.Eof then
  begin
@@ -699,17 +705,18 @@ if FindSpprod=nil then FindSpprod:=TfindSpprod.Create(Application);
   label1.caption:='0';
  END;
  S_DATN:='01.01.'+INTTOSTR(GOD);
- DM1.IBQuery1.Active := False;
+ DM1.IBQuery1.Close;
  DM1.IBQuery1.SQL.Clear;
  DM1.IBQuery1.SQL.Add('SELECT  sum(KARTv.KOL_PRIH) vipusk_ng,KARTv.KSM_ID');
  DM1.IBQuery1.SQL.Add(' FROM KARTv');
  DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
- DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(VsTRUK_ID)
- + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
- + ' AND KARTv.KSM_ID='+INTTOSTR(s_KODP)
- + ' AND Document.Date_op between '+''''+s_datn+'''' +' and '+''''+s_dat2+'''');
+ DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(dm1.strukIdRela)
+                      + ' and document.klient_id = ' + IntToStr(dm1.klientId)
+                      + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
+                      + ' AND KARTv.KSM_ID='+INTTOSTR(s_KODP)
+                      + ' AND Document.Date_op between '+''''+s_datn+'''' +' and '+''''+s_dat2+'''');
  DM1.IBQuery1.SQL.Add(' GROUP BY KARTv.KSM_ID');
- DM1.IBQuery1.Active := True;
+ DM1.IBQuery1.Open;
  if not dm1.IBQuery1.Eof then
  begin
   V_VIPUSKG:=DM1.IBQuery1.FieldByName('VIPUSK_NG').AsFloat;
@@ -973,10 +980,11 @@ begin
     DM1.IBQuery1.SQL.Add('SELECT  KARTv.KOL_PRIH');
     DM1.IBQuery1.SQL.Add(' FROM KARTv');
     DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
-    DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(VsTRUK_ID)
-    + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
-    + ' AND KARTv.KSM_ID='+INTTOSTR(s_KODP)
-    + ' AND Document.Date_op between '+''''+s_dat1+'''' +' and '+''''+s_dat2+'''');
+    DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(dm1.strukIdRela)
+                         + ' and document.klient_id = ' + IntToStr(dm1.klientId)
+                         + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
+                         + ' AND KARTv.KSM_ID='+INTTOSTR(s_KODP)
+                         + ' AND Document.Date_op between '+''''+s_dat1+'''' +' and '+''''+s_dat2+'''');
    DM1.IBQuery1.Active := True;
    if not dm1.IBQuery1.Eof then
    begin
@@ -994,10 +1002,11 @@ begin
    DM1.IBQuery1.SQL.Add('SELECT  sum(KARTv.KOL_PRIH) vipusk_ng,KARTv.KSM_ID');
    DM1.IBQuery1.SQL.Add(' FROM KARTv');
    DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
-   DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(VsTRUK_ID)
-   + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
-   + ' AND KARTv.KSM_ID='+INTTOSTR(s_KODP)
-   + ' AND Document.Date_op between '+''''+s_datn+'''' +' and '+''''+s_dat2+'''');
+   DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(dm1.strukIdRela)
+                        + ' and document.klient_id = ' + IntToStr(dm1.klientId)
+                        + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
+                        + ' AND KARTv.KSM_ID='+INTTOSTR(s_KODP)
+                        + ' AND Document.Date_op between '+''''+s_datn+'''' +' and '+''''+s_dat2+'''');
    DM1.IBQuery1.SQL.Add(' GROUP BY KARTv.KSM_ID');
    DM1.IBQuery1.Active := True;
    if not dm1.IBQuery1.Eof then
@@ -1078,10 +1087,11 @@ begin
    DM1.IBQuery1.SQL.Add('SELECT  KARTv.KOL_PRIH');
    DM1.IBQuery1.SQL.Add(' FROM KARTv');
    DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
-   DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(VsTRUK_ID)
-   + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
-   + ' AND KARTv.KSM_ID='+INTTOSTR(s_KODP)
-   + ' AND Document.Date_op between '+''''+s_dat1+'''' +' and '+''''+s_dat2+'''');
+   DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(dm1.strukIdRela)
+                        + ' and document.klient_id = ' + IntToStr(dm1.klientId)
+                        + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
+                        + ' AND KARTv.KSM_ID='+INTTOSTR(s_KODP)
+                        + ' AND Document.Date_op between '+''''+s_dat1+'''' +' and '+''''+s_dat2+'''');
    DM1.IBQuery1.Active := True;
    if not dm1.IBQuery1.Eof then
    begin
@@ -1099,7 +1109,8 @@ begin
    DM1.IBQuery1.SQL.Add('SELECT  sum(KARTv.KOL_PRIH) vipusk_ng,KARTv.KSM_ID');
    DM1.IBQuery1.SQL.Add(' FROM KARTv');
    DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
-   DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(VsTRUK_ID)
+   DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(dm1.strukIdRela)
+                        + ' and document.klient_id = ' + IntToStr(dm1.klientId)
    + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
    + ' AND KARTv.KSM_ID='+INTTOSTR(s_KODP)
    + ' AND Document.Date_op between '+''''+s_datn+'''' +' and '+''''+s_dat2+'''');
@@ -1136,10 +1147,11 @@ begin
    DM1.IBQuery1.SQL.Add('SELECT  KARTv.KOL_PRIH');
    DM1.IBQuery1.SQL.Add(' FROM KARTv');
    DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
-   DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(VsTRUK_ID)
-   + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
-   + ' AND KARTv.KSM_ID='+INTTOSTR(s_KODP)
-   + ' AND Document.Date_op between '+''''+s_dat1+'''' +' and '+''''+s_dat2+'''');
+   DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(dm1.strukIdRela)
+                        + ' and document.klient_id = ' + IntToStr(dm1.klientId)
+                        + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
+                        + ' AND KARTv.KSM_ID='+INTTOSTR(s_KODP)
+                        + ' AND Document.Date_op between '+''''+s_dat1+'''' +' and '+''''+s_dat2+'''');
    DM1.IBQuery1.Active := True;
    if not dm1.IBQuery1.Eof then
    begin
@@ -1157,10 +1169,11 @@ begin
    DM1.IBQuery1.SQL.Add('SELECT  sum(KARTv.KOL_PRIH) vipusk_ng,KARTv.KSM_ID');
    DM1.IBQuery1.SQL.Add(' FROM KARTv');
    DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
-   DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(VsTRUK_ID)
-   + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
-   + ' AND KARTv.KSM_ID='+INTTOSTR(s_KODP)
-   + ' AND Document.Date_op between '+''''+s_datn+'''' +' and '+''''+s_dat2+'''');
+   DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(dm1.strukIdRela)
+                        + ' and document.klient_id = ' + IntToStr(dm1.klientId)
+                        + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
+                        + ' AND KARTv.KSM_ID='+INTTOSTR(s_KODP)
+                        + ' AND Document.Date_op between '+''''+s_datn+'''' +' and '+''''+s_dat2+'''');
    DM1.IBQuery1.SQL.Add(' GROUP BY KARTv.KSM_ID');
    DM1.IBQuery1.Active := True;
    if not dm1.IBQuery1.Eof then

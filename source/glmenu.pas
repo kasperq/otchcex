@@ -212,7 +212,7 @@ end;
 
 procedure TFGlMenu.FormResize(Sender: TObject);
 begin
-  if ActiveForm <> nil then
+  if (ActiveForm <> nil) then
   begin
     ActiveForm.Width  := Main_Panel.Width;
     ActiveForm.Height := Main_Panel.Height;
@@ -391,7 +391,8 @@ begin
     DM1.IBQuery1.SQL.Add('SELECT  sum(KARTv.KOL_PRIH) vipusk_ng,KARTv.KSM_ID');
     DM1.IBQuery1.SQL.Add(' FROM KARTv');
     DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
-    DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(VsTRUK_ID)
+    DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(dm1.strukIdRela)
+                          + ' and document.klient_id = ' + IntToStr(dm1.klientId)
     + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
     + ' AND KARTv.KSM_ID='+INTTOSTR(s_kodp)
     + ' AND Document.Date_op between '+''''+s_datn+'''' +' and '+''''+s_dat2+'''');
@@ -471,7 +472,8 @@ begin
         DM1.IBQuery1.SQL.Add('SELECT  sum(KARTv.KOL_PRIH) vipusk_ng,KARTv.KSM_ID');
         DM1.IBQuery1.SQL.Add(' FROM KARTv');
         DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
-        DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID=' + INTTOSTR(VsTRUK_ID)
+        DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID=' + INTTOSTR(dm1.strukIdRela)
+                          + ' and document.klient_id = ' + IntToStr(dm1.klientId)                              
                              + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
                              + ' AND KARTv.KSM_ID=' + INTTOSTR(s_kodp)
                              + ' AND Document.Date_op between ' + '''' + s_datn
@@ -572,7 +574,8 @@ begin
     DM1.IBQuery1.SQL.Add('SELECT  sum(KARTv.KOL_PRIH) vipusk_ng,KARTv.KSM_ID');
     DM1.IBQuery1.SQL.Add(' FROM KARTv');
     DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
-    DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(VsTRUK_ID)
+    DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(dm1.strukIdRela)
+                          + ' and document.klient_id = ' + IntToStr(dm1.klientId)
     + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
     + ' AND KARTv.KSM_ID='+INTTOSTR(s_kodp)
     + ' AND Document.Date_op between '+''''+s_datn+'''' +' and '+''''+s_dat2+'''');
@@ -946,7 +949,7 @@ begin
   Screen.Cursor := crHourGlass;
   prov := true;
   try
-    If (vSTRUK_ID = 0) then
+    if (vSTRUK_ID = 0) then
     begin
       MessageDlg('Введите структурное  подразделение в режиме НАСТРОЙКА!', mtError, [mbOK], 0);
       if (FNastr = nil) then

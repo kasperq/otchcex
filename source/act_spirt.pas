@@ -299,7 +299,8 @@ begin
       DM1.IBQuery1.SQL.Add(' where Document.Date_dok between ' + '''' + s_dat1
                            + '''' + ' and ' + '''' + s_dat2 + '''');
       DM1.IBQuery1.SQL.Add(' and document.tip_op_id=36 and document.tip_dok_id=74 '
-                           + 'and DOCUMENT.STRUK_ID=' + inttostr(vStruk_id));
+                           + 'and DOCUMENT.STRUK_ID=' + inttostr(dm1.strukIdRela)
+                          + ' and document.klient_id = ' + IntToStr(dm1.klientId));
       DM1.IBQuery1.SQL.Add(' and kartv.ksm_id=' + inttostr(S_vip));
       DM1.IBQuery1.Active := true;
       Spirt_Otchet.Edit;

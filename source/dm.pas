@@ -743,6 +743,10 @@ uses
     VipuskMemNAME_ORG: TStringField;
     FactVipuskQuerySPROD_ID: TIntegerField;
     KartCENA_UCH: TFloatField;
+    KartVOTDEL: TIBStringField;
+    KartVOTDELID: TIntegerField;
+    KartVOTDEL_DOC_ID: TIntegerField;
+    ConfigUMCRELASTRUKID: TSmallintField;
     procedure DataModuleCreate(Sender: TObject);
     procedure FormToObject(PopupForm : TForm; ControlObject : TControl; HTop:Integer=0; YesWidth:Integer=1);
     procedure VoprosWriteDoc;
@@ -829,6 +833,8 @@ uses
   private
     { Private declarations }
   public
+    klientId : integer;
+    strukIdRela : integer;
     function LastDayOfMonth(month, year: integer): TDate;
 
   end;
@@ -1113,6 +1119,8 @@ begin
                                                               DM1.ConfigUMCMES.AsInteger,
                                                               1)) + 'г.';
   vSTRUK_ID := DM1.ConfigUMCSTRUK_ID.AsInteger;
+  dm1.klientId := vStruk_Id;
+  dm1.strukIdRela := dm1.ConfigUMCRELASTRUKID.AsInteger;
   DM1.ConfigUMC.Close;
   DM1.IBQuery1.Close;
   DM1.IBQuery1.SQL.Text := 'SELECT STKOD FROM Struk WHERE STRUK_ID = ' + IntToStr(VSTRUK_ID);
@@ -1131,18 +1139,23 @@ begin
 //  IniUMC := TIniFile.Create('UMC.Ini');
   IniUMC := TIniFile.Create(exePath + 'UMC.Ini');
   VStruk_ID := IniUMC.ReadInteger('Config', 'Struk_Id', 0);
+  klientId := vStruk_Id;
   MatrPr := IniUMC.ReadString('Config', 'MatrPr', '02');
   YesSeria := IniUMC.ReadBool('Config', 'YesSeria', True);
   MODE := 0;
   UserName := AnsiUpperCase(GetCurrentUserName);
   vZadacha_Id := 'OTCHCEX';
-//   UserName :='EPC1';
   DM1.BELMED.Close;
   DM1.BELMED.Params.Clear;
+  DM1.BELMED.DatabaseName := '127.0.0.1:D:\IBDATA\BELMED.GDB';
   DM1.BELMED.Params.Add('lc_ctype=WIN1251');
   DM1.BELMED.Params.Add('sql_role_name=sklad_CEH');
-  DM1.BELMED.Params.Add('user_name=' + UserName);
-  DM1.BELMED.Params.Add('password=' + AnsiLowerCase(UserName));
+  DM1.BELMED.Params.Add('user_name=SYSDBA');
+  DM1.BELMED.Params.Add('password=masterkey');
+//  DM1.BELMED.Params.Add('lc_ctype=WIN1251');
+//  DM1.BELMED.Params.Add('sql_role_name=sklad_CEH');
+//  DM1.BELMED.Params.Add('user_name=' + UserName);
+//  DM1.BELMED.Params.Add('password=' + AnsiLowerCase(UserName));
   try
     DM1.BELMED.Open;
     startReadTrans;
@@ -2329,13 +2342,13 @@ end;
 
 procedure TDM1.VoprosWriteDoc;
 begin
-  if DM1.Document.Modified then
+  if (DM1.Document.Modified) then
      DM1.Document.Post;
-  if DM1.Kart.Modified then
+  if (DM1.Kart.Modified) then
      DM1.Kart.Post;
   if (DM1.Document.UpdatesPending) or (DM1.Kart.UpdatesPending) then
   begin
-   if MessageDlg('Записать изменения?', mtConfirmation, [mbYes, mbNo], 0)=mrYes then
+    if (MessageDlg('Записать изменения?', mtConfirmation, [mbYes, mbNo], 0) = mrYes) then
       ApplyUpdatesDoc
     else
       CancelUpdatesDoc;

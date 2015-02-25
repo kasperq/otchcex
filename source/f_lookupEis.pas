@@ -39,20 +39,22 @@ implementation
 
 procedure TFLookupEis.BitBtn1Click(Sender: TObject);
 begin
-  if not IBQuery.IsEmpty then
-    ModalResult:=50+IBQuery.FieldByName('KEI_ID').AsInteger;
+  if (not IBQuery.IsEmpty) then
+    ModalResult := 50 + IBQuery.FieldByName('KEI_ID').AsInteger;
 end;
 
 procedure TFLookupEis.BitBtn2Click(Sender: TObject);
 begin
-  ModalResult:=mrCancel;
+  ModalResult := mrCancel;
 end;
 
 procedure TFLookupEis.DBGridEh1KeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  if Key=VK_RETURN then BitBtn1Click(Sender);
-  if Key=VK_ESCAPE then BitBtn2Click(Sender);
+  if (Key = VK_RETURN) then
+    BitBtn1Click(Sender);
+  if (Key = VK_ESCAPE) then
+    BitBtn2Click(Sender);
 end;
 
 procedure TFLookupEis.FormCreate(Sender: TObject);
@@ -62,12 +64,12 @@ end;
 
 procedure TFLookupEis.FormShow(Sender: TObject);
 begin
-  if IBQuery.RecordCount > 10 then
+  if (IBQuery.RecordCount > 10) then
     FindDlgEh1.ShowFilterPanel := True
   else
     FindDlgEh1.ShowFilterPanel := False;
-  FindDlgEh1.SimpleSeek := true;  
-  if FLookupEis.Width < 210 then
+  FindDlgEh1.SimpleSeek := true;
+  if (FLookupEis.Width < 210) then
   begin
     BitBtn1.Visible := False;
     BitBtn2.Visible := False;

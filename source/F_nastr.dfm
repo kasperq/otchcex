@@ -6,8 +6,8 @@ object FNastr: TFNastr
   ClientHeight = 110
   ClientWidth = 471
   Color = clBtnFace
-  Constraints.MaxHeight = 137
-  Constraints.MaxWidth = 479
+  Constraints.MaxHeight = 149
+  Constraints.MaxWidth = 487
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11

@@ -74,7 +74,7 @@ object FOtchet: TFOtchet
       Left = 256
       Top = 0
       Width = 155
-      Height = 13
+      Height = 30
       Margins.Bottom = 0
       Alignment = taCenter
       BiDiMode = bdLeftToRight
@@ -538,7 +538,7 @@ object FOtchet: TFOtchet
       Left = 60
       Top = 8
       Width = 131
-      Height = 19
+      Height = 22
       Color = clWhite
       Ctl3D = False
       Font.Charset = DEFAULT_CHARSET
@@ -700,7 +700,7 @@ object FOtchet: TFOtchet
     Left = 583
     Top = 4
     Bitmap = {
-      494C010109000B00040018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010109000B00080018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2057,11 +2057,11 @@ object FOtchet: TFOtchet
     Left = 168
     Top = 320
     SystemInfo = (
-      'OS: WIN32_NT 5.1.2600 Service Pack 3'
+      'OS: WIN32_NT 6.2.9200 '
       ''
       'PageSize: 4096'
       'ActiveProcessorMask: $1000'
-      'NumberOfProcessors: 2'
+      'NumberOfProcessors: 4'
       'ProcessorType: 586'
       ''
       'Compiler version: Delphi6'
@@ -14428,7 +14428,7 @@ object FOtchet: TFOtchet
     end
   end
   object frxReport1: TfrxReport
-    Version = '4.7.109'
+    Version = '4.9.32'
     DotMatrixReport = False
     IniFile = '\Software\Fast Reports'
     PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator]

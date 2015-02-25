@@ -33,21 +33,23 @@ var
   FVybPrep: TFVybPrep;
 
 implementation
- uses dm;
+
+uses dm;
 {$R *.dfm}
 
 procedure TFVybPrep.DBGridEh1DblClick(Sender: TObject);
 begin
- ModalResult:=mrOk;
+  ModalResult := mrOk;
 end;
 
 procedure TFVybPrep.FormShow(Sender: TObject);
 begin
- vprep.Active := False;
- vprep.ParamByName('dat1').AsDateTime:=strtodate(s_dat1);
- vprep.ParamByName('dat2').AsDateTime:=strtodate(s_dat2);
- vprep.ParamByName('struk').AsInteger:=vStruk_id;
- vprep.Active := True;
+  vprep.Close;
+  vprep.ParamByName('dat1').AsDateTime := strtodate(s_dat1);
+  vprep.ParamByName('dat2').AsDateTime := strtodate(s_dat2);
+  vprep.ParamByName('struk').AsInteger := dm1.strukIdRela;
+  vprep.ParamByName('klient_id').AsInteger := dm1.klientId;
+  vprep.Open;
 end;
 
 end.

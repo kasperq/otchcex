@@ -170,28 +170,10 @@ begin
   DBLookupComboboxEh1.KeyValue := IntToStr(vStruk_Id);
   DBLookupComboboxEh2.KeyValue := MatrPr;
   DM1.ConfigUMC.Close;
-  DM1.ConfigUMC.MacroByName('usl').AsString := //' configumc.tip_sklad_id = 5 '
-                                               //+ 'and configumc.active_sklad = 1 and '
-                                               //+
-                                               '(configumc.struk_id = 1 or '
-                                               + 'configumc.struk_id = 645 or '
-                                               + 'configumc.struk_id = 29 or '
-                                               + 'configumc.struk_id = 37 or '
-                                               + 'configumc.struk_id = 38 or '
-                                               + 'configumc.struk_id = 39 or '
-                                               + 'configumc.struk_id = 648 or '
-                                               + 'configumc.struk_id = 43 or '
-                                               + 'configumc.struk_id = 540 or '
-                                               + 'configumc.struk_id = 541 or '
-                                               + 'configumc.struk_id = 649 or '
-                                               + 'configumc.struk_id = 106 or '
-                                               + 'configumc.struk_id = 696 or '
-                                               + 'configumc.struk_id = 542 or '
-                                               + 'configumc.struk_id = 543 or '
-                                               + 'configumc.struk_id = 544 or '
-                                               + 'configumc.struk_id = 545 or '
-                                               + 'configumc.struk_id = 546 or '
-                                               + 'configumc.struk_id = 708) ';
+  DM1.ConfigUMC.MacroByName('usl').AsString := ' configumc.struk_id in (1, 645, '
+                                               + '29, 37, 38, 39, 648, 43, 540, '
+                                               + '541, 649, 106, 696, 542, 543, '
+                                               + '544, 545, 546, 708) ';
   DM1.ConfigUMC.Open;
   dm1.IBMatr_pr.Open;
 end;
