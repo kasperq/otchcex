@@ -2488,13 +2488,14 @@ procedure TFGotProdNaklView.loadUndersigns;
 var
   docParamId : string;
 begin
-	if (vStruk_Id = 696) then		// для 2-го цеха надо ставить Галейшу Е.А., зам. нач. ОКК
+	if (vStruk_Id = 696) or (vStruk_Id = 1) or (vStruk_Id = 106) or (vStruk_Id = 29) then		// для медпрепаратов надо ставить Галейшу Е.А., зам. нач. ОКК
   begin
-  	docParamId := ' 544 ';
-    SdalEdit.Text := 'Нач. уч. упак. Ковалев А. И.';
+  	docParamId := ' 542 ';
+    if (vStruk_Id = 696) then
+      SdalEdit.Text := 'Нач. уч. упак. Ковалев А. И.';
   end
   else
-    docParamId := ' 544 ';           // зам. нач. ОКК Сахарова Н.А. уволилась, все подписывает нач. ОКК Солодкова Г.С.
+    docParamId := ' 544 ';           // зам. нач. ОКК Солодкова Г.С.
   if (GotDocument.RecordCount > 0) then   // пытаемся загрузить подписи для данного документа
   begin
     TempQuery.Active := false;
