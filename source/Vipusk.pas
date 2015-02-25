@@ -341,35 +341,38 @@ end;
 
 procedure TFVipusk.ToolButton3Click(Sender: TObject);
 begin
-dm1.ApplyUpdatesDoc;
-DM1.KARTV.Close;
-DM1.IBT_WRITE.Active:=FALSE;
-dm1.IBT_READ.Active:=FALSE;
-If not dm1.IBT_Read.Active then dm1.IBT_Read.StartTransaction;
-DM1.KartV.MacroByName('USL').AsString:='WHERE KARTV.DOC_ID='+INTTOSTR(VDOCUMENT_id);
-DM1.KartV.MacroByName('SORT').AsString:='ORDER BY SPPROD.NMAT';
-DM1.KARTV.OPEN;
-DM1.KARTV.First;
-  while not DM1.KARTV.Eof do
+  dm1.ApplyUpdatesDoc;
+  DM1.KARTV.Close;
+  DM1.IBT_WRITE.Active := FALSE;
+  dm1.IBT_READ.Active := FALSE;
+  If (not dm1.IBT_Read.Active) then
+    dm1.IBT_Read.StartTransaction;
+  DM1.KartV.MacroByName('USL').AsString := 'WHERE KARTV.DOC_ID=' + INTTOSTR(VDOCUMENT_id);
+  DM1.KartV.MacroByName('SORT').AsString := 'ORDER BY SPPROD.NMAT';
+  DM1.KARTV.OPEN;
+  DM1.KARTV.First;
+  while (not DM1.KARTV.Eof) do
   begin
-   S_DATN:='01.01.'+INTTOSTR(GOD);
-   DM1.IBQuery1.Active := False;
-   DM1.IBQuery1.SQL.Clear;
-   DM1.IBQuery1.SQL.Add('SELECT  sum(KARTv.KOL_PRIH) vipusk_ng,KARTv.KSM_ID');
-   DM1.IBQuery1.SQL.Add(' FROM KARTv');
-   DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
-   DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(VsTRUK_ID)
-   + ' AND DOCUMENT.TIP_OP_ID=36 and ndok='+''''+VnDOC+''''
-   + ' AND KARTv.KSM_ID='+INTTOSTR(DM1.KARTVKsm_id.AsInteger)
-   + ' AND Document.Date_op between '+''''+s_datn+'''' +' and '+''''+s_dat2+'''');
-   DM1.IBQuery1.SQL.Add(' GROUP BY KARTv.KSM_ID');
-   DM1.IBQuery1.Active := True;
-   DM1.KARTV.Edit;
-   if not dm1.IBQuery1.Eof then
-    DM1.KARTVVipNg.AsFloat:=DM1.IBQuery1.FieldByName('VIPUSK_NG').AsFloat
-   ELSE  DM1.KARTVVipNg.AsFloat:=0;
-   DM1.KARTV.Post;
-   DM1.KARTV.Next;
+    S_DATN := '01.01.' + INTTOSTR(GOD);
+    DM1.IBQuery1.Active := False;
+    DM1.IBQuery1.SQL.Clear;
+    DM1.IBQuery1.SQL.Add('SELECT  sum(KARTv.KOL_PRIH) vipusk_ng, KARTv.KSM_ID');
+    DM1.IBQuery1.SQL.Add(' FROM KARTv');
+    DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
+    DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID = ' + INTTOSTR(VsTRUK_ID)
+                         + ' AND DOCUMENT.TIP_OP_ID = 36 and ndok = ' + '''' + VnDOC + ''''
+                         + ' AND KARTv.KSM_ID = ' + INTTOSTR(DM1.KARTVKsm_id.AsInteger)
+                         + ' AND Document.Date_op between ' + '''' + s_datn + ''''
+                         + ' and ' + '''' + s_dat2 + '''');
+    DM1.IBQuery1.SQL.Add(' GROUP BY KARTv.KSM_ID');
+    DM1.IBQuery1.Active := True;
+    DM1.KARTV.Edit;
+    if (not dm1.IBQuery1.Eof) then
+      DM1.KARTVVipNg.AsFloat := DM1.IBQuery1.FieldByName('VIPUSK_NG').AsFloat
+    ELSE
+      DM1.KARTVVipNg.AsFloat := 0;
+    DM1.KARTV.Post;
+    DM1.KARTV.Next;
   end;
 end;
 
