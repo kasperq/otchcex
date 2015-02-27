@@ -2492,7 +2492,10 @@ begin
   begin
   	docParamId := ' 542 ';
     if (vStruk_Id = 696) then
+    begin
+      docParamId := ' 1364 ';
       SdalEdit.Text := 'Нач. уч. упак. Ковалев А. И.';
+    end;
   end
   else
     docParamId := ' 544 ';           // зам. нач. ОКК Солодкова Г.С.
