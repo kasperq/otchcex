@@ -65,25 +65,6 @@ type
     mem_factVipuskVIPNG: TFloatField;
     mem_factVipuskVIPKV: TFloatField;
     mem_factVipuskGOST: TStringField;
-    q_document: TRxIBQuery;
-    upd_q_document: TIBUpdateSQLW;
-    upd_q_kartv: TIBUpdateSQLW;
-    q_kartv: TRxIBQuery;
-    q_documentTIP_DOK_ID: TSmallintField;
-    q_documentNDOK: TIBStringField;
-    q_documentDOC_ID: TIntegerField;
-    q_documentDATE_OP: TDateField;
-    q_documentDATE_DOK: TDateField;
-    q_documentKLIENT_ID: TIntegerField;
-    q_documentTIP_OP_ID: TSmallintField;
-    q_documentDATE_VVOD: TDateTimeField;
-    q_documentSTRUK_ID: TSmallintField;
-    q_documentZADACHA_ID: TIBStringField;
-    q_kartvDOC_ID: TIntegerField;
-    q_kartvSTROKA_ID: TIntegerField;
-    q_kartvKSM_ID: TIntegerField;
-    q_kartvKOL_PRIH: TFMTBCDField;
-    q_documentKLIENT_STNAME: TIBStringField;
     mem_factVipuskOTDELID: TIntegerField;
     mem_factVipuskOTDEL: TStringField;
     mem_factVipuskOTDEL_DOC_ID: TIntegerField;
@@ -109,14 +90,9 @@ type
       var Handled: Boolean);
   private
     otdelViborForm : TFOtdelDropDown;
-    procedure openDocument(strukId, otdelId : integer; dat1, dat2 : TDate);
-    procedure openKartv(docId, ksmId : integer);
-    procedure insertDocument(tipOpId, strukId, tipDocId, klientId : integer;
-                             nDoc : string; dateDok : TDate);
-    procedure insertKartv;
-    procedure deleteKartv(docId, ksmId : integer);
+
     procedure saveOtdel;
-    procedure loadKartvRecord;
+    procedure loadOtdelKartvVipuskRecord;
     procedure loadVipuskKartv;
 
   public
@@ -239,39 +215,39 @@ begin
     ELSE
       DM1.KARTVVipNg.AsFloat := 0;
     DM1.KARTV.Post;
-    if (vStruk_Id = 540) then
-      loadKartvRecord;
+    if (dm1.klientId = 540) then
+      loadOtdelKartvVipuskRecord;
     DM1.KARTV.Next;
   end;
   dm1.KartV.EnableControls;
 end;
 
-procedure TFVipusk.loadKartvRecord;
+procedure TFVipusk.loadOtdelKartvVipuskRecord;
 begin
-  openDocument(vStruk_Id, 0, StrToDate(s_dat1), StrToDate(s_dat2));
-  if (q_document.RecordCount > 0) then
+  dm1.openDocument(vStruk_Id, 0, StrToDate(s_dat1), StrToDate(s_dat2));
+  if (dm1.q_vipuskDoc.RecordCount > 0) then
   begin
-    q_document.First;
-    while (not q_document.Eof) do
+    dm1.q_vipuskDoc.First;
+    while (not dm1.q_vipuskDoc.Eof) do
     begin
-      openKartv(q_documentDOC_ID.AsInteger, dm1.KartVKSM_ID.AsInteger);
-      if (q_kartv.RecordCount > 0) then
+      dm1.openKartv(dm1.q_vipuskDocDOC_ID.AsInteger, dm1.KartVKSM_ID.AsInteger);
+      if (dm1.q_kartv.RecordCount > 0) then
       begin
         dm1.KartV.Edit;
-        dm1.KartVOTDELID.AsInteger := q_documentKLIENT_ID.AsInteger;
-        dm1.KartVOTDEL.AsString := q_documentKLIENT_STNAME.AsString;
-        dm1.KartVOTDEL_DOC_ID.AsInteger := q_documentDOC_ID.AsInteger;
+        dm1.KartVOTDELID.AsInteger := dm1.q_vipuskDocKLIENT_ID.AsInteger;
+        dm1.KartVOTDEL.AsString := dm1.q_vipuskDocKLIENT_STNAME.AsString;
+        dm1.KartVOTDEL_DOC_ID.AsInteger := dm1.q_vipuskDocDOC_ID.AsInteger;
         dm1.KartV.Post;
 
         mem_factVipusk.Append;
         mem_factVipusk.Edit;
-        mem_factVipuskOTDELID.AsInteger := q_documentKLIENT_ID.AsInteger;
-        mem_factVipuskOTDEL_DOC_ID.AsInteger := q_documentDOC_ID.AsInteger;
+        mem_factVipuskOTDELID.AsInteger := dm1.q_vipuskDocKLIENT_ID.AsInteger;
+        mem_factVipuskOTDEL_DOC_ID.AsInteger := dm1.q_vipuskDocDOC_ID.AsInteger;
         mem_factVipuskKSM_ID.AsInteger := dm1.KartVKSM_ID.AsInteger;
         mem_factVipusk.Post;
         break;
       end;
-      q_document.Next;
+      dm1.q_vipuskDoc.Next;
     end;
   end;
 end;
@@ -295,9 +271,14 @@ begin
   S_DAT2 := datetostr(IncMonth(strtodate(s_dat1), 1) - 1);
   SostVipusk;
   DBGridEh2.Columns[6].Visible := false;
-  if (vStruk_Id = 540) then
+  if (dm1.klientId = 540) then
   begin
     DBGridEh2.Columns[6].Visible := true;
+    DBGridEh2.Columns[7].Visible := false;
+  end
+  else
+  begin
+    DBGridEh2.Columns[6].Visible := false;
     DBGridEh2.Columns[7].Visible := false;
   end;
  end;
@@ -348,41 +329,44 @@ procedure TFVipusk.ToolButton4Click(Sender: TObject);
 begin
   PlVipusk.DisableControls;
   PlVipusk.First;
-  while not PlVipusk.Eof do
+  while (not PlVipusk.Eof) do
   begin
- if PlVipuskVib.AsBoolean then
- begin
-  IF vDocument_id=0 THEN
-  begin
-   vTip_Op_Id:=36;
-   vTip_Doc_Id:=74;
-   vNDoc:='ÎÂûï_'+inttostr(SpinEdit3.Value)+'_'+inttostr(SpinEdit4.Value);
-   vKlient_Id:=vStruk_id;
-   vDate_dok:=strtodate(s_dat1);
-   vDate_op:=strtodate(s_dat1);
-   dm1.Document.open;
-   dm1.Document.Insert;
-   dm1.Document.Post;
-  end;
-  if not dm1.Kartv.Active then dm1.Kartv.Active:=true;
-  if not dm1.Kartv.Locate('doc_id;ksm_id',VarArrayOf([vDocument_id,PlVipuskKsm_id.AsInteger]),[]) then
-  begin
-   dm1.Kartv.Insert;
-   dm1.KartvKsm_id.AsInteger:=PlVipuskKsm_id.AsInteger;
-   dm1.KartvKod_prod.AsString:=PlVipuskKod_Prod.AsString;
-   dm1.KartvKol_pRIH.AsFloat:=PlVipuskKol.AsFloat;
-   dm1.KartvDoc_id.AsInteger:=vDocument_id;
-   dm1.KartvKlient_id.AsInteger:=PlVipuskKsm_id.AsInteger;
-   dm1.KartVNmat.AsString:=PlVipuskNmat.AsString;
-   dm1.KartVXarkt.AsString:=PlVipuskXarkt.AsString;
-   dm1.KartVNam_reg.AsString:=PlVipuskNam_reg.AsString;
-   dm1.Kartv.Post;
-  end;
- end;
- PlVipusk.Next;
+    if (PlVipuskVib.AsBoolean) then
+    begin
+      IF (vDocument_id = 0) THEN
+      begin
+        vTip_Op_Id := 36;
+        vTip_Doc_Id := 74;
+        vNDoc := 'ÎÂûï_' + inttostr(SpinEdit3.Value) + '_' + inttostr(SpinEdit4.Value);
+        vKlient_Id := vStruk_id;
+        vDate_dok := strtodate(s_dat1);
+        vDate_op := strtodate(s_dat1);
+        dm1.Document.open;
+        dm1.Document.Insert;
+        dm1.Document.Post;
+      end;
+      if (not dm1.Kartv.Active) then
+        dm1.Kartv.Active := true;
+      if (not dm1.Kartv.Locate('doc_id;ksm_id',
+                               VarArrayOf([vDocument_id, PlVipuskKsm_id.AsInteger]),
+                               [])) then
+      begin
+        dm1.Kartv.Insert;
+        dm1.KartvKsm_id.AsInteger := PlVipuskKsm_id.AsInteger;
+        dm1.KartvKod_prod.AsString := PlVipuskKod_Prod.AsString;
+        dm1.KartvKol_pRIH.AsFloat := PlVipuskKol.AsFloat;
+        dm1.KartvDoc_id.AsInteger := vDocument_id;
+        dm1.KartvKlient_id.AsInteger := PlVipuskKsm_id.AsInteger;
+        dm1.KartVNmat.AsString := PlVipuskNmat.AsString;
+        dm1.KartVXarkt.AsString := PlVipuskXarkt.AsString;
+        dm1.KartVNam_reg.AsString := PlVipuskNam_reg.AsString;
+        dm1.Kartv.Post;
+      end;
+    end;
+    PlVipusk.Next;
   end;
   PlVipusk.First;
-  While not PlVipusk.Eof do
+  While (not PlVipusk.Eof) do
   begin
     PlVipusk.Edit;
     PlVipusk.FieldByName('Vib').ASBoolean := False;
@@ -468,7 +452,7 @@ begin
     begin
       if (mem_factVipusk.Locate('ksm_id', dm1.KartVKSM_ID.AsString, [])) then
       begin
-        deleteKartv(mem_factVipuskOTDEL_DOC_ID.AsInteger, mem_factVipuskKSM_ID.AsInteger);
+        dm1.deleteKartv(mem_factVipuskOTDEL_DOC_ID.AsInteger, mem_factVipuskKSM_ID.AsInteger);
         mem_factVipusk.Delete;
       end;
     end;
@@ -476,88 +460,20 @@ begin
     begin
       if (mem_factVipusk.Locate('ksm_id', dm1.KartVKSM_ID.AsString, [])) then
       begin
-        deleteKartv(mem_factVipuskOTDEL_DOC_ID.AsInteger, mem_factVipuskKSM_ID.AsInteger);
+        dm1.deleteKartv(mem_factVipuskOTDEL_DOC_ID.AsInteger, mem_factVipuskKSM_ID.AsInteger);
         mem_factVipusk.Delete;
       end;
-      openDocument(vStruk_id, dm1.KartVOTDELID.AsInteger, StrToDate(s_dat1), StrToDate(s_dat2));
-      if (q_document.RecordCount = 0) then
-        insertDocument(dm1.DocumentTIP_OP_ID.AsInteger, dm1.strukIdRela, dm1.DocumentTIP_DOK_ID.AsInteger,
-                       dm1.KartVOTDELID.AsInteger, vNDoc, dm1.DocumentDATE_OP.AsDateTime);
-      openKartv(q_documentDOC_ID.AsInteger, dm1.KartVKSM_ID.AsInteger);
-      if (q_kartv.RecordCount = 0) then
-        insertKartv;
+      dm1.openDocument(vStruk_id, dm1.KartVOTDELID.AsInteger, StrToDate(s_dat1), StrToDate(s_dat2));
+      if (dm1.q_vipuskDoc.RecordCount = 0) then
+        dm1.insertDocument(dm1.DocumentTIP_OP_ID.AsInteger, dm1.strukIdRela, dm1.DocumentTIP_DOK_ID.AsInteger,
+                           dm1.KartVOTDELID.AsInteger, vNDoc, dm1.DocumentDATE_OP.AsDateTime);
+      dm1.openKartv(dm1.q_vipuskDocDOC_ID.AsInteger, dm1.KartVKSM_ID.AsInteger);
+      if (dm1.q_kartv.RecordCount = 0) then
+        dm1.insertKartv;
     end;
     dm1.KartV.Next;
   end;
   dm1.KartV.EnableControls;
-end;
-
-procedure TFVipusk.deleteKartv(docId, ksmId : integer);
-begin
-  openKartv(docId, ksmId);
-  if (q_kartv.RecordCount > 0) then
-  begin
-    q_kartv.Delete;
-    q_kartv.ApplyUpdates;
-    dm1.commitWriteTrans(true);
-  end;
-end;
-
-procedure TFVipusk.openDocument(strukId, otdelId : integer; dat1, dat2 : TDate);
-begin
-  q_document.Close;
-  q_document.ParamByName('struk_id').AsInteger := strukId;
-  if (otdelId = 0) then
-    q_document.MacroByName('usl').AsString := 'document.struk_id <> document.klient_id '
-  else
-    q_document.MacroByName('usl').AsString := 'document.klient_id = ' + IntToStr(otdelId);
-  q_document.ParamByName('dat1').AsDate := dat1;
-  q_document.ParamByName('dat2').AsDate := dat2;
-  q_document.Open;
-end;
-
-procedure TFVipusk.openKartv(docId, ksmId : integer);
-begin
-  q_kartv.Close;
-  q_kartv.ParamByName('doc_id').AsInteger := docId;
-  q_kartv.ParamByName('ksm_id').AsInteger := ksmId;
-  q_kartv.Open;
-end;
-
-procedure TFVipusk.insertDocument(tipOpId, strukId, tipDocId, klientId : integer;
-                                  nDoc : string; dateDok : TDate);
-begin
-  DM1.Add_KartDok.StoredProcName := 'ADD_DOCUMENT';
-  DM1.Add_KartDok.ExecProc;
-  q_document.Insert;
-  q_document.Edit;
-  q_document.FieldByName('Doc_Id').AsInteger := DM1.Add_KartDok.Params.Items[0].AsInteger;;
-  q_document.FieldByName('Tip_Op_Id').AsInteger := tipOpId;
-  q_document.FieldByName('Struk_Id').AsInteger := strukId;
-  q_document.FieldByName('Zadacha_Id').AsString := 'otchcex';
-  q_document.FieldByName('Tip_Dok_Id').AsInteger := tipDocId;
-  q_document.FieldByName('NDok').AsString := nDoc;
-  q_document.FieldByName('Klient_Id').AsInteger := klientId;
-  q_document.FieldByName('Date_Dok').AsDateTime := dateDok;
-  q_document.FieldByName('Date_Op').AsDateTime := dateDok;
-  q_document.Post;
-  q_document.ApplyUpdates;
-  dm1.commitWriteTrans(true);
-end;
-
-procedure TFVipusk.insertKartv;
-begin
-  DM1.Add_KartDok.StoredProcName := 'ADD_KARTV';
-  DM1.Add_KartDok.ExecProc;
-  q_kartv.Insert;
-  q_kartv.Edit;
-  q_kartvDOC_ID.AsInteger := q_documentDOC_ID.AsInteger;
-  q_kartvSTROKA_ID.AsInteger := DM1.Add_KartDok.Params.Items[0].AsInteger;
-  q_kartvKSM_ID.AsInteger := dm1.KartVKSM_ID.AsInteger;
-  q_kartvKOL_PRIH.AsFloat := dm1.KartVKOL_PRIH.AsFloat;
-  q_kartv.Post;
-  q_kartv.ApplyUpdates;
-  dm1.commitWriteTrans(true);
 end;
 
 procedure TFVipusk.ToolButton1Click(Sender: TObject);

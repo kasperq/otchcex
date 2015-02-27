@@ -334,18 +334,20 @@ begin
   if (s_kodp <> 0) then
   begin
     StartWait;
+    if (dm1.strukIdRela = 540) then
+    begin
+      dm1.klientId := dm1.getFactVipuskKlientId(s_kodp);
+    end;
     dm1.Document.Close;
     dm1.Ostatki.Close;
-    DM1.IBT_WRITE.Active := false;
-    DM1.IBT_read.Active := false;
-    DM1.IBT_read.Active := true;
-    DM1.IBT_WRITE.Active := TRUE;
+    dm1.startReadTrans;
+    dm1.startWriteTrans;
     kod := 0;
     vDate_op := strtodate(s_Dat1);
     vKlient_Id := s_kodp;
     vDate_dok := strtodate(s_Dat1);
     vTip_doc_Id := 37;
-    Usl_Struk := ' Document.Struk_id=' + inttostr(vStruk_id);
+    Usl_Struk := ' Document.Struk_id=' + inttostr(dm1.klientId);
     Usl_Dat := ' Document.Date_op between ' + '''' + s_dat1 + '''' + ' and ' + '''' + s_dat2 + '''';
     if (PageControl1.ActivePage = tabsheet1) then     // Приход
     begin
@@ -383,7 +385,7 @@ begin
       panel3.Visible := true;
       dm1.Document.Close;
       DM1.DOcUMENT.MacroByName('USL').AsString := 'WHERE DOcUMENT.STRUK_ID='
-                                                  + INTTOSTR(VsTRUK_ID)
+                                                  + INTTOSTR(dm1.klientId)
                                                   + ' AND DOCUMENT.TIP_OP_ID='
                                                   + inttostr(vTip_Op_Id)
                                                   + ' AND DOCUMENT.KLIENT_ID='
@@ -414,7 +416,7 @@ begin
       RaspSyrPrep.MacroByName('stip').AsString := Usl_TIP;
       RaspSyrPrep.MacroByName('ksm').AsString := Usl_GROP;
       RaspSyrPrep.ParamByName('kodp').AsInteger := kod;
-      RaspSyrPrep.ParamByName('struk').AsInteger := vStruk_id;
+      RaspSyrPrep.ParamByName('struk').AsInteger := dm1.klientId;
       RaspSyrPrep.Active := True;
       RaspSyrPrep.First;
       RaspSyrPrep.DisableControls;
@@ -434,7 +436,7 @@ begin
       ostceh.Active := False;
       ostceh.ParamByName('dat1').AsDateTime := strtodate(s_dat1);
       ostceh.ParamByName('dat2').AsDateTime := strtodate(s_dat2);
-      ostceh.ParamByName('struk').AsInteger := vStruk_id;
+      ostceh.ParamByName('struk').AsInteger := dm1.klientId;
       ostceh.ParamByName('kart_idpr').AsInteger := 1;
       ostceh.ParamByName('ksm_id').AsInteger := 0;
       ostceh.Active := True;
@@ -484,7 +486,7 @@ begin
                         + 'NORM.NEIS, NORM.razdel_id');
       IBQuery1.SQL.Add(' FROM norm_view(119, ' + INTTOSTR(God) + ', '
                         + INTTOSTR(mes) + ', ' + INTTOSTR(s_KODP) + ','
-                        + INTTOSTR(Vstruk_ID) + ', 0) NORM ');
+                        + INTTOSTR(dm1.strukIdRela) + ', 0) NORM ');
       IBQuery1.SQL.Add(' inner join matrop on (norm.ksm_id = matrop.ksm_id)');
       IBQuery1.SQL.Add(' left JOIN ostatki ON ((NORM.kodp = ostatki.ksm_idpr) '
                         + 'AND (norm.ksm_id = ostatki.ksm_id) AND '
@@ -591,7 +593,7 @@ begin
             s_ksm := IBQuery1.FieldByName('Ksm_id').AsInteger;
             v_dok_kart := SelectToVarIB('select Ostatki.kart_id '
                                         + 'FROM Ostatki WHERE Ostatki.STRUK_ID = '
-                                        + INTTOSTR(VsTRUK_ID)
+                                        + INTTOSTR(dm1.klientId)
                                         + ' AND ostatki.ksm_id = ' + inttostr(s_Ksm)
                                         + ' AND Ostatki.razdel_id = ' + inttostr(v_razdel)
                                         + ' AND Ostatki.Ksm_idpr = '+ INTTOSTR(S_KODP),
@@ -847,9 +849,9 @@ begin
       IBQuery1.SQL.Add('(ost.zag_period+ ost.peredano_prih_nz) as zag_period,');
       IBQuery1.SQL.Add('(ost.prix_period+ost.peredano_prih_nz) as prix_period,');
       IBQuery1.SQL.Add('ost.peredano_rash_s,ost.peredano_rash_nz,ost.rash_virab_period');
-      IBQuery1.SQL.Add(' FROM select_ost_ksm ('+''''+s_dat1+''''+','+''''+s_dat2+''''+','+inttostr(s_kodp)+','+inttostr(vstruk_id)+',0) ost');
+      IBQuery1.SQL.Add(' FROM select_ost_ksm ('+''''+s_dat1+''''+','+''''+s_dat2+''''+','+inttostr(s_kodp)+','+inttostr(dm1.klientId)+',0) ost');
       IBQuery1.SQL.Add(' inner JOIN RAZDEL ON (ost.RAZDEL_ID = RAZDEL.RAZDEL_ID)');
-      IBQuery1.SQL.Add(' left JOIN norm_view(119,'+INTTOSTR(God)+','+INTTOSTR(mes)+','+INTTOSTR(s_KODP)+','+INTTOSTR(Vstruk_ID)+',0) norm on ((NORM.kodp = ost.ksm_idpr) AND (norm.ksm_id=ost.ksm_id) AND (NORM.razdel_id=ost.razdel_id))');
+      IBQuery1.SQL.Add(' left JOIN norm_view(119,'+INTTOSTR(God)+','+INTTOSTR(mes)+','+INTTOSTR(s_KODP)+','+INTTOSTR(dm1.strukIdRela)+',0) norm on ((NORM.kodp = ost.ksm_idpr) AND (norm.ksm_id=ost.ksm_id) AND (NORM.razdel_id=ost.razdel_id))');
       IBQuery1.SQL.Add(' left JOIN EDIZ on (norm.kEI_id=EDIZ.kEI_id)');
       IBQuery1.SQL.Add('left join (  select kart_id, max(mes),kol_rasx,kol from ceh_otchet where ceh_otchet.mes<='+inttostr(mes)+' and ceh_otchet.god='+inttostr(god));
       IBQuery1.SQL.Add(' group by kart_id,kol_rasx,kol) co(kart_id, mes,kol_rasx,kol) on (ost.kart_id=co.kart_id)');
@@ -1149,7 +1151,7 @@ begin
     begin
       DM1.DOcUMENT.close;
       DM1.DOcUMENT.MacroByName('USL').AsString := 'WHERE DOcUMENT.STRUK_ID = '
-                                                  + INTTOSTR(VsTRUK_ID)
+                                                  + INTTOSTR(dm1.klientId)
 //  + ' AND DOCUMENT.TIP_OP_ID='+inttostr(vTip_Op_Id)
 //  + ' AND DOCUMENT.KLIENT_ID='+inttostr(vkLIENT_Id)
 //  + ' AND DOCUMENT.NDOK='+''''+VnDOC+''''
@@ -1160,7 +1162,7 @@ begin
       panel3.Visible := false;
       PeredanoSyr.Close;
       PeredanoSyr.ParamByName('KSM').AsInteger := s_kodp;
-      PeredanoSyr.ParamByName('cex').AsInteger := vStruk_id;
+      PeredanoSyr.ParamByName('cex').AsInteger := dm1.klientId;
       PeredanoSyr.ParamByName('dat1').AsString := s_dat1;
       PeredanoSyr.ParamByName('dat2').AsString := S_dat2;
       PeredanoSyr.Open;
@@ -1334,51 +1336,52 @@ end;
 procedure TFKorOtchet.Edit1KeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  if key=vk_return then
+  if (key = vk_return) then
   begin
-    if (edit1.text<>'') and (not dm1.IBQuery1.Eof)  then
+    if (edit1.text <> '') and (not dm1.IBQuery1.Eof)  then
     begin
-      EDIT1.OnChange:=nil;
-      edit1.text:=DM1.IBQuery1.FieldByName('kod_PROD').Asstring;
-      EDIT1.OnChange:=Edit1Change;
-      s_kodp:=DM1.IBQuery1.FieldByName('KSM_ID').value;
-      s_gost:=DM1.IBQuery1.FieldByName('GOST').AsString;
-      s_xarkt:=DM1.IBQuery1.FieldByName('XARKT').AsString;
-      s_nmat:=DM1.IBQuery1.FieldByName('NMAT').AsString;
-      s_kei:=DM1.IBQuery1.FieldByName('KEI_ID').VALUE;
-      s_korg:=DM1.IBQuery1.FieldByName('KORG').VALUE;
-      s_kodProd:=DM1.IBQuery1.FieldByName('KOD_PROD').AsString;
-      s_namorg:=DM1.IBQuery1.FieldByName('NAM').AsString;
-      s_neiz:=DM1.IBQuery1.FieldByName('NEIS').AsString;
-      s_namREG:=DM1.IBQuery1.FieldByName('NAM_ReG').AsString;
-      label1.Caption:=dm1.IBQuery1.FieldByName('Nam_reg').AsString;
-      label19.caption:=s_NMAT;
-      label29.caption:=s_namorg;
-      label21.caption:=s_Neiz;
-      label22.caption:=s_GOST;
-      label41.caption:=s_Xarkt;
+      EDIT1.OnChange := nil;
+      edit1.text := DM1.IBQuery1.FieldByName('kod_PROD').Asstring;
+      EDIT1.OnChange := Edit1Change;
+      s_kodp := DM1.IBQuery1.FieldByName('KSM_ID').value;
+      s_gost := DM1.IBQuery1.FieldByName('GOST').AsString;
+      s_xarkt := DM1.IBQuery1.FieldByName('XARKT').AsString;
+      s_nmat := DM1.IBQuery1.FieldByName('NMAT').AsString;
+      s_kei := DM1.IBQuery1.FieldByName('KEI_ID').VALUE;
+      s_korg := DM1.IBQuery1.FieldByName('KORG').VALUE;
+      s_kodProd := DM1.IBQuery1.FieldByName('KOD_PROD').AsString;
+      s_namorg := DM1.IBQuery1.FieldByName('NAM').AsString;
+      s_neiz := DM1.IBQuery1.FieldByName('NEIS').AsString;
+      s_namREG := DM1.IBQuery1.FieldByName('NAM_ReG').AsString;
+      label1.Caption := dm1.IBQuery1.FieldByName('Nam_reg').AsString;
+      label19.caption := s_NMAT;
+      label29.caption := s_namorg;
+      label21.caption := s_Neiz;
+      label22.caption := s_GOST;
+      label41.caption := s_Xarkt;
       DM1.IBQuery1.Active := False;
       DM1.IBQuery1.SQL.Clear;
       DM1.IBQuery1.SQL.Add('SELECT  KARTv.KOL_PRIH');
       DM1.IBQuery1.SQL.Add(' FROM KARTv');
       DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
-      DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(dm1.strukIdRela)
+      DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID=' + INTTOSTR(dm1.strukIdRela)
                            + ' and document.klient_id = ' + IntToStr(dm1.klientId)
-      + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
-      + ' AND KARTv.KSM_ID='+INTTOSTR(s_KODP)
-      + ' AND Document.Date_op between '+''''+s_dat1+'''' +' and '+''''+s_dat2+'''');
+                           + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
+                           + ' AND KARTv.KSM_ID=' + INTTOSTR(s_KODP)
+                           + ' AND Document.Date_op between ' + '''' + s_dat1
+                           + '''' + ' and ' + '''' + s_dat2 + '''');
       DM1.IBQuery1.Active := True;
-      if not dm1.IBQuery1.Eof then
+      if (not dm1.IBQuery1.Eof) then
       begin
-        V_VIPUSK:=DM1.IBQuery1.FieldByName('KOL_PRIH').AsFloat;
-        label20.caption:=FLOATTOSTR(V_VIPUSK)+'   '+S_NEIZ;
+        V_VIPUSK := DM1.IBQuery1.FieldByName('KOL_PRIH').AsFloat;
+        label20.caption := FLOATTOSTR(V_VIPUSK)+'   '+S_NEIZ;
       end
       ELSE
       BEGIN
-        V_VIPUSK:=0;
-        label20.caption:='0';
+        V_VIPUSK := 0;
+        label20.caption := '0';
       END;
-      if KartKorrOtchet.Active then
+      if (KartKorrOtchet.Active) then
         KartKorrOtchet.Close;
       KorSost;
     end;
@@ -1398,7 +1401,7 @@ if edit1.text<>''   then begin
  DM1.IBQuery1.SQL.Add('  LEFT JOIN SPRORG ON (SPPROD.KORG = SPRORG.KOD)');
  DM1.IBQuery1.SQL.Add('  LEFT JOIN SPFORMV ON (SPPROD.SPFV = SPFORMV.SPFV)');
  DM1.IBQuery1.SQL.Add('  LEFT JOIN region ON (SPPROD.reg = region.reg)');
- DM1.IBQuery1.SQL.Add(' WHERE SPPROD.KOD_PROD like '+''''+skod+''''+' AND SPPROD.STRUK_ID='+INTTOSTR(vStruk_Id));
+ DM1.IBQuery1.SQL.Add(' WHERE SPPROD.KOD_PROD like '+''''+skod+''''+' AND SPPROD.STRUK_ID='+INTTOSTR(dm1.strukIdRela));
  DM1.IBQuery1.Active := True;
  if not dm1.IBQuery1.Eof then
   begin
@@ -1417,7 +1420,7 @@ end;
 
 procedure TFKorOtchet.Edit1Click(Sender: TObject);
 begin
-Edit1.text:='';
+  Edit1.text := '';
 end;
 
 procedure TFKorOtchet.RaspSyrPrepAfterDelete(DataSet: TDataSet);
@@ -1509,7 +1512,7 @@ begin
   if (vTip_op_id=30) then
   begin
    v_KartV:=SelectToVarIB('select Ostatki.kart_id   FROM Ostatki'
-   + ' WHERE Ostatki.STRUK_ID='+INTTOSTR(VsTRUK_ID)
+   + ' WHERE Ostatki.STRUK_ID='+INTTOSTR(dm1.klientId)
    + ' AND ostatki.ksm_id='+inttostr(RaspSyrPrepKsm_id.AsInteger)
    + ' AND( Ostatki.Ksm_idpr=0 or Ostatki.Ksm_idpr is null)',dm1.belmed,dm1.ibt_read);
    RaspSyrPrep.Edit;
@@ -1523,7 +1526,7 @@ begin
    if (RaspSyrPrepKart_id.AsInteger=0) then
    begin
     v_KartV:=SelectToVarIB('select Ostatki.kart_id   FROM Ostatki'
-    + ' WHERE Ostatki.STRUK_ID='+INTTOSTR(VsTRUK_ID)
+    + ' WHERE Ostatki.STRUK_ID='+INTTOSTR(dm1.klientId)
     + ' AND ostatki.ksm_id='+inttostr(RaspSyrPrepKsm_id.AsInteger)
     + ' AND Ostatki.razdel_id='+inttostr(RaspSyrPrepRazdel_id.AsInteger)
     + ' AND Ostatki.Ksm_idpr='+ INTTOSTR(S_KODP),dm1.belmed,dm1.ibt_read);
@@ -1570,14 +1573,14 @@ begin
     IF RaspSyrPrepTip_op_id.AsInteger<>30 THEN
     BEGIN
      S_KEI:=RaspSyrPrepKEI.AsInteger;
-     v_dok_kart:=SelectToVarIB('select Ostatki.kart_id   FROM Ostatki WHERE Ostatki.STRUK_ID='+INTTOSTR(VsTRUK_ID)
+     v_dok_kart:=SelectToVarIB('select Ostatki.kart_id   FROM Ostatki WHERE Ostatki.STRUK_ID='+INTTOSTR(dm1.klientId)
      + ' AND ostatki.ksm_id='+inttostr(s_Ksm)
      + ' AND Ostatki.razdel_id='+inttostr(v_razdel)
      + ' AND Ostatki.Ksm_idpr='+ INTTOSTR(S_KODP),dm1.belmed,dm1.ibt_read);
     end
     else
     begin
-     v_dok_kart:=SelectToVarIB('select Ostatki.kart_id   FROM Ostatki WHERE Ostatki.STRUK_ID='+INTTOSTR(VsTRUK_ID)
+     v_dok_kart:=SelectToVarIB('select Ostatki.kart_id   FROM Ostatki WHERE Ostatki.STRUK_ID='+INTTOSTR(dm1.klientId)
      + ' AND ostatki.ksm_id='+inttostr(s_Ksm)
      + ' AND Ostatki.razdel_id is null'
      + ' AND Ostatki.Ksm_idpr is null',dm1.belmed,dm1.ibt_read);
@@ -1721,7 +1724,7 @@ begin
   if FindSpprod = nil then
     FindSpprod := TfindSpprod.Create(Application);
   FindSpprod.DataBaseName := dm1.BELMED;
-  FindSpprod.Usl_Struk := 'spprod.struk_id = ' + inttostr(vStruk_id);
+  FindSpprod.Usl_Struk := 'spprod.struk_id = ' + inttostr(dm1.strukIdRela);
   FindSpprod.ReadOnly := true;
   FindSpprod.ShowModal;
   if (FindSpprod.ModalResult > 50) then
@@ -2354,13 +2357,13 @@ begin
   vKlient_Id:=PeredanoSyrKlient_id.AsInteger;
   vDate_dok:=strtodate(s_dat1);
   vDate_op:=strtodate(s_dat1);
-{  v_dok_Kart:=SelectToVarIB('select DOcUMENT.doc_id   FROM document WHERE DOcUMENT.STRUK_ID='+INTTOSTR(VsTRUK_ID)
+{  v_dok_Kart:=SelectToVarIB('select DOcUMENT.doc_id   FROM document WHERE DOcUMENT.STRUK_ID='+INTTOSTR(dm1.klientId)
   + ' AND DOCUMENT.TIP_OP_ID='+inttostr(vTip_Op_Id)
   + ' AND Document.Date_op between '+''''+s_dat1+'''' +' and '+''''+s_dat2+''''
   + ' AND DOCUMENT.NDOK='+''''+ vNDoc+''''
   + ' AND DOCUMENT.KLIENT_ID='+ INTTOSTR(PeredanoSyrKlient_id.AsInteger),dm1.belmed,dm1.ibt_read);  }
 //  If v_dok_Kart<>Null then VDOCUMENT_ID:=v_dok_kart
-  if dm1.Document.Locate('struk_id;tip_op_id;klient_id;ndok',VarArrayOf([vStruk_id,vTip_op_id,PeredanoSyrKlient_id.AsInteger,vndoc]),[]) then
+  if dm1.Document.Locate('struk_id;tip_op_id;klient_id;ndok',VarArrayOf([dm1.klientId,vTip_op_id,PeredanoSyrKlient_id.AsInteger,vndoc]),[]) then
        vDocument_id:=dm1.DocumentDoc_id.AsInteger
   else
   begin
@@ -2368,11 +2371,11 @@ begin
    dm1.Document.Insert;
    dm1.Document.Post;
   end;
-  PeredanoSyrStruk_id.AsInteger:=vStruk_id;
+  PeredanoSyrStruk_id.AsInteger:=dm1.klientId;
   PeredanoSyrTip_op_id.AsInteger:=vTip_op_id;
   PeredanoSyrDoc_id.AsInteger:=vDocument_id;
   v_KartV:=SelectToVarIB('select Ostatki.kart_id   FROM Ostatki'
-  + ' WHERE Ostatki.STRUK_ID='+INTTOSTR(VsTRUK_ID)
+  + ' WHERE Ostatki.STRUK_ID='+INTTOSTR(dm1.klientId)
   + ' AND ostatki.ksm_id='+inttostr(PeredanoSyrKsm_id.AsInteger)
   + ' AND Ostatki.razdel_id='+inttostr(PeredanoSyrRazdel_ido.AsInteger)
   + ' AND Ostatki.Ksm_idpr='+ INTTOSTR(S_KODP),dm1.belmed,dm1.ibt_read);

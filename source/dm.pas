@@ -747,6 +747,25 @@ uses
     KartVOTDELID: TIntegerField;
     KartVOTDEL_DOC_ID: TIntegerField;
     ConfigUMCRELASTRUKID: TSmallintField;
+    q_vipuskDoc: TRxIBQuery;
+    q_vipuskDocTIP_DOK_ID: TSmallintField;
+    q_vipuskDocNDOK: TIBStringField;
+    q_vipuskDocDOC_ID: TIntegerField;
+    q_vipuskDocDATE_OP: TDateField;
+    q_vipuskDocDATE_DOK: TDateField;
+    q_vipuskDocKLIENT_ID: TIntegerField;
+    q_vipuskDocTIP_OP_ID: TSmallintField;
+    q_vipuskDocDATE_VVOD: TDateTimeField;
+    q_vipuskDocSTRUK_ID: TSmallintField;
+    q_vipuskDocZADACHA_ID: TIBStringField;
+    q_vipuskDocKLIENT_STNAME: TIBStringField;
+    upd_q_document: TIBUpdateSQLW;
+    q_kartv: TRxIBQuery;
+    q_kartvDOC_ID: TIntegerField;
+    q_kartvSTROKA_ID: TIntegerField;
+    q_kartvKSM_ID: TIntegerField;
+    q_kartvKOL_PRIH: TFMTBCDField;
+    upd_q_kartv: TIBUpdateSQLW;
     procedure DataModuleCreate(Sender: TObject);
     procedure FormToObject(PopupForm : TForm; ControlObject : TControl; HTop:Integer=0; YesWidth:Integer=1);
     procedure VoprosWriteDoc;
@@ -836,6 +855,13 @@ uses
     klientId : integer;
     strukIdRela : integer;
     function LastDayOfMonth(month, year: integer): TDate;
+    procedure openDocument(strukId, otdelId : integer; dat1, dat2 : TDate);
+    procedure openKartv(docId, ksmId : integer);
+    procedure insertDocument(tipOpId, strukId, tipDocId, klientId : integer;
+                             nDoc : string; dateDok : TDate);
+    procedure insertKartv;
+    procedure deleteKartv(docId, ksmId : integer);
+    function getFactVipuskKlientId(prodKsmId : integer) : integer;
 
   end;
 
@@ -1128,6 +1154,94 @@ begin
   S_STKOD := DM1.IBQuery1.fieldByName('STKOD').AsString;
 end;
 
+function TDM1.getFactVipuskKlientId(prodKsmId : integer) : integer;
+begin
+  result := 0;
+  openDocument(dm1.strukIdRela, 0, StrToDate(s_dat1), StrToDate(s_dat2));
+  if (q_vipuskDoc.RecordCount > 0) then
+  begin
+    q_vipuskDoc.First;
+    while (not q_vipuskDoc.Eof) do
+    begin
+      openKartv(q_vipuskDocDOC_ID.AsInteger, prodKsmId);
+      if (q_kartv.RecordCount > 0) then
+      begin
+        result := q_vipuskDocKLIENT_ID.AsInteger;
+        break;
+      end;
+      q_vipuskDoc.Next;
+    end;
+  end;
+end;
+
+procedure TDM1.openDocument(strukId, otdelId : integer; dat1, dat2 : TDate);
+begin
+  q_vipuskDoc.Close;
+  q_vipuskDoc.ParamByName('struk_id').AsInteger := strukId;
+  if (otdelId = 0) then
+    q_vipuskDoc.MacroByName('usl').AsString := 'document.struk_id <> document.klient_id '
+  else
+    q_vipuskDoc.MacroByName('usl').AsString := 'document.klient_id = ' + IntToStr(otdelId);
+  q_vipuskDoc.ParamByName('dat1').AsDate := dat1;
+  q_vipuskDoc.ParamByName('dat2').AsDate := dat2;
+  q_vipuskDoc.Open;
+end;
+
+procedure TDM1.insertDocument(tipOpId, strukId, tipDocId, klientId : integer;
+                              nDoc : string; dateDok : TDate);
+begin
+  DM1.Add_KartDok.StoredProcName := 'ADD_DOCUMENT';
+  DM1.Add_KartDok.ExecProc;
+  q_vipuskDoc.Insert;
+  q_vipuskDoc.Edit;
+  q_vipuskDoc.FieldByName('Doc_Id').AsInteger := DM1.Add_KartDok.Params.Items[0].AsInteger;;
+  q_vipuskDoc.FieldByName('Tip_Op_Id').AsInteger := tipOpId;
+  q_vipuskDoc.FieldByName('Struk_Id').AsInteger := strukId;
+  q_vipuskDoc.FieldByName('Zadacha_Id').AsString := 'otchcex';
+  q_vipuskDoc.FieldByName('Tip_Dok_Id').AsInteger := tipDocId;
+  q_vipuskDoc.FieldByName('NDok').AsString := nDoc;
+  q_vipuskDoc.FieldByName('Klient_Id').AsInteger := klientId;
+  q_vipuskDoc.FieldByName('Date_Dok').AsDateTime := dateDok;
+  q_vipuskDoc.FieldByName('Date_Op').AsDateTime := dateDok;
+  q_vipuskDoc.Post;
+  q_vipuskDoc.ApplyUpdates;
+  dm1.commitWriteTrans(true);
+end;
+
+procedure TDM1.openKartv(docId, ksmId : integer);
+begin
+  q_kartv.Close;
+  q_kartv.ParamByName('doc_id').AsInteger := docId;
+  q_kartv.ParamByName('ksm_id').AsInteger := ksmId;
+  q_kartv.Open;
+end;
+
+procedure TDM1.insertKartv;
+begin
+  DM1.Add_KartDok.StoredProcName := 'ADD_KARTV';
+  DM1.Add_KartDok.ExecProc;
+  q_kartv.Insert;
+  q_kartv.Edit;
+  q_kartvDOC_ID.AsInteger := q_vipuskDocDOC_ID.AsInteger;
+  q_kartvSTROKA_ID.AsInteger := DM1.Add_KartDok.Params.Items[0].AsInteger;
+  q_kartvKSM_ID.AsInteger := dm1.KartVKSM_ID.AsInteger;
+  q_kartvKOL_PRIH.AsFloat := dm1.KartVKOL_PRIH.AsFloat;
+  q_kartv.Post;
+  q_kartv.ApplyUpdates;
+  dm1.commitWriteTrans(true);
+end;
+
+procedure TDM1.deleteKartv(docId, ksmId : integer);
+begin
+  openKartv(docId, ksmId);
+  if (q_kartv.RecordCount > 0) then
+  begin
+    q_kartv.Delete;
+    q_kartv.ApplyUpdates;
+    dm1.commitWriteTrans(true);
+  end;
+end;
+
 procedure TDM1.DataModuleCreate(Sender: TObject);
 var
   IniUMC : TIniFile;
@@ -1150,12 +1264,8 @@ begin
   DM1.BELMED.DatabaseName := '127.0.0.1:D:\IBDATA\BELMED.GDB';
   DM1.BELMED.Params.Add('lc_ctype=WIN1251');
   DM1.BELMED.Params.Add('sql_role_name=sklad_CEH');
-  DM1.BELMED.Params.Add('user_name=SYSDBA');
-  DM1.BELMED.Params.Add('password=masterkey');
-//  DM1.BELMED.Params.Add('lc_ctype=WIN1251');
-//  DM1.BELMED.Params.Add('sql_role_name=sklad_CEH');
-//  DM1.BELMED.Params.Add('user_name=' + UserName);
-//  DM1.BELMED.Params.Add('password=' + AnsiLowerCase(UserName));
+  DM1.BELMED.Params.Add('user_name=' + UserName);
+  DM1.BELMED.Params.Add('password=' + AnsiLowerCase(UserName));
   try
     DM1.BELMED.Open;
     startReadTrans;
@@ -1265,7 +1375,7 @@ begin
                        + 'ost.peredano_rash_s, ost.peredano_prih_s, ost.razdel_id ');
   DM1.IBQuery1.SQL.Add(' FROM  SELECT_OST_KSM (' + '''' + s_dat1 + '''' + ','
                        + '''' + s_dat2 + '''' + ',' + inttostr(s_kodp) + ','
-                       + inttostr(vSTRUK_ID) + ',' + inttostr(s_KSM)
+                       + inttostr(dm1.klientId) + ',' + inttostr(s_KSM)
                        + ') ost where ost.razdel_id = ' + inttostr(v_razdel));
   DM1.IBQuery1.Active := True;
   if (DM1.IBQuery1.RecordCount > 0) then
@@ -1285,7 +1395,7 @@ begin
                        + 'ost.peredano_rash_s, ost.peredano_prih_s, ost.razdel_id ');
   DM1.IBQuery1.SQL.Add(' FROM  SELECT_OST_KSM (' + '''' + s_dat1 + '''' + ','
                        + '''' + s_dat2 + '''' + ',' + inttostr(s_kodp) + ','
-                       + inttostr(vSTRUK_ID) + ',' + inttostr(s_KSM)
+                       + inttostr(dm1.klientId) + ',' + inttostr(s_KSM)
                        + ') ost where ost.razdel_id = ' + inttostr(v_razdel));
   DM1.IBQuery1.Active := True;
   if (DM1.IBQuery1.RecordCount > 0) then
@@ -1325,12 +1435,12 @@ begin
   vDocument_id := -1;
   if (dm1.Document.Active) then
     if (dm1.Document.Locate('struk_id;tip_op_id;klient_id;date_op',
-                            VarArrayOf([vStruk_id, 30, vKlient_id, dat]), [])) then
+                            VarArrayOf([dm1.klientId, 30, vKlient_id, dat]), [])) then
       vDocument_id := dm1.DocumentDoc_id.AsInteger;
   if (vDocument_id = -1) then  
   begin
     v_dok_Kart := SelectToVarIB('select DOcUMENT.doc_id FROM document '
-                                + ' WHERE DOcUMENT.STRUK_ID = ' + INTTOSTR(VsTRUK_ID)
+                                + ' WHERE DOcUMENT.STRUK_ID = ' + INTTOSTR(dm1.klientId)
                                 + ' AND DOCUMENT.TIP_OP_ID = 30'
                                 + ' AND Document.Date_op between ' + ''''
                                 + s_dat1 + '''' + ' and ' + '''' + s_dat2 + ''''
@@ -1424,7 +1534,7 @@ begin
   DM1.IBQuery1.SQL.Add(' (select kol_new from ceh_ost_ediz(ostatki.KSM_ID, ostatki.KEI_ID,'
                         + inttostr(v_kein) + ', ostatki.OSTATOK_END_S)) Kot_S');
   DM1.IBQuery1.SQL.Add(' FROM  SELECT_OST_KSM1 (' + '''' + s_dat1 + '''' + ','
-                        + '''' + s_dat2 + '''' + ',1,' + inttostr(vSTRUK_ID)
+                        + '''' + s_dat2 + '''' + ',1,' + inttostr(dm1.klientId)
                         + ',' + inttostr(s_KSM) + ', 0) ostatki ');
   DM1.IBQuery1.SQL.Add(' order by ostatki.kart_id ');
   DM1.IBQuery1.Active := True;
@@ -1445,7 +1555,7 @@ begin
   v_raspred_dob := getNeededPrixInNormnEdiz();   // v_raspred_dob - в ед.изм. норм (табл.Normn)
 // поиск карточки сырья цеха, ели нет-создать
   v_dok_kart := SelectToVarIB('select Ostatki.kart_id '
-                              + 'FROM Ostatki WHERE Ostatki.STRUK_ID = ' + INTTOSTR(VsTRUK_ID)
+                              + 'FROM Ostatki WHERE Ostatki.STRUK_ID = ' + INTTOSTR(dm1.klientId)
                               + ' AND ostatki.ksm_id = ' + inttostr(s_Ksm)
                               + ' AND (Ostatki.Ksm_idpr is null or OSTatki.KSM_IDPR = 0)',
                               dm1.belmed, dm1.ibt_read);
@@ -2455,7 +2565,7 @@ procedure TDM1.DocumentNewRecord(DataSet: TDataSet);
 begin
   DM1.Document.FieldByName('Doc_Id').AsInteger := vDocument_Id;
   DM1.Document.FieldByName('Tip_Op_Id').AsInteger := vTip_Op_Id;
-  DM1.Document.FieldByName('Struk_Id').AsInteger := vStruk_Id;
+  DM1.Document.FieldByName('Struk_Id').AsInteger := dm1.klientId;
 //  DM1.Document.FieldByName('Zadacha_Id').AsString := vZadacha_Id;
   DM1.Document.FieldByName('Tip_Dok_Id').AsInteger := vTip_Doc_Id;
   if copy(vNdoc, 1, 5) = 'Старт' then

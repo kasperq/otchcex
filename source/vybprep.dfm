@@ -96,30 +96,43 @@ object FVybPrep: TFVybPrep
         Footers = <>
         Title.Caption = #1054#1088#1075#1072#1085#1080#1079#1072#1094#1080#1103
         Width = 191
+      end
+      item
+        EditButtons = <>
+        FieldName = 'OTDEL'
+        Footers = <>
+        Title.Caption = #1054#1090#1076#1077#1083#1077#1085#1080#1077
       end>
   end
   object vprep: TIBQuery
     Database = DM1.BELMED
     Transaction = DM1.IBT_Read
+    AfterOpen = vprepAfterOpen
     SQL.Strings = (
       
-        'select kart.kol_prih, spprod.nmat, spprod.xarkt, spprod.kod_prod' +
-        ', spprod.struk_id,'
+        'select kart.kol_prih, kart.stroka_id, spprod.nmat, spprod.xarkt,' +
+        ' spprod.kod_prod, spprod.struk_id,'
       
         'kart.ksm_id, ediz.neis neis, spprod.gost, sprorg.nam namorg, reg' +
-        'ion.nam namreg'
+        'ion.nam namreg,'
+      'cast('#39#39' as char(20)) as otdel,'
+      'cast(0 as integer) as otdel_Id'
       'from kartv kart'
       '  inner join spprod on (kart.ksm_id = spprod.ksm_id)'
       '  inner join document on (kart.doc_id = document.doc_id)'
       '  left join sprorg on (spprod.korg = sprorg.kod)'
       '  left join region on (spprod.reg = region.reg)'
       '  inner join ediz on (spprod.kei_id = ediz.kei_id)'
+      
+        '  inner join configumc on (configumc.struk_id = document.klient_' +
+        'id)'
       'where document.struk_id = :struk'
       '  and document.klient_id = :klient_id'
       '  and document.tip_op_id = 36'
       '  and document.tip_dok_id = 74'
       '  and document.date_op between :dat1 and :dat2'
       'order by spprod.nmat')
+    UpdateObject = upd_vprep
     Left = 199
     Top = 140
     ParamData = <
@@ -199,10 +212,69 @@ object FVybPrep: TFVybPrep
       Origin = '"REGION"."NAM"'
       FixedChar = True
     end
+    object vprepOTDEL: TIBStringField
+      FieldName = 'OTDEL'
+      ProviderFlags = []
+      FixedChar = True
+    end
+    object vprepOTDEL_ID: TIntegerField
+      FieldName = 'OTDEL_ID'
+      ProviderFlags = []
+    end
+    object vprepSTROKA_ID: TIntegerField
+      FieldName = 'STROKA_ID'
+      Origin = '"KARTV"."STROKA_ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
   end
   object DSvprep: TDataSource
     DataSet = vprep
     Left = 264
     Top = 144
+  end
+  object upd_vprep: TIBUpdateSQL
+    RefreshSQL.Strings = (
+      
+        'select kart.kol_prih, kart.stroka_id, spprod.nmat, spprod.xarkt,' +
+        ' spprod.kod_prod, spprod.struk_id,'
+      
+        'kart.ksm_id, ediz.neis neis, spprod.gost, sprorg.nam namorg, reg' +
+        'ion.nam namreg,'
+      'cast('#39#39' as char(20)) as otdel,'
+      'cast(0 as integer) as otdel_Id'
+      'from kartv kart'
+      '  inner join spprod on (kart.ksm_id = spprod.ksm_id)'
+      '  inner join document on (kart.doc_id = document.doc_id)'
+      '  left join sprorg on (spprod.korg = sprorg.kod)'
+      '  left join region on (spprod.reg = region.reg)'
+      '  inner join ediz on (spprod.kei_id = ediz.kei_id)'
+      
+        '  inner join configumc on (configumc.struk_id = document.klient_' +
+        'id)'
+      'where document.struk_id = :struk'
+      '  and document.klient_id = :klient_id'
+      '  and document.tip_op_id = 36'
+      '  and document.tip_dok_id = 74'
+      '  and document.date_op between :dat1 and :dat2'
+      'order by spprod.nmat')
+    ModifySQL.Strings = (
+      'update kartv'
+      'set'
+      '  KOL_PRIH = :KOL_PRIH,'
+      '  STROKA_ID = :STROKA_ID'
+      'where'
+      '  STROKA_ID = :OLD_STROKA_ID')
+    InsertSQL.Strings = (
+      'insert into kartv'
+      '  (KOL_PRIH, STROKA_ID)'
+      'values'
+      '  (:KOL_PRIH, :STROKA_ID)')
+    DeleteSQL.Strings = (
+      'delete from kartv'
+      'where'
+      '  STROKA_ID = :OLD_STROKA_ID')
+    Left = 200
+    Top = 184
   end
 end
