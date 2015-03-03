@@ -123,10 +123,10 @@ object FKorOtchet: TFKorOtchet
       Left = 469
       Top = 0
       Width = 111
-      Height = 30
+      Height = 21
       Ctl3D = False
       DropDownCount = 12
-      ItemHeight = 0
+      ItemHeight = 13
       ParentCtl3D = False
       TabOrder = 0
       OnChange = ComboBox1Change
@@ -148,9 +148,9 @@ object FKorOtchet: TFKorOtchet
       Left = 580
       Top = 0
       Width = 69
-      Height = 30
+      Height = 21
       Ctl3D = False
-      ItemHeight = 0
+      ItemHeight = 13
       ParentCtl3D = False
       TabOrder = 1
       OnChange = ComboBox2Change
@@ -1132,7 +1132,7 @@ object FKorOtchet: TFKorOtchet
     Left = 776
     Top = 212
     Bitmap = {
-      494C0101080009001C0018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010108000900200018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2105,7 +2105,9 @@ object FKorOtchet: TFKorOtchet
       'cast(0 as numeric(15,6)) as ost_c,'
       'cast(0 as numeric(15,6)) as kolvip,'
       'cast(0 as numeric(15,6)) as plan_norm'
-      'FROM  SELECT_Ost_ksm (%DAT1, %DAT2, :kodp, :struk, 0) ostatki'
+      
+        'FROM  SELECT_Ost_ksm_rela (%DAT1, %DAT2, :kodp, :struk, 0) ostat' +
+        'ki'
       'inner join kart on (ostatki.kart_id = kart.kart_id)'
       'inner join (select doc_id, ndok, tip_op_id, date_dok '
       '                 from document '

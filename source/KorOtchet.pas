@@ -490,6 +490,7 @@ begin
       IBQuery1.SQL.Add(' inner join matrop on (norm.ksm_id = matrop.ksm_id)');
       IBQuery1.SQL.Add(' left JOIN ostatki ON ((NORM.kodp = ostatki.ksm_idpr) '
                         + 'AND (norm.ksm_id = ostatki.ksm_id) AND '
+                        + ' (ostatki.struk_id = ' + IntToStr(dm1.klientId) + ') and '
                         + '(NORM.razdel_id = ostatki.razdel_id))');
       IBQuery1.Active := True;
       IBQuery1.First;
@@ -849,7 +850,10 @@ begin
       IBQuery1.SQL.Add('(ost.zag_period+ ost.peredano_prih_nz) as zag_period,');
       IBQuery1.SQL.Add('(ost.prix_period+ost.peredano_prih_nz) as prix_period,');
       IBQuery1.SQL.Add('ost.peredano_rash_s,ost.peredano_rash_nz,ost.rash_virab_period');
-      IBQuery1.SQL.Add(' FROM select_ost_ksm ('+''''+s_dat1+''''+','+''''+s_dat2+''''+','+inttostr(s_kodp)+','+inttostr(dm1.klientId)+',0) ost');
+      if (vStruk_id = 540) then
+        IBQuery1.SQL.Add(' FROM select_ost_ksm_rela ('+''''+s_dat1+''''+','+''''+s_dat2+''''+','+inttostr(s_kodp)+','+inttostr(dm1.klientId)+',0) ost')
+      else
+        IBQuery1.SQL.Add(' FROM select_ost_ksm ('+''''+s_dat1+''''+','+''''+s_dat2+''''+','+inttostr(s_kodp)+','+inttostr(dm1.klientId)+',0) ost');
       IBQuery1.SQL.Add(' inner JOIN RAZDEL ON (ost.RAZDEL_ID = RAZDEL.RAZDEL_ID)');
       IBQuery1.SQL.Add(' left JOIN norm_view(119,'+INTTOSTR(God)+','+INTTOSTR(mes)+','+INTTOSTR(s_KODP)+','+INTTOSTR(dm1.strukIdRela)+',0) norm on ((NORM.kodp = ost.ksm_idpr) AND (norm.ksm_id=ost.ksm_id) AND (NORM.razdel_id=ost.razdel_id))');
       IBQuery1.SQL.Add(' left JOIN EDIZ on (norm.kEI_id=EDIZ.kEI_id)');

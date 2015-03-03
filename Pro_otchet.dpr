@@ -95,7 +95,8 @@ uses
   Analit_aList in 'Source\Analit_aList.pas' {FAnalit_List},
   Unit3 in 'Source\Unit3.pas' {Form3},
   PererasFolga in 'Source\PererasFolga.pas' {FPererasFolga},
-  OtdelDropDown in 'Source\OtdelDropDown.pas' {Form1};
+  OtdelDropDown in 'Source\OtdelDropDown.pas' {Form1},
+  Kart in 'Source\Kart.pas' {FKart};
 
 {$R *.res}
 
@@ -173,6 +174,7 @@ begin
   Application.CreateForm(TFAnalit_List, FAnalit_List);
   Application.CreateForm(TForm3, Form3);
   Application.CreateForm(TFPererasFolga, FPererasFolga);
-//  Application.CreateForm(TForm1, Form1);
+  Application.CreateForm(TFKart, FKart);
+  //  Application.CreateForm(TForm1, Form1);
   Application.Run;
 end.

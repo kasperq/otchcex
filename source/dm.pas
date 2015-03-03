@@ -995,8 +995,8 @@ var
 
 implementation
 
-uses NormCex,glmenu,Ostatki,SprStad, VibPrep, Start, rascex, TexGur,Got_Prod,Pech_Vibor,
-  SprFormul, Otchet,Analitlist_tg;
+uses NormCex, glmenu, Ostatki, SprStad, VibPrep, Start, rascex, TexGur, Got_Prod,
+  Pech_Vibor, SprFormul, Otchet, Analitlist_tg, Kart;
 
   
 {$R *.dfm}
@@ -1145,7 +1145,7 @@ begin
                                                               DM1.ConfigUMCMES.AsInteger,
                                                               1)) + 'ã.';
   vSTRUK_ID := DM1.ConfigUMCSTRUK_ID.AsInteger;
-  dm1.klientId := vStruk_Id;
+  klientId := vStruk_Id;
   dm1.strukIdRela := dm1.ConfigUMCRELASTRUKID.AsInteger;
   DM1.ConfigUMC.Close;
   DM1.IBQuery1.Close;
@@ -1373,7 +1373,7 @@ begin
   DM1.IBQuery1.SQL.Clear;
   DM1.IBQuery1.SQL.Add('SELECT ost.kei_id, ost.OSTATOK_begin_S, ost.zag_period, '
                        + 'ost.peredano_rash_s, ost.peredano_prih_s, ost.razdel_id ');
-  DM1.IBQuery1.SQL.Add(' FROM  SELECT_OST_KSM (' + '''' + s_dat1 + '''' + ','
+  DM1.IBQuery1.SQL.Add(' FROM  SELECT_OST_KSM_RELA (' + '''' + s_dat1 + '''' + ','
                        + '''' + s_dat2 + '''' + ',' + inttostr(s_kodp) + ','
                        + inttostr(dm1.klientId) + ',' + inttostr(s_KSM)
                        + ') ost where ost.razdel_id = ' + inttostr(v_razdel));
@@ -1393,7 +1393,7 @@ begin
   DM1.IBQuery1.SQL.Clear;
   DM1.IBQuery1.SQL.Add('SELECT ost.kei_id, ost.OSTATOK_begin_S, ost.zag_period, '
                        + 'ost.peredano_rash_s, ost.peredano_prih_s, ost.razdel_id ');
-  DM1.IBQuery1.SQL.Add(' FROM  SELECT_OST_KSM (' + '''' + s_dat1 + '''' + ','
+  DM1.IBQuery1.SQL.Add(' FROM  SELECT_OST_KSM_RELA (' + '''' + s_dat1 + '''' + ','
                        + '''' + s_dat2 + '''' + ',' + inttostr(s_kodp) + ','
                        + inttostr(dm1.klientId) + ',' + inttostr(s_KSM)
                        + ') ost where ost.razdel_id = ' + inttostr(v_razdel));
@@ -1533,9 +1533,9 @@ begin
   DM1.IBQuery1.SQL.Add('SELECT ostatki.kart_id, ostatki.OSTATOK_END_S, ostatki.struk_id, ');
   DM1.IBQuery1.SQL.Add(' (select kol_new from ceh_ost_ediz(ostatki.KSM_ID, ostatki.KEI_ID,'
                         + inttostr(v_kein) + ', ostatki.OSTATOK_END_S)) Kot_S');
-  DM1.IBQuery1.SQL.Add(' FROM  SELECT_OST_KSM1 (' + '''' + s_dat1 + '''' + ','
+  DM1.IBQuery1.SQL.Add(' FROM  SELECT_OST_KSM_RELA (' + '''' + s_dat1 + '''' + ','
                         + '''' + s_dat2 + '''' + ',1,' + inttostr(dm1.klientId)
-                        + ',' + inttostr(s_KSM) + ', 0) ostatki ');
+                        + ',' + inttostr(s_KSM) + ') ostatki ');
   DM1.IBQuery1.SQL.Add(' order by ostatki.kart_id ');
   DM1.IBQuery1.Active := True;
   DM1.IBQuery1.First;
@@ -1572,7 +1572,10 @@ begin
                                               + inttostr(s_kodp)
                                               + ' and document.date_op between '
                                               + '''' + s_dat1 + '''' + ' and '
-                                              + '''' + s_dat2 + '''';
+                                              + '''' + s_dat2 + ''''
+                                              + ' and document.struk_id = '
+                                              + IntToStr(dm1.klientId)
+                                              + ' and document.tip_op_id = 30 ';
       DM1.Kart.Open
     end;
     dm1.Kart.BeforePost := nil;
@@ -2517,7 +2520,7 @@ end;
 procedure TDM1.KartNewRecord(DataSet: TDataSet);
 begin
   DM1.Kart.FieldByName('Stroka_Id').AsInteger := vStroka_Id;
-  DM1.Kart.FieldByName('Struk_Id').AsInteger := vStruk_Id;
+  DM1.Kart.FieldByName('Struk_Id').AsInteger := dm1.klientId;
   DM1.Kart.FieldByName('Kart_Id').AsInteger := vKart_Id;
   DM1.Kart.FieldByName('Doc_Id').AsInteger := VDOCUMENT_ID;
   DM1.Kart.FieldByName('tip_op_id').AsInteger := vTip_op_id;
@@ -2604,7 +2607,7 @@ begin
   IF vSeria_id <> 0 then
     DM1.Ostatki.FieldByName('Seria_id').AsInteger := vseria_id;
   DM1.Ostatki.FieldByName('Kei_Id').AsInteger := s_KEI;
-  DM1.Ostatki.FieldByName('Struk_Id').AsInteger := vstruk_id;
+  DM1.Ostatki.FieldByName('Struk_Id').AsInteger := self.klientId;
   DM1.Ostatki.FieldByName('Mes').AsInteger := Mes_conf;
   DM1.Ostatki.FieldByName('God').AsInteger := God_conf;
 end;
@@ -3374,17 +3377,14 @@ end;
 procedure TDM1.removeKartByDocidKsmidRazdelid(docId: Integer; ksmId: Integer;
                                               razdelId: Integer);
 begin
-  if not dm1.IBT_WRITE.Active then
-    dm1.IBT_WRITE.StartTransaction;
+  dm1.startWriteTrans;
   IbDel.Active := false;
   IbDel.SQL.Clear;
   IbDel.SQL.Add('delete from kart where doc_id = ' + inttostr(vDocument_id)
                 + ' and ksm_id = ' + inttostr(s_ksm) + ' and razdel_id = '
                 + inttostr(v_razdel) + ' and parent is null ');
   IbDel.Active := true;
-  dm1.IBT_WRITE.CommitRetaining;
-  if not dm1.IBT_WRITE.Active then
-    dm1.IBT_WRITE.StartTransaction;
+  dm1.commitWriteTrans(true);
 end;
 
 function TDM1.getStrMes(monthInt : integer) : string;

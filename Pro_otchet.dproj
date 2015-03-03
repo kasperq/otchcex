@@ -409,6 +409,7 @@
       
       
       
+      
       <Excluded_Packages Name="$(BDS)\bin\xhStd110.bpl">HierCube Library Runtime package</Excluded_Packages>
       <Excluded_Packages Name="C:\Documents and Settings\All Users\Документы\RAD Studio\5.0\Bpl\xhCntrls100.bpl">HierCube Library Controls</Excluded_Packages>
       <Excluded_Packages Name="C:\Delphi11\Projects\BPL\dclfs11.bpl">FastScript 1.9 Components</Excluded_Packages>
@@ -504,6 +505,9 @@
     </DCCReference>
     <DCCReference Include="Source\InvOp.pas">
       <Form>FInvOp</Form>
+    </DCCReference>
+    <DCCReference Include="Source\Kart.pas">
+      <Form>FKart</Form>
     </DCCReference>
     <DCCReference Include="Source\Komp_TM.pas">
       <Form>FKompTM</Form>
