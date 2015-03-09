@@ -8,7 +8,7 @@ uses
   frxDMPExport, frxDBSet, IBUpdateSQL, IBUpdSQLW, ImgList, Grids, DBGridEh,
   StdCtrls, ExtCtrls, Buttons, Spin, ComCtrls, ToolWin,
   UtilRIB,SplshWnd, FileUtil, pr_Common,
-  pr_TxClasses;
+  pr_TxClasses, kbmMemTable;
 type
   TFAct_Aceton = class(TForm)
     ToolBar1: TToolBar;
@@ -87,7 +87,31 @@ type
     Dob_prixFACTNORM: TFMTBCDField;
     Dob_prixVIP: TFMTBCDField;
     Dob_prixSTRUK_ID: TIntegerField;
-    Spirt: TRxMemoryData;
+    dob_ost: TIBQuery;
+    dob_ostKOD_PREP: TIBStringField;
+    dob_ostNMAT_PREP: TIBStringField;
+    dob_ostOSTATOK_BEGIN_S: TFMTBCDField;
+    dob_ostOSTATOK_BEGIN_NZ: TFMTBCDField;
+    dob_ostPRIX_PERIOD: TFMTBCDField;
+    dob_ostPEREDANO_PRIH_NZ: TFMTBCDField;
+    dob_ostRASX_PERIOD: TFMTBCDField;
+    dob_ostOSTATOK_END_S: TFMTBCDField;
+    dob_ostOSTATOK_END_NZ: TFMTBCDField;
+    dob_ostZAG_PERIOD: TFMTBCDField;
+    dob_ostKRAZ: TSmallintField;
+    dob_ostRASH_VIRAB_PERIOD: TFMTBCDField;
+    dob_ostNEIS: TIBStringField;
+    dob_ostPEREDANO_RASH_NZ: TFMTBCDField;
+    dob_ostPEREDANO_RASH_S: TFMTBCDField;
+    dob_norm: TIBQuery;
+    dob_normNEIS_PROD: TIBStringField;
+    dob_normPLNORM: TFMTBCDField;
+    dob_normKEIN: TSmallintField;
+    dob_normNAM: TIBStringField;
+    dob_normRAZDEL_ID: TSmallintField;
+    Spirt_OtchetNMAT: TIBStringField;
+    Dob_prixNMAT: TIBStringField;
+    Spirt: TkbmMemTable;
     SpirtKSM_ID: TIntegerField;
     SpirtNEIS_PROD: TStringField;
     SpirtPLNORM: TFloatField;
@@ -114,31 +138,7 @@ type
     SpirtFACTNORM: TFloatField;
     SpirtVIP: TFloatField;
     SpirtSTRUK_ID: TIntegerField;
-    dob_ost: TIBQuery;
-    dob_ostKOD_PREP: TIBStringField;
-    dob_ostNMAT_PREP: TIBStringField;
-    dob_ostOSTATOK_BEGIN_S: TFMTBCDField;
-    dob_ostOSTATOK_BEGIN_NZ: TFMTBCDField;
-    dob_ostPRIX_PERIOD: TFMTBCDField;
-    dob_ostPEREDANO_PRIH_NZ: TFMTBCDField;
-    dob_ostRASX_PERIOD: TFMTBCDField;
-    dob_ostOSTATOK_END_S: TFMTBCDField;
-    dob_ostOSTATOK_END_NZ: TFMTBCDField;
-    dob_ostZAG_PERIOD: TFMTBCDField;
-    dob_ostKRAZ: TSmallintField;
-    dob_ostRASH_VIRAB_PERIOD: TFMTBCDField;
-    dob_ostNEIS: TIBStringField;
-    dob_ostPEREDANO_RASH_NZ: TFMTBCDField;
-    dob_ostPEREDANO_RASH_S: TFMTBCDField;
-    dob_norm: TIBQuery;
-    dob_normNEIS_PROD: TIBStringField;
-    dob_normPLNORM: TFMTBCDField;
-    dob_normKEIN: TSmallintField;
-    dob_normNAM: TIBStringField;
-    dob_normRAZDEL_ID: TSmallintField;
-    Spirt_OtchetNMAT: TIBStringField;
     SpirtNMAT: TStringField;
-    Dob_prixNMAT: TIBStringField;
     procedure ProsmSpirt;
     procedure SpinEdit3Change(Sender: TObject);
     procedure SpinEdit4Change(Sender: TObject);
@@ -435,10 +435,10 @@ begin
    Dob_Prix.ParamByName('ksm').AsInteger:=s_ksm;
    Dob_Prix.Open;
    if not Dob_Prix.Eof then
-      Spirt.LoadFromDataSet(Dob_Prix,0,lmAppend);
+      Spirt.LoadFromDataSet(Dob_Prix, [mtcpoAppend]);
   end;
   if not Spirt_Otchet.Eof then
-      Spirt.LoadFromDataSet(Spirt_Otchet,0,lmAppend);
+      Spirt.LoadFromDataSet(Spirt_Otchet, [mtcpoAppend]);
   Splash.Free;
   Spirt_Otchet.EnableControls;
  END;

@@ -424,7 +424,7 @@ object FAct_Aceton: TFAct_Aceton
     Left = 520
     Top = 4
     Bitmap = {
-      494C01010A000C00040018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010A000C00080018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1382,7 +1382,7 @@ object FAct_Aceton: TFAct_Aceton
     Top = 168
   end
   object frxReport1: TfrxReport
-    Version = '4.7.109'
+    Version = '4.9.32'
     DotMatrixReport = False
     IniFile = '\Software\Fast Reports'
     PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator]
@@ -4264,211 +4264,6 @@ object FAct_Aceton: TFAct_Aceton
       Size = 60
     end
   end
-  object Spirt: TRxMemoryData
-    FieldDefs = <
-      item
-        Name = 'KSM_ID'
-        DataType = ftInteger
-      end
-      item
-        Name = 'NEIS_PROD'
-        DataType = ftString
-        Size = 10
-      end
-      item
-        Name = 'PLNORM'
-        DataType = ftFloat
-      end
-      item
-        Name = 'KEIN'
-        DataType = ftInteger
-      end
-      item
-        Name = 'KRAZ'
-        DataType = ftInteger
-      end
-      item
-        Name = 'NMAT_PROD'
-        DataType = ftString
-        Size = 60
-      end
-      item
-        Name = 'KOD_PROD'
-        DataType = ftString
-        Size = 18
-      end
-      item
-        Name = 'NAM'
-        DataType = ftString
-        Size = 20
-      end
-      item
-        Name = 'RAZDEL_ID'
-        DataType = ftInteger
-      end
-      item
-        Name = 'NEIS_SYR'
-        DataType = ftString
-        Size = 10
-      end
-      item
-        Name = 'KODP'
-        DataType = ftInteger
-      end
-      item
-        Name = 'OST_NN'
-        DataType = ftFloat
-      end
-      item
-        Name = 'OST_NK'
-        DataType = ftFloat
-      end
-      item
-        Name = 'OSTATOK_BEGIN_NZ'
-        DataType = ftFloat
-      end
-      item
-        Name = 'OSTATOK_BEGIN_S'
-        DataType = ftFloat
-      end
-      item
-        Name = 'OSTATOK_END_NZ'
-        DataType = ftFloat
-      end
-      item
-        Name = 'OSTATOK_END_S'
-        DataType = ftFloat
-      end
-      item
-        Name = 'ZAG_PERIOD'
-        DataType = ftFloat
-      end
-      item
-        Name = 'RASH_VIRAB_PERIOD'
-        DataType = ftFloat
-      end
-      item
-        Name = 'PRIX_PERIOD'
-        DataType = ftFloat
-      end
-      item
-        Name = 'RASX_PERIOD'
-        DataType = ftFloat
-      end
-      item
-        Name = 'PEREDANO_RASH_S'
-        DataType = ftFloat
-      end
-      item
-        Name = 'PEREDANO_RASH_NZ'
-        DataType = ftFloat
-      end
-      item
-        Name = 'FACTNORM'
-        DataType = ftFloat
-      end
-      item
-        Name = 'VIP'
-        DataType = ftFloat
-      end
-      item
-        Name = 'STRUK_ID'
-        DataType = ftInteger
-      end
-      item
-        Name = 'NMAT'
-        DataType = ftString
-        Size = 60
-      end>
-    Left = 472
-    Top = 152
-    object SpirtKSM_ID: TIntegerField
-      FieldName = 'KSM_ID'
-    end
-    object SpirtNEIS_PROD: TStringField
-      FieldName = 'NEIS_PROD'
-      Size = 10
-    end
-    object SpirtPLNORM: TFloatField
-      FieldName = 'PLNORM'
-    end
-    object SpirtKEIN: TIntegerField
-      FieldName = 'KEIN'
-    end
-    object SpirtKRAZ: TIntegerField
-      FieldName = 'KRAZ'
-    end
-    object SpirtNMAT_PROD: TStringField
-      FieldName = 'NMAT_PROD'
-      Size = 60
-    end
-    object SpirtKOD_PROD: TStringField
-      FieldName = 'KOD_PROD'
-      Size = 18
-    end
-    object SpirtNAM: TStringField
-      FieldName = 'NAM'
-    end
-    object SpirtRAZDEL_ID: TIntegerField
-      FieldName = 'RAZDEL_ID'
-    end
-    object SpirtNEIS_SYR: TStringField
-      FieldName = 'NEIS_SYR'
-      Size = 10
-    end
-    object SpirtKODP: TIntegerField
-      FieldName = 'KODP'
-    end
-    object SpirtOST_NN: TFloatField
-      FieldName = 'OST_NN'
-    end
-    object SpirtOST_NK: TFloatField
-      FieldName = 'OST_NK'
-    end
-    object SpirtOSTATOK_BEGIN_NZ: TFloatField
-      FieldName = 'OSTATOK_BEGIN_NZ'
-    end
-    object SpirtOSTATOK_BEGIN_S: TFloatField
-      FieldName = 'OSTATOK_BEGIN_S'
-    end
-    object SpirtOSTATOK_END_NZ: TFloatField
-      FieldName = 'OSTATOK_END_NZ'
-    end
-    object SpirtOSTATOK_END_S: TFloatField
-      FieldName = 'OSTATOK_END_S'
-    end
-    object SpirtZAG_PERIOD: TFloatField
-      FieldName = 'ZAG_PERIOD'
-    end
-    object SpirtRASH_VIRAB_PERIOD: TFloatField
-      FieldName = 'RASH_VIRAB_PERIOD'
-    end
-    object SpirtPRIX_PERIOD: TFloatField
-      FieldName = 'PRIX_PERIOD'
-    end
-    object SpirtRASX_PERIOD: TFloatField
-      FieldName = 'RASX_PERIOD'
-    end
-    object SpirtPEREDANO_RASH_S: TFloatField
-      FieldName = 'PEREDANO_RASH_S'
-    end
-    object SpirtPEREDANO_RASH_NZ: TFloatField
-      FieldName = 'PEREDANO_RASH_NZ'
-    end
-    object SpirtFACTNORM: TFloatField
-      FieldName = 'FACTNORM'
-    end
-    object SpirtVIP: TFloatField
-      FieldName = 'VIP'
-    end
-    object SpirtSTRUK_ID: TIntegerField
-      FieldName = 'STRUK_ID'
-    end
-    object SpirtNMAT: TStringField
-      FieldName = 'NMAT'
-      Size = 60
-    end
-  end
   object dob_ost: TIBQuery
     Database = DM1.BELMED
     Transaction = DM1.IBT_Read
@@ -4671,6 +4466,118 @@ object FAct_Aceton: TFAct_Aceton
     object dob_normRAZDEL_ID: TSmallintField
       FieldName = 'RAZDEL_ID'
       Origin = '"NORM_VIEW"."RAZDEL_ID"'
+    end
+  end
+  object Spirt: TkbmMemTable
+    DesignActivation = True
+    AttachedAutoRefresh = True
+    AttachMaxCount = 1
+    FieldDefs = <>
+    IndexDefs = <>
+    SortOptions = []
+    AllDataOptions = [mtfSaveData, mtfSaveNonVisible, mtfSaveBlobs, mtfSaveFiltered, mtfSaveIgnoreRange, mtfSaveIgnoreMasterDetail, mtfSaveDeltas]
+    CommaTextOptions = [mtfSaveData]
+    CSVQuote = '"'
+    CSVFieldDelimiter = ','
+    CSVRecordDelimiter = ','
+    CSVTrueString = 'True'
+    CSVFalseString = 'False'
+    PersistentSaveOptions = [mtfSaveData, mtfSaveNonVisible, mtfSaveIgnoreRange, mtfSaveIgnoreMasterDetail]
+    PersistentBackup = False
+    ProgressFlags = [mtpcLoad, mtpcSave, mtpcCopy]
+    FilterOptions = []
+    Version = '2.53g'
+    LanguageID = 0
+    SortID = 0
+    SubLanguageID = 1
+    LocaleID = 1024
+    Left = 480
+    Top = 168
+    object SpirtKSM_ID: TIntegerField
+      FieldName = 'KSM_ID'
+    end
+    object SpirtNEIS_PROD: TStringField
+      FieldName = 'NEIS_PROD'
+      Size = 10
+    end
+    object SpirtPLNORM: TFloatField
+      FieldName = 'PLNORM'
+    end
+    object SpirtKEIN: TIntegerField
+      FieldName = 'KEIN'
+    end
+    object SpirtKRAZ: TIntegerField
+      FieldName = 'KRAZ'
+    end
+    object SpirtNMAT_PROD: TStringField
+      FieldName = 'NMAT_PROD'
+      Size = 60
+    end
+    object SpirtKOD_PROD: TStringField
+      FieldName = 'KOD_PROD'
+      Size = 18
+    end
+    object SpirtNAM: TStringField
+      FieldName = 'NAM'
+    end
+    object SpirtRAZDEL_ID: TIntegerField
+      FieldName = 'RAZDEL_ID'
+    end
+    object SpirtNEIS_SYR: TStringField
+      FieldName = 'NEIS_SYR'
+      Size = 10
+    end
+    object SpirtKODP: TIntegerField
+      FieldName = 'KODP'
+    end
+    object SpirtOST_NN: TFloatField
+      FieldName = 'OST_NN'
+    end
+    object SpirtOST_NK: TFloatField
+      FieldName = 'OST_NK'
+    end
+    object SpirtOSTATOK_BEGIN_NZ: TFloatField
+      FieldName = 'OSTATOK_BEGIN_NZ'
+    end
+    object SpirtOSTATOK_BEGIN_S: TFloatField
+      FieldName = 'OSTATOK_BEGIN_S'
+    end
+    object SpirtOSTATOK_END_NZ: TFloatField
+      FieldName = 'OSTATOK_END_NZ'
+    end
+    object SpirtOSTATOK_END_S: TFloatField
+      FieldName = 'OSTATOK_END_S'
+    end
+    object SpirtZAG_PERIOD: TFloatField
+      FieldName = 'ZAG_PERIOD'
+    end
+    object SpirtRASH_VIRAB_PERIOD: TFloatField
+      FieldName = 'RASH_VIRAB_PERIOD'
+    end
+    object SpirtPRIX_PERIOD: TFloatField
+      FieldName = 'PRIX_PERIOD'
+    end
+    object SpirtRASX_PERIOD: TFloatField
+      FieldName = 'RASX_PERIOD'
+    end
+    object SpirtPEREDANO_RASH_S: TFloatField
+      FieldName = 'PEREDANO_RASH_S'
+    end
+    object SpirtPEREDANO_RASH_NZ: TFloatField
+      FieldName = 'PEREDANO_RASH_NZ'
+    end
+    object SpirtFACTNORM: TFloatField
+      FieldName = 'FACTNORM'
+    end
+    object SpirtVIP: TFloatField
+      FieldName = 'VIP'
+    end
+    object SpirtSTRUK_ID: TIntegerField
+      FieldName = 'STRUK_ID'
+    end
+    object SpirtNMAT: TStringField
+      FieldName = 'NMAT'
+      Size = 60
     end
   end
 end
