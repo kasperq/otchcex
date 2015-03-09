@@ -323,6 +323,18 @@ begin
           Spirt_Otchet.FieldByName('Ost_nn').AsFloat := dob_ost.FieldByName('Ostatok_begin_S').AsVariant;
           Spirt_Otchet.FieldByName('Ost_nk').AsFloat := dob_ost.FieldByName('Ostatok_end_S').AsVariant;
         end;
+        if (Spirt_OtchetNmat_Prod.AsString = ' Приход из др.подразделений') then
+        begin
+          Spirt_Otchet.FieldByName('Ostatok_begin_S').AsFloat := 0;
+          Spirt_Otchet.FieldByName('Ostatok_begin_nz').AsFloat := 0;
+          Spirt_Otchet.FieldByName('Ostatok_end_S').AsFloat := 0;
+          Spirt_Otchet.FieldByName('Ostatok_end_nz').AsFloat := 0;
+          Spirt_Otchet.FieldByName('zag_period').AsFloat := dob_ost.FieldByName('zag_period').AsVariant;
+          Spirt_Otchet.FieldByName('Rash_virab_period').AsFloat := dob_ost.FieldByName('Rash_virab_period').AsVariant;
+          Spirt_Otchet.FieldByName('Peredano_Rash_Nz').AsFloat := dob_ost.FieldByName('Peredano_Rash_Nz').AsVariant;
+          Spirt_Otchet.FieldByName('Ost_nn').AsFloat := 0;
+          Spirt_Otchet.FieldByName('Ost_nk').AsFloat := 0;
+        end;
         sum_ost_s_n := dob_ost.FieldByName('Ostatok_begin_s').AsVariant;
         sum_ost_s_k := dob_ost.FieldByName('Ostatok_end_s').AsVariant;
         prix_cex := prix_cex+Spirt_Otchet.FieldByName('Prix_Period').AsVariant;
