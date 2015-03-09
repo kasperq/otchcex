@@ -424,7 +424,7 @@ object FAct_Aceton: TFAct_Aceton
     Left = 520
     Top = 4
     Bitmap = {
-      494C01010A000C00040018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010A000C00080018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1382,7 +1382,7 @@ object FAct_Aceton: TFAct_Aceton
     Top = 168
   end
   object frxReport1: TfrxReport
-    Version = '4.7.109'
+    Version = '4.9.32'
     DotMatrixReport = False
     IniFile = '\Software\Fast Reports'
     PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator]
