@@ -212,7 +212,7 @@ end;
 
 procedure TFGlMenu.FormResize(Sender: TObject);
 begin
-  if ActiveForm <> nil then
+  if (ActiveForm <> nil) then
   begin
     ActiveForm.Width  := Main_Panel.Width;
     ActiveForm.Height := Main_Panel.Height;

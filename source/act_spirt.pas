@@ -439,6 +439,16 @@ begin
   god := strtoint(SpinEdit4.Text);
   if (edit1.Text <> '  ') then
   begin
+    dM1.Matrop.Active := false;
+    dM1.Matrop.ParamByName('ksm').AsInteger := strtoint(edit1.text);
+    dM1.Matrop.Active := TRUE;
+    if (not dm1.Matrop.eof) then
+    begin
+      s_ksm := strtoint(edit1.text);
+      Label13.Caption := dm1.Matrop.FieldByName('Nmat').AsString;
+      Label1.Caption := dm1.MatropNeis.AsString;
+      s_kei := dm1.MatropKei_id.asinteger;
+    end;
     IF (MES < 10) THEN
       S_MES := '0' + INTTOSTR(MES)
     ELSE
