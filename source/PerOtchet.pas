@@ -321,6 +321,7 @@ type
     q_spprodREGLS_ID: TIntegerField;
     q_spprodSERTIFIED: TSmallintField;
     workSes: TSession;
+    ToolButton1: TToolButton;
     procedure SpinEdit3Change(Sender: TObject);
     procedure SpinEdit4Change(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -333,6 +334,7 @@ type
     procedure frReport1GetValue(const ParName: string; var ParValue: Variant);
     procedure ComboBox1Change(Sender: TObject);
     procedure ComboBox2Change(Sender: TObject);
+    procedure ToolButton1Click(Sender: TObject);
   private
     machine : string;
 
@@ -1060,6 +1062,11 @@ begin
 end;
 
 
+procedure TFPerOtchet.ToolButton1Click(Sender: TObject);
+begin
+  updatePCSppod;
+end;
+
 procedure TFPerOtchet.ToolButton4Click(Sender: TObject);
 var
   S_DATk : string;
@@ -1261,7 +1268,7 @@ begin
       OTCHET_ST;
       DM1.KARTV.Next;
     end;
-    updatePCSppod;
+//    updatePCSppod;
     Splash.Free;
     if spisok.Active then
       spisok.Close;
