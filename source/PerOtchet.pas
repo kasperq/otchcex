@@ -1086,199 +1086,199 @@ begin
   end;
   IF (VDOCUMENT_ID <> 0) and (not DM1.KARTV.Eof) THEN
   begin
-//    Splash := ShowSplashWindow(AniBmp1,
-//                               'Передача данных из цеха в АСУ. Подождите, пожалуйста...',
-//                               True,
-//                               nil);
-//    regot.Filter := 'CEX=' + '''' + S_STKOD + '''' + ' AND MES=' + INTTOSTR(MES);
-//    regot.Filtered := TRUE;
-//    regot.Open;
-//    IF REGOT.Eof THEN
-//    BEGIN
-//      regot.Insert;
-//      regotdatcex.AsString := datetostr(date);
-//      regotCex.AsString := s_stkod;
-//      regotMes.AsInteger := mes;
-//      regot.Post;
-//    END
-//    ELSE
-//    BEGIN
-//      regot.Last;
-//      IF regotDATACY.AsString = '' THEN
-//      BEGIN
-//        regot.Edit;
-//        regotdatcex.AsString := datetostr(date);
-//        regotMes.AsInteger := mes;
-//        regot.Post;
-//      END
-//      ELSE
-//      BEGIN
-//        Splash.Free;
-//        MessageDlg(' Данные НЕ переданы, т.к. они были уже переданы и использованы!',
-//                   mtWarning, [mbOK], 0);
-//        SysUtils.Abort;
-//      END;
-//    END;
-//    if Otchets.Active = false then
-//      Otchets.Active := true;
-//    if Otchet.Active = true then
-//      Otchet.Close;
-//    otchet.Filter := 'otstrk=' + '''' + s_stkod + '''';
-//    Otchet.Open;
-//    otchet.Filtered := true;
-//    otchet.First;
-//    while (not otchet.Eof) do
-//      otchet.Delete;
-//    if Spisok.Active = true then
-//      Spisok.Close;
-//    Spisok.Filter := 'otstrk=' + '''' + s_stkod + '''';
-//    Spisok.Open;
-//    Spisok.Filtered := true;
-//    Spisok.First;
-//    while (not Spisok.Eof) do
-//      Spisok.Delete;
-//    DM1.KARTV.First;
-//    while not DM1.KARTV.Eof do
-//    begin
-//      S_KODP := DM1.KARTVKSM_ID.ASINTEGER;
-//      v_vipusk := dm1.KartVKOL_PRIH.AsFloat;
-//      s_spprn := INTTOSTR(DM1.KARTVSpprn.AsInteger);
-//      s_spvis := inttostr(DM1.KARTVSpvis.AsInteger);
-//      s_keip := DM1.KARTVKei_id.AsInteger;
-//      S_DATN := '01.01.' + INTTOSTR(GOD);
-//      if (mes < 4) and (mes >= 1) then
-//        S_DATk := '01.01.' + INTTOSTR(GOD);
-//      if (mes < 7) and (mes > 3) then
-//        S_DATk := '01.04.' + INTTOSTR(GOD);
-//      if (mes < 10) and (mes > 6) then
-//        S_DATk := '01.07.' + INTTOSTR(GOD);
-//      if (mes <= 12) and (mes > 9) then
-//        S_DATk := '01.10.' + INTTOSTR(GOD);
-//// расход с начала года
-//      dm1.CEH_OTCHET.Active := FALSE;
-//      dm1.CEH_OTCHET.ParamByName('MES').AsInteger := mes;
-//      dm1.CEH_OTCHET.ParamByName('GOD').AsInteger := GOD;
-//      dm1.CEH_OTCHET.Active := TRUE;
-//// нормы
-//      Normt.Active := False;
-//      Normt.SQL.Clear;
-//      Normt.SQL.Add('SELECT norm.ksm_id, norm.Kraz, norm.razdel_id, norm.plnorm, '
-//                    + 'norm.kei_id kein');
-//      Normt.SQL.Add(' FROM norm_view' + '(' + '119,' + inttostr(god) + ','
-//                    + inttostr(mes) + ',' + inttostr(s_kodp) + ',0,0)' + ' NORM ');
-//      Normt.Active := true;
-//// значность
-//      if FSprFormul.CEH_NormZ.Active then
-//        FSprFormul.CEH_NormZ.Close;
-//      FSprFormul.CEH_NormZ.MacroByName('USL').AsString := ' Where CEH_NORMZ.KSM_ID_PR='
-//                                                          + INTTOSTR(S_KODP);
-//      FSprFormul.CEH_NormZ.Open;
-//      FSprFormul.CEH_NORMZ.First;
-//// расход на выработку с начала квартала
-//      Ras_Vir.Active := False;
-//      Ras_Vir.SQL.Clear;
-//      Ras_Vir.SQL.Add('SELECT DISTINCT ost.ksm_id, ost.razdel_id, ost.KART_ID,');
-//      Ras_Vir.SQL.Add('ost.rash_virab_period');
-//      Ras_Vir.SQL.Add(' FROM  SELECT_OB_VED (' + '''' + s_datk + '''' + ',' + ''''
-//                      + s_dat2 + '''' + ',' + inttostr(s_kodp) + ') ost');
-//      Ras_Vir.Active := true;
-////выпуск с начала года
-//      DM1.IBQuery1.Active := False;
-//      DM1.IBQuery1.SQL.Clear;
-//      DM1.IBQuery1.SQL.Add('SELECT  sum(KARTv.KOL_PRIH) vipusk_ng');
-//      DM1.IBQuery1.SQL.Add(' FROM KARTv');
-//      DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
-//      DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID=' + INTTOSTR(VsTRUK_ID)
-//                           + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
-//                           + ' AND KARTv.KSM_ID=' + INTTOSTR(s_KODP)
-//                           + ' AND Document.Date_op between ' + '''' + s_datn
-//                           + '''' + ' and ' + '''' + s_dat2 + '''');
-//      DM1.IBQuery1.Active := True;
-//      if not dm1.IBQuery1.Eof then
-//        V_VIPUSKG := DM1.IBQuery1.FieldByName('VIPUSK_NG').AsFloat
-//      ELSE
-//        V_VIPUSKG := 0;
-////выпуск с начала квартала
-//      DM1.IBQuery1.Active := False;
-//      DM1.IBQuery1.SQL.Clear;
-//      DM1.IBQuery1.SQL.Add('SELECT  sum(KARTv.KOL_PRIH) vipusk_k');
-//      DM1.IBQuery1.SQL.Add(' FROM KARTv');
-//      DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
-//      DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID=' + INTTOSTR(VsTRUK_ID)
-//                           + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
-//                           + ' AND KARTv.KSM_ID=' + INTTOSTR(s_KODP)
-//                           + ' AND Document.Date_op between ' + '''' + s_datk
-//                           + '''' + ' and ' + '''' + s_dat2 + '''');
-//      DM1.IBQuery1.Active := True;
-//      if not dm1.IBQuery1.Eof then
-//        V_VIPUSKk := DM1.IBQuery1.FieldByName('VIPUSK_k').AsFloat
-//      ELSE
-//        V_VIPUSKk := 0;
-//      if lenGTH(trim(inttostr(dm1.KartvKSM_ID.AsInteger))) = 1 then
-//        sT_kodp := '00000' + trim(inttostr(dm1.KartvKSM_ID.AsInteger));
-//      if lenGTH(trim(inttostr(dm1.KartvKSM_ID.AsInteger))) = 2 then
-//        sT_kodp := '0000' + trim(inttostr(dm1.KartvKSM_ID.AsInteger));
-//      if lenGTH(trim(inttostr(dm1.KartvKSM_ID.AsInteger))) = 3 then
-//        sT_kodp := '000' + trim(inttostr(dm1.KartvKSM_ID.AsInteger));
-//      if lenGTH(trim(inttostr(dm1.KartvKSM_ID.AsInteger))) = 4 then
-//        sT_kodp := '00' + trim(inttostr(dm1.KartvKSM_ID.AsInteger));
-//      if lenGTH(trim(inttostr(dm1.KartvKSM_ID.AsInteger))) = 5 then
-//        sT_kodp := '0' + trim(inttostr(dm1.KartvKSM_ID.AsInteger));
-//      if lenGTH(trim(inttostr(dm1.KartvKSM_ID.AsInteger))) = 6 then
-//        sT_kodp := trim(inttostr(dm1.KartvKSM_ID.AsInteger));
-//      if prizpr.Active then
-//        prizpr.Close;
-//      prizpr.Open;
-//      if prizpr.Locate('sprod', st_kodp, []) then
-//        prizpr.Edit
-//      else
-//      begin
-//        prizpr.Insert;
-//        prizprSprod.AsString := sT_kodp;
-//        prizprSpceh.AsString := s_stkod;
-//        prizprSpprn.AsString := s_spprn;
-//        prizprSpvis.AsString := s_spvis;
-//      end;
-//      prizprPrgod.AsString := inttostr(god);
-//      if mes < 10 then
-//        prizprPrmes.AsString := ' ' + inttostr(mes)
-//      else
-//        prizprPrmes.AsString := inttostr(mes);
-//      prizprPrg1.AsVariant := dm1.KartVKOL_PRIH.AsFloat;
-//      prizprKolg1.AsVariant := v_vipuskg;
-//      prizprKolgs1.AsVariant := v_vipuskg - dm1.KartVKOL_PRIH.AsFloat;
-//      prizprKolk1.AsVariant := v_vipuskk;
-//      prizprKolks1.AsVariant := v_vipuskk - dm1.KartVKOL_PRIH.AsFloat;
-//      prizpr.Post;
-//// формирование списка препаратов для передачи
-//      Spisok.Append;
-//      spisokOtprod.AsString := sT_kodp;
-//      spisokOtstrk.AsString := s_stkod;
-//      spisokNmat.AsString := DM1.KARTVNmat.AsString;
-//      spisokMes.AsInteger := mes;
-//      spisokGod.AsInteger := god;
-//      spisok.Post;
-//      OTCHET_ST;
-//      DM1.KARTV.Next;
-//    end;
+    Splash := ShowSplashWindow(AniBmp1,
+                               'Передача данных из цеха в АСУ. Подождите, пожалуйста...',
+                               True,
+                               nil);
+    regot.Filter := 'CEX=' + '''' + S_STKOD + '''' + ' AND MES=' + INTTOSTR(MES);
+    regot.Filtered := TRUE;
+    regot.Open;
+    IF REGOT.Eof THEN
+    BEGIN
+      regot.Insert;
+      regotdatcex.AsString := datetostr(date);
+      regotCex.AsString := s_stkod;
+      regotMes.AsInteger := mes;
+      regot.Post;
+    END
+    ELSE
+    BEGIN
+      regot.Last;
+      IF regotDATACY.AsString = '' THEN
+      BEGIN
+        regot.Edit;
+        regotdatcex.AsString := datetostr(date);
+        regotMes.AsInteger := mes;
+        regot.Post;
+      END
+      ELSE
+      BEGIN
+        Splash.Free;
+        MessageDlg(' Данные НЕ переданы, т.к. они были уже переданы и использованы!',
+                   mtWarning, [mbOK], 0);
+        SysUtils.Abort;
+      END;
+    END;
+    if Otchets.Active = false then
+      Otchets.Active := true;
+    if Otchet.Active = true then
+      Otchet.Close;
+    otchet.Filter := 'otstrk=' + '''' + s_stkod + '''';
+    Otchet.Open;
+    otchet.Filtered := true;
+    otchet.First;
+    while (not otchet.Eof) do
+      otchet.Delete;
+    if Spisok.Active = true then
+      Spisok.Close;
+    Spisok.Filter := 'otstrk=' + '''' + s_stkod + '''';
+    Spisok.Open;
+    Spisok.Filtered := true;
+    Spisok.First;
+    while (not Spisok.Eof) do
+      Spisok.Delete;
+    DM1.KARTV.First;
+    while not DM1.KARTV.Eof do
+    begin
+      S_KODP := DM1.KARTVKSM_ID.ASINTEGER;
+      v_vipusk := dm1.KartVKOL_PRIH.AsFloat;
+      s_spprn := INTTOSTR(DM1.KARTVSpprn.AsInteger);
+      s_spvis := inttostr(DM1.KARTVSpvis.AsInteger);
+      s_keip := DM1.KARTVKei_id.AsInteger;
+      S_DATN := '01.01.' + INTTOSTR(GOD);
+      if (mes < 4) and (mes >= 1) then
+        S_DATk := '01.01.' + INTTOSTR(GOD);
+      if (mes < 7) and (mes > 3) then
+        S_DATk := '01.04.' + INTTOSTR(GOD);
+      if (mes < 10) and (mes > 6) then
+        S_DATk := '01.07.' + INTTOSTR(GOD);
+      if (mes <= 12) and (mes > 9) then
+        S_DATk := '01.10.' + INTTOSTR(GOD);
+// расход с начала года
+      dm1.CEH_OTCHET.Active := FALSE;
+      dm1.CEH_OTCHET.ParamByName('MES').AsInteger := mes;
+      dm1.CEH_OTCHET.ParamByName('GOD').AsInteger := GOD;
+      dm1.CEH_OTCHET.Active := TRUE;
+// нормы
+      Normt.Active := False;
+      Normt.SQL.Clear;
+      Normt.SQL.Add('SELECT norm.ksm_id, norm.Kraz, norm.razdel_id, norm.plnorm, '
+                    + 'norm.kei_id kein');
+      Normt.SQL.Add(' FROM norm_view' + '(' + '119,' + inttostr(god) + ','
+                    + inttostr(mes) + ',' + inttostr(s_kodp) + ',0,0)' + ' NORM ');
+      Normt.Active := true;
+// значность
+      if FSprFormul.CEH_NormZ.Active then
+        FSprFormul.CEH_NormZ.Close;
+      FSprFormul.CEH_NormZ.MacroByName('USL').AsString := ' Where CEH_NORMZ.KSM_ID_PR='
+                                                          + INTTOSTR(S_KODP);
+      FSprFormul.CEH_NormZ.Open;
+      FSprFormul.CEH_NORMZ.First;
+// расход на выработку с начала квартала
+      Ras_Vir.Active := False;
+      Ras_Vir.SQL.Clear;
+      Ras_Vir.SQL.Add('SELECT DISTINCT ost.ksm_id, ost.razdel_id, ost.KART_ID,');
+      Ras_Vir.SQL.Add('ost.rash_virab_period');
+      Ras_Vir.SQL.Add(' FROM  SELECT_OB_VED (' + '''' + s_datk + '''' + ',' + ''''
+                      + s_dat2 + '''' + ',' + inttostr(s_kodp) + ') ost');
+      Ras_Vir.Active := true;
+//выпуск с начала года
+      DM1.IBQuery1.Active := False;
+      DM1.IBQuery1.SQL.Clear;
+      DM1.IBQuery1.SQL.Add('SELECT  sum(KARTv.KOL_PRIH) vipusk_ng');
+      DM1.IBQuery1.SQL.Add(' FROM KARTv');
+      DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
+      DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID=' + INTTOSTR(VsTRUK_ID)
+                           + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
+                           + ' AND KARTv.KSM_ID=' + INTTOSTR(s_KODP)
+                           + ' AND Document.Date_op between ' + '''' + s_datn
+                           + '''' + ' and ' + '''' + s_dat2 + '''');
+      DM1.IBQuery1.Active := True;
+      if not dm1.IBQuery1.Eof then
+        V_VIPUSKG := DM1.IBQuery1.FieldByName('VIPUSK_NG').AsFloat
+      ELSE
+        V_VIPUSKG := 0;
+//выпуск с начала квартала
+      DM1.IBQuery1.Active := False;
+      DM1.IBQuery1.SQL.Clear;
+      DM1.IBQuery1.SQL.Add('SELECT  sum(KARTv.KOL_PRIH) vipusk_k');
+      DM1.IBQuery1.SQL.Add(' FROM KARTv');
+      DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
+      DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID=' + INTTOSTR(VsTRUK_ID)
+                           + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
+                           + ' AND KARTv.KSM_ID=' + INTTOSTR(s_KODP)
+                           + ' AND Document.Date_op between ' + '''' + s_datk
+                           + '''' + ' and ' + '''' + s_dat2 + '''');
+      DM1.IBQuery1.Active := True;
+      if not dm1.IBQuery1.Eof then
+        V_VIPUSKk := DM1.IBQuery1.FieldByName('VIPUSK_k').AsFloat
+      ELSE
+        V_VIPUSKk := 0;
+      if lenGTH(trim(inttostr(dm1.KartvKSM_ID.AsInteger))) = 1 then
+        sT_kodp := '00000' + trim(inttostr(dm1.KartvKSM_ID.AsInteger));
+      if lenGTH(trim(inttostr(dm1.KartvKSM_ID.AsInteger))) = 2 then
+        sT_kodp := '0000' + trim(inttostr(dm1.KartvKSM_ID.AsInteger));
+      if lenGTH(trim(inttostr(dm1.KartvKSM_ID.AsInteger))) = 3 then
+        sT_kodp := '000' + trim(inttostr(dm1.KartvKSM_ID.AsInteger));
+      if lenGTH(trim(inttostr(dm1.KartvKSM_ID.AsInteger))) = 4 then
+        sT_kodp := '00' + trim(inttostr(dm1.KartvKSM_ID.AsInteger));
+      if lenGTH(trim(inttostr(dm1.KartvKSM_ID.AsInteger))) = 5 then
+        sT_kodp := '0' + trim(inttostr(dm1.KartvKSM_ID.AsInteger));
+      if lenGTH(trim(inttostr(dm1.KartvKSM_ID.AsInteger))) = 6 then
+        sT_kodp := trim(inttostr(dm1.KartvKSM_ID.AsInteger));
+      if prizpr.Active then
+        prizpr.Close;
+      prizpr.Open;
+      if prizpr.Locate('sprod', st_kodp, []) then
+        prizpr.Edit
+      else
+      begin
+        prizpr.Insert;
+        prizprSprod.AsString := sT_kodp;
+        prizprSpceh.AsString := s_stkod;
+        prizprSpprn.AsString := s_spprn;
+        prizprSpvis.AsString := s_spvis;
+      end;
+      prizprPrgod.AsString := inttostr(god);
+      if mes < 10 then
+        prizprPrmes.AsString := ' ' + inttostr(mes)
+      else
+        prizprPrmes.AsString := inttostr(mes);
+      prizprPrg1.AsVariant := dm1.KartVKOL_PRIH.AsFloat;
+      prizprKolg1.AsVariant := v_vipuskg;
+      prizprKolgs1.AsVariant := v_vipuskg - dm1.KartVKOL_PRIH.AsFloat;
+      prizprKolk1.AsVariant := v_vipuskk;
+      prizprKolks1.AsVariant := v_vipuskk - dm1.KartVKOL_PRIH.AsFloat;
+      prizpr.Post;
+// формирование списка препаратов для передачи
+      Spisok.Append;
+      spisokOtprod.AsString := sT_kodp;
+      spisokOtstrk.AsString := s_stkod;
+      spisokNmat.AsString := DM1.KARTVNmat.AsString;
+      spisokMes.AsInteger := mes;
+      spisokGod.AsInteger := god;
+      spisok.Post;
+      OTCHET_ST;
+      DM1.KARTV.Next;
+    end;
     updatePCSppod;
-//    Splash.Free;
-//    if spisok.Active then
-//      spisok.Close;
-//    if otchet.Active then
-//      otchet.Close;
-//    if otchets.Active then
-//      otchet.Close;
-//    if prizpr.Active then
-//      prizpr.Close;
-//    if prizm.Active then
-//      prizpr.Close;
-//    if ncmatrd.Active then
-//      ncmatrd.Close;
-//    if regot.Active then
-//      regot.Close;
-//    if rasxod.Active then
-//      rasxod.Close;
+    Splash.Free;
+    if spisok.Active then
+      spisok.Close;
+    if otchet.Active then
+      otchet.Close;
+    if otchets.Active then
+      otchet.Close;
+    if prizpr.Active then
+      prizpr.Close;
+    if prizm.Active then
+      prizpr.Close;
+    if ncmatrd.Active then
+      ncmatrd.Close;
+    if regot.Active then
+      regot.Close;
+    if rasxod.Active then
+      rasxod.Close;
   end
   else
   begin
