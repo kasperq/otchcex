@@ -48,8 +48,15 @@ object FPerOtchet: TFPerOtchet
       ImageIndex = 3
       OnClick = ToolButton5Click
     end
-    object Label3: TLabel
+    object ToolButton1: TToolButton
       Left = 64
+      Top = 0
+      Caption = 'ToolButton1'
+      ImageIndex = 4
+      OnClick = ToolButton1Click
+    end
+    object Label3: TLabel
+      Left = 96
       Top = 0
       Width = 112
       Height = 30
@@ -67,7 +74,7 @@ object FPerOtchet: TFPerOtchet
       Layout = tlCenter
     end
     object ComboBox1: TComboBox
-      Left = 176
+      Left = 208
       Top = 0
       Width = 111
       Height = 21
@@ -92,7 +99,7 @@ object FPerOtchet: TFPerOtchet
         ' '#1076#1077#1082#1072#1073#1088#1100)
     end
     object ComboBox2: TComboBox
-      Left = 287
+      Left = 319
       Top = 0
       Width = 69
       Height = 21
@@ -195,7 +202,7 @@ object FPerOtchet: TFPerOtchet
     Left = 448
     Top = 4
     Bitmap = {
-      494C010108000A00140018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010108000A001C0018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
