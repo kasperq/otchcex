@@ -52,7 +52,7 @@ object FPerOtchet: TFPerOtchet
       Left = 64
       Top = 0
       Width = 112
-      Height = 13
+      Height = 30
       Margins.Bottom = 0
       Alignment = taCenter
       BiDiMode = bdLeftToRight
@@ -73,7 +73,7 @@ object FPerOtchet: TFPerOtchet
       Height = 21
       Ctl3D = False
       DropDownCount = 12
-      ItemHeight = 0
+      ItemHeight = 13
       ParentCtl3D = False
       TabOrder = 0
       OnChange = ComboBox1Change
@@ -95,9 +95,9 @@ object FPerOtchet: TFPerOtchet
       Left = 287
       Top = 0
       Width = 69
-      Height = 30
+      Height = 21
       Ctl3D = False
-      ItemHeight = 0
+      ItemHeight = 13
       ParentCtl3D = False
       TabOrder = 1
       OnChange = ComboBox2Change
@@ -195,7 +195,7 @@ object FPerOtchet: TFPerOtchet
     Left = 448
     Top = 4
     Bitmap = {
-      494C010108000A00040018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010108000A00140018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1967,5 +1967,551 @@ object FPerOtchet: TFPerOtchet
       FieldName = 'NCPROD_S'
       Size = 6
     end
+  end
+  object q_spprodDbf: TERxQuery
+    CachedUpdates = True
+    SessionName = 'workSes'
+    SQL.Strings = (
+      'select *'
+      'from '#39'f:\pc1\otchbas\spprod.dbf'#39' spprod'
+      'where spprod.struk_id = :struk_id')
+    UpdateObject = up_q_spprodDbf
+    Macros = <>
+    EhSQL.Strings = (
+      'select *'
+      'from '#39'f:\pc1\otchbas\spprod.dbf'#39' spprod'
+      'where spprod.struk_id = :struk_id')
+    EhMacros = <>
+    Left = 440
+    Top = 216
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'struk_id'
+        ParamType = ptInput
+      end>
+    object q_spprodDbfSPROD: TStringField
+      FieldName = 'SPROD'
+      Size = 2
+    end
+    object q_spprodDbfSPPOL: TStringField
+      FieldName = 'SPPOL'
+      Size = 2
+    end
+    object q_spprodDbfSPPRN: TStringField
+      FieldName = 'SPPRN'
+      Size = 1
+    end
+    object q_spprodDbfSPVIS: TStringField
+      FieldName = 'SPVIS'
+      Size = 1
+    end
+    object q_spprodDbfSPSTAD: TStringField
+      FieldName = 'SPSTAD'
+      Size = 7
+    end
+    object q_spprodDbfSPNAME: TStringField
+      FieldName = 'SPNAME'
+      Size = 60
+    end
+    object q_spprodDbfSPSNAM: TStringField
+      FieldName = 'SPSNAM'
+      Size = 25
+    end
+    object q_spprodDbfSPKEI: TStringField
+      FieldName = 'SPKEI'
+      Size = 4
+    end
+    object q_spprodDbfSPCENA: TFloatField
+      FieldName = 'SPCENA'
+    end
+    object q_spprodDbfSPCENAB: TFloatField
+      FieldName = 'SPCENAB'
+    end
+    object q_spprodDbfSPCENAR: TFloatField
+      FieldName = 'SPCENAR'
+    end
+    object q_spprodDbfSPCEH: TStringField
+      FieldName = 'SPCEH'
+      Size = 4
+    end
+    object q_spprodDbfSPXRKT: TStringField
+      FieldName = 'SPXRKT'
+      Size = 30
+    end
+    object q_spprodDbfSPRODS: TStringField
+      FieldName = 'SPRODS'
+      Size = 2
+    end
+    object q_spprodDbfCODE: TStringField
+      FieldName = 'CODE'
+      Size = 4
+    end
+    object q_spprodDbfSPKEIS: TStringField
+      FieldName = 'SPKEIS'
+      Size = 6
+    end
+    object q_spprodDbfINPUT1: TFloatField
+      FieldName = 'INPUT1'
+    end
+    object q_spprodDbfINPUT2: TFloatField
+      FieldName = 'INPUT2'
+    end
+    object q_spprodDbfUMN: TSmallintField
+      FieldName = 'UMN'
+    end
+    object q_spprodDbfSPRIZ: TStringField
+      FieldName = 'SPRIZ'
+      Size = 1
+    end
+    object q_spprodDbfSPKEY: TStringField
+      FieldName = 'SPKEY'
+    end
+    object q_spprodDbfSPNAMES: TStringField
+      FieldName = 'SPNAMES'
+      Size = 30
+    end
+    object q_spprodDbfEAN13: TSmallintField
+      FieldName = 'EAN13'
+    end
+    object q_spprodDbfKORG: TFloatField
+      FieldName = 'KORG'
+    end
+    object q_spprodDbfSTRUK_ID: TSmallintField
+      FieldName = 'STRUK_ID'
+    end
+    object q_spprodDbfGOST: TStringField
+      FieldName = 'GOST'
+      Size = 30
+    end
+    object q_spprodDbfNEW_KOD: TStringField
+      FieldName = 'NEW_KOD'
+      Size = 18
+    end
+    object q_spprodDbfKSM_ID: TFloatField
+      FieldName = 'KSM_ID'
+    end
+    object q_spprodDbfACTIVP: TSmallintField
+      FieldName = 'ACTIVP'
+    end
+    object q_spprodDbfNAM: TStringField
+      FieldName = 'NAM'
+      Size = 50
+    end
+  end
+  object up_q_spprodDbf: TUpdateSQL
+    ModifySQL.Strings = (
+      'update "f:\pc1\otchbas\spprod.dbf"'
+      'set'
+      '  SPROD = :SPROD,'
+      '  SPPOL = :SPPOL,'
+      '  SPPRN = :SPPRN,'
+      '  SPVIS = :SPVIS,'
+      '  SPSTAD = :SPSTAD,'
+      '  SPNAME = :SPNAME,'
+      '  SPSNAM = :SPSNAM,'
+      '  SPKEI = :SPKEI,'
+      '  SPCENA = :SPCENA,'
+      '  SPCENAB = :SPCENAB,'
+      '  SPCENAR = :SPCENAR,'
+      '  SPCEH = :SPCEH,'
+      '  SPXRKT = :SPXRKT,'
+      '  SPRODS = :SPRODS,'
+      '  CODE = :CODE,'
+      '  SPKEIS = :SPKEIS,'
+      '  INPUT1 = :INPUT1,'
+      '  INPUT2 = :INPUT2,'
+      '  UMN = :UMN,'
+      '  SPRIZ = :SPRIZ,'
+      '  SPKEY = :SPKEY,'
+      '  SPNAMES = :SPNAMES,'
+      '  EAN13 = :EAN13,'
+      '  KORG = :KORG,'
+      '  STRUK_ID = :STRUK_ID,'
+      '  GOST = :GOST,'
+      '  NEW_KOD = :NEW_KOD,'
+      '  KSM_ID = :KSM_ID,'
+      '  ACTIVP = :ACTIVP,'
+      '  NAM = :NAM'
+      'where'
+      '  KSM_ID = :OLD_KSM_ID')
+    InsertSQL.Strings = (
+      'insert into "f:\pc1\otchbas\spprod.dbf"'
+      
+        '  (SPROD, SPPOL, SPPRN, SPVIS, SPSTAD, SPNAME, SPSNAM, SPKEI, SP' +
+        'CENA, SPCENAB, '
+      
+        '   SPCENAR, SPCEH, SPXRKT, SPRODS, CODE, SPKEIS, INPUT1, INPUT2,' +
+        ' UMN, SPRIZ, '
+      
+        '   SPKEY, SPNAMES, EAN13, KORG, STRUK_ID, GOST, NEW_KOD, KSM_ID,' +
+        ' ACTIVP, '
+      '   NAM)'
+      'values'
+      
+        '  (:SPROD, :SPPOL, :SPPRN, :SPVIS, :SPSTAD, :SPNAME, :SPSNAM, :S' +
+        'PKEI, :SPCENA, '
+      
+        '   :SPCENAB, :SPCENAR, :SPCEH, :SPXRKT, :SPRODS, :CODE, :SPKEIS,' +
+        ' :INPUT1, '
+      
+        '   :INPUT2, :UMN, :SPRIZ, :SPKEY, :SPNAMES, :EAN13, :KORG, :STRU' +
+        'K_ID, :GOST, '
+      '   :NEW_KOD, :KSM_ID, :ACTIVP, :NAM)')
+    DeleteSQL.Strings = (
+      'delete from "f:\pc1\otchbas\spprod.dbf"'
+      'where'
+      '  KSM_ID = :OLD_KSM_ID')
+    Left = 440
+    Top = 256
+  end
+  object t_spprodDbf: TTable
+    CachedUpdates = True
+    SessionName = 'workSes'
+    TableName = 'f:\pc1\otchbas\spprod.dbf'
+    Left = 496
+    Top = 216
+    object t_spprodDbfSPROD: TStringField
+      FieldName = 'SPROD'
+      Size = 2
+    end
+    object t_spprodDbfSPPOL: TStringField
+      FieldName = 'SPPOL'
+      Size = 2
+    end
+    object t_spprodDbfSPPRN: TStringField
+      FieldName = 'SPPRN'
+      Size = 1
+    end
+    object t_spprodDbfSPVIS: TStringField
+      FieldName = 'SPVIS'
+      Size = 1
+    end
+    object t_spprodDbfSPSTAD: TStringField
+      FieldName = 'SPSTAD'
+      Size = 7
+    end
+    object t_spprodDbfSPNAME: TStringField
+      FieldName = 'SPNAME'
+      Size = 60
+    end
+    object t_spprodDbfSPSNAM: TStringField
+      FieldName = 'SPSNAM'
+      Size = 25
+    end
+    object t_spprodDbfSPKEI: TStringField
+      FieldName = 'SPKEI'
+      Size = 4
+    end
+    object t_spprodDbfSPCENA: TFloatField
+      FieldName = 'SPCENA'
+    end
+    object t_spprodDbfSPCENAB: TFloatField
+      FieldName = 'SPCENAB'
+    end
+    object t_spprodDbfSPCENAR: TFloatField
+      FieldName = 'SPCENAR'
+    end
+    object t_spprodDbfSPCEH: TStringField
+      FieldName = 'SPCEH'
+      Size = 4
+    end
+    object t_spprodDbfSPXRKT: TStringField
+      FieldName = 'SPXRKT'
+      Size = 30
+    end
+    object t_spprodDbfSPRODS: TStringField
+      FieldName = 'SPRODS'
+      Size = 2
+    end
+    object t_spprodDbfCODE: TStringField
+      FieldName = 'CODE'
+      Size = 4
+    end
+    object t_spprodDbfSPKEIS: TStringField
+      FieldName = 'SPKEIS'
+      Size = 6
+    end
+    object t_spprodDbfINPUT1: TFloatField
+      FieldName = 'INPUT1'
+    end
+    object t_spprodDbfINPUT2: TFloatField
+      FieldName = 'INPUT2'
+    end
+    object t_spprodDbfUMN: TSmallintField
+      FieldName = 'UMN'
+    end
+    object t_spprodDbfSPRIZ: TStringField
+      FieldName = 'SPRIZ'
+      Size = 1
+    end
+    object t_spprodDbfSPKEY: TStringField
+      FieldName = 'SPKEY'
+    end
+    object t_spprodDbfSPNAMES: TStringField
+      FieldName = 'SPNAMES'
+      Size = 30
+    end
+    object t_spprodDbfEAN13: TSmallintField
+      FieldName = 'EAN13'
+    end
+    object t_spprodDbfKORG: TFloatField
+      FieldName = 'KORG'
+    end
+    object t_spprodDbfSTRUK_ID: TSmallintField
+      FieldName = 'STRUK_ID'
+    end
+    object t_spprodDbfGOST: TStringField
+      FieldName = 'GOST'
+      Size = 30
+    end
+    object t_spprodDbfNEW_KOD: TStringField
+      FieldName = 'NEW_KOD'
+      Size = 18
+    end
+    object t_spprodDbfKSM_ID: TFloatField
+      FieldName = 'KSM_ID'
+    end
+    object t_spprodDbfACTIVP: TSmallintField
+      FieldName = 'ACTIVP'
+    end
+    object t_spprodDbfNAM: TStringField
+      FieldName = 'NAM'
+      Size = 50
+    end
+  end
+  object q_spprod: TRxIBQuery
+    Database = DM1.BELMED
+    Transaction = DM1.IBT_Read
+    SQL.Strings = (
+      'select *'
+      'from spprod'
+      'where spprod.ksm_id = :ksm_id')
+    Macros = <>
+    Left = 496
+    Top = 256
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'ksm_id'
+        ParamType = ptInput
+      end>
+    object q_spprodSPROD_ID: TIntegerField
+      FieldName = 'SPROD_ID'
+      Origin = '"SPPROD"."SPROD_ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object q_spprodKSM_ID: TIntegerField
+      FieldName = 'KSM_ID'
+      Origin = '"SPPROD"."KSM_ID"'
+      Required = True
+    end
+    object q_spprodSPKSM: TIBStringField
+      FieldName = 'SPKSM'
+      Origin = '"SPPROD"."SPKSM"'
+      FixedChar = True
+      Size = 6
+    end
+    object q_spprodSPPRN: TSmallintField
+      FieldName = 'SPPRN'
+      Origin = '"SPPROD"."SPPRN"'
+    end
+    object q_spprodSPVIS: TSmallintField
+      FieldName = 'SPVIS'
+      Origin = '"SPPROD"."SPVIS"'
+    end
+    object q_spprodNMAT: TIBStringField
+      FieldName = 'NMAT'
+      Origin = '"SPPROD"."NMAT"'
+      Size = 60
+    end
+    object q_spprodPROD_ID: TIntegerField
+      FieldName = 'PROD_ID'
+      Origin = '"SPPROD"."PROD_ID"'
+    end
+    object q_spprodKEI_ID: TSmallintField
+      FieldName = 'KEI_ID'
+      Origin = '"SPPROD"."KEI_ID"'
+    end
+    object q_spprodLEK_ID: TSmallintField
+      FieldName = 'LEK_ID'
+      Origin = '"SPPROD"."LEK_ID"'
+    end
+    object q_spprodMOD_ID: TSmallintField
+      FieldName = 'MOD_ID'
+      Origin = '"SPPROD"."MOD_ID"'
+    end
+    object q_spprodSPRODS: TSmallintField
+      FieldName = 'SPRODS'
+      Origin = '"SPPROD"."SPRODS"'
+    end
+    object q_spprodSPSR: TSmallintField
+      FieldName = 'SPSR'
+      Origin = '"SPPROD"."SPSR"'
+    end
+    object q_spprodVOL_ID: TSmallintField
+      FieldName = 'VOL_ID'
+      Origin = '"SPPROD"."VOL_ID"'
+    end
+    object q_spprodUMN: TSmallintField
+      FieldName = 'UMN'
+      Origin = '"SPPROD"."UMN"'
+    end
+    object q_spprodEAN13: TSmallintField
+      FieldName = 'EAN13'
+      Origin = '"SPPROD"."EAN13"'
+    end
+    object q_spprodSPRIZ: TSmallintField
+      FieldName = 'SPRIZ'
+      Origin = '"SPPROD"."SPRIZ"'
+    end
+    object q_spprodSTRUK_ID: TSmallintField
+      FieldName = 'STRUK_ID'
+      Origin = '"SPPROD"."STRUK_ID"'
+    end
+    object q_spprodREG: TSmallintField
+      FieldName = 'REG'
+      Origin = '"SPPROD"."REG"'
+    end
+    object q_spprodKORG: TIntegerField
+      FieldName = 'KORG'
+      Origin = '"SPPROD"."KORG"'
+    end
+    object q_spprodSPFS: TIBStringField
+      FieldName = 'SPFS'
+      Origin = '"SPPROD"."SPFS"'
+      FixedChar = True
+      Size = 2
+    end
+    object q_spprodSPFV: TSmallintField
+      FieldName = 'SPFV'
+      Origin = '"SPPROD"."SPFV"'
+    end
+    object q_spprodSPVU: TSmallintField
+      FieldName = 'SPVU'
+      Origin = '"SPPROD"."SPVU"'
+    end
+    object q_spprodSPTIP: TSmallintField
+      FieldName = 'SPTIP'
+      Origin = '"SPPROD"."SPTIP"'
+    end
+    object q_spprodSPSPIS: TSmallintField
+      FieldName = 'SPSPIS'
+      Origin = '"SPPROD"."SPSPIS"'
+    end
+    object q_spprodDOLPO: TIBBCDField
+      FieldName = 'DOLPO'
+      Origin = '"SPPROD"."DOLPO"'
+      Precision = 9
+      Size = 2
+    end
+    object q_spprodSTAT: TSmallintField
+      FieldName = 'STAT'
+      Origin = '"SPPROD"."STAT"'
+    end
+    object q_spprodPUP: TSmallintField
+      FieldName = 'PUP'
+      Origin = '"SPPROD"."PUP"'
+    end
+    object q_spprodNMATS: TIBStringField
+      FieldName = 'NMATS'
+      Origin = '"SPPROD"."NMATS"'
+      FixedChar = True
+      Size = 25
+    end
+    object q_spprodGOST: TIBStringField
+      FieldName = 'GOST'
+      Origin = '"SPPROD"."GOST"'
+      FixedChar = True
+      Size = 30
+    end
+    object q_spprodGR: TIBStringField
+      FieldName = 'GR'
+      Origin = '"SPPROD"."GR"'
+      FixedChar = True
+      Size = 2
+    end
+    object q_spprodPGR: TIBStringField
+      FieldName = 'PGR'
+      Origin = '"SPPROD"."PGR"'
+      FixedChar = True
+      Size = 2
+    end
+    object q_spprodXARKT: TIBStringField
+      FieldName = 'XARKT'
+      Origin = '"SPPROD"."XARKT"'
+      Size = 30
+    end
+    object q_spprodACTIVP: TSmallintField
+      FieldName = 'ACTIVP'
+      Origin = '"SPPROD"."ACTIVP"'
+    end
+    object q_spprodACTIVF: TSmallintField
+      FieldName = 'ACTIVF'
+      Origin = '"SPPROD"."ACTIVF"'
+    end
+    object q_spprodREGISTR_ID: TIntegerField
+      FieldName = 'REGISTR_ID'
+      Origin = '"SPPROD"."REGISTR_ID"'
+    end
+    object q_spprodVOLUMF: TFMTBCDField
+      FieldName = 'VOLUMF'
+      Origin = '"SPPROD"."VOLUMF"'
+      Precision = 18
+      Size = 6
+    end
+    object q_spprodVOL_OV: TFMTBCDField
+      FieldName = 'VOL_OV'
+      Origin = '"SPPROD"."VOL_OV"'
+      Precision = 18
+      Size = 6
+    end
+    object q_spprodKOD_PROD: TIBStringField
+      FieldKind = fkInternalCalc
+      FieldName = 'KOD_PROD'
+      Origin = '"SPPROD"."KOD_PROD"'
+      ProviderFlags = []
+      ReadOnly = True
+      FixedChar = True
+      Size = 18
+    end
+    object q_spprodMAIN_SPROD_ID: TIntegerField
+      FieldName = 'MAIN_SPROD_ID'
+      Origin = '"SPPROD"."MAIN_SPROD_ID"'
+    end
+    object q_spprodVES_UP: TIBBCDField
+      FieldName = 'VES_UP'
+      Origin = '"SPPROD"."VES_UP"'
+      Precision = 9
+      Size = 3
+    end
+    object q_spprodINOV: TSmallintField
+      FieldName = 'INOV'
+      Origin = '"SPPROD"."INOV"'
+    end
+    object q_spprodDATEI_1: TDateField
+      FieldName = 'DATEI_1'
+      Origin = '"SPPROD"."DATEI_1"'
+    end
+    object q_spprodDATEI_2: TDateField
+      FieldName = 'DATEI_2'
+      Origin = '"SPPROD"."DATEI_2"'
+    end
+    object q_spprodREGLS_ID: TIntegerField
+      FieldName = 'REGLS_ID'
+      Origin = '"SPPROD"."REGLS_ID"'
+    end
+    object q_spprodSERTIFIED: TSmallintField
+      FieldName = 'SERTIFIED'
+      Origin = '"SPPROD"."SERTIFIED"'
+    end
+  end
+  object workSes: TSession
+    NetFileDir = 'F:\PC1\OTCHBAS\'
+    PrivateDir = 'F:\PC1\OTCHBAS\'
+    SessionName = 'workSes'
+    Left = 400
+    Top = 216
   end
 end

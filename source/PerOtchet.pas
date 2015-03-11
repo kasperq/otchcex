@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ImgList, Grids, DBGridEh, StdCtrls, Spin, ComCtrls, ToolWin, DB,
   DBTables, IBCustomDataSet, IBQuery, RxIBQuery, RxMemDS,UtilRIB,SplshWnd,
-  DBGrids, FR_DSet, FR_DBSet, FR_Class;
+  DBGrids, FR_DSet, FR_DBSet, FR_Class, RxQuery, ERxQuery, BDE;
 
 type
   TFPerOtchet = class(TForm)
@@ -211,6 +211,116 @@ type
     prizmNCPROD_S: TStringField;
     ComboBox1: TComboBox;
     ComboBox2: TComboBox;
+    q_spprodDbf: TERxQuery;
+    q_spprodDbfSPROD: TStringField;
+    q_spprodDbfSPPOL: TStringField;
+    q_spprodDbfSPPRN: TStringField;
+    q_spprodDbfSPVIS: TStringField;
+    q_spprodDbfSPSTAD: TStringField;
+    q_spprodDbfSPNAME: TStringField;
+    q_spprodDbfSPSNAM: TStringField;
+    q_spprodDbfSPKEI: TStringField;
+    q_spprodDbfSPCENA: TFloatField;
+    q_spprodDbfSPCENAB: TFloatField;
+    q_spprodDbfSPCENAR: TFloatField;
+    q_spprodDbfSPCEH: TStringField;
+    q_spprodDbfSPXRKT: TStringField;
+    q_spprodDbfSPRODS: TStringField;
+    q_spprodDbfCODE: TStringField;
+    q_spprodDbfSPKEIS: TStringField;
+    q_spprodDbfINPUT1: TFloatField;
+    q_spprodDbfINPUT2: TFloatField;
+    q_spprodDbfUMN: TSmallintField;
+    q_spprodDbfSPRIZ: TStringField;
+    q_spprodDbfSPKEY: TStringField;
+    q_spprodDbfSPNAMES: TStringField;
+    q_spprodDbfEAN13: TSmallintField;
+    q_spprodDbfKORG: TFloatField;
+    q_spprodDbfSTRUK_ID: TSmallintField;
+    q_spprodDbfGOST: TStringField;
+    q_spprodDbfNEW_KOD: TStringField;
+    q_spprodDbfKSM_ID: TFloatField;
+    q_spprodDbfACTIVP: TSmallintField;
+    q_spprodDbfNAM: TStringField;
+    up_q_spprodDbf: TUpdateSQL;
+    t_spprodDbf: TTable;
+    t_spprodDbfSPROD: TStringField;
+    t_spprodDbfSPPOL: TStringField;
+    t_spprodDbfSPPRN: TStringField;
+    t_spprodDbfSPVIS: TStringField;
+    t_spprodDbfSPSTAD: TStringField;
+    t_spprodDbfSPNAME: TStringField;
+    t_spprodDbfSPSNAM: TStringField;
+    t_spprodDbfSPKEI: TStringField;
+    t_spprodDbfSPCENA: TFloatField;
+    t_spprodDbfSPCENAB: TFloatField;
+    t_spprodDbfSPCENAR: TFloatField;
+    t_spprodDbfSPCEH: TStringField;
+    t_spprodDbfSPXRKT: TStringField;
+    t_spprodDbfSPRODS: TStringField;
+    t_spprodDbfCODE: TStringField;
+    t_spprodDbfSPKEIS: TStringField;
+    t_spprodDbfINPUT1: TFloatField;
+    t_spprodDbfINPUT2: TFloatField;
+    t_spprodDbfUMN: TSmallintField;
+    t_spprodDbfSPRIZ: TStringField;
+    t_spprodDbfSPKEY: TStringField;
+    t_spprodDbfSPNAMES: TStringField;
+    t_spprodDbfEAN13: TSmallintField;
+    t_spprodDbfKORG: TFloatField;
+    t_spprodDbfSTRUK_ID: TSmallintField;
+    t_spprodDbfGOST: TStringField;
+    t_spprodDbfNEW_KOD: TStringField;
+    t_spprodDbfKSM_ID: TFloatField;
+    t_spprodDbfACTIVP: TSmallintField;
+    t_spprodDbfNAM: TStringField;
+    q_spprod: TRxIBQuery;
+    q_spprodSPROD_ID: TIntegerField;
+    q_spprodKSM_ID: TIntegerField;
+    q_spprodSPKSM: TIBStringField;
+    q_spprodSPPRN: TSmallintField;
+    q_spprodSPVIS: TSmallintField;
+    q_spprodNMAT: TIBStringField;
+    q_spprodPROD_ID: TIntegerField;
+    q_spprodKEI_ID: TSmallintField;
+    q_spprodLEK_ID: TSmallintField;
+    q_spprodMOD_ID: TSmallintField;
+    q_spprodSPRODS: TSmallintField;
+    q_spprodSPSR: TSmallintField;
+    q_spprodVOL_ID: TSmallintField;
+    q_spprodUMN: TSmallintField;
+    q_spprodEAN13: TSmallintField;
+    q_spprodSPRIZ: TSmallintField;
+    q_spprodSTRUK_ID: TSmallintField;
+    q_spprodREG: TSmallintField;
+    q_spprodKORG: TIntegerField;
+    q_spprodSPFS: TIBStringField;
+    q_spprodSPFV: TSmallintField;
+    q_spprodSPVU: TSmallintField;
+    q_spprodSPTIP: TSmallintField;
+    q_spprodSPSPIS: TSmallintField;
+    q_spprodDOLPO: TIBBCDField;
+    q_spprodSTAT: TSmallintField;
+    q_spprodPUP: TSmallintField;
+    q_spprodNMATS: TIBStringField;
+    q_spprodGOST: TIBStringField;
+    q_spprodGR: TIBStringField;
+    q_spprodPGR: TIBStringField;
+    q_spprodXARKT: TIBStringField;
+    q_spprodACTIVP: TSmallintField;
+    q_spprodACTIVF: TSmallintField;
+    q_spprodREGISTR_ID: TIntegerField;
+    q_spprodVOLUMF: TFMTBCDField;
+    q_spprodVOL_OV: TFMTBCDField;
+    q_spprodKOD_PROD: TIBStringField;
+    q_spprodMAIN_SPROD_ID: TIntegerField;
+    q_spprodVES_UP: TIBBCDField;
+    q_spprodINOV: TSmallintField;
+    q_spprodDATEI_1: TDateField;
+    q_spprodDATEI_2: TDateField;
+    q_spprodREGLS_ID: TIntegerField;
+    q_spprodSERTIFIED: TSmallintField;
+    workSes: TSession;
     procedure SpinEdit3Change(Sender: TObject);
     procedure SpinEdit4Change(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -224,9 +334,20 @@ type
     procedure ComboBox1Change(Sender: TObject);
     procedure ComboBox2Change(Sender: TObject);
   private
-    { Private declarations }
+    machine : string;
+
+    procedure setSpprodDbfText;
+    procedure openWorkSes;
+    function openQSpprodDbf() : boolean;
+    function openTSpprodDbf() : boolean;
+    procedure clearSpprodDbf;
+    procedure isKartvInSpprodDbf;
+    procedure findInsertSpprodToSpprodDbf;
+    procedure saveSpprodDbf;
+    
   public
-    { Public declarations }
+    procedure updatePCSppod;
+
   end;
 
 var
@@ -241,10 +362,168 @@ var
   s_keip:integer;
   S_DATN: string;
   AniBmp1: TBitmap;
+
 implementation
- uses dm,SprFormul,GlMenu;
+
+uses dm, SprFormul, GlMenu, CopyFiles;
  //,vipusk, Find_Spprod;
 {$R *.dfm}
+
+procedure TFPerOtchet.findInsertSpprodToSpprodDbf;
+begin
+  q_spprod.Close;
+  q_spprod.ParamByName('ksm_id').AsInteger := dm1.KartVKSM_ID.AsInteger;
+  q_spprod.Open;
+  if (q_spprod.RecordCount > 0) then
+  begin
+    q_spprodDbf.Insert;
+    if (length(q_spprodKSM_ID.AsString) > 4) then
+      q_spprodDbfSPROD.AsString := '0' + Copy(q_spprodKSM_ID.AsString, 1, 1)
+    else
+      q_spprodDbfSPROD.AsString := '00';
+    q_spprodDbfSPPRN.AsString := q_spprodSPPRN.AsString;
+    q_spprodDbfSPVIS.AsString := q_spprodSPVIS.AsString;
+    q_spprodDbfSPNAME.AsString := q_spprodNMAT.AsString;
+    q_spprodDbfSPSNAM.AsString := q_spprodNMATS.AsString;
+    q_spprodDbfSPKEI.AsString := q_spprodKEI_ID.AsString;
+    q_spprodDbfSPCEH.AsString := dm1.stkod;
+    q_spprodDbfSPXRKT.AsString := q_spprodXARKT.AsString;
+    q_spprodDbfSPRODS.AsString := Copy(q_spprodKSM_ID.AsString,
+                                       length(q_spprodKSM_ID.AsString) - 2,
+                                       length(q_spprodKSM_ID.AsString));
+    q_spprodDbfSTRUK_ID.AsInteger := q_spprodSTRUK_ID.AsInteger;
+    q_spprodDbfGOST.AsString := q_spprodGOST.AsString;
+    q_spprodDbfNEW_KOD.AsString := q_spprodKOD_PROD.AsString;
+    q_spprodDbfKSM_ID.AsString := q_spprodKSM_ID.AsString;
+    q_spprodDbfACTIVP.AsInteger := 1;
+    q_spprodDbf.Post;
+  end;
+end;
+
+procedure TFPerOtchet.clearSpprodDbf;
+begin
+  q_spprodDbf.First;
+  while (not q_spprodDbf.Eof) do
+    q_spprodDbf.Delete;
+  q_spprodDbf.ApplyUpdates;
+  q_spprodDbf.CommitUpdates;
+end;
+
+procedure TFPerOtchet.isKartvInSpprodDbf;
+begin
+  dm1.KartV.First;
+  while (not dm1.KartV.Eof) do
+  begin
+    if (not q_spprodDbf.Locate('ksm_id', dm1.KartVKSM_ID.AsInteger, [])) then
+      findInsertSpprodToSpprodDbf;
+    dm1.KartV.Next
+  end;
+  q_spprodDbf.ApplyUpdates;
+  q_spprodDbf.CommitUpdates;
+  q_spprodDbf.Close;
+  q_spprod.Close;
+  workSes.Active := false;
+  if (openTSpprodDbf()) then
+  begin
+    DbiPackTable(t_spprodDbf.dbhandle, t_spprodDbf.Handle, nil, nil, false);
+    t_spprodDbf.Close;
+  end;
+end;
+
+function TFPerOtchet.openQSpprodDbf() : boolean;
+begin
+  result := false;
+  openWorkSes;
+  if (q_spprodDbf.Active) then
+    q_spprodDbf.Close;
+  q_spprodDbf.Open;
+  if (q_spprodDbf.Active) then
+    result := true;
+end;
+
+procedure TFPerOtchet.openWorkSes;
+var
+  StrLangDriver : TStringList;
+begin
+  StrLangDriver := TStringList.Create;
+  StrLangDriver.Add('LANGDRIVER=db866ru0');
+  StrLangDriver.Add('LEVEL=4');
+  workSes.ModifyDriver('DBASE', StrLangDriver);
+  StrLangDriver.Free;
+  if (not workSes.Active) then
+  begin
+    workSes.NetFileDir := 'f:\' + machine + '\otchbas\';
+    workSes.PrivateDir := 'f:\' + machine + '\otchbas\';
+    workSes.Active := true;
+  end;
+end;
+
+function TFPerOtchet.openTSpprodDbf() : boolean;
+begin
+  result := false;
+  openWorkSes;
+  if (t_spprodDbf.Active) then
+    t_spprodDbf.Close;
+  t_spprodDbf.Exclusive := true;
+  t_spprodDbf.Open;
+  if (t_spprodDbf.RecordCount > 0) then
+    result := true;
+end;
+
+procedure TFPerOtchet.setSpprodDbfText;
+begin
+  if (q_spprodDbf.Active) then
+    q_spprodDbf.Close;
+  q_spprodDbf.EhSQL.Text := 'select * from ''f:\' + machine + '\otchbas\spprod.dbf'' spprod '
+                            + 'where spprod.struk_id = ' + IntToStr(vStruk_id) + ' ';
+  up_q_spprodDbf.DeleteSQL.Text := 'delete from "f:\' + machine + '\otchbas\spprod.dbf" '
+                                   + 'where KSM_ID = :OLD_KSM_ID ';
+  up_q_spprodDbf.InsertSQL.Text := 'insert into "f:\' + machine + '\otchbas\spprod.dbf" '
+                                   + '(SPROD, SPPOL, SPPRN, SPVIS, SPSTAD, SPNAME, SPSNAM, '
+                                   + 'SPKEI, SPCENA, SPCENAB, SPCENAR, SPCEH, SPXRKT, '
+                                   + 'SPRODS, CODE, SPKEIS, INPUT1, INPUT2, UMN, SPRIZ, '
+                                   + 'SPKEY, SPNAMES, EAN13, KORG, STRUK_ID, GOST, NEW_KOD, '
+                                   + 'KSM_ID, ACTIVP, NAM) '
+                                   + 'values (:SPROD, :SPPOL, :SPPRN, :SPVIS, :SPSTAD, '
+                                   + ':SPNAME, :SPSNAM, :SPKEI, :SPCENA, :SPCENAB, '
+                                   + ':SPCENAR, :SPCEH, :SPXRKT, :SPRODS, :CODE, :SPKEIS, '
+                                   + ':INPUT1, :INPUT2, :UMN, :SPRIZ, :SPKEY, :SPNAMES, '
+                                   + ':EAN13, :KORG, :STRUK_ID, :GOST, :NEW_KOD, :KSM_ID, '
+                                   + ':ACTIVP, :NAM) ';
+  up_q_spprodDbf.ModifySQL.Text := 'update "f:\' + machine + '\otchbas\spprod.dbf" '
+                                   + 'set SPROD = :SPROD, SPPOL = :SPPOL, SPPRN = :SPPRN, '
+                                   + 'SPVIS = :SPVIS, SPSTAD = :SPSTAD, SPNAME = :SPNAME, '
+                                   + 'SPSNAM = :SPSNAM, SPKEI = :SPKEI, SPCENA = :SPCENA, '
+                                   + 'SPCENAB = :SPCENAB, SPCENAR = :SPCENAR, SPCEH = :SPCEH, '
+                                   + 'SPXRKT = :SPXRKT, SPRODS = :SPRODS, CODE = :CODE, '
+                                   + 'SPKEIS = :SPKEIS, INPUT1 = :INPUT1, INPUT2 = :INPUT2, '
+                                   + 'UMN = :UMN, SPRIZ = :SPRIZ, SPKEY = :SPKEY, '
+                                   + 'SPNAMES = :SPNAMES, EAN13 = :EAN13, KORG = :KORG, '
+                                   + 'STRUK_ID = :STRUK_ID, GOST = :GOST, NEW_KOD = :NEW_KOD, '
+                                   + 'KSM_ID = :KSM_ID, ACTIVP = :ACTIVP, NAM = :NAM '
+                                   + 'where KSM_ID = :OLD_KSM_ID ';
+  if (t_spprodDbf.Active) then
+    t_spprodDbf.Close;
+  t_spprodDbf.TableName := 'f:\' + machine + '\otchbas\spprod.dbf';
+end;
+
+procedure TFPerOtchet.saveSpprodDbf;
+begin
+  if (not FileExists('f:\' + machine + '\otchbas\spprod_' + IntToStr(mes) + '.dbf')) then
+    FileCopy('f:\' + machine + '\otchbas\spprod.dbf',
+             'f:\' + machine + '\otchbas\spprod_' + IntToStr(mes) + '.dbf');
+end;
+
+procedure TFPerOtchet.updatePCSppod;
+begin
+  saveSpprodDbf;
+  setSpprodDbfText;
+  if (openQSpprodDbf()) then
+  begin
+    clearSpprodDbf;
+    isKartvInSpprodDbf;
+  end;
+end;
 
 procedure TFPerOtchet.Otchet_ST;
 VAR
@@ -587,7 +866,8 @@ begin
       prizpr.DatabaseName := 'ot';
       prizm.DatabaseName := 'ot';
       ncmatrd.DatabaseName := 'ot';
-      regot.DatabaseName := 'ot'
+      regot.DatabaseName := 'ot';
+      machine := 'pc1';
     end
     else
     begin
@@ -597,7 +877,8 @@ begin
       prizpr.DatabaseName := 'ot_pc2';
       prizm.DatabaseName := 'ot_pc2';
       ncmatrd.DatabaseName := 'ot_pc2';
-      regot.DatabaseName := 'ot_pc2'
+      regot.DatabaseName := 'ot_pc2';
+      machine := 'pc2';
     end;
     ComboBox2.OnChange := nil;
     ComboBox1.OnChange := nil;
@@ -835,7 +1116,7 @@ begin
         Splash.Free;
         MessageDlg(' Данные НЕ переданы, т.к. они были уже переданы и использованы!',
                    mtWarning, [mbOK], 0);
-        Abort;
+        SysUtils.Abort;
       END;
     END;
     if Otchets.Active = false then
@@ -980,6 +1261,7 @@ begin
       OTCHET_ST;
       DM1.KARTV.Next;
     end;
+    updatePCSppod;
     Splash.Free;
     if spisok.Active then
       spisok.Close;
@@ -1001,7 +1283,7 @@ begin
   else
   begin
     MessageDlg('Нет отчетов за заданный месяц !', mtWarning, [mbOK], 0);
-    Abort;
+    SysUtils.Abort;
   end;
 end;
 

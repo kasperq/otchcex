@@ -181,23 +181,23 @@ end;
 procedure TFAct_Aceton.Edit1KeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-if key=vk_return then
- begin
-  if edit1.text<>''  then
+  if (key = vk_return) then
   begin
-   dM1.Matrop.Active:=false;
-   dM1.Matrop.ParamByName('ksm').AsInteger:=strtoint(edit1.text);
-   dM1.Matrop.Active:=TRUE;
-   if not dm1.Matrop.eof then
-   begin
-    s_ksm:=strtoint(edit1.text);
-    Label13.Caption:=dm1.Matrop.FieldByName('Nmat').AsString;
-    Label1.Caption:=dm1.MatropNeis.AsString;
-    s_kei:=dm1.MatropKei_id.asinteger;
-    ProsmSpirt;
-   end;
+    if (edit1.text <> '') then
+    begin
+      dM1.Matrop.Active := false;
+      dM1.Matrop.ParamByName('ksm').AsInteger := strtoint(edit1.text);
+      dM1.Matrop.Active := TRUE;
+      if (not dm1.Matrop.eof) then
+      begin
+        s_ksm := strtoint(edit1.text);
+        Label13.Caption := dm1.Matrop.FieldByName('Nmat').AsString;
+        Label1.Caption := dm1.MatropNeis.AsString;
+        s_kei := dm1.MatropKei_id.asinteger;
+        ProsmSpirt;
+      end;
+    end;
   end;
- end;
 end;
 
 procedure TFAct_Aceton.FormShow(Sender: TObject);
@@ -228,20 +228,32 @@ end;
 
 procedure TFAct_Aceton.SpeedButton1Click(Sender: TObject);
 begin
-  mes:=strtoint(SpinEdit3.Text);
-  god:=strtoint(SpinEdit4.Text);
- if edit1.Text<>'  ' then
- begin
-  IF MES<10 THEN S_MES:='0'+INTTOSTR(MES) ELSE S_MES:=INTTOSTR(MES);
-  S_DAT1:='01.'+S_MES+'.'+copy(INTTOSTR(GOD),3,2);
-  S_DAT2:=datetostr(IncMonth(strtodate(s_dat1),1)-1);
-  ProsmSpirt;
- end
- else
- begin
-  if Spirt_Otchet.active then
-   Spirt_Otchet.active:=false;
-
+  mes := strtoint(SpinEdit3.Text);
+  god := strtoint(SpinEdit4.Text);
+  if (edit1.Text <> '  ') then
+  begin
+    dM1.Matrop.Active := false;
+    dM1.Matrop.ParamByName('ksm').AsInteger := strtoint(edit1.text);
+    dM1.Matrop.Active := TRUE;
+    if (not dm1.Matrop.eof) then
+    begin
+      s_ksm := strtoint(edit1.text);
+      Label13.Caption := dm1.Matrop.FieldByName('Nmat').AsString;
+      Label1.Caption := dm1.MatropNeis.AsString;
+      s_kei := dm1.MatropKei_id.asinteger;
+    end;
+    IF (MES < 10) THEN
+      S_MES := '0' + INTTOSTR(MES)
+    ELSE
+      S_MES := INTTOSTR(MES);
+    S_DAT1 := '01.' + S_MES + '.' + copy(INTTOSTR(GOD), 3, 2);
+    S_DAT2 := datetostr(IncMonth(strtodate(s_dat1), 1) - 1);
+    ProsmSpirt;
+  end
+  else
+  begin
+    if (Spirt_Otchet.active) then
+      Spirt_Otchet.Close;
   end;
 end;
 

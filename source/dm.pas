@@ -829,6 +829,8 @@ uses
   private
     { Private declarations }
   public
+    stkod : string;
+    
     function LastDayOfMonth(month, year: integer): TDate;
 
   end;
@@ -1113,6 +1115,7 @@ begin
                                                               DM1.ConfigUMCMES.AsInteger,
                                                               1)) + 'ã.';
   vSTRUK_ID := DM1.ConfigUMCSTRUK_ID.AsInteger;
+  dm1.stkod := dm1.ConfigUMCSTKOD.AsString;
   DM1.ConfigUMC.Close;
   DM1.IBQuery1.Close;
   DM1.IBQuery1.SQL.Text := 'SELECT STKOD FROM Struk WHERE STRUK_ID = ' + IntToStr(VSTRUK_ID);
