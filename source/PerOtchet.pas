@@ -1292,7 +1292,7 @@ begin
       OTCHET_ST;
       DM1.KARTV.Next;
     end;
-//    updatePCSppod;
+    updatePCSppod;
     Splash.Free;
     if spisok.Active then
       spisok.Close;
