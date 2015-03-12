@@ -343,9 +343,11 @@ type
     function openQSpprodDbf() : boolean;
     function openTSpprodDbf() : boolean;
     procedure clearSpprodDbf;
+    procedure isSpprodDbfInKartv;
     procedure isKartvInSpprodDbf;
     procedure findInsertSpprodToSpprodDbf;
-    procedure saveSpprodDbf;
+    procedure saveSpprodDbfFile;
+    procedure packSpprodDbf;
     
   public
     procedure updatePCSppod;
@@ -411,6 +413,20 @@ begin
   q_spprodDbf.CommitUpdates;
 end;
 
+procedure TFPerOtchet.isSpprodDbfInKartv;
+begin
+  q_spprodDbf.First;
+  while (not q_spprodDbf.Eof) do
+  begin
+    if (dm1.KartV.Locate('ksm_id', q_spprodDbfKSM_ID.AsInteger, [])) then
+      q_spprodDbf.Next
+    else
+      q_spprodDbf.Delete;
+  end;
+  q_spprodDbf.ApplyUpdates;
+  q_spprodDbf.CommitUpdates;
+end;
+
 procedure TFPerOtchet.isKartvInSpprodDbf;
 begin
   dm1.KartV.First;
@@ -424,6 +440,12 @@ begin
   q_spprodDbf.CommitUpdates;
   q_spprodDbf.Close;
   q_spprod.Close;
+  packSpprodDbf;
+end;
+
+procedure TFPerOtchet.packSpprodDbf;
+begin
+  q_spprodDbf.Close;
   workSes.Active := false;
   if (openTSpprodDbf()) then
   begin
@@ -509,7 +531,7 @@ begin
   t_spprodDbf.TableName := 'f:\' + machine + '\otchbas\spprod.dbf';
 end;
 
-procedure TFPerOtchet.saveSpprodDbf;
+procedure TFPerOtchet.saveSpprodDbfFile;
 begin
   if (not FileExists('f:\' + machine + '\otchbas\spprod_' + IntToStr(mes) + '.dbf')) then
     FileCopy('f:\' + machine + '\otchbas\spprod.dbf',
@@ -518,12 +540,14 @@ end;
 
 procedure TFPerOtchet.updatePCSppod;
 begin
-  saveSpprodDbf;
+  saveSpprodDbfFile;
   setSpprodDbfText;
   if (openQSpprodDbf()) then
   begin
-    clearSpprodDbf;
-    isKartvInSpprodDbf;
+    isSpprodDbfInKartv;
+    packSpprodDbf;
+//    clearSpprodDbf;
+//    isKartvInSpprodDbf;
   end;
 end;
 
