@@ -385,16 +385,33 @@ begin
       q_spprodDbfSPROD.AsString := '0' + Copy(q_spprodKSM_ID.AsString, 1, 1)
     else
       q_spprodDbfSPROD.AsString := '00';
-    q_spprodDbfSPPRN.AsString := q_spprodSPPRN.AsString;
-    q_spprodDbfSPVIS.AsString := q_spprodSPVIS.AsString;
+
+    if (length(q_spprodKSM_ID.AsString) <= 3) then
+      q_spprodDbfSPPRN.AsString := '0'
+    else
+      if (length(q_spprodKSM_ID.AsString) = 4) then
+        q_spprodDbfSPPRN.AsString := copy(q_spprodKSM_ID.AsString, 0, 1)
+      else
+        q_spprodDbfSPPRN.AsString := copy(q_spprodKSM_ID.AsString, 1, 1);
+
+    if (length(q_spprodKSM_ID.AsString) <= 2) then
+      q_spprodDbfSPVIS.AsString := '0'
+    else
+      if (length(q_spprodKSM_ID.AsString) = 3) then
+        q_spprodDbfSPVIS.AsString := copy(q_spprodKSM_ID.AsString, 1, 1)
+      else
+        if (length(q_spprodKSM_ID.AsString) = 4) then
+          q_spprodDbfSPVIS.AsString := copy(q_spprodKSM_ID.AsString, 2, 1)
+        else
+          q_spprodDbfSPVIS.AsString := copy(q_spprodKSM_ID.AsString, 3, 1);
     q_spprodDbfSPNAME.AsString := q_spprodNMAT.AsString;
     q_spprodDbfSPSNAM.AsString := q_spprodNMATS.AsString;
     q_spprodDbfSPKEI.AsString := q_spprodKEI_ID.AsString;
     q_spprodDbfSPCEH.AsString := dm1.stkod;
     q_spprodDbfSPXRKT.AsString := q_spprodXARKT.AsString;
     q_spprodDbfSPRODS.AsString := Copy(q_spprodKSM_ID.AsString,
-                                       length(q_spprodKSM_ID.AsString) - 2,
-                                       length(q_spprodKSM_ID.AsString));
+                                       length(q_spprodKSM_ID.AsString) - 1,
+                                       length(q_spprodKSM_ID.AsString) + 1);
     q_spprodDbfSTRUK_ID.AsInteger := q_spprodSTRUK_ID.AsInteger;
     q_spprodDbfGOST.AsString := q_spprodGOST.AsString;
     q_spprodDbfNEW_KOD.AsString := q_spprodKOD_PROD.AsString;
@@ -545,9 +562,9 @@ begin
   if (openQSpprodDbf()) then
   begin
     isSpprodDbfInKartv;
-    packSpprodDbf;
+//    packSpprodDbf;
 //    clearSpprodDbf;
-//    isKartvInSpprodDbf;
+    isKartvInSpprodDbf;
   end;
 end;
 

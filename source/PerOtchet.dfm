@@ -80,7 +80,7 @@ object FPerOtchet: TFPerOtchet
       Height = 21
       Ctl3D = False
       DropDownCount = 12
-      ItemHeight = 13
+      ItemHeight = 0
       ParentCtl3D = False
       TabOrder = 0
       OnChange = ComboBox1Change
@@ -102,9 +102,9 @@ object FPerOtchet: TFPerOtchet
       Left = 319
       Top = 0
       Width = 69
-      Height = 21
+      Height = 30
       Ctl3D = False
-      ItemHeight = 13
+      ItemHeight = 0
       ParentCtl3D = False
       TabOrder = 1
       OnChange = ComboBox2Change
@@ -202,7 +202,7 @@ object FPerOtchet: TFPerOtchet
     Left = 448
     Top = 4
     Bitmap = {
-      494C010108000A00240018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010108000A00280018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
