@@ -2,7 +2,7 @@ unit GotProdNaklView;
 
 interface
 
-uses
+uses LookupUnderSign,
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, Buttons, ExtCtrls, Mask, DBCtrlsEh, StdCtrls, DBGridEh, DBLookupEh, DBCtrls,
   DB, IBCustomDataSet, IBUpdateSQL, IBUpdSQLW, IBQuery, RxIBQuery, RxMemDS,
@@ -367,6 +367,7 @@ type
     IBTaraVOL_TRANS2: TFMTBCDField;
     IBTaraUPAK_TRANS2: TIBStringField;
     IBTaraSIZE_UPAK2: TIBStringField;
+    btn_underSign: TSpeedButton;
 
     procedure setDokDate(value : string);
     function isDateValid(value : string) : boolean;
@@ -500,8 +501,11 @@ type
     procedure dokDateEditChange(Sender: TObject);
     procedure N6Click(Sender: TObject);
     procedure IBTaraAfterOpen(DataSet: TDataSet);
+    procedure btn_underSignClick(Sender: TObject);
 
   private
+    lookUnderS : TFLookupUnderSign;
+
     function isNecessaryDocFieldsValid() : boolean;
     function isNecessaryKartFieldsValid() : boolean;
 
@@ -1507,6 +1511,19 @@ begin
   GotKartQueryGOST.AsString := gost;
   GotKartQueryNEIS.AsString := neis;
   GotKartQuery.Post;
+end;
+
+procedure TFGotProdNaklView.btn_underSignClick(Sender: TObject);
+begin
+  if (lookUnderS = nil) then
+    lookUnderS := TFLookupUnderSign.Create(Application);
+  lookUnderS.Top := panel2.Top + btn_underSign.Top - lookUnderS.Height + 2 * btn_underSign.Height;
+  lookUnderS.Left := panel2.Left + btn_underSign.Left + 5 * btn_underSign.Width - lookUnderS.Width;
+  lookUnderS.ShowModal;
+  if (lookUnderS.underSign <> '') then
+  begin
+    NachOkkEdit.Text := lookUnderS.underSign;
+  end;
 end;
 
 procedure TFGotProdNaklView.setVesTara;
@@ -2622,10 +2639,17 @@ begin
   begin
     TempQuery.Active := False;
     TempQuery.SQL.Clear;
-    if (vStruk_id = 1) or (vStruk_id = 29) or (vStruk_id = 106) then
-      docParamId := ' 544 '
-    else
+    if (vStruk_Id = 696) or (vStruk_Id = 1) or (vStruk_Id = 106) or (vStruk_Id = 29) then		// для медпрепаратов надо ставить Галейшу Е.А., зам. нач. ОКК
+    begin
       docParamId := ' 542 ';
+      if (vStruk_Id = 696) then
+      begin
+        docParamId := ' 1364 ';
+      end;
+    end
+    else
+      docParamId := ' 544 ';
+
     if (not param1IsHere) then
       TempQuery.SQL.Add('insert into doc_param (tip_param_id, doc_id, param_value) '
                         + 'values (' + docParamId + ', ' + GotDocumentDOC_ID.AsString
@@ -2972,6 +2996,7 @@ begin
         SaveBtnClick(sender);
   end;
   cancelAllUpdates;
+  FreeAndNil(lookUnderS);
 end;
 
 procedure TFGotProdNaklView.FormCreate(Sender: TObject);
