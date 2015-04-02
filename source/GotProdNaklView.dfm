@@ -943,6 +943,22 @@ object FGotProdNaklView: TFGotProdNaklView
       Font.Style = []
       ParentFont = False
     end
+    object btn_underSign: TSpeedButton
+      Left = 660
+      Top = 16
+      Width = 23
+      Height = 22
+      Caption = '...'
+      Flat = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      Layout = blGlyphBottom
+      ParentFont = False
+      OnClick = btn_underSignClick
+    end
     object NachOkkEdit: TEdit
       Left = 319
       Top = 16

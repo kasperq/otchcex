@@ -94,7 +94,8 @@ uses
   analit in 'Source\analit.pas' {FAnalit},
   Analit_aList in 'Source\Analit_aList.pas' {FAnalit_List},
   Unit3 in 'Source\Unit3.pas' {Form3},
-  PererasFolga in 'Source\PererasFolga.pas' {FPererasFolga};
+  PererasFolga in 'Source\PererasFolga.pas' {FPererasFolga},
+  LookupUnderSign in 'Source\LookupUnderSign.pas' {FLookupUnderSign};
 
 {$R *.res}
 
@@ -172,5 +173,5 @@ begin
   Application.CreateForm(TFAnalit_List, FAnalit_List);
   Application.CreateForm(TForm3, Form3);
   Application.CreateForm(TFPererasFolga, FPererasFolga);
-  Application.Run;    
+  Application.Run;
 end.
