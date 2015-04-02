@@ -407,6 +407,7 @@
       
       
       
+      
       <Excluded_Packages Name="$(BDS)\bin\xhStd110.bpl">HierCube Library Runtime package</Excluded_Packages>
       <Excluded_Packages Name="C:\Documents and Settings\All Users\Документы\RAD Studio\5.0\Bpl\xhCntrls100.bpl">HierCube Library Controls</Excluded_Packages>
       <Excluded_Packages Name="C:\Delphi11\Projects\BPL\dclfs11.bpl">FastScript 1.9 Components</Excluded_Packages>
@@ -511,6 +512,9 @@
     </DCCReference>
     <DCCReference Include="Source\KorOtchet.pas">
       <Form>FKorOtchet</Form>
+    </DCCReference>
+    <DCCReference Include="Source\LookupUnderSign.pas">
+      <Form>FLookupUnderSign</Form>
     </DCCReference>
     <DCCReference Include="Source\NastrPech.pas">
       <Form>FNastrPech</Form>
@@ -698,7 +702,7 @@
 </Project>
 <!-- EurekaLog First Line
 [Exception Log]
-EurekaLog Version=6011
+EurekaLog Version=6017
 Activate=1
 Activate Handle=1
 Save Log File=1
