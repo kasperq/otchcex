@@ -21,39 +21,8 @@ type
     DSPrixBux: TDataSource;
     DSPrixCexBux: TDataSource;
     Bmomts: TTable;
-    PrixNomen: TQuery;
     PrixCexBux: TRxMemoryData;
     DataSource1: TDataSource;
-    PrixNomenBALS: TStringField;
-    PrixNomenNUMKCU: TStringField;
-    PrixNomenNAMEPR: TStringField;
-    PrixNomenNAMEPRS: TStringField;
-    PrixNomenXARKT: TStringField;
-    PrixNomenGOST: TStringField;
-    PrixNomenMONEY: TFloatField;
-    PrixNomenKEI: TStringField;
-    PrixNomenEIP: TStringField;
-    PrixNomenDATEIN: TDateField;
-    PrixNomenNZ: TFloatField;
-    PrixNomenTPR: TStringField;
-    PrixNomenKOL: TFloatField;
-    PrixNomenSUM: TFloatField;
-    PrixNomenPRIXODM: TFloatField;
-    PrixNomenRASXODM: TFloatField;
-    PrixNomenSRASXM: TFloatField;
-    PrixNomenSPRIXM: TFloatField;
-    PrixNomenDATETR: TDateField;
-    PrixNomenSKLAD: TStringField;
-    PrixNomenEDNOR: TSmallintField;
-    PrixNomenSSUM: TFloatField;
-    PrixNomenNSUM: TFloatField;
-    PrixNomenSKOL: TFloatField;
-    PrixNomenCENAD: TFloatField;
-    PrixNomenSUMD: TFloatField;
-    PrixNomenSSUMD: TFloatField;
-    PrixNomenSPRIXMD: TFloatField;
-    PrixNomenSRASXMD: TFloatField;
-    PrixNomenSUMNDS: TFloatField;
     PrixKart: TIBQuery;
     PrixKartKSM_ID: TIntegerField;
     PrixKartKOL_PRIX: TFMTBCDField;
@@ -123,6 +92,35 @@ type
     OstCexBuxKEI_ID: TIntegerField;
     OstCexBuxKART_ID: TIntegerField;
     OstCexBuxRAZDEL_ID: TSmallintField;
+    q_PrixNomen: TRxIBQuery;
+    q_PrixNomenBALS: TIBStringField;
+    q_PrixNomenNUMKCU: TIBStringField;
+    q_PrixNomenSKLAD: TIBStringField;
+    q_PrixNomenNAMEPR: TIBStringField;
+    q_PrixNomenNAMEPRS: TIBStringField;
+    q_PrixNomenXARKT: TIBStringField;
+    q_PrixNomenGOST: TIBStringField;
+    q_PrixNomenMONEY: TIBBCDField;
+    q_PrixNomenKOL: TFMTBCDField;
+    q_PrixNomenSUM: TIBBCDField;
+    q_PrixNomenPRIXODM: TFMTBCDField;
+    q_PrixNomenSRASXM: TIBBCDField;
+    q_PrixNomenSPRIXM: TIBBCDField;
+    q_PrixNomenDATETR: TDateField;
+    q_PrixNomenEDNOR: TSmallintField;
+    q_PrixNomenSSUM: TIBBCDField;
+    q_PrixNomenNSUM: TIBBCDField;
+    q_PrixNomenSKOL: TFMTBCDField;
+    q_PrixNomenRASXODM: TFMTBCDField;
+    q_PrixNomenEIP: TIBStringField;
+    q_PrixNomenKEI: TIBStringField;
+    q_PrixNomenDATEIN: TDateField;
+    q_PrixNomenNZ: TIntegerField;
+    q_PrixNomenTRP: TIBStringField;
+    q_PrixNomenPR: TIBStringField;
+    q_PrixNomenGOD: TIntegerField;
+    q_PrixNomenMES: TIntegerField;
+    q_PrixNomenKSM_ID: TIntegerField;
 
     procedure ToolButton1Click(Sender: TObject);
     procedure SpinEdit3Change(Sender: TObject);
@@ -417,10 +415,10 @@ end;
 
 procedure TFNesPrix.formPrixAndOstNesootvTbl;
 begin
-  PrixNomen.First;
-  while (not PrixNomen.Eof) do
+  q_PrixNomen.First;
+  while (not q_PrixNomen.Eof) do
   begin
-    s_ksm := strtoint(PrixNomenNumkcu.AsString);
+    s_ksm := strtoint(q_PrixNomenNumkcu.AsString);
     dm1.Matrop.Active := false;
     dm1.Matrop.ParamByName('ksm').AsInteger := s_Ksm;
     dm1.Matrop.Active := true;
@@ -432,28 +430,28 @@ begin
       PrixKart.First;
       if (PrixKart.Locate('ksm_id', s_ksm, [])) then
       begin
-        if (PrixKartKol_prix.AsFloat <> PrixNomenPrixodm.AsFloat) then
+        if (PrixKartKol_prix.AsFloat <> q_PrixNomenPrixodm.AsFloat) then
         BEGIN
           PrixCexBux.Append;
           PrixCexBuxKsm_id.AsInteger := s_ksm;
-          PrixCexBuxNmat.AsString := PrixNomenNamepr.AsString;
-          PrixCexBuxEip.AsString := PrixNomenEip.AsString;
+          PrixCexBuxNmat.AsString := q_PrixNomenNamepr.AsString;
+          PrixCexBuxEip.AsString := q_PrixNomenEip.AsString;
           PrixCexBuxKol_Prix.AsFloat := PrixKartKol_Prix.AsFloat;
-          PrixCexBuxPrixodm.AsFloat := PrixNomenPrixodm.AsFloat;
+          PrixCexBuxPrixodm.AsFloat := q_PrixNomenPrixodm.AsFloat;
           PrixCexBuxPrmat.AsInteger := strtoint(dm1.matropPrmat.asstring);
           PrixCexBux.Post;
         END;
       end
       else
       begin
-        if (PrixNomenPrixodm.AsFloat <> 0) then
+        if (q_PrixNomenPrixodm.AsFloat <> 0) then
         begin
           PrixCexBux.Append;
           PrixCexBuxKsm_id.AsInteger := s_ksm;
-          PrixCexBuxNmat.AsString := PrixNomenNamepr.AsString;
-          PrixCexBuxEip.AsString := PrixNomenEip.AsString;
+          PrixCexBuxNmat.AsString := q_PrixNomenNamepr.AsString;
+          PrixCexBuxEip.AsString := q_PrixNomenEip.AsString;
           PrixCexBuxKol_Prix.AsFloat := 0;
-          PrixCexBuxPrixodm.AsFloat := PrixNomenPrixodm.AsFloat;
+          PrixCexBuxPrixodm.AsFloat := q_PrixNomenPrixodm.AsFloat;
           PrixCexBuxPrmat.AsInteger := strtoint(dm1.matropPrmat.asstring);
           PrixCexBux.Post;
         end;
@@ -461,7 +459,7 @@ begin
 // форирование таблицы несоответствия остатков
       formOstNesootvTbl;
     end;
-    PrixNomen.Next;
+    q_PrixNomen.Next;
   end;
 end;
 
@@ -470,14 +468,14 @@ begin
   OstSyr.First;
   if (OstSyr.Locate('ksm_id', s_ksm, [])) then
   begin
-    if (OstSyrOst_s.AsFloat <> PrixNomenKol.AsFloat) then
+    if (OstSyrOst_s.AsFloat <> q_PrixNomenKol.AsFloat) then
     BEGIN
       OstCexBux.Append;
       OstCexBuxKsm_id.AsInteger := s_ksm;
-      OstCexBuxNmat.AsString := PrixNomenNamepr.AsString;
+      OstCexBuxNmat.AsString := q_PrixNomenNamepr.AsString;
       OstCexBuxEip.AsString := OstSyrEip.AsString;
       OstCexBuxOst_s.AsFloat := OstSyrOst_s.AsFloat;
-      OstCexBuxKol.AsFloat := PrixNomenKol.AsFloat;
+      OstCexBuxKol.AsFloat := q_PrixNomenKol.AsFloat;
       ostCexBuxPrmat.AsInteger := strtoint(dm1.matropPrmat.asstring);
       OstCexBuxKEI_ID.AsInteger := OstSyrKEI_ID.AsInteger;
       OstCexBuxKART_ID.AsInteger := 0{OstSyrKART_ID.AsInteger};
@@ -487,16 +485,16 @@ begin
   end
   else
   begin
-    if (PrixNomenKol.AsFloat <> 0) then
+    if (q_PrixNomenKol.AsFloat <> 0) then
     begin
       OstCexBux.Append;
       OstCexBuxKsm_id.AsInteger := s_ksm;
-      OstCexBuxNmat.AsString := PrixNomenNamepr.AsString;
-      OstCexBuxEip.AsString := PrixNomenEip.AsString;
+      OstCexBuxNmat.AsString := q_PrixNomenNamepr.AsString;
+      OstCexBuxEip.AsString := q_PrixNomenEip.AsString;
       OstCexBuxOst_s.AsFloat := 0;
-      OstCexBuxKol.AsFloat := PrixNomenKol.AsFloat;
+      OstCexBuxKol.AsFloat := q_PrixNomenKol.AsFloat;
       ostCexBuxPrmat.AsInteger := strtoint(dm1.matropPrmat.asstring);
-      OstCexBuxKEI_ID.AsInteger := PrixNomenKEI.AsInteger;
+      OstCexBuxKEI_ID.AsInteger := q_PrixNomenKEI.AsInteger;
       OstCexBuxKART_ID.AsInteger := 0;
       OstCexBuxRAZDEL_ID.AsInteger := 0;
       OstCexBux.Post;
@@ -532,8 +530,8 @@ begin
         s_Numkcu := '0' + inttostr(PrixKartKsm_id.AsInteger);
       if (Length(trim(inttostr(PrixKartKsm_id.AsInteger))) = 7) then
         s_Numkcu := inttostr(PrixKartKsm_id.AsInteger);
-      PrixNomen.First;
-      if (not PrixNomen.Locate('NUMKCU', s_Numkcu, []))
+      q_PrixNomen.First;
+      if (not q_PrixNomen.Locate('NUMKCU', s_Numkcu, []))
           and (PrixKartKol_Prix.AsFloat <> 0) then
       begin
         PrixCexBux.Append;
@@ -577,8 +575,8 @@ begin
         s_Numkcu := '0' + inttostr(OstSyrKsm_id.AsInteger);
       if (Length(trim(inttostr(OstSyrKsm_id.AsInteger))) = 7) then
         s_Numkcu := inttostr(OstSyrKsm_id.AsInteger);
-      PrixNomen.First;
-      if (not PrixNomen.Locate('NUMKCU', s_Numkcu, []))
+      q_PrixNomen.First;
+      if (not q_PrixNomen.Locate('NUMKCU', s_Numkcu, []))
           and (OstSyrOst_s.AsFloat <> 0) then
       begin
         OstCexBux.Append;
@@ -647,13 +645,14 @@ begin
   OstCexBux.EmptyTable;
   PrixCexBux.Open;
   OstCexBux.Open;
-  PrixNomen.Active := false;
+  q_PrixNomen.Active := false;
   Bmomts.Active := true;
   if (Bmomts.Locate('SKLAD', s_stkod, [])) then
   begin
-    PrixNomen.DatabaseName := BmomtsBmg.AsString;
-    PrixNomen.ParamByName('cex').AsString := s_stkod;
-    PrixNomen.Active := true;
+    q_PrixNomen.ParamByName('sklad').AsString := s_stkod;
+    q_PrixNomen.ParamByName('mes').AsInteger := SpinEdit3.Value;
+    q_PrixNomen.ParamByName('god').AsInteger := SpinEdit4.Value;
+    q_PrixNomen.Active := true;
 
     PrixKart.Active := False;
     PrixKart.ParamByName('dat1').AsDateTime := strtodate(s_dat1);
