@@ -494,7 +494,7 @@ begin
       OstCexBuxOst_s.AsFloat := 0;
       OstCexBuxKol.AsFloat := q_PrixNomenKol.AsFloat;
       ostCexBuxPrmat.AsInteger := strtoint(dm1.matropPrmat.asstring);
-      OstCexBuxKEI_ID.AsInteger := q_PrixNomenKEI.AsInteger;
+      OstCexBuxKEI_ID.AsInteger := StrToInt(trim(q_PrixNomenKEI.AsString));
       OstCexBuxKART_ID.AsInteger := 0;
       OstCexBuxRAZDEL_ID.AsInteger := 0;
       OstCexBux.Post;
