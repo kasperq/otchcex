@@ -2051,6 +2051,9 @@ object FAktRashoda: TFAktRashoda
     object NormiMemDatCENA: TFloatField
       FieldName = 'CENA'
     end
+    object NormiMemDatSPEC: TBooleanField
+      FieldName = 'SPEC'
+    end
   end
   object PopupMenu1: TPopupMenu
     Left = 528
@@ -2069,7 +2072,7 @@ object FAktRashoda: TFAktRashoda
     Width = 24
     Left = 808
     Bitmap = {
-      494C010109000B00080018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010109000B00100018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       000000000000000000000000000000000000000000000000000000000000A87D
       7800B7818300B7818300B7818300B7818300B7818300B7818300B7818300B781
@@ -3185,6 +3188,7 @@ object FAktRashoda: TFAktRashoda
   object cenaQ: TRxIBQuery
     Database = DM1.BELMED
     Transaction = DM1.IBT_Read
+    CachedUpdates = True
     SQL.Strings = (
       
         'select ostatki.ksm_id, ostatki.struk_id, ostatki.cena_uch, ostat' +
@@ -3225,5 +3229,1366 @@ object FAktRashoda: TFAktRashoda
       Origin = '"OSTATKI"."KEI_ID"'
       Required = True
     end
+  end
+  object q_specKart: TRxIBQuery
+    Database = DM1.BELMED
+    Transaction = DM1.IBT_Read
+    CachedUpdates = True
+    SQL.Strings = (
+      
+        'select document.ndok, document.struk_id, document.klient_id, doc' +
+        'ument.date_dok,'
+      
+        'document.tip_op_id, document.tip_dok_id, kart.ksm_id, kart.kol_r' +
+        'ash, kart.kart_id,'
+      'kart.stroka_id, kart.cena, kart.cena_vp, kart.doc_id'
+      'from kart'
+      'inner join document on kart.doc_id = document.doc_id'
+      'where document.struk_id = :struk_id'
+      'and document.date_dok between :dat1 and :dat2'
+      'and document.tip_op_id = 32 and document.tip_dok_id = 198'
+      'and %usl')
+    UpdateObject = upd_specKart
+    Macros = <
+      item
+        DataType = ftString
+        Name = 'usl'
+        ParamType = ptInput
+        Value = '0=0'
+      end>
+    Left = 640
+    Top = 64
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'struk_id'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'dat1'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'dat2'
+        ParamType = ptUnknown
+      end>
+    object q_specKartNDOK: TIBStringField
+      FieldName = 'NDOK'
+      Origin = '"DOCUMENT"."NDOK"'
+    end
+    object q_specKartSTRUK_ID: TSmallintField
+      FieldName = 'STRUK_ID'
+      Origin = '"DOCUMENT"."STRUK_ID"'
+    end
+    object q_specKartKLIENT_ID: TIntegerField
+      FieldName = 'KLIENT_ID'
+      Origin = '"DOCUMENT"."KLIENT_ID"'
+    end
+    object q_specKartDATE_DOK: TDateField
+      FieldName = 'DATE_DOK'
+      Origin = '"DOCUMENT"."DATE_DOK"'
+    end
+    object q_specKartTIP_OP_ID: TSmallintField
+      FieldName = 'TIP_OP_ID'
+      Origin = '"DOCUMENT"."TIP_OP_ID"'
+    end
+    object q_specKartTIP_DOK_ID: TSmallintField
+      FieldName = 'TIP_DOK_ID'
+      Origin = '"DOCUMENT"."TIP_DOK_ID"'
+    end
+    object q_specKartKSM_ID: TIntegerField
+      FieldName = 'KSM_ID'
+      Origin = '"KART"."KSM_ID"'
+      Required = True
+    end
+    object q_specKartKOL_RASH: TFMTBCDField
+      FieldName = 'KOL_RASH'
+      Origin = '"KART"."KOL_RASH"'
+      Precision = 18
+      Size = 6
+    end
+    object q_specKartKART_ID: TIntegerField
+      FieldName = 'KART_ID'
+      Origin = '"KART"."KART_ID"'
+      Required = True
+    end
+    object q_specKartSTROKA_ID: TIntegerField
+      FieldName = 'STROKA_ID'
+      Origin = '"KART"."STROKA_ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object q_specKartCENA: TIBBCDField
+      FieldName = 'CENA'
+      Origin = '"KART"."CENA"'
+      Precision = 18
+      Size = 4
+    end
+    object q_specKartCENA_VP: TIBBCDField
+      FieldName = 'CENA_VP'
+      Origin = '"KART"."CENA_VP"'
+      Precision = 18
+      Size = 4
+    end
+    object q_specKartDOC_ID: TIntegerField
+      FieldName = 'DOC_ID'
+      Origin = '"KART"."DOC_ID"'
+      Required = True
+    end
+  end
+  object q_specDoc: TRxIBQuery
+    Database = DM1.BELMED
+    Transaction = DM1.IBT_Read
+    CachedUpdates = True
+    SQL.Strings = (
+      
+        'select document.doc_id, document.ndok, document.struk_id, docume' +
+        'nt.klient_id, document.date_dok,'
+      'document.tip_op_id, document.tip_dok_id, document.date_op'
+      'from document'
+      'where document.struk_id = :struk_id'
+      'and document.date_dok between :dat1 and :dat2'
+      'and document.tip_op_id = 32 and document.tip_dok_id = 198'
+      'and %usl')
+    UpdateObject = upd_specDoc
+    Macros = <
+      item
+        DataType = ftString
+        Name = 'usl'
+        ParamType = ptInput
+        Value = '0=0'
+      end>
+    Left = 680
+    Top = 64
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'struk_id'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'dat1'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'dat2'
+        ParamType = ptUnknown
+      end>
+    object q_specDocDOC_ID: TIntegerField
+      FieldName = 'DOC_ID'
+      Origin = '"DOCUMENT"."DOC_ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object q_specDocNDOK: TIBStringField
+      FieldName = 'NDOK'
+      Origin = '"DOCUMENT"."NDOK"'
+    end
+    object q_specDocSTRUK_ID: TSmallintField
+      FieldName = 'STRUK_ID'
+      Origin = '"DOCUMENT"."STRUK_ID"'
+      Required = True
+    end
+    object q_specDocKLIENT_ID: TIntegerField
+      FieldName = 'KLIENT_ID'
+      Origin = '"DOCUMENT"."KLIENT_ID"'
+      Required = True
+    end
+    object q_specDocDATE_DOK: TDateField
+      FieldName = 'DATE_DOK'
+      Origin = '"DOCUMENT"."DATE_DOK"'
+    end
+    object q_specDocTIP_OP_ID: TSmallintField
+      FieldName = 'TIP_OP_ID'
+      Origin = '"DOCUMENT"."TIP_OP_ID"'
+      Required = True
+    end
+    object q_specDocTIP_DOK_ID: TSmallintField
+      FieldName = 'TIP_DOK_ID'
+      Origin = '"DOCUMENT"."TIP_DOK_ID"'
+      Required = True
+    end
+    object q_specDocDATE_OP: TDateField
+      FieldName = 'DATE_OP'
+      Origin = '"DOCUMENT"."DATE_OP"'
+    end
+  end
+  object upd_specKart: TIBUpdateSQLW
+    RefreshSQL.Strings = (
+      'Select '
+      '  NDOK,'
+      '  STRUK_ID,'
+      '  KLIENT_ID,'
+      '  DATE_DOK,'
+      '  TIP_OP_ID,'
+      '  TIP_DOK_ID,'
+      '  KSM_ID,'
+      '  KOL_RASH,'
+      '  KART_ID,'
+      '  STROKA_ID,'
+      '  CENA,'
+      '  CENA_VP,'
+      '  DOC_ID'
+      'from kart '
+      'where'
+      '  STROKA_ID = :STROKA_ID')
+    ModifySQL.Strings = (
+      'update kart'
+      'set'
+      '  CENA = :CENA,'
+      '  CENA_VP = :CENA_VP,'
+      '  DOC_ID = :DOC_ID,'
+      '  KART_ID = :KART_ID,'
+      '  KOL_RASH = :KOL_RASH,'
+      '  KSM_ID = :KSM_ID,'
+      '  STROKA_ID = :STROKA_ID'
+      'where'
+      '  STROKA_ID = :OLD_STROKA_ID')
+    InsertSQL.Strings = (
+      'insert into kart'
+      '  (CENA, CENA_VP, DOC_ID, KART_ID, KOL_RASH, KSM_ID, STROKA_ID)'
+      'values'
+      
+        '  (:CENA, :CENA_VP, :DOC_ID, :KART_ID, :KOL_RASH, :KSM_ID, :STRO' +
+        'KA_ID)')
+    DeleteSQL.Strings = (
+      'delete from kart'
+      'where'
+      '  STROKA_ID = :OLD_STROKA_ID')
+    AutoCommit = False
+    UpdateTransaction = DM1.IBT_Write
+    Left = 640
+    Top = 96
+  end
+  object upd_specDoc: TIBUpdateSQLW
+    RefreshSQL.Strings = (
+      'Select '
+      '  DOC_ID,'
+      '  NDOK,'
+      '  STRUK_ID,'
+      '  KLIENT_ID,'
+      '  DATE_DOK,'
+      '  TIP_OP_ID,'
+      '  TIP_DOK_ID,'
+      '  DATE_OP'
+      'from document '
+      'where'
+      '  DOC_ID = :DOC_ID')
+    ModifySQL.Strings = (
+      'update document'
+      'set'
+      '  DATE_DOK = :DATE_DOK,'
+      '  DATE_OP = :DATE_OP,'
+      '  DOC_ID = :DOC_ID,'
+      '  KLIENT_ID = :KLIENT_ID,'
+      '  NDOK = :NDOK,'
+      '  STRUK_ID = :STRUK_ID,'
+      '  TIP_DOK_ID = :TIP_DOK_ID,'
+      '  TIP_OP_ID = :TIP_OP_ID'
+      'where'
+      '  DOC_ID = :OLD_DOC_ID')
+    InsertSQL.Strings = (
+      'insert into document'
+      
+        '  (DATE_DOK, DATE_OP, DOC_ID, KLIENT_ID, NDOK, STRUK_ID, TIP_DOK' +
+        '_ID, TIP_OP_ID)'
+      'values'
+      
+        '  (:DATE_DOK, :DATE_OP, :DOC_ID, :KLIENT_ID, :NDOK, :STRUK_ID, :' +
+        'TIP_DOK_ID, '
+      '   :TIP_OP_ID)')
+    DeleteSQL.Strings = (
+      'delete from document'
+      'where'
+      '  DOC_ID = :OLD_DOC_ID')
+    AutoCommit = False
+    UpdateTransaction = DM1.IBT_Write
+    Left = 680
+    Top = 96
+  end
+  object q_specOst: TRxIBQuery
+    Database = DM1.BELMED
+    Transaction = DM1.IBT_Read
+    SQL.Strings = (
+      'select ostatki.*'
+      'from ostatki'
+      'where ostatki.struk_id = :struk_id'
+      'and ostatki.ksm_id = :ksm_id'
+      'and ostatki.account = '#39'10/11'#39
+      'and coalesce(ostatki.ksm_idpr, 0) = 0'
+      'and ostatki.ot_s <> 0')
+    Macros = <>
+    Left = 728
+    Top = 64
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'struk_id'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'ksm_id'
+        ParamType = ptUnknown
+      end>
+    object q_specOstMES: TSmallintField
+      FieldName = 'MES'
+      Origin = '"OSTATKI"."MES"'
+      Required = True
+    end
+    object q_specOstSTRUK_ID: TIntegerField
+      FieldName = 'STRUK_ID'
+      Origin = '"OSTATKI"."STRUK_ID"'
+      Required = True
+    end
+    object q_specOstKSM_ID: TIntegerField
+      FieldName = 'KSM_ID'
+      Origin = '"OSTATKI"."KSM_ID"'
+      Required = True
+    end
+    object q_specOstONM_S: TFMTBCDField
+      FieldName = 'ONM_S'
+      Origin = '"OSTATKI"."ONM_S"'
+      Precision = 18
+      Size = 6
+    end
+    object q_specOstCENA_UCH: TFloatField
+      FieldName = 'CENA_UCH'
+      Origin = '"OSTATKI"."CENA_UCH"'
+    end
+    object q_specOstGOD: TSmallintField
+      FieldName = 'GOD'
+      Origin = '"OSTATKI"."GOD"'
+      Required = True
+    end
+    object q_specOstSPROD_ID: TIntegerField
+      FieldName = 'SPROD_ID'
+      Origin = '"OSTATKI"."SPROD_ID"'
+    end
+    object q_specOstKEI_ID: TSmallintField
+      FieldName = 'KEI_ID'
+      Origin = '"OSTATKI"."KEI_ID"'
+      Required = True
+    end
+    object q_specOstONM_NZ: TFMTBCDField
+      FieldName = 'ONM_NZ'
+      Origin = '"OSTATKI"."ONM_NZ"'
+      Precision = 18
+      Size = 6
+    end
+    object q_specOstOT_S: TFMTBCDField
+      FieldName = 'OT_S'
+      Origin = '"OSTATKI"."OT_S"'
+      Precision = 18
+      Size = 6
+    end
+    object q_specOstOT_NZ: TFMTBCDField
+      FieldName = 'OT_NZ'
+      Origin = '"OSTATKI"."OT_NZ"'
+      Precision = 18
+      Size = 6
+    end
+    object q_specOstKOL_TRANS: TFloatField
+      FieldName = 'KOL_TRANS'
+      Origin = '"OSTATKI"."KOL_TRANS"'
+    end
+    object q_specOstNOMU_ID_TRANS: TSmallintField
+      FieldName = 'NOMU_ID_TRANS'
+      Origin = '"OSTATKI"."NOMU_ID_TRANS"'
+    end
+    object q_specOstKART_ID: TIntegerField
+      FieldName = 'KART_ID'
+      Origin = '"OSTATKI"."KART_ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object q_specOstSERIA_ID: TIntegerField
+      FieldName = 'SERIA_ID'
+      Origin = '"OSTATKI"."SERIA_ID"'
+    end
+    object q_specOstOT_FD: TFMTBCDField
+      FieldName = 'OT_FD'
+      Origin = '"OSTATKI"."OT_FD"'
+      Precision = 18
+      Size = 6
+    end
+    object q_specOstONM_FD: TFMTBCDField
+      FieldName = 'ONM_FD'
+      Origin = '"OSTATKI"."ONM_FD"'
+      Precision = 18
+      Size = 6
+    end
+    object q_specOstNOMU_ID_GRP: TSmallintField
+      FieldName = 'NOMU_ID_GRP'
+      Origin = '"OSTATKI"."NOMU_ID_GRP"'
+    end
+    object q_specOstKOL_GRP: TFloatField
+      FieldName = 'KOL_GRP'
+      Origin = '"OSTATKI"."KOL_GRP"'
+    end
+    object q_specOstVES_TRANS: TIBBCDField
+      FieldName = 'VES_TRANS'
+      Origin = '"OSTATKI"."VES_TRANS"'
+      Precision = 9
+      Size = 2
+    end
+    object q_specOstVOL_TRANS: TFMTBCDField
+      FieldName = 'VOL_TRANS'
+      Origin = '"OSTATKI"."VOL_TRANS"'
+      Precision = 18
+      Size = 6
+    end
+    object q_specOstUSER_NAME: TIBStringField
+      FieldName = 'USER_NAME'
+      Origin = '"OSTATKI"."USER_NAME"'
+      FixedChar = True
+      Size = 10
+    end
+    object q_specOstORG_RESERV: TIntegerField
+      FieldName = 'ORG_RESERV'
+      Origin = '"OSTATKI"."ORG_RESERV"'
+    end
+    object q_specOstOT_DOKUM: TFMTBCDField
+      FieldKind = fkInternalCalc
+      FieldName = 'OT_DOKUM'
+      Origin = '"OSTATKI"."OT_DOKUM"'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 6
+    end
+    object q_specOstONM_DOKUM: TFMTBCDField
+      FieldKind = fkInternalCalc
+      FieldName = 'ONM_DOKUM'
+      Origin = '"OSTATKI"."ONM_DOKUM"'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 6
+    end
+    object q_specOstDATE_TIME_UPDATE: TDateTimeField
+      FieldName = 'DATE_TIME_UPDATE'
+      Origin = '"OSTATKI"."DATE_TIME_UPDATE"'
+    end
+    object q_specOstKSM_IDPR: TIntegerField
+      FieldName = 'KSM_IDPR'
+      Origin = '"OSTATKI"."KSM_IDPR"'
+    end
+    object q_specOstRAZDEL_ID: TSmallintField
+      FieldName = 'RAZDEL_ID'
+      Origin = '"OSTATKI"."RAZDEL_ID"'
+    end
+    object q_specOstINV_ID: TIntegerField
+      FieldName = 'INV_ID'
+      Origin = '"OSTATKI"."INV_ID"'
+    end
+    object q_specOstACCOUNT: TIBStringField
+      FieldName = 'ACCOUNT'
+      Origin = '"OSTATKI"."ACCOUNT"'
+      FixedChar = True
+      Size = 5
+    end
+    object q_specOstSUMMA_KART: TIBBCDField
+      FieldName = 'SUMMA_KART'
+      Origin = '"OSTATKI"."SUMMA_KART"'
+      Precision = 18
+      Size = 2
+    end
+    object q_specOstOT_S2: TFMTBCDField
+      FieldName = 'OT_S2'
+      Origin = '"OSTATKI"."OT_S2"'
+      Precision = 18
+      Size = 6
+    end
+    object q_specOstKEI_ID2: TSmallintField
+      FieldName = 'KEI_ID2'
+      Origin = '"OSTATKI"."KEI_ID2"'
+    end
+    object q_specOstVOL_GRP: TFMTBCDField
+      FieldName = 'VOL_GRP'
+      Origin = '"OSTATKI"."VOL_GRP"'
+      Precision = 18
+      Size = 6
+    end
+    object q_specOstVES_GRP: TIBBCDField
+      FieldName = 'VES_GRP'
+      Origin = '"OSTATKI"."VES_GRP"'
+      Precision = 9
+      Size = 3
+    end
+    object q_specOstPROC_OV: TFMTBCDField
+      FieldName = 'PROC_OV'
+      Origin = '"OSTATKI"."PROC_OV"'
+      Precision = 18
+      Size = 6
+    end
+    object q_specOstCENA_OPT: TIBBCDField
+      FieldName = 'CENA_OPT'
+      Origin = '"OSTATKI"."CENA_OPT"'
+      Precision = 18
+      Size = 2
+    end
+    object q_specOstONM_S_P: TFMTBCDField
+      FieldName = 'ONM_S_P'
+      Origin = '"OSTATKI"."ONM_S_P"'
+      Precision = 18
+      Size = 6
+    end
+    object q_specOstSTRUK_ID_RELA: TIntegerField
+      FieldName = 'STRUK_ID_RELA'
+      Origin = '"OSTATKI"."STRUK_ID_RELA"'
+    end
+    object q_specOstBSO: TSmallintField
+      FieldName = 'BSO'
+      Origin = '"OSTATKI"."BSO"'
+    end
+    object q_specOstDATE_VID: TDateField
+      FieldName = 'DATE_VID'
+      Origin = '"OSTATKI"."DATE_VID"'
+    end
+    object q_specOstSROK: TIBBCDField
+      FieldName = 'SROK'
+      Origin = '"OSTATKI"."SROK"'
+      Precision = 9
+      Size = 2
+    end
+    object q_specOstNLK: TIntegerField
+      FieldName = 'NLK'
+      Origin = '"OSTATKI"."NLK"'
+    end
+    object q_specOstSUMMA_SPIS: TIBBCDField
+      FieldName = 'SUMMA_SPIS'
+      Origin = '"OSTATKI"."SUMMA_SPIS"'
+      Precision = 18
+      Size = 2
+    end
+    object q_specOstCENA_UCH_NM: TIBBCDField
+      FieldName = 'CENA_UCH_NM'
+      Origin = '"OSTATKI"."CENA_UCH_NM"'
+      Precision = 18
+      Size = 4
+    end
+    object q_specOstACCOUNT_OLD: TIBStringField
+      FieldName = 'ACCOUNT_OLD'
+      Origin = '"OSTATKI"."ACCOUNT_OLD"'
+      FixedChar = True
+      Size = 5
+    end
+  end
+  object q_prixDoc: TRxIBQuery
+    Database = DM1.BELMED
+    Transaction = DM1.IBT_Read
+    CachedUpdates = True
+    SQL.Strings = (
+      'select document.*'
+      'from document'
+      'where document.struk_id = :struk_id'
+      'and document.klient_id = :klient_id'
+      'and document.date_dok between :dat1 and :dat2'
+      'and document.tip_op_id = 30 and document.tip_dok_id = 37'
+      'and document.ndok like '#39#1056#1087'%'#39)
+    Macros = <>
+    Left = 808
+    Top = 64
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'struk_id'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'klient_id'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'dat1'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'dat2'
+        ParamType = ptUnknown
+      end>
+    object q_prixDocNDOK: TIBStringField
+      FieldName = 'NDOK'
+      Origin = '"DOCUMENT"."NDOK"'
+    end
+    object q_prixDocDOC_ID: TIntegerField
+      FieldName = 'DOC_ID'
+      Origin = '"DOCUMENT"."DOC_ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object q_prixDocPRIZ_ID: TSmallintField
+      FieldName = 'PRIZ_ID'
+      Origin = '"DOCUMENT"."PRIZ_ID"'
+      Required = True
+    end
+    object q_prixDocTIP_OP_ID: TSmallintField
+      FieldName = 'TIP_OP_ID'
+      Origin = '"DOCUMENT"."TIP_OP_ID"'
+      Required = True
+    end
+    object q_prixDocTIP_DOK_ID: TSmallintField
+      FieldName = 'TIP_DOK_ID'
+      Origin = '"DOCUMENT"."TIP_DOK_ID"'
+      Required = True
+    end
+    object q_prixDocDATE_DOK: TDateField
+      FieldName = 'DATE_DOK'
+      Origin = '"DOCUMENT"."DATE_DOK"'
+    end
+    object q_prixDocDOK_OSN_ID: TIntegerField
+      FieldName = 'DOK_OSN_ID'
+      Origin = '"DOCUMENT"."DOK_OSN_ID"'
+    end
+    object q_prixDocSTRUK_ID: TSmallintField
+      FieldName = 'STRUK_ID'
+      Origin = '"DOCUMENT"."STRUK_ID"'
+      Required = True
+    end
+    object q_prixDocVP_ID: TSmallintField
+      FieldName = 'VP_ID'
+      Origin = '"DOCUMENT"."VP_ID"'
+    end
+    object q_prixDocKPV: TFMTBCDField
+      FieldName = 'KPV'
+      Origin = '"DOCUMENT"."KPV"'
+      Precision = 18
+      Size = 6
+    end
+    object q_prixDocKLIENT_ID: TIntegerField
+      FieldName = 'KLIENT_ID'
+      Origin = '"DOCUMENT"."KLIENT_ID"'
+      Required = True
+    end
+    object q_prixDocSUM_BRB: TIBBCDField
+      FieldName = 'SUM_BRB'
+      Origin = '"DOCUMENT"."SUM_BRB"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixDocSUM_ISP1: TIBBCDField
+      FieldName = 'SUM_ISP1'
+      Origin = '"DOCUMENT"."SUM_ISP1"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixDocSUM_ISP2: TIBBCDField
+      FieldName = 'SUM_ISP2'
+      Origin = '"DOCUMENT"."SUM_ISP2"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixDocSUM_VP: TIBBCDField
+      FieldName = 'SUM_VP'
+      Origin = '"DOCUMENT"."SUM_VP"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixDocSUM_ISP1_VP: TIBBCDField
+      FieldName = 'SUM_ISP1_VP'
+      Origin = '"DOCUMENT"."SUM_ISP1_VP"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixDocSUM_ISP2_VP: TIBBCDField
+      FieldName = 'SUM_ISP2_VP'
+      Origin = '"DOCUMENT"."SUM_ISP2_VP"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixDocNDS: TIBBCDField
+      FieldName = 'NDS'
+      Origin = '"DOCUMENT"."NDS"'
+      Precision = 9
+      Size = 2
+    end
+    object q_prixDocSUM_NDS: TIBBCDField
+      FieldName = 'SUM_NDS'
+      Origin = '"DOCUMENT"."SUM_NDS"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixDocSUM_NDS_VP: TIBBCDField
+      FieldName = 'SUM_NDS_VP'
+      Origin = '"DOCUMENT"."SUM_NDS_VP"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixDocDATE_OP: TDateField
+      FieldName = 'DATE_OP'
+      Origin = '"DOCUMENT"."DATE_OP"'
+    end
+    object q_prixDocDATE_VVOD: TDateTimeField
+      FieldName = 'DATE_VVOD'
+      Origin = '"DOCUMENT"."DATE_VVOD"'
+    end
+    object q_prixDocZADACHA_ID: TIBStringField
+      FieldName = 'ZADACHA_ID'
+      Origin = '"DOCUMENT"."ZADACHA_ID"'
+      FixedChar = True
+      Size = 10
+    end
+    object q_prixDocUSER_NAME: TIBStringField
+      FieldName = 'USER_NAME'
+      Origin = '"DOCUMENT"."USER_NAME"'
+      FixedChar = True
+      Size = 10
+    end
+    object q_prixDocDOV: TIntegerField
+      FieldName = 'DOV'
+      Origin = '"DOCUMENT"."DOV"'
+    end
+    object q_prixDocDATE_TIME_UPDATE: TDateTimeField
+      FieldName = 'DATE_TIME_UPDATE'
+      Origin = '"DOCUMENT"."DATE_TIME_UPDATE"'
+    end
+    object q_prixDocJORN_ID: TSmallintField
+      FieldName = 'JORN_ID'
+      Origin = '"DOCUMENT"."JORN_ID"'
+    end
+    object q_prixDocRCHET_ID: TIntegerField
+      FieldName = 'RCHET_ID'
+      Origin = '"DOCUMENT"."RCHET_ID"'
+    end
+    object q_prixDocTAG: TIntegerField
+      FieldName = 'TAG'
+      Origin = '"DOCUMENT"."TAG"'
+    end
+    object q_prixDocKPV_OLD: TFMTBCDField
+      FieldName = 'KPV_OLD'
+      Origin = '"DOCUMENT"."KPV_OLD"'
+      Precision = 18
+      Size = 6
+    end
+  end
+  object q_prixKart: TRxIBQuery
+    Database = DM1.BELMED
+    Transaction = DM1.IBT_Read
+    CachedUpdates = True
+    SQL.Strings = (
+      'select kart.*'
+      'from kart'
+      'where kart.doc_id = :doc_id'
+      'and coalesce(kart.kol_rash, 0) <> 0')
+    UpdateObject = upd_prixKart
+    Macros = <>
+    Left = 848
+    Top = 64
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'doc_id'
+        ParamType = ptInput
+      end>
+    object q_prixKartDOC_ID: TIntegerField
+      FieldName = 'DOC_ID'
+      Origin = '"KART"."DOC_ID"'
+      Required = True
+    end
+    object q_prixKartSTROKA_ID: TIntegerField
+      FieldName = 'STROKA_ID'
+      Origin = '"KART"."STROKA_ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object q_prixKartKSM_ID: TIntegerField
+      FieldName = 'KSM_ID'
+      Origin = '"KART"."KSM_ID"'
+      Required = True
+    end
+    object q_prixKartCENA: TIBBCDField
+      FieldName = 'CENA'
+      Origin = '"KART"."CENA"'
+      Precision = 18
+      Size = 4
+    end
+    object q_prixKartKOL_PRIH: TFMTBCDField
+      FieldName = 'KOL_PRIH'
+      Origin = '"KART"."KOL_PRIH"'
+      Precision = 18
+      Size = 6
+    end
+    object q_prixKartCENA_VP: TIBBCDField
+      FieldName = 'CENA_VP'
+      Origin = '"KART"."CENA_VP"'
+      Precision = 18
+      Size = 4
+    end
+    object q_prixKartNDS: TIBBCDField
+      FieldName = 'NDS'
+      Origin = '"KART"."NDS"'
+      Precision = 9
+      Size = 2
+    end
+    object q_prixKartSUM_NDS: TIBBCDField
+      FieldName = 'SUM_NDS'
+      Origin = '"KART"."SUM_NDS"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixKartSUM_NDS_VP: TIBBCDField
+      FieldName = 'SUM_NDS_VP'
+      Origin = '"KART"."SUM_NDS_VP"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixKartKOL_RASH: TFMTBCDField
+      FieldName = 'KOL_RASH'
+      Origin = '"KART"."KOL_RASH"'
+      Precision = 18
+      Size = 6
+    end
+    object q_prixKartKART_ID: TIntegerField
+      FieldName = 'KART_ID'
+      Origin = '"KART"."KART_ID"'
+      Required = True
+    end
+    object q_prixKartORG_ID_BRAK: TIntegerField
+      FieldName = 'ORG_ID_BRAK'
+      Origin = '"KART"."ORG_ID_BRAK"'
+    end
+    object q_prixKartOSNOV_BRAK_ID: TSmallintField
+      FieldName = 'OSNOV_BRAK_ID'
+      Origin = '"KART"."OSNOV_BRAK_ID"'
+    end
+    object q_prixKartUSER_NAME: TIBStringField
+      FieldName = 'USER_NAME'
+      Origin = '"KART"."USER_NAME"'
+      FixedChar = True
+      Size = 10
+    end
+    object q_prixKartDATE_TIME_UPDATE: TDateTimeField
+      FieldName = 'DATE_TIME_UPDATE'
+      Origin = '"KART"."DATE_TIME_UPDATE"'
+    end
+    object q_prixKartPARENT: TIntegerField
+      FieldName = 'PARENT'
+      Origin = '"KART"."PARENT"'
+    end
+    object q_prixKartRAZDEL_ID: TSmallintField
+      FieldName = 'RAZDEL_ID'
+      Origin = '"KART"."RAZDEL_ID"'
+    end
+    object q_prixKartSKIDKA: TIBBCDField
+      FieldName = 'SKIDKA'
+      Origin = '"KART"."SKIDKA"'
+      Precision = 9
+      Size = 2
+    end
+    object q_prixKartKEI_ID: TSmallintField
+      FieldName = 'KEI_ID'
+      Origin = '"KART"."KEI_ID"'
+    end
+    object q_prixKartSUMMA: TIBBCDField
+      FieldName = 'SUMMA'
+      Origin = '"KART"."SUMMA"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixKartSUMMA_VP: TIBBCDField
+      FieldName = 'SUMMA_VP'
+      Origin = '"KART"."SUMMA_VP"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixKartSUM_SKID: TIBBCDField
+      FieldName = 'SUM_SKID'
+      Origin = '"KART"."SUM_SKID"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixKartSUM_SKID_VP: TIBBCDField
+      FieldName = 'SUM_SKID_VP'
+      Origin = '"KART"."SUM_SKID_VP"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixKartSUMMA_S_NDS: TIBBCDField
+      FieldName = 'SUMMA_S_NDS'
+      Origin = '"KART"."SUMMA_S_NDS"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixKartSUMMA_S_NDS_VP: TIBBCDField
+      FieldName = 'SUMMA_S_NDS_VP'
+      Origin = '"KART"."SUMMA_S_NDS_VP"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixKartTAG: TIntegerField
+      FieldName = 'TAG'
+      Origin = '"KART"."TAG"'
+    end
+    object q_prixKartKOL_PRIH_EDIZ: TFloatField
+      FieldName = 'KOL_PRIH_EDIZ'
+      Origin = '"KART"."KOL_PRIH_EDIZ"'
+    end
+    object q_prixKartKOL_RASH_EDIZ: TFloatField
+      FieldName = 'KOL_RASH_EDIZ'
+      Origin = '"KART"."KOL_RASH_EDIZ"'
+    end
+    object q_prixKartTIP_OP_ID: TSmallintField
+      FieldName = 'TIP_OP_ID'
+      Origin = '"KART"."TIP_OP_ID"'
+    end
+    object q_prixKartTIP_DOK_ID: TSmallintField
+      FieldName = 'TIP_DOK_ID'
+      Origin = '"KART"."TIP_DOK_ID"'
+    end
+    object q_prixKartTAG1: TIntegerField
+      FieldName = 'TAG1'
+      Origin = '"KART"."TAG1"'
+    end
+    object q_prixKartTOV_SKIDKA: TSmallintField
+      FieldName = 'TOV_SKIDKA'
+      Origin = '"KART"."TOV_SKIDKA"'
+    end
+    object q_prixKartKEI_ID2: TSmallintField
+      FieldName = 'KEI_ID2'
+      Origin = '"KART"."KEI_ID2"'
+    end
+    object q_prixKartCENA_PRICE: TIBBCDField
+      FieldName = 'CENA_PRICE'
+      Origin = '"KART"."CENA_PRICE"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixKartSKID_CEN: TIBBCDField
+      FieldName = 'SKID_CEN'
+      Origin = '"KART"."SKID_CEN"'
+      Precision = 9
+      Size = 2
+    end
+    object q_prixKartCOMMENT: TIBStringField
+      FieldName = 'COMMENT'
+      Origin = '"KART"."COMMENT"'
+      Size = 40
+    end
+    object q_prixKartDOP_SUM: TIBBCDField
+      FieldName = 'DOP_SUM'
+      Origin = '"KART"."DOP_SUM"'
+      Precision = 9
+      Size = 4
+    end
+    object q_prixKartDEBET: TIBStringField
+      FieldName = 'DEBET'
+      Origin = '"KART"."DEBET"'
+      FixedChar = True
+      Size = 5
+    end
+    object q_prixKartDTYPESUB_ID: TSmallintField
+      FieldName = 'DTYPESUB_ID'
+      Origin = '"KART"."DTYPESUB_ID"'
+    end
+    object q_prixKartDCODE: TIntegerField
+      FieldName = 'DCODE'
+      Origin = '"KART"."DCODE"'
+    end
+    object q_prixKartCREDIT: TIBStringField
+      FieldName = 'CREDIT'
+      Origin = '"KART"."CREDIT"'
+      FixedChar = True
+      Size = 5
+    end
+    object q_prixKartCTYPESUB_ID: TSmallintField
+      FieldName = 'CTYPESUB_ID'
+      Origin = '"KART"."CTYPESUB_ID"'
+    end
+    object q_prixKartCCODE: TIntegerField
+      FieldName = 'CCODE'
+      Origin = '"KART"."CCODE"'
+    end
+    object q_prixKartSROK: TSmallintField
+      FieldName = 'SROK'
+      Origin = '"KART"."SROK"'
+    end
+    object q_prixKartDATE_VID: TDateField
+      FieldName = 'DATE_VID'
+      Origin = '"KART"."DATE_VID"'
+    end
+    object q_prixKartDOP_RASH: TIBBCDField
+      FieldName = 'DOP_RASH'
+      Origin = '"KART"."DOP_RASH"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixKartDOP_RASH_ID: TSmallintField
+      FieldName = 'DOP_RASH_ID'
+      Origin = '"KART"."DOP_RASH_ID"'
+    end
+    object q_prixKartNORM_RASH: TFMTBCDField
+      FieldName = 'NORM_RASH'
+      Origin = '"KART"."NORM_RASH"'
+      Precision = 18
+      Size = 6
+    end
+    object q_prixKartKOL_RAB: TFMTBCDField
+      FieldName = 'KOL_RAB'
+      Origin = '"KART"."KOL_RAB"'
+      Precision = 18
+      Size = 6
+    end
+  end
+  object upd_prixKart: TIBUpdateSQLW
+    RefreshSQL.Strings = (
+      'Select '
+      '  kart.*'
+      'from kart '
+      'where'
+      '  STROKA_ID = :STROKA_ID')
+    ModifySQL.Strings = (
+      'update kart'
+      'set'
+      '  CENA = :CENA,'
+      '  CENA_VP = :CENA_VP,'
+      '  DOC_ID = :DOC_ID,'
+      '  KART_ID = :KART_ID,'
+      '  KEI_ID = :KEI_ID,'
+      '  KOL_PRIH = :KOL_PRIH,'
+      '  KOL_PRIH_EDIZ = :KOL_PRIH_EDIZ,'
+      '  KOL_RASH = :KOL_RASH,'
+      '  KOL_RASH_EDIZ = :KOL_RASH_EDIZ,'
+      '  KSM_ID = :KSM_ID,'
+      '  RAZDEL_ID = :RAZDEL_ID,'
+      '  STROKA_ID = :STROKA_ID'
+      'where'
+      '  STROKA_ID = :OLD_STROKA_ID')
+    InsertSQL.Strings = (
+      'insert into kart'
+      
+        '  (CENA, CENA_VP, DOC_ID, KART_ID, KEI_ID, KOL_PRIH, KOL_PRIH_ED' +
+        'IZ, KOL_RASH, '
+      '   KOL_RASH_EDIZ, KSM_ID, RAZDEL_ID, STROKA_ID)'
+      'values'
+      
+        '  (:CENA, :CENA_VP, :DOC_ID, :KART_ID, :KEI_ID, :KOL_PRIH, :KOL_' +
+        'PRIH_EDIZ, '
+      '   :KOL_RASH, :KOL_RASH_EDIZ, :KSM_ID, :RAZDEL_ID, :STROKA_ID)')
+    DeleteSQL.Strings = (
+      'delete from kart'
+      'where'
+      '  STROKA_ID = :OLD_STROKA_ID')
+    AutoCommit = False
+    UpdateTransaction = DM1.IBT_Write
+    Left = 848
+    Top = 104
+  end
+  object q_ostatki: TRxIBQuery
+    Database = DM1.BELMED
+    Transaction = DM1.IBT_Read
+    SQL.Strings = (
+      'select ostatki.*'
+      'from ostatki'
+      'where ostatki.struk_id = :struk_id'
+      'and ostatki.ksm_id = :ksm_id'
+      'and coalesce(ostatki.ksm_idpr, 0) = :ksm_idpr')
+    UpdateObject = upd_ostatki
+    Macros = <>
+    Left = 888
+    Top = 64
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'struk_id'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'ksm_id'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'ksm_idpr'
+        ParamType = ptUnknown
+      end>
+    object q_ostatkiKART_ID: TIntegerField
+      FieldName = 'KART_ID'
+      Origin = '"OSTATKI"."KART_ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object q_ostatkiOT_S: TFMTBCDField
+      FieldName = 'OT_S'
+      Origin = '"OSTATKI"."OT_S"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiKSM_ID: TIntegerField
+      FieldName = 'KSM_ID'
+      Origin = '"OSTATKI"."KSM_ID"'
+      Required = True
+    end
+    object q_ostatkiSTRUK_ID: TIntegerField
+      FieldName = 'STRUK_ID'
+      Origin = '"OSTATKI"."STRUK_ID"'
+      Required = True
+    end
+    object q_ostatkiMES: TSmallintField
+      FieldName = 'MES'
+      Origin = '"OSTATKI"."MES"'
+      Required = True
+    end
+    object q_ostatkiONM_S: TFMTBCDField
+      FieldName = 'ONM_S'
+      Origin = '"OSTATKI"."ONM_S"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiCENA_UCH: TFloatField
+      FieldName = 'CENA_UCH'
+      Origin = '"OSTATKI"."CENA_UCH"'
+    end
+    object q_ostatkiGOD: TSmallintField
+      FieldName = 'GOD'
+      Origin = '"OSTATKI"."GOD"'
+      Required = True
+    end
+    object q_ostatkiSPROD_ID: TIntegerField
+      FieldName = 'SPROD_ID'
+      Origin = '"OSTATKI"."SPROD_ID"'
+    end
+    object q_ostatkiKEI_ID: TSmallintField
+      FieldName = 'KEI_ID'
+      Origin = '"OSTATKI"."KEI_ID"'
+      Required = True
+    end
+    object q_ostatkiONM_NZ: TFMTBCDField
+      FieldName = 'ONM_NZ'
+      Origin = '"OSTATKI"."ONM_NZ"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiOT_NZ: TFMTBCDField
+      FieldName = 'OT_NZ'
+      Origin = '"OSTATKI"."OT_NZ"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiKOL_TRANS: TFloatField
+      FieldName = 'KOL_TRANS'
+      Origin = '"OSTATKI"."KOL_TRANS"'
+    end
+    object q_ostatkiNOMU_ID_TRANS: TSmallintField
+      FieldName = 'NOMU_ID_TRANS'
+      Origin = '"OSTATKI"."NOMU_ID_TRANS"'
+    end
+    object q_ostatkiSERIA_ID: TIntegerField
+      FieldName = 'SERIA_ID'
+      Origin = '"OSTATKI"."SERIA_ID"'
+    end
+    object q_ostatkiOT_FD: TFMTBCDField
+      FieldName = 'OT_FD'
+      Origin = '"OSTATKI"."OT_FD"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiONM_FD: TFMTBCDField
+      FieldName = 'ONM_FD'
+      Origin = '"OSTATKI"."ONM_FD"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiNOMU_ID_GRP: TSmallintField
+      FieldName = 'NOMU_ID_GRP'
+      Origin = '"OSTATKI"."NOMU_ID_GRP"'
+    end
+    object q_ostatkiKOL_GRP: TFloatField
+      FieldName = 'KOL_GRP'
+      Origin = '"OSTATKI"."KOL_GRP"'
+    end
+    object q_ostatkiVES_TRANS: TIBBCDField
+      FieldName = 'VES_TRANS'
+      Origin = '"OSTATKI"."VES_TRANS"'
+      Precision = 9
+      Size = 2
+    end
+    object q_ostatkiVOL_TRANS: TFMTBCDField
+      FieldName = 'VOL_TRANS'
+      Origin = '"OSTATKI"."VOL_TRANS"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiUSER_NAME: TIBStringField
+      FieldName = 'USER_NAME'
+      Origin = '"OSTATKI"."USER_NAME"'
+      FixedChar = True
+      Size = 10
+    end
+    object q_ostatkiORG_RESERV: TIntegerField
+      FieldName = 'ORG_RESERV'
+      Origin = '"OSTATKI"."ORG_RESERV"'
+    end
+    object q_ostatkiOT_DOKUM: TFMTBCDField
+      FieldKind = fkInternalCalc
+      FieldName = 'OT_DOKUM'
+      Origin = '"OSTATKI"."OT_DOKUM"'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiONM_DOKUM: TFMTBCDField
+      FieldKind = fkInternalCalc
+      FieldName = 'ONM_DOKUM'
+      Origin = '"OSTATKI"."ONM_DOKUM"'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiDATE_TIME_UPDATE: TDateTimeField
+      FieldName = 'DATE_TIME_UPDATE'
+      Origin = '"OSTATKI"."DATE_TIME_UPDATE"'
+    end
+    object q_ostatkiKSM_IDPR: TIntegerField
+      FieldName = 'KSM_IDPR'
+      Origin = '"OSTATKI"."KSM_IDPR"'
+    end
+    object q_ostatkiRAZDEL_ID: TSmallintField
+      FieldName = 'RAZDEL_ID'
+      Origin = '"OSTATKI"."RAZDEL_ID"'
+    end
+    object q_ostatkiINV_ID: TIntegerField
+      FieldName = 'INV_ID'
+      Origin = '"OSTATKI"."INV_ID"'
+    end
+    object q_ostatkiACCOUNT: TIBStringField
+      FieldName = 'ACCOUNT'
+      Origin = '"OSTATKI"."ACCOUNT"'
+      FixedChar = True
+      Size = 5
+    end
+    object q_ostatkiSUMMA_KART: TIBBCDField
+      FieldName = 'SUMMA_KART'
+      Origin = '"OSTATKI"."SUMMA_KART"'
+      Precision = 18
+      Size = 2
+    end
+    object q_ostatkiOT_S2: TFMTBCDField
+      FieldName = 'OT_S2'
+      Origin = '"OSTATKI"."OT_S2"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiKEI_ID2: TSmallintField
+      FieldName = 'KEI_ID2'
+      Origin = '"OSTATKI"."KEI_ID2"'
+    end
+    object q_ostatkiVOL_GRP: TFMTBCDField
+      FieldName = 'VOL_GRP'
+      Origin = '"OSTATKI"."VOL_GRP"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiVES_GRP: TIBBCDField
+      FieldName = 'VES_GRP'
+      Origin = '"OSTATKI"."VES_GRP"'
+      Precision = 9
+      Size = 3
+    end
+    object q_ostatkiPROC_OV: TFMTBCDField
+      FieldName = 'PROC_OV'
+      Origin = '"OSTATKI"."PROC_OV"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiCENA_OPT: TIBBCDField
+      FieldName = 'CENA_OPT'
+      Origin = '"OSTATKI"."CENA_OPT"'
+      Precision = 18
+      Size = 2
+    end
+    object q_ostatkiONM_S_P: TFMTBCDField
+      FieldName = 'ONM_S_P'
+      Origin = '"OSTATKI"."ONM_S_P"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiSTRUK_ID_RELA: TIntegerField
+      FieldName = 'STRUK_ID_RELA'
+      Origin = '"OSTATKI"."STRUK_ID_RELA"'
+    end
+    object q_ostatkiBSO: TSmallintField
+      FieldName = 'BSO'
+      Origin = '"OSTATKI"."BSO"'
+    end
+    object q_ostatkiDATE_VID: TDateField
+      FieldName = 'DATE_VID'
+      Origin = '"OSTATKI"."DATE_VID"'
+    end
+    object q_ostatkiSROK: TIBBCDField
+      FieldName = 'SROK'
+      Origin = '"OSTATKI"."SROK"'
+      Precision = 9
+      Size = 2
+    end
+    object q_ostatkiNLK: TIntegerField
+      FieldName = 'NLK'
+      Origin = '"OSTATKI"."NLK"'
+    end
+    object q_ostatkiSUMMA_SPIS: TIBBCDField
+      FieldName = 'SUMMA_SPIS'
+      Origin = '"OSTATKI"."SUMMA_SPIS"'
+      Precision = 18
+      Size = 2
+    end
+    object q_ostatkiCENA_UCH_NM: TIBBCDField
+      FieldName = 'CENA_UCH_NM'
+      Origin = '"OSTATKI"."CENA_UCH_NM"'
+      Precision = 18
+      Size = 4
+    end
+    object q_ostatkiACCOUNT_OLD: TIBStringField
+      FieldName = 'ACCOUNT_OLD'
+      Origin = '"OSTATKI"."ACCOUNT_OLD"'
+      FixedChar = True
+      Size = 5
+    end
+  end
+  object upd_ostatki: TIBUpdateSQLW
+    RefreshSQL.Strings = (
+      'Select '
+      ' ostatki.*'
+      'from ostatki '
+      'where'
+      '  KART_ID = :KART_ID')
+    ModifySQL.Strings = (
+      'update ostatki'
+      'set'
+      '  ACCOUNT = :ACCOUNT,'
+      '  CENA_UCH = :CENA_UCH,'
+      '  KART_ID = :KART_ID,'
+      '  KEI_ID = :KEI_ID,'
+      '  KSM_ID = :KSM_ID,'
+      '  KSM_IDPR = :KSM_IDPR,'
+      '  STRUK_ID = :STRUK_ID'
+      'where'
+      '  KART_ID = :OLD_KART_ID')
+    InsertSQL.Strings = (
+      'insert into ostatki'
+      
+        '  (ACCOUNT, CENA_UCH, KART_ID, KEI_ID, KSM_ID, KSM_IDPR, STRUK_I' +
+        'D)'
+      'values'
+      
+        '  (:ACCOUNT, :CENA_UCH, :KART_ID, :KEI_ID, :KSM_ID, :KSM_IDPR, :' +
+        'STRUK_ID)')
+    DeleteSQL.Strings = (
+      'delete from ostatki'
+      'where'
+      '  KART_ID = :OLD_KART_ID')
+    AutoCommit = False
+    UpdateTransaction = DM1.IBT_Write
+    Left = 888
+    Top = 104
   end
 end
