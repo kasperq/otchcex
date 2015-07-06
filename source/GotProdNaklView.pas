@@ -1015,11 +1015,11 @@ begin
     MemKart.Post;
     GotKartQuery.Next;
   end;
-    GotKartQueryKOL_TRANS.OnChange := GotKartQueryKOL_TRANSChange;
-    GotKartQueryKOL_GRP.OnChange := GotKartQueryKOL_GRPChange;
-    GotKartQueryVES_UPAK.OnChange := GotKartQueryVES_UPAKChange;
-    GotKartQueryUPAK_GRP.OnChange := GotKartQueryUPAK_GRPChange;
-    GotKartQueryVES_GRP.OnChange := GotKartQueryVES_GRPChange;
+  GotKartQueryKOL_TRANS.OnChange := GotKartQueryKOL_TRANSChange;
+  GotKartQueryKOL_GRP.OnChange := GotKartQueryKOL_GRPChange;
+  GotKartQueryVES_UPAK.OnChange := GotKartQueryVES_UPAKChange;
+  GotKartQueryUPAK_GRP.OnChange := GotKartQueryUPAK_GRPChange;
+  GotKartQueryVES_GRP.OnChange := GotKartQueryVES_GRPChange;
 end;
 
 procedure TFGotProdNaklView.addGotDocumentToMemDocument;
@@ -1626,7 +1626,8 @@ begin
     TempQuery.SQL.Add(' inner JOIN EDIZ ON (SPPROD.KEI_ID = EDIZ.KEI_ID)');
     TempQuery.SQL.Add(' where kart.doc_id = ' + GotDocumentDOC_ID.AsString);
     TempQuery.SQL.Add(' group by SPPROD.NMAT, KART.DOC_ID, KART.KSM_ID, '
-                     + 'OSTATKI.SERIA_ID, SERIA.SERIA, EDIZ.NEIS, region.nam ');
+                     + 'OSTATKI.SERIA_ID, SERIA.SERIA, EDIZ.NEIS, region.nam '
+                     + 'order by SERIA.SERIA ');
     TempQuery.Active := True;
 
     loadAndInitMDNaklad;
