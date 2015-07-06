@@ -430,7 +430,7 @@ begin
   GotNaklQuery.ParamByName('date1').AsDate := FGotProd.beginDate;
   GotNaklQuery.ParamByName('date2').AsDate := FGotProd.endDate;
   if (uslOrd = '') then
-    GotNaklQuery.MacroByName('usl_ord').AsString := 'document.date_dok, document.doc_id'
+    GotNaklQuery.MacroByName('usl_ord').AsString := 'document.date_dok, document.doc_id, seria.seria '
   else
     GotNaklQuery.MacroByName('usl_ord').AsString := uslOrd;
   GotNaklQuery.Active := true;

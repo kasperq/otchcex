@@ -1425,7 +1425,8 @@ object FGotProdNaklView: TFGotProdNaklView
       '   LEFT JOIN EDIZ ON (KART.KEI_ID = EDIZ.KEI_ID)'
       '   left join EDIZ ED2 on (ed2.KEI_ID = spprod.KEI_ID)'
       ''
-      'where kart.doc_id = :doc_id')
+      'where kart.doc_id = :doc_id'
+      'order by seria.seria')
     UpdateObject = GotKartQueryUpd
     Macros = <>
     Left = 264
