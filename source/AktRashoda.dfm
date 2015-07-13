@@ -2051,7 +2051,7 @@ object FAktRashoda: TFAktRashoda
     object NormiMemDatCENA: TFloatField
       FieldName = 'CENA'
     end
-    object NormiMemDatSPEC: TBooleanField
+    object NormiMemDatSPEC: TIntegerField
       FieldName = 'SPEC'
     end
   end
@@ -2072,7 +2072,7 @@ object FAktRashoda: TFAktRashoda
     Width = 24
     Left = 808
     Bitmap = {
-      494C010109000B00100018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010109000B00140018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       000000000000000000000000000000000000000000000000000000000000A87D
       7800B7818300B7818300B7818300B7818300B7818300B7818300B7818300B781
@@ -3520,7 +3520,7 @@ object FAktRashoda: TFAktRashoda
       'and ostatki.ksm_id = :ksm_id'
       'and ostatki.account = '#39'10/11'#39
       'and coalesce(ostatki.ksm_idpr, 0) = 0'
-      'and ostatki.ot_s <> 0')
+      'and coalesce(ostatki.ot_s, 0) <> 0')
     Macros = <>
     Left = 728
     Top = 64
@@ -4590,5 +4590,37 @@ object FAktRashoda: TFAktRashoda
     UpdateTransaction = DM1.IBT_Write
     Left = 888
     Top = 104
+  end
+  object mem_notAdded: TkbmMemTable
+    DesignActivation = True
+    AttachedAutoRefresh = True
+    AttachMaxCount = 1
+    FieldDefs = <>
+    IndexDefs = <>
+    SortOptions = []
+    AllDataOptions = [mtfSaveData, mtfSaveNonVisible, mtfSaveBlobs, mtfSaveFiltered, mtfSaveIgnoreRange, mtfSaveIgnoreMasterDetail, mtfSaveDeltas]
+    CommaTextOptions = [mtfSaveData]
+    CSVQuote = '"'
+    CSVFieldDelimiter = ','
+    CSVRecordDelimiter = ','
+    CSVTrueString = 'True'
+    CSVFalseString = 'False'
+    PersistentSaveOptions = [mtfSaveData, mtfSaveNonVisible, mtfSaveIgnoreRange, mtfSaveIgnoreMasterDetail]
+    PersistentBackup = False
+    ProgressFlags = [mtpcLoad, mtpcSave, mtpcCopy]
+    FilterOptions = []
+    Version = '2.53g'
+    LanguageID = 0
+    SortID = 0
+    SubLanguageID = 1
+    LocaleID = 1024
+    Left = 728
+    Top = 104
+    object mem_notAddedKSM_ID: TIntegerField
+      FieldName = 'KSM_ID'
+    end
+    object mem_notAddedKOL: TFloatField
+      FieldName = 'KOL'
+    end
   end
 end

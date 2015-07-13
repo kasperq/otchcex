@@ -7,7 +7,7 @@ uses
   Dialogs, frxClass, frxDBSet, frxDCtrl, DB, IBCustomDataSet, IBQuery, RxIBQuery,
   Grids, DBGridEh, StdCtrls, RxMemDS, Buttons, RxStrUtils, VCLUtils, Menus,
   RxMenus, IBDataBase, ToolWin, ComCtrls, ImgList, ExtCtrls, SplshWnd,
-  IBUpdateSQL, IBUpdSQLW, RXCtrls, Math;
+  IBUpdateSQL, IBUpdSQLW, RXCtrls, Math, kbmMemTable;
 
 type                                                      
   TIFPair = class(TObject)
@@ -186,7 +186,6 @@ type
     q_specOstSUMMA_SPIS: TIBBCDField;
     q_specOstCENA_UCH_NM: TIBBCDField;
     q_specOstACCOUNT_OLD: TIBStringField;
-    NormiMemDatSPEC: TBooleanField;
     q_prixDoc: TRxIBQuery;
     q_prixDocNDOK: TIBStringField;
     q_prixDocDOC_ID: TIntegerField;
@@ -330,6 +329,10 @@ type
     q_ostatkiCENA_UCH_NM: TIBBCDField;
     q_ostatkiACCOUNT_OLD: TIBStringField;
     upd_ostatki: TIBUpdateSQLW;
+    mem_notAdded: TkbmMemTable;
+    mem_notAddedKSM_ID: TIntegerField;
+    mem_notAddedKOL: TFloatField;
+    NormiMemDatSPEC: TIntegerField;
     function GetCehNum(cehName : string) : integer;
     function SetMonthCombo(month : integer) : boolean;
     function activateNormQuery() : boolean;
@@ -426,6 +429,7 @@ type
     function findSpecOst(ksmId : integer) : boolean;
     procedure insertRecToSpecKart;
     function findPrepOst(ksmId : integer) : boolean;
+    procedure addRecToNotAdded;
 
     function findPrixDoc() : boolean;
     procedure openPrixKart;
@@ -638,7 +642,7 @@ begin
   q_specKart.ApplyUpdates;
   dm1.commitWriteTrans(true);
   NormiMemDat.Edit;
-  NormiMemDatSPEC.AsBoolean := true;
+  NormiMemDatSPEC.AsInteger := 1;
   NormiMemDat.Post;
 //  q_specOst.First;
 //  while (not q_specOst.Eof) and (ostKol <> 0) do
@@ -667,6 +671,18 @@ begin
 //    q_specKartKOL_RASH.AsFloat := curKol;
 //    q_specKart.Post;
 //  end;
+end;
+
+procedure TFAktRashoda.addRecToNotAdded;
+begin
+  mem_notAdded.Append;
+  mem_notAdded.Edit;
+  mem_notAddedKSM_ID.AsInteger := NormiMemDatKSM_ID.AsInteger;
+  mem_notAddedKOL.AsFloat := NormiMemDatFACTRASHOD.AsFloat;
+  mem_notAdded.Post;
+  NormiMemDat.Edit;
+  NormiMemDatSPEC.AsInteger := 2;
+  NormiMemDat.Post;
 end;
 
 function TFAktRashoda.findPrepOst(ksmId : integer) : boolean;
@@ -1085,10 +1101,11 @@ begin
     DM1.KartDoc_Id.AsInteger := DM1.DocumentDOC_ID.AsInteger;
     DM1.Karttip_op_id.AsInteger := DM1.DocumentTIP_OP_ID.AsInteger;
     DM1.Karttip_dok_id.AsInteger := DM1.DocumentTIP_DOK_ID.AsInteger;
-    if (NormiMemDatSPEC.AsBoolean) then
+    if (NormiMemDatSPEC.AsInteger = 1) then
       DM1.Kartkol_rash_ediz.AsFloat := 0
     else
-      DM1.Kartkol_rash_ediz.AsFloat := NormiMemDatFACTRASHOD.AsFloat;
+//      if (NormiMemDatSPEC.AsInteger <> 2) then
+        DM1.Kartkol_rash_ediz.AsFloat := NormiMemDatFACTRASHOD.AsFloat;
     DM1.KartKSM_ID.AsInteger := NormiMemDatKSM_ID.AsInteger;
     DM1.KartRAZDEL_ID.AsInteger := NormiMemDatRAZDEL_ID.AsInteger;
     DM1.KartKEI_ID.AsInteger := NormiMemDatKEI_ID.AsInteger;
@@ -1114,6 +1131,8 @@ begin
     NormiMemDat.First;
     if (not DM1.Kart.Active) then
       dm1.Kart.Open;
+    mem_notAdded.EmptyTable;
+    mem_notAdded.Open;
     if (not openSpecDoc()) then
       createSpecDoc;
     findSpecKart(vStruk_Id, 0, StrToDate(s_dat1), StrToDate(s_dat2));
@@ -1122,7 +1141,9 @@ begin
       if (NormiMemDatFACTRASHOD.AsFloat <> 0) then
       begin
         if (findSpecOst(NormiMemDatKSM_ID.AsInteger)) then
-          insertRecToSpecKart;
+          insertRecToSpecKart
+        else
+          addRecToNotAdded;
         saveMemRec2Kart();
       end;
       
