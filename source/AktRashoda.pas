@@ -426,7 +426,7 @@ type
     function openSpecDoc() : boolean;
     procedure deleteSpecKart;
     procedure createSpecDoc;
-    function findSpecOst(ksmId : integer) : boolean;
+    function findSpecOst(ksmId : integer; allAccs : boolean) : boolean;
     procedure insertRecToSpecKart;
     function findPrepOst(ksmId : integer) : boolean;
     procedure addRecToNotAdded;
@@ -682,6 +682,7 @@ begin
   mem_notAdded.Post;
   NormiMemDat.Edit;
   NormiMemDatSPEC.AsInteger := 2;
+  NormiMemDatFACTRASHOD.AsFloat := 0;
   NormiMemDat.Post;
 end;
 
@@ -698,12 +699,16 @@ begin
     result := true;
 end;
 
-function TFAktRashoda.findSpecOst(ksmId : integer) : boolean;
+function TFAktRashoda.findSpecOst(ksmId : integer; allAccs : boolean) : boolean;
 begin
   result := false;
   q_specOst.Close;
   q_specOst.ParamByName('ksm_id').AsInteger := ksmId;
   q_specOst.ParamByName('struk_id').AsInteger := vStruk_Id;
+  if (allAccs) then  
+    q_specOst.MacroByName('usl_account').AsString := 'ostatki.account in (''10/10'', ''10/11'') '
+  else
+    q_specOst.MacroByName('usl_account').AsString := 'ostatki.account in (''10/11'') ';
   q_specOst.Open;
   if (q_specOst.RecordCount > 0) then
     result := true;
@@ -822,6 +827,10 @@ begin
     end;
     NormiMemDat.EnableControls;
     Splash.Free;
+    if (mem_notAdded.RecordCount > 0) then
+      ShowMessage('Не все материалы были сохранены, т.к. не хватает количества или '
+                  + #10#13 + 'не были введены в эксплуатацию!'
+                  + #10#13 + 'Увидеть их можно нажав на кнопку с перечеркнутой дискетой на панели');
   end;
 end;
 
@@ -1104,7 +1113,7 @@ begin
     if (NormiMemDatSPEC.AsInteger = 1) then
       DM1.Kartkol_rash_ediz.AsFloat := 0
     else
-//      if (NormiMemDatSPEC.AsInteger <> 2) then
+      if (NormiMemDatSPEC.AsInteger = 0) then
         DM1.Kartkol_rash_ediz.AsFloat := NormiMemDatFACTRASHOD.AsFloat;
     DM1.KartKSM_ID.AsInteger := NormiMemDatKSM_ID.AsInteger;
     DM1.KartRAZDEL_ID.AsInteger := NormiMemDatRAZDEL_ID.AsInteger;
@@ -1140,10 +1149,19 @@ begin
     begin
       if (NormiMemDatFACTRASHOD.AsFloat <> 0) then
       begin
-        if (findSpecOst(NormiMemDatKSM_ID.AsInteger)) then
-          insertRecToSpecKart
+        if (findSpecOst(NormiMemDatKSM_ID.AsInteger, true)) then
+        begin
+          if (findSpecOst(NormiMemDatKSM_ID.AsInteger, false)) then
+            insertRecToSpecKart
+          else
+            addRecToNotAdded;
+        end
         else
-          addRecToNotAdded;
+        begin
+          NormiMemDat.Edit;
+          NormiMemDatSPEC.AsInteger := 0;
+          NormiMemDat.Post;
+        end;
         saveMemRec2Kart();
       end;
       
@@ -2029,13 +2047,14 @@ begin
     begin
 //      if memState[curIndex].GetValue <> NormiMemDatFACTRASHOD.AsFloat then
 //      begin
-        v_raspred_dob := NormiMemDatFACTRASHOD.AsFloat;
-        s_ksm := NormiMemDatKsm_id.AsInteger;
-        v_kein := NormiMemDatKei_id.AsInteger;
-        vklient_id := s_kodp;
-        v_razdel := NormiMemDatRazdel_id.AsInteger;
-        tochn := -6;
-        pr_kor := 0;
+      v_raspred_dob := NormiMemDatFACTRASHOD.AsFloat;
+      s_ksm := NormiMemDatKsm_id.AsInteger;
+      v_kein := NormiMemDatKei_id.AsInteger;
+      vklient_id := s_kodp;
+      v_razdel := NormiMemDatRazdel_id.AsInteger;
+      tochn := -6;
+      pr_kor := 0;
+      if (NormiMemDatSPEC.AsInteger <> 2) then
         DM1.DobPrixPrep;
 //      end;
 //      curIndex := curIndex + 1;

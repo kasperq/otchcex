@@ -2072,7 +2072,7 @@ object FAktRashoda: TFAktRashoda
     Width = 24
     Left = 808
     Bitmap = {
-      494C010109000B00140018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010109000B00180018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       000000000000000000000000000000000000000000000000000000000000A87D
       7800B7818300B7818300B7818300B7818300B7818300B7818300B7818300B781
@@ -3518,10 +3518,16 @@ object FAktRashoda: TFAktRashoda
       'from ostatki'
       'where ostatki.struk_id = :struk_id'
       'and ostatki.ksm_id = :ksm_id'
-      'and ostatki.account = '#39'10/11'#39
+      'and  %usl_account'
       'and coalesce(ostatki.ksm_idpr, 0) = 0'
       'and coalesce(ostatki.ot_s, 0) <> 0')
-    Macros = <>
+    Macros = <
+      item
+        DataType = ftString
+        Name = 'usl_account'
+        ParamType = ptInput
+        Value = '0=0'
+      end>
     Left = 728
     Top = 64
     ParamData = <
