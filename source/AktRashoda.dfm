@@ -87,6 +87,16 @@ object FAktRashoda: TFAktRashoda
       ImageIndex = 8
       OnClick = ToolButton8Click
     end
+    object btn_notAdded: TToolButton
+      Left = 246
+      Top = 0
+      Hint = #1055#1086#1082#1072#1079#1072#1090#1100' '#1085#1077' '#1089#1086#1093#1088#1072#1085#1077#1085#1085#1086#1077' '#1089#1099#1088#1100#1077
+      Caption = 'btn_notAdded'
+      ImageIndex = 10
+      ParentShowHint = False
+      ShowHint = True
+      OnClick = btn_notAddedClick
+    end
   end
   object DBGridEh1: TDBGridEh
     Left = 0
@@ -216,6 +226,11 @@ object FAktRashoda: TFAktRashoda
         FieldName = 'CENA'
         Footers = <>
         Visible = False
+      end
+      item
+        EditButtons = <>
+        FieldName = 'SPEC'
+        Footers = <>
       end>
   end
   object Panel1: TPanel
@@ -622,130 +637,10 @@ object FAktRashoda: TFAktRashoda
     PreviewOptions.Zoom = 1.000000000000000000
     PrintOptions.Printer = #1055#1086' '#1091#1084#1086#1083#1095#1072#1085#1080#1102
     PrintOptions.PrintOnSheet = 0
-    ReportOptions.CreateDate = 40739.434456192100000000
-    ReportOptions.LastChange = 40935.690836886580000000
+    ReportOptions.CreateDate = 42214.652519953710000000
+    ReportOptions.LastChange = 42214.685595625000000000
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
-      'procedure Memo58OnBeforePrint(Sender: TfrxComponent);'
-      'begin'
-      '//  if <frxDBDataSet1."MEDEND"> = 1 then'
-      '//    Memo58.Text := '#39#1040'.'#1041'. '#1046#1080#1096#1082#1077#1074#1080#1095#39';'
-      '//  if <frxDBDataSet1."MEDEND"> = 2 then'
-      '//    Memo58.Text := '#39#1040'.'#1042'. '#1055#1088#1072#1090#1100#1082#1086#39';              '
-      'end;'
-      ''
-      'procedure Memo54OnBeforePrint(Sender: TfrxComponent);'
-      'begin'
-      '//  if <frxDBDataSet1."MEDEND"> = 1 then'
-      '//    Memo54.Text := '#39#1058'.'#1042'. '#1048#1075#1085#1072#1090#1077#1085#1082#1086#39';'
-      '//  if <frxDBDataSet1."MEDEND"> = 2 then'
-      '//    Memo54.Text := '#39#1058'.'#1055'. '#1071#1082#1086#1074#1080#1094#1082#1072#1103#39';  '
-      'end;'
-      ''
-      'procedure Footer1OnBeforePrint(Sender: TfrxComponent);'
-      'begin'
-      ' '
-      'end;'
-      ''
-      'procedure MasterData1OnBeforePrint(Sender: TfrxComponent);'
-      'var'
-      '  ds: TfrxDataset;'
-      'begin '
-      
-        '  ds:=TfrxMasterData(Sender).DataSet;                           ' +
-        '                                             '
-      '  ds.next;'
-      '  if not ds.eof then             '
-      '      ds.prior'
-      '  else'
-      '  begin'
-      ''
-      '    if param8 = '#39#39' then'
-      '    begin      '
-      '      Memo61.Visible := false;'
-      
-        '      Footer1.Height := Footer1.Height - 30;                    ' +
-        '                                                                ' +
-        '    '
-      '    end;        '
-      '    if param7 = '#39#39' then'
-      '    begin      '
-      '      Memo60.Visible := false;'
-      
-        '      Footer1.Height := Footer1.Height - 30;                    ' +
-        '                                                                ' +
-        '    '
-      '    end;        '
-      '    if param6 = '#39#39' then'
-      '    begin      '
-      '      Memo68.Visible := false;'
-      
-        '      Footer1.Height := Footer1.Height - 30;                    ' +
-        '                                                                ' +
-        '    '
-      '    end;        '
-      '    if param1 = '#39#39' then'
-      '    begin      '
-      '      Memo58.Visible := false;'
-      
-        '      Footer1.Height := Footer1.Height - 30;                    ' +
-        '                                                                ' +
-        '    '
-      '    end;        '
-      '    if param5 = '#39#39' then'
-      '    begin      '
-      '      Memo52.Visible := false;'
-      
-        '      Footer1.Height := Footer1.Height - 30;                    ' +
-        '                                                                ' +
-        '    '
-      '    end;        '
-      '    if param4 = '#39#39' then'
-      '    begin    ;'
-      '      Memo51.Visible := false;'
-      
-        '      Footer1.Height := Footer1.Height - 30;                    ' +
-        '                                                                ' +
-        '    '
-      '    end;        '
-      '    if param3 = '#39#39' then'
-      '    begin      '
-      '      Memo50.Visible := false;'
-      
-        '      Footer1.Height := Footer1.Height - 30;                    ' +
-        '                                                                ' +
-        '    '
-      '    end;        '
-      '    if param2 = '#39#39' then'
-      '    begin      '
-      '      Memo49.Visible := false;'
-      
-        '      Footer1.Height := Footer1.Height - 30;                    ' +
-        '                                                                ' +
-        '    '
-      '    end;        '
-      '    if podp1 = '#39#39' then'
-      '      Memo59.Visible := false; '
-      '    if podp2 = '#39#39' then '
-      '      Memo54.Visible := false; '
-      '    if podp3 = '#39#39' then  '
-      '      Memo55.Visible := false; '
-      '    if podp4 = '#39#39' then '
-      '      Memo56.Visible := false;'
-      '    if podp5 = '#39#39' then '
-      '      Memo57.Visible := false;'
-      '    if podp6 = '#39#39' then '
-      '      Memo69.Visible := false; '
-      '    if podp7 = '#39#39' then '
-      '      Memo64.Visible := false; '
-      '    if podp8 = '#39#39' then '
-      '      Memo65.Visible := false;'
-      '      '
-      '    if (Engine.FreeSpace < Footer1.Height) then '
-      '      Engine.NewPage;'
-      '  end;'
-      ''
-      'end;'
       ''
       'begin'
       ''
@@ -754,8 +649,8 @@ object FAktRashoda: TFAktRashoda
     Top = 14
     Datasets = <
       item
-        DataSet = frxDBDataset1
-        DataSetName = 'frxDBDataset1'
+        DataSet = frxNotAdded
+        DataSetName = 'frxNotAdded'
       end>
     Variables = <>
     Style = <>
@@ -772,1098 +667,39 @@ object FAktRashoda: TFAktRashoda
       TopMargin = 10.000000000000000000
       BottomMargin = 10.000000000000000000
       object ReportTitle1: TfrxReportTitle
-        Height = 181.417440000000000000
-        Top = 18.897650000000000000
-        Width = 718.110700000000000000
-        object Memo2: TfrxMemoView
-          Top = 105.826840000000000000
-          Width = 718.110700000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = [fsBold]
-          HAlign = haCenter
-          Memo.UTF8 = (
-            #1056#1106#1056#1113#1056#1118' '#1074#8222#8211' [nDoc]')
-          ParentFont = False
-        end
-        object Memo7: TfrxMemoView
-          Left = 612.283860000000000000
-          Width = 109.606370000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = [fsBold]
-          Memo.UTF8 = (
-            '"'#1056#1032#1057#8218#1056#1030#1056#181#1057#1026#1056#182#1056#1169#1056#176#1057#1035'"')
-          ParentFont = False
-        end
-        object Memo8: TfrxMemoView
-          Left = 514.016080000000000000
-          Top = 15.118120000000000000
-          Width = 204.094620000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            #1056#8212#1056#176#1056#1112'. '#1056#1110#1056#181#1056#1029#1056#181#1057#1026#1056#176#1056#187#1057#1034#1056#1029#1056#1109#1056#1110#1056#1109' '#1056#1169#1056#1105#1057#1026#1056#181#1056#1108#1057#8218#1056#1109#1057#1026#1056#176)
-          ParentFont = False
-        end
-        object Memo9: TfrxMemoView
-          Left = 600.945270000000000000
-          Top = 34.015770000000010000
-          Width = 120.944960000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            #1056#1111#1056#1109' '#1056#1111#1057#1026#1056#1109#1056#1105#1056#183#1056#1030#1056#1109#1056#1169#1057#1027#1057#8218#1056#1030#1057#1107)
-          ParentFont = False
-        end
-        object Memo10: TfrxMemoView
-          Left = 612.283860000000000000
-          Top = 52.913420000000000000
-          Width = 105.826840000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            #1056#1038'.'#1056#152'.'#1056#1106#1056#1169#1056#176#1056#1112#1056#1109#1056#1030#1056#1105#1057#8225)
-          ParentFont = False
-        end
-        object Memo11: TfrxMemoView
-          Left = 502.677490000000000000
-          Top = 71.811070000000000000
-          Width = 215.433210000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '"------------" ---- ------------2011'#1056#1110'.')
-          ParentFont = False
-        end
-        object Memo12: TfrxMemoView
-          Top = 124.724490000000000000
-          Width = 718.110700000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -15
-          Font.Name = 'Times New Roman'
-          Font.Style = [fsBold]
-          HAlign = haCenter
-          Memo.UTF8 = (
-            
-              #1057#1026#1056#176#1057#1027#1057#8230#1056#1109#1056#1169#1056#176' '#1056#1112#1056#176#1057#8218#1056#181#1057#1026#1056#1105#1056#176#1056#187#1056#1109#1056#1030' '#1056#1169#1056#187#1057#1039' '#1057#1027#1056#1109#1056#1169#1056#181#1057#1026#1056#182#1056#176#1056#1029#1056#1105#1057#1039' ' +
-              #1056#1105' '#1057#1036#1056#1108#1057#1027#1056#1111#1056#187#1057#1107#1056#176#1057#8218#1056#176#1057#8224#1056#1105#1056#1105' '#1056#1109#1056#177#1056#1109#1057#1026#1057#1107#1056#1169#1056#1109#1056#1030#1056#176#1056#1029#1056#1105#1057#1039' '#1056#1111#1057#1026#1056#1105' '#1056#1111#1057#1026 +
-              #1056#1109#1056#1105#1056#183#1056#1030#1056#1109#1056#1169#1057#1027#1057#8218#1056#1030#1056#181)
-          ParentFont = False
-        end
-        object Memo13: TfrxMemoView
-          Top = 143.622140000000000000
-          Width = 718.110700000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -15
-          Font.Name = 'Times New Roman'
-          Font.Style = [fsBold]
-          HAlign = haCenter
-          Memo.UTF8 = (
-            
-              #1056#187#1056#181#1056#1108#1056#176#1057#1026#1057#1027#1057#8218#1056#1030#1056#181#1056#1029#1056#1029#1057#8249#1057#8230' '#1057#1027#1057#1026#1056#181#1056#1169#1057#1027#1057#8218#1056#1030' '#1056#1111#1056#1109' '#1057#8224#1056#181#1057#8230#1057#1107' '#1074#8222#8211' [ceh' +
-              '] '#1056#183#1056#176' [month] [year] '#1056#1110'.')
-          ParentFont = False
-        end
-      end
-      object PageHeader1: TfrxPageHeader
-        Height = 18.897650000000000000
-        Top = 222.992270000000000000
-        Width = 718.110700000000000000
-        PrintOnFirstPage = False
-        object Memo3: TfrxMemoView
-          Width = 45.354360000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8 = (
-            '1')
-          ParentFont = False
-        end
-        object Memo29: TfrxMemoView
-          Left = 45.354360000000000000
-          Width = 68.031540000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8 = (
-            '2')
-          ParentFont = False
-        end
-        object Memo30: TfrxMemoView
-          Left = 113.385900000000000000
-          Width = 200.315090000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8 = (
-            '3')
-          ParentFont = False
-        end
-        object Memo31: TfrxMemoView
-          Left = 313.700990000000000000
-          Width = 60.472480000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8 = (
-            '4')
-          ParentFont = False
-        end
-        object Memo32: TfrxMemoView
-          Left = 374.173470000000000000
-          Width = 75.590600000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8 = (
-            '5')
-          ParentFont = False
-        end
-        object Memo33: TfrxMemoView
-          Left = 449.764070000000000000
-          Width = 98.267780000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8 = (
-            '6')
-          ParentFont = False
-        end
-        object Memo34: TfrxMemoView
-          Left = 548.031850000000000000
-          Width = 90.708720000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8 = (
-            '7')
-          ParentFont = False
-        end
-        object Memo35: TfrxMemoView
-          Left = 638.740570000000000000
-          Width = 79.370130000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8 = (
-            '8')
-          ParentFont = False
-        end
-      end
-      object Header1: TfrxHeader
-        Height = 94.488250000000000000
-        Top = 302.362400000000000000
+        Height = 20.000000000000000000
+        Top = 16.000000000000000000
         Width = 718.110700000000000000
         object Memo4: TfrxMemoView
-          Width = 45.354360000000000000
-          Height = 75.590600000000000000
+          Width = 718.000000000000000000
+          Height = 18.000000000000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8 = (
-            #1074#8222#8211
-            #1056#1111'/'#1056#1111)
-          ParentFont = False
-        end
-        object Memo14: TfrxMemoView
-          Left = 45.354360000000000000
-          Width = 68.031540000000000000
-          Height = 75.590600000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8 = (
-            #1056#1113#1056#1109#1056#1169'  '
-            #1056#1112#1056#176#1057#8218#1056#181'-'
-            #1057#1026#1056#1105#1056#176#1056#187#1056#176)
-          ParentFont = False
-        end
-        object Memo15: TfrxMemoView
-          Left = 113.385900000000000000
-          Width = 200.315090000000000000
-          Height = 75.590600000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8 = (
-            #1056#1116#1056#176#1056#1105#1056#1112#1056#181#1056#1029#1056#1109#1056#1030#1056#176#1056#1029#1056#1105#1056#181
-            #1056#1112#1056#176#1057#8218#1056#181#1057#1026#1056#1105#1056#176#1056#187#1056#176)
-          ParentFont = False
-        end
-        object Memo16: TfrxMemoView
-          Left = 313.700990000000000000
-          Width = 60.472480000000000000
-          Height = 75.590600000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8 = (
-            #1056#8226#1056#1169'.'
-            #1056#1105#1056#183#1056#1112'.')
-          ParentFont = False
-        end
-        object Memo17: TfrxMemoView
-          Left = 374.173470000000000000
-          Width = 75.590600000000000000
-          Height = 75.590600000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8 = (
-            #1056#1116#1056#1109#1057#1026#1056#1112#1056#176
-            #1057#1026#1056#176#1057#1027#1057#8230#1056#1109#1056#1169#1056#176)
-          ParentFont = False
-        end
-        object Memo18: TfrxMemoView
-          Left = 449.764070000000000000
-          Width = 98.267780000000000000
-          Height = 75.590600000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8 = (
-            #1056#164#1056#176#1056#1108#1057#8218#1056#1105#1057#8225#1056#181#1057#1027#1056#1108#1056#1105#1056#8470' '#1057#1026#1056#176#1057#1027#1057#8230#1056#1109#1056#1169)
-          ParentFont = False
-        end
-        object Memo19: TfrxMemoView
-          Left = 548.031850000000000000
-          Width = 90.708720000000000000
-          Height = 75.590600000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8 = (
-            #1056#1115#1057#8218#1056#1108#1056#187#1056#1109#1056#1029#1056#181#1056#1029#1056#1105#1056#181
-            '       (+/-)')
-          ParentFont = False
-        end
-        object Memo20: TfrxMemoView
-          Left = 638.740570000000000000
-          Width = 79.370130000000000000
-          Height = 75.590600000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8 = (
-            #1056#1119#1057#1026#1056#1105#1056#1112#1056#181'-'
-            #1057#8225#1056#176#1056#1029#1056#1105#1056#181)
-          ParentFont = False
-        end
-        object Memo21: TfrxMemoView
-          Top = 75.590600000000000000
-          Width = 45.354360000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8 = (
-            '1')
-          ParentFont = False
-        end
-        object Memo22: TfrxMemoView
-          Left = 45.354360000000000000
-          Top = 75.590600000000000000
-          Width = 68.031540000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8 = (
-            '2')
-          ParentFont = False
-        end
-        object Memo23: TfrxMemoView
-          Left = 113.385900000000000000
-          Top = 75.590600000000000000
-          Width = 200.315090000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8 = (
-            '3')
-          ParentFont = False
-        end
-        object Memo24: TfrxMemoView
-          Left = 313.700990000000000000
-          Top = 75.590600000000000000
-          Width = 60.472480000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8 = (
-            '4')
-          ParentFont = False
-        end
-        object Memo25: TfrxMemoView
-          Left = 374.173470000000000000
-          Top = 75.590600000000000000
-          Width = 75.590600000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8 = (
-            '5')
-          ParentFont = False
-        end
-        object Memo26: TfrxMemoView
-          Left = 449.764070000000000000
-          Top = 75.590600000000000000
-          Width = 98.267780000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8 = (
-            '6')
-          ParentFont = False
-        end
-        object Memo27: TfrxMemoView
-          Left = 548.031850000000000000
-          Top = 75.590600000000000000
-          Width = 90.708720000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8 = (
-            '7')
-          ParentFont = False
-        end
-        object Memo28: TfrxMemoView
-          Left = 638.740570000000000000
-          Top = 75.590600000000000000
-          Width = 79.370130000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8 = (
-            '8')
-          ParentFont = False
-        end
-      end
-      object Footer1: TfrxFooter
-        Height = 408.189240000000000000
-        Top = 566.929499999999900000
-        Width = 718.110700000000000000
-        OnBeforePrint = 'Footer1OnBeforePrint'
-        object Memo6: TfrxMemoView
-          Width = 718.110700000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
+          Font.Name = 'Arial'
           Font.Style = []
           HAlign = haCenter
           Memo.UTF8 = (
-            #1056#1115#1056#177#1057#1033#1057#1039#1057#1027#1056#1029#1056#181#1056#1029#1056#1105#1056#181' '#1056#1111#1057#1026#1056#1105#1057#8225#1056#1105#1056#1029' '#1056#1109#1057#8218#1056#1108#1056#187#1056#1109#1056#1029#1056#181#1056#1029#1056#1105#1056#8470':')
+            #1056#1116#1056#181#1057#1027#1056#1109#1057#8230#1057#1026#1056#176#1056#1029#1056#181#1056#1029#1056#1029#1056#1109#1056#181' '#1057#1027#1057#8249#1057#1026#1057#1034#1056#181)
           ParentFont = False
-        end
-        object Memo45: TfrxMemoView
-          Top = 18.897650000000000000
-          Width = 718.110700000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          ParentFont = False
-        end
-        object Memo46: TfrxMemoView
-          Top = 37.795300000000000000
-          Width = 718.110700000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          ParentFont = False
-        end
-        object Memo47: TfrxMemoView
-          Top = 56.692949999999990000
-          Width = 718.110700000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          ParentFont = False
-        end
-        object Memo48: TfrxMemoView
-          Left = 7.559060000000000000
-          Top = 192.756030000000000000
-          Width = 143.622140000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            #1056#8220#1056#187#1056#176#1056#1030#1056#1029#1057#8249#1056#8470' '#1057#8218#1056#181#1057#8230#1056#1029#1056#1109#1056#187#1056#1109#1056#1110':')
-          ParentFont = False
-        end
-        object Memo53: TfrxMemoView
-          Left = 502.677490000000000000
-          Top = 192.756030000000000000
-          Width = 313.700990000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            #1056#8212'.'#1056#1114'.'#1056#1116#1056#176#1056#1169#1056#1030#1056#1105#1056#1108#1056#1109#1056#1030#1056#176)
-          ParentFont = False
-        end
-        object Memo49: TfrxMemoView
-          Left = 7.559060000000000000
-          Top = 234.330860000000000000
-          Width = 313.700990000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[param2]:')
-          ParentFont = False
-        end
-        object Memo50: TfrxMemoView
-          Left = 7.559060000000000000
-          Top = 257.008040000000100000
-          Width = 313.700990000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[param3]:')
-          ParentFont = False
-        end
-        object Memo51: TfrxMemoView
-          Left = 7.559060000000000000
-          Top = 283.464750000000000000
-          Width = 313.700990000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[param4]:')
-          ParentFont = False
-        end
-        object Memo52: TfrxMemoView
-          Left = 7.559060000000000000
-          Top = 309.921460000000000000
-          Width = 313.700990000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[param5]:')
-          ParentFont = False
-        end
-        object Memo54: TfrxMemoView
-          Left = 502.677490000000000000
-          Top = 234.330860000000000000
-          Width = 313.700990000000000000
-          Height = 18.897650000000000000
-          OnBeforePrint = 'Memo54OnBeforePrint'
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[podp2]')
-          ParentFont = False
-        end
-        object Memo55: TfrxMemoView
-          Left = 502.677490000000000000
-          Top = 257.008040000000100000
-          Width = 313.700990000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[podp3]')
-          ParentFont = False
-        end
-        object Memo56: TfrxMemoView
-          Left = 502.677490000000000000
-          Top = 283.464750000000000000
-          Width = 313.700990000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[podp4]')
-          ParentFont = False
-        end
-        object Memo57: TfrxMemoView
-          Left = 502.677490000000000000
-          Top = 309.921460000000000000
-          Width = 313.700990000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[podp5]')
-          ParentFont = False
-        end
-        object Memo58: TfrxMemoView
-          Left = 7.559060000000000000
-          Top = 211.653680000000000000
-          Width = 313.700990000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[param1]:')
-          ParentFont = False
-        end
-        object Memo59: TfrxMemoView
-          Left = 502.677490000000000000
-          Top = 211.653680000000000000
-          Width = 215.433210000000000000
-          Height = 18.897650000000000000
-          OnBeforePrint = 'Memo59OnBeforePrint'
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[podp1]')
-          ParentFont = False
-        end
-        object Memo60: TfrxMemoView
-          Left = 7.559060000000000000
-          Top = 362.834880000000000000
-          Width = 313.700990000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[param7]:')
-          ParentFont = False
-        end
-        object Memo61: TfrxMemoView
-          Left = 7.559060000000000000
-          Top = 385.512060000000000000
-          Width = 313.700990000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[param8]:')
-          ParentFont = False
-        end
-        object Memo64: TfrxMemoView
-          Left = 502.677490000000000000
-          Top = 362.834880000000000000
-          Width = 313.700990000000000000
-          Height = 18.897650000000000000
-          OnBeforePrint = 'Memo54OnBeforePrint'
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[podp7]')
-          ParentFont = False
-        end
-        object Memo65: TfrxMemoView
-          Left = 502.677490000000000000
-          Top = 385.512060000000000000
-          Width = 313.700990000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[podp8]')
-          ParentFont = False
-        end
-        object Memo68: TfrxMemoView
-          Left = 7.559060000000000000
-          Top = 336.378169999999900000
-          Width = 313.700990000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[param6]:')
-          ParentFont = False
-        end
-        object Memo69: TfrxMemoView
-          Left = 502.677490000000000000
-          Top = 336.378169999999900000
-          Width = 215.433210000000000000
-          Height = 18.897650000000000000
-          OnBeforePrint = 'Memo59OnBeforePrint'
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[podp6]')
-          ParentFont = False
-        end
-        object Memo44: TfrxMemoView
-          Top = 75.590600000000000000
-          Width = 718.110700000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          ParentFont = False
-        end
-        object Memo62: TfrxMemoView
-          Top = 94.488250000000000000
-          Width = 718.110700000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          ParentFont = False
-        end
-        object Memo63: TfrxMemoView
-          Top = 113.385900000000000000
-          Width = 718.110700000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          ParentFont = False
-        end
-        object Memo66: TfrxMemoView
-          Top = 132.283550000000000000
-          Width = 718.110700000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          ParentFont = False
-        end
-        object Memo67: TfrxMemoView
-          Top = 151.181200000000000000
-          Width = 718.110700000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          ParentFont = False
-        end
-        object Memo70: TfrxMemoView
-          Top = 170.078850000000000000
-          Width = 718.110700000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          ParentFont = False
+          VAlign = vaCenter
         end
       end
       object MasterData1: TfrxMasterData
-        Height = 18.897650000000000000
-        Top = 502.677490000000000000
+        Height = 16.000000000000000000
+        Top = 136.000000000000000000
         Width = 718.110700000000000000
-        OnBeforePrint = 'MasterData1OnBeforePrint'
-        DataSet = frxDBDataset1
-        DataSetName = 'frxDBDataset1'
+        DataSet = frxNotAdded
+        DataSetName = 'frxNotAdded'
         RowCount = 0
-        Stretched = True
-        object Memo38: TfrxMemoView
-          Left = 313.700990000000000000
-          Width = 60.472480000000000000
-          Height = 18.897650000000000000
+        object Memo2: TfrxMemoView
+          Width = 117.000000000000000000
+          Height = 16.000000000000000000
           ShowHint = False
-          StretchMode = smMaxHeight
-          DataField = 'NEIS'
-          DataSet = frxDBDataset1
-          DataSetName = 'frxDBDataset1'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -15
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8 = (
-            '[frxDBDataset1."NEIS"]')
-          ParentFont = False
-        end
-        object Memo39: TfrxMemoView
-          Left = 374.173470000000000000
-          Width = 75.590600000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          StretchMode = smMaxHeight
-          DataField = 'PLNORM'
-          DataSet = frxDBDataset1
-          DataSetName = 'frxDBDataset1'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -15
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8 = (
-            '[frxDBDataset1."PLNORM"]')
-          ParentFont = False
-        end
-        object Memo40: TfrxMemoView
-          Left = 449.764070000000000000
-          Width = 98.267780000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          StretchMode = smMaxHeight
-          DataField = 'FACTRASHOD'
-          DataSet = frxDBDataset1
-          DataSetName = 'frxDBDataset1'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -15
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8 = (
-            '[frxDBDataset1."FACTRASHOD"]')
-          ParentFont = False
-        end
-        object Memo41: TfrxMemoView
-          Left = 548.031850000000000000
-          Width = 90.708720000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          StretchMode = smMaxHeight
-          DataField = 'OTKLONENIE'
-          DataSet = frxDBDataset1
-          DataSetName = 'frxDBDataset1'
-          DisplayFormat.FormatStr = '#.######'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -15
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          Memo.UTF8 = (
-            '[frxDBDataset1."OTKLONENIE"]')
-          ParentFont = False
-        end
-        object Memo42: TfrxMemoView
-          Left = 638.740570000000000000
-          Width = 79.370130000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          StretchMode = smMaxHeight
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -15
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          HAlign = haCenter
-          ParentFont = False
-        end
-      end
-      object PageFooter1: TfrxPageFooter
-        Height = 18.897650000000000000
-        Top = 1035.591220000000000000
-        Width = 718.110700000000000000
-        object Memo5: TfrxMemoView
-          Width = 718.110700000000000000
-          Height = 15.118120000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          HAlign = haRight
-          Memo.UTF8 = (
-            
-              #1056#8221#1056#1109#1056#1108#1057#1107#1056#1112#1056#181#1056#1029#1057#8218' '#1057#1027#1057#8222#1056#1109#1057#1026#1056#1112#1056#1105#1057#1026#1056#1109#1056#1030#1056#176#1056#1029' '#1056#1111#1057#1026#1056#1109#1056#1110#1057#1026#1056#176#1056#1112#1056#1029#1057#8249#1056#1112' '#1056#1109#1056 +
-              #177#1056#181#1057#1027#1056#1111#1056#181#1057#8225#1056#181#1056#1029#1056#1105#1056#181#1056#1112' '#1056#1115#1056#1106#1056#1038#1056#1032)
-          ParentFont = False
-        end
-      end
-      object GroupHeader1: TfrxGroupHeader
-        Height = 18.897650000000000000
-        Top = 461.102660000000000000
-        Width = 718.110700000000000000
-        Condition = 'frxDBDataset1."NAMRAZ"'
-        object Memo43: TfrxMemoView
-          Width = 718.110700000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
+          DataField = 'KSM_ID'
+          DataSet = frxNotAdded
+          DataSetName = 'frxNotAdded'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -13
@@ -1872,73 +708,122 @@ object FAktRashoda: TFAktRashoda
           Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
           HAlign = haCenter
           Memo.UTF8 = (
-            '[frxDBDataset1."NAMRAZ"]')
+            '[frxNotAdded."KSM_ID"]')
+          ParentFont = False
+        end
+        object Memo3: TfrxMemoView
+          Left = 447.000000000000000000
+          Width = 117.000000000000000000
+          Height = 16.000000000000000000
+          ShowHint = False
+          DataField = 'KOL'
+          DataSet = frxNotAdded
+          DataSetName = 'frxNotAdded'
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          Memo.UTF8 = (
+            '[frxNotAdded."KOL"]')
+        end
+        object Memo8: TfrxMemoView
+          Left = 117.000000000000000000
+          Width = 330.000000000000000000
+          Height = 16.000000000000000000
+          ShowHint = False
+          DataField = 'NMAT_KSM'
+          DataSet = frxNotAdded
+          DataSetName = 'frxNotAdded'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          Memo.UTF8 = (
+            '[frxNotAdded."NMAT_KSM"]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+      end
+      object PageFooter1: TfrxPageFooter
+        Height = 14.000000000000000000
+        Top = 212.000000000000000000
+        Width = 718.110700000000000000
+        object Memo1: TfrxMemoView
+          Left = 259.520100000000000000
+          Width = 458.590600000000000000
+          Height = 13.897650000000000000
+          ShowHint = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'Arial'
+          Font.Style = []
+          HAlign = haRight
+          Memo.UTF8 = (
+            
+              #1056#8221#1056#1109#1056#1108#1057#1107#1056#1112#1056#181#1056#1029#1057#8218' '#1057#1027#1057#8222#1056#1109#1057#1026#1056#1112#1056#1105#1057#1026#1056#1109#1056#1030#1056#176#1056#1029' '#1056#1111#1057#1026#1056#1109#1056#1110#1057#1026#1056#176#1056#1112#1056#1112#1056#1029#1057#8249#1056#1112' '#1056 +
+              #1109#1056#177#1056#181#1057#1027#1056#1111#1056#181#1057#8225#1056#181#1056#1029#1056#1105#1056#181#1056#1112' '#1056#1115#1056#1106#1056#1038#1056#1032)
           ParentFont = False
         end
       end
-      object GroupFooter1: TfrxGroupFooter
-        Top = 544.252320000000100000
+      object PageHeader1: TfrxPageHeader
+        Height = 18.000000000000000000
+        Top = 56.000000000000000000
         Width = 718.110700000000000000
-      end
-      object MasterData2: TfrxMasterData
-        Height = 18.897650000000000000
-        Top = 419.527830000000000000
-        Width = 718.110700000000000000
-        OnBeforePrint = 'MasterData1OnBeforePrint'
-        DataSet = frxDBDataset1
-        DataSetName = 'frxDBDataset1'
-        RowCount = 0
-        Stretched = True
-        object Memo71: TfrxMemoView
-          Width = 45.354360000000000000
-          Height = 18.897650000000000000
+        object Memo5: TfrxMemoView
+          Width = 117.000000000000000000
+          Height = 16.000000000000000000
           ShowHint = False
-          StretchMode = smMaxHeight
+          DataSet = frxNotAdded
+          DataSetName = 'frxNotAdded'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -15
-          Font.Name = 'Times New Roman'
+          Font.Height = -13
+          Font.Name = 'Arial'
           Font.Style = []
           Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
           HAlign = haCenter
           Memo.UTF8 = (
-            '[Line]')
+            #1056#1113#1056#1109#1056#1169)
           ParentFont = False
+          VAlign = vaCenter
         end
-        object Memo72: TfrxMemoView
-          Left = 45.354360000000000000
-          Width = 68.031540000000000000
-          Height = 18.897650000000000000
+        object Memo6: TfrxMemoView
+          Left = 447.000000000000000000
+          Width = 117.000000000000000000
+          Height = 16.000000000000000000
           ShowHint = False
-          StretchMode = smMaxHeight
+          DataSet = frxNotAdded
+          DataSetName = 'frxNotAdded'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -15
-          Font.Name = 'Times New Roman'
+          Font.Height = -13
+          Font.Name = 'Arial'
           Font.Style = []
           Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
           HAlign = haCenter
           Memo.UTF8 = (
-            '[(<frxDBDataset1."KSM_ID">)]')
+            #1056#1113#1056#1109#1056#187#1056#1105#1057#8225#1056#181#1057#1027#1057#8218#1056#1030#1056#1109)
           ParentFont = False
+          VAlign = vaCenter
         end
-        object Memo73: TfrxMemoView
-          Left = 113.385900000000000000
-          Width = 200.315090000000000000
-          Height = 18.897650000000000000
+        object Memo7: TfrxMemoView
+          Left = 117.000000000000000000
+          Width = 330.000000000000000000
+          Height = 16.000000000000000000
           ShowHint = False
-          StretchMode = smMaxHeight
-          DataSet = frxDBDataset1
-          DataSetName = 'frxDBDataset1'
+          DataSet = frxNotAdded
+          DataSetName = 'frxNotAdded'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -15
-          Font.Name = 'Times New Roman'
+          Font.Height = -13
+          Font.Name = 'Arial'
           Font.Style = []
           Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          HAlign = haCenter
           Memo.UTF8 = (
-            '[frxDBDataset1."NMAT_KSM"]')
+            #1056#1116#1056#176#1056#1105#1056#1112#1056#181#1056#1029#1056#1109#1056#1030#1056#176#1056#1029#1056#1105#1056#181)
           ParentFont = False
+          VAlign = vaCenter
         end
       end
     end
@@ -2051,10 +936,13 @@ object FAktRashoda: TFAktRashoda
     object NormiMemDatCENA: TFloatField
       FieldName = 'CENA'
     end
+    object NormiMemDatSPEC: TIntegerField
+      FieldName = 'SPEC'
+    end
   end
   object PopupMenu1: TPopupMenu
-    Left = 528
-    Top = 14
+    Left = 128
+    Top = 22
     object N3: TMenuItem
       Caption = '...'#1076#1083#1103' '#1086#1073#1077#1089#1087#1077#1095#1077#1085#1080#1103' '#1090#1088#1077#1073#1086#1074#1072#1085#1080#1081' '#1087#1086' '#1084#1080#1082#1088#1086#1073#1080#1086#1083#1086#1075#1080#1095#1077#1089#1082#1086#1081' '#1095#1080#1089#1090#1086#1090#1077
       OnClick = N1Click
@@ -2069,294 +957,294 @@ object FAktRashoda: TFAktRashoda
     Width = 24
     Left = 808
     Bitmap = {
-      494C010109000B00080018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B001C001C0018001800FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       000000000000000000000000000000000000000000000000000000000000A87D
       7800B7818300B7818300B7818300B7818300B7818300B7818300B7818300B781
       8300B7818300B7818300B7818300B7818300B7818300B7818300B7818300B781
       8300B78183000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000000000000000000004EAB00004EAB00004E
+      AB00004EAB00004EAB00004EAB00000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000AE746C009F52
+      52009A4D4E009C4E4F0099474800A3737400B7B8B800B8B6B600B9B7B700BAB8
+      B700BAB7B700B9B7B700B8B6B600B7B6B600B8B8B800A471710098454600994A
+      4B00994B4C00241CED00241CED00241CED000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000000000000000000000000000A87D
       7800F3E7D800F3E7D800F3E7D800F3E7D800F3E7D800F3E7D800F3E7D800F3E7
       D800F0E2CF00F0E2CF00F0E2CF00F0E2CF00F0E2CF00F0E2CF00F0E2CF00F0E2
       CF00B78183000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000077F100006DE4000063D800005FCD000060
+      C800005CC1000054B700004EAB0000479400003A760000000000000000000000
+      00000000000000000000000000000000000000000000B4817600C36E6B00C964
+      6400C9646400CB656500B75757009A696A00B0B1B100CDCDCB00E5E3E100F2EF
+      ED00F9F5F200F9F5F100EEEBEA00E3E2E000DEDFDF00B6767600952C2C009835
+      3500241CED00241CED00241CED00241CED000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000000000000000000000000000A87D
       7800F3E7D800F2E6D700FDEFE000FDEFE000FDEFE000FDEFE000FDEFE000FDEF
       E000FDEFE000FDEFE000FDEFE000FDEFE000FDEFE000FDEFE000F0E2CF00F0E2
       CF00B78183000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000007DFD000077F8000075F3002988ED0067A9EC0091C1F000A3CA
+      F100A2C9F1008BBCEC005C9DE0001C73CD000053B30000479700003D7C000000
+      00000000000000000000000000000000000000000000B4817600C36E6B00CD65
+      6500CD666600CE676700BA5859009B6C6C00A18D8D00B5818000CFAFAC00DFCC
+      CA00F9F5F100FFFCF900FBF7F500EFEDEB00E8E9E800B9767700942A2900241C
+      ED00241CED00241CED00241CED00241CED000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000000000000000000000000000A87D
       7800F3E8DB00F3E7D900FECC9A00FECC9A00FECC9A00FECC9A00FECC9A00FECC
       9A00FECC9A00FECC9A00FECC9A00FECC9A00FECC9A00FECC9A00F0E2CF00F0E2
       CF00B78183000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      0000007CFF000078FF003597FD00AAD3FC00F4F9FE00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00EAF3FD0093BFED002274CB00004CA700003C
+      7B000000000000000000000000000000000000000000B4817600C36E6B00CC65
+      6500CB666600CE676700B85858009E717100A17D7E009E3D3C00B4706E00C9A0
+      9D00ECE8E500FBF7F500FEFAF700F9F5F200F0F0EF00BB797800241CED00241C
+      ED00241CED00241CED00241CED00241CED000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000000000000000000000000000A87D
       7800F4EADE00F4E9DC00F3E8DA00F3E7D900F2E6D700F2E5D500F1E4D400F1E4
       D200F0E3D000F0E2CF00F0E2CF00F0E2CF00F0E2CF00F0E2CF00F0E2CF00F0E2
-      CF00B78183000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      CF00B7818300000000000000000000000000000000000000000000000000027F
+      FF000982FF008EC5FF00F5FAFF00FFFFFF00FFFFFF00D8E8FB00D8E8FB00C2DC
+      FA00CEE2FA00D8E7FB00D8E7FB00FFFFFF00FFFFFF00E7F1FC006CA5E0000054
+      B100003D7E0000000000000000000000000000000000B4817600C36E6B00CC65
+      6500CB666600CE676700B8585800A2747400A7848400972F2F009F3F3F00B575
+      7300DED8D700F2EFED00FBF7F500FEFBF800FAFAF700241CED00241CED00241C
+      ED00241CED00241CED00241CED00241CED000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000000000000000000000000000A87D
       7800F4EBE000F3E9DE00FDEFE000FDEFE000FDEFE000FDEFE000FDEFE000FDEF
       E000FDEFE000FDEFE000FDEFE000FDEFE000FDEFE000FDEFE000EFE1CE00EFE1
-      CE00B78183000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      CE00B781830000000000000000000000000000000000000000000A84FF000A84
+      FF00A6D2FF00FFFFFF00FFFFFF00E1EDFD00B0D3FA001577EB00086DE800076C
+      E700056AE7000469E6001876E800C2DCFA00FFFFFF00FFFFFF00FFFFFF0072A8
+      E100004EAB00003E7E00000000000000000000000000B4817600C36E6B00CC65
+      6500CB666600CE676700B8585800A5767600AD89880098323200972F2F00A048
+      4800C9C2C100E5E3E100F3F0ED00FDF9F600241CED00241CED00241CED00241C
+      ED00241CED00241CED00241CED009A4C4D000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000000000000000000000000000A87D
       7800EDE5DB00EDE4DA00FECC9A00FECC9A00FECC9A00FECC9A00FECC9A00FECC
       9A00FECC9A00FECC9A00FECC9A00FECC9A00FECC9A00FECC9A00E8DAC800E8DA
-      C800B78183000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      C800B781830000000000000000000000000000000000000000000380FF007CBD
+      FF00FFFFFF00FFFFFF00E2EEFD005AA4F7000F75EC000D72EB000C70EA001375
+      EA00086DE800076CE700056AE700056AE6006EABF200E0ECFC00FFFFFF00F3F8
+      FC002F7DCC00004DA500000000000000000000000000B4817600C36E6B00CC65
+      6500CB666600CE676700B7575700AB7A7900B58C8B00972B2B00972B2B009732
+      3200ADA6A600CFCFCE00E6E3E000241CED00241CED00241CED00241CED00241C
+      ED00241CED00241CED00C26262009A4C4D000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000000000000000000000000000B288
       7E00D9D3CB00D9D2C900D9D1C700D8D0C700D7CFC500D7CEC400D6CEC200D6CD
       C000D6CCBF00D6CBBE00D6CABC00D5C9BA00D5C8B900D4C7B800D4C7B700D4C7
-      B700B78183000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      B700B7818300000000000000000000000000000000000F86FF002390FF00E6F3
+      FF00FFFFFF00E2EFFD0052A0F700167AEF001378EE001478EE000E74EC000C72
+      EA000D71E900096EE900076CE700066BE7000569E60061A4F100E0ECFC00FFFF
+      FF00B6D2EE00025ABA000053A9000000000000000000B4817600C36E6B00CC65
+      6500CB666600CE676700B5565600AE7C7B00C5AAA800A6656500A16060009D64
+      64009E9F9F00B4B9B800241CED00241CED00241CED00241CED00241CED00241C
+      ED00241CED00C15B5B00C26262009A4C4D000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000000000000000000000000000A07A
       7100B5AFAA00B4AEA900B4ADA700B4ACA600B4ACA400B3ACA300B2ABA200B2AA
       A100B1A9A000B1A99E00B0A89D00B0A89C00B0A79A00B0A69A00B0A59900AFA4
-      9800A47476000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      9800A4747600000000000000000000000000000000000A84FF0079BBFF00FFFF
+      FF00FFFFFF008CC2FB001B80F3009EC8F900FDFEFF008DBEF7001277ED001074
+      EC00197AEC001A79EB009EC6F600E7F1FD00066BE800056AE700A4CBF700FFFF
+      FF00FDFDFD003F89D4000058BE000000000000000000B4817600C36E6B00CC65
+      6500CB666600CE676700BD5C5C00B9717200D3A7A500C9A0A000BF999900B894
+      9400B18D8D00241CED00241CED00241CED00241CED00241CED00241CED00241C
+      ED00AE494900C6606000C26162009A4C4D000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000A3522800A3522800A3522800A352
       2800A3522800A3522800A3522800A3522800A3522800A3522800A3522800A352
       2800A3522800A3522800A3522800A3522800A3522800A3522800A3522800A352
-      2800A3522800A3522800A3522800A35228000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      2800A3522800A3522800A3522800A35228001B8CFF00188BFF00C5E1FF00FFFF
+      FF00FEFFFF002287F6001F84F5004A9CF700CDE3FC00FFFFFF0068AAF5001478
+      EE001277ED00AACEF800FFFFFF00A1C8F7000A6EE900076DE800247FEB00E0EC
+      FC00FFFFFF0091BDE9000061CF000053A90000000000B4817600C36E6B00CD66
+      6600CD666600CD666600CC656500CC636300CB616100CB626200CB626200CC61
+      6200241CED00241CED00241CED00241CED00241CED00241CED00241CED00CC63
+      6300CD666600CE676700C06061009A4C4D000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000A35228000000000000000000BA8E
       8200E7E2DD00E7E2DB00E6E0DA00E6E0D900E5DED700E5DED500E5DDD400E5DB
       D200E4DBD100E3D9CF00E3D9CD00E2D9CC00E2D8CB00E1D6C900E1D6C700E1D5
-      C600B78183000000000000000000A35228000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      C600B78183000000000000000000A35228001B8CFF003097FF00F1F8FF00FFFF
+      FF00C4E1FE00268AF700278AF6002086F5003690F500C5DFFC00F5FAFE006AAC
+      F6007BB4F600FFFFFF00A7CCF8001D7CEC000C71EB000A6FEA00086EE900CAE1
+      FB00FFFFFF00C9DFF6000470DE000069D70000000000B4817600C36E6B00C660
+      6000C15D5C00C4636100C86C6B00CB727200CD777600CD777600CD777600241C
+      ED00241CED00241CED00241CED00241CED00241CED00241CED00CD777600CD79
+      7800CD6F6F00CD666600C06061009A4C4D000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000A35228000000000000000000BA8E
       8200DCD8D400DCD6D200D8754200D8754200D8754200D8754200D8754200D875
       4200D8754200D8754200D8754200D8754200D8754200D8754200D5CBBF00D5CA
-      BD00B78183000000000000000000A35228000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      BD00B78183000000000000000000A35228001D8DFF0052A7FF00FCFDFF00FFFF
+      FF0083BFFE00298EF9002F91F800248AF8002287F6003893F700C3DEFC00F6FA
+      FE00EDF5FE007DB5F600197DEE001176ED000F75EC000D72EB000B70EA0096C3
+      F600FFFFFF00EAF3FD000E7CEC000073ED0000000000B4827600C46F6C00B04E
+      4A00A5494400B56C6800C48F8C00D0ABA900D7BCBB00241CED00241CED00241C
+      ED00241CED00241CED00241CED00241CED00241CED00D8BEBD00D8BEBD00D8C3
+      C200D1909000CC616100C06061009A4C4D000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000A35228000000000000000000AE87
       7700B7B5B100B6B4B000F6CAB300F6CAB300F6CAB300F6CAB300F6CAB300F6CA
       B300F6CAB300F6CAB300F6CAB300F6CAB300F6CAB300F6CAB300B1AAA100B1A9
-      9F00A47476000000000000000000A35228000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      9F00A47476000000000000000000A35228002591FF0070B7FF00FEFFFF00FFFF
+      FF007FBDFE002C91FC00298FFA003393F9002A8DF8002388F700B3D6FC00FFFF
+      FF00FCFEFF0065A9F600197FF100157AEF001377EE001075EC000E73EC0089BB
+      F600FFFFFF00F1F8FF001081F4000077F10000000000B4827600C46E6B00AC45
+      4100CE9E9A00FAF5F300F6EDEC00F7EFEE00241CED00241CED00241CED00241C
+      ED00241CED00241CED00241CED00241CED00F8F1F000F8F1F000FAF3F200EEE5
+      E400CD8E8D00C3595900C06061009A4D4E000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000A3522800A3522800A3522800A352
       2800A3522800A3522800A3522800A3522800A3522800A3522800A3522800A352
       2800A3522800A3522800A3522800A3522800A3522800A3522800A3522800A352
-      2800A3522800A3522800A3522800A35228000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      2800A3522800A3522800A3522800A35228002E95FF0082C0FF00FFFFFF00FFFF
+      FF0094C8FF002F94FD002D92FC002B90FB003092FA008AC1FC00F4F9FF00B6D8
+      FC00C8E1FD00F4F9FE006BACF7001D81F100177CF0001479EF001277ED009FCA
+      F800FFFFFF00E8F4FF000D82F7000078F50000000000B4827600C46E6B00AC45
+      4100D2A6A300FFFFFF00FBF5F400241CED00241CED00241CED00241CED00241C
+      ED00241CED00241CED00241CED00FBF5F400FBF5F400FBF5F400FDF7F600EFE7
+      E600CC8D8C00C1575700C06061009A4D4E000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000000000000000000000000000C296
       8500FFFEFD00FFFEFD00FFFEFD00FFFEFD00FFFEFD00FBF7F300FBF7F300FAF5
       EF00FAF5EF00F8F1EB00F8F1EB00F7F1E900F7F1E900F6ECE200F6ECE200F6EC
-      E200B78183000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      E200B78183000000000000000000000000003297FF0086C2FF00FAFDFF00FFFF
+      FF00D8EBFF003196FD003095FD00439EFD00B2D7FE00FFFFFF008FC4FC00268B
+      F8003592F800CBE3FD00FFFFFF0092C3FA001A7FF200187DF100177BF000D3E6
+      FC00FFFFFF00C7E3FF00047DFA000079F70000000000B4827600C46E6B00AC45
+      4100D1A4A100FFFFFD00241CED00241CED00241CED00241CED00241CED00241C
+      ED00241CED00241CED00F8F2F100F8F2F100F8F2F100F8F1F000FBF5F400EFE6
+      E500CC8D8C00C1575700C06061009A4D4E000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000000000000000000000000000CA9C
       8800FEFDFC00FDFCFA00FDEFE000FDEFE000FDEFE000FDEFE000FDEFE000FDEF
       E000FDEFE000FDEFE000FDEFE000FDEFE000FDEFE000FDEFE000F5ECE300F5EB
-      E100B78183000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      E100B781830000000000000000000000000057AAFF0075BAFF00EEF7FF00FFFF
+      FF00FFFFFF0045A1FF003297FE00A0CFFE00FFFFFF00B4D8FE002C90FB00298F
+      FA00288DF9003A95F900D1E6FD00FFFFFF001E83F4001B81F2004297F600FFFF
+      FF00FFFFFF008CC5FF000076FD000079F70000000000B4827600C46E6B00AC45
+      4100D1A4A100241CED00241CED00241CED00241CED00241CED00241CED00241C
+      ED00CDCCCC00CDCCCC00CDCCCC00CDCCCC00CDCCCC00CAC9C800E6E2E200F2E8
+      E700CC8D8C00C1575700C06061009A4D4E000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000000000000000000000000000CEA0
       8900FFFFFF00FFFFFF00FECC9A00FECC9A00FECC9A00FECC9A00FECC9A00FECC
       9A00FECC9A00FECC9A00FECC9A00FECC9A00FECC9A00FECC9A00F6EFE600F6EE
-      E500B78183000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      E500B78183000000000000000000000000000000000058ABFF00D9ECFF00FFFF
+      FF00FFFFFF00C1E0FF003398FF005DADFE009DCEFF00439FFD002F93FC002D91
+      FB002A90FB00288DFA00469CFA00A7D0FC002287F6002185F600C3DEFD00FFFF
+      FF00FCFEFF00389BFF00007AFF000000000000000000B4827600C46E6B00AC45
+      4100241CED00241CED00241CED00241CED00241CED00241CED00241CED00EDE8
+      E700EDE8E700EDE8E700EDE8E700EDE8E700EDE8E700ECE7E600F5F0F000F1E7
+      E600CC8D8C00C1575700C06061009A4D4E000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000000000000000000000000000D2A3
       8A00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00F7F1E900F7F0
-      E700B78183000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      E700B7818300000000000000000000000000000000005DADFF00ACD5FF00FEFF
+      FF00FFFFFF00FFFFFF008EC6FF003398FF003398FF003297FF003195FE003095
+      FD002E92FC002C91FB00298FFA00288CF900288CF700CAE5FF00FFFFFF00FFFF
+      FF00ACD5FF00017FFF00017FFF000000000000000000B4827600C46E6B00241C
+      ED00241CED00241CED00241CED00241CED00241CED00241CED00D5D2D200D5D2
+      D200D5D2D200D5D2D200D5D2D200D5D2D200D5D2D200D2D0D000E9E5E500F1E8
+      E700CC8D8C00C1575700C06061009A4D4E000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000000000000000000000000000D7A7
       8C00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFEFD00FEFCFA00FEFB
       F800FCF9F600FBF8F400FBF7F300FAF6F100FAF4EF00F9F3EE00F9F2EC00F7F1
-      EA00B78183000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      EA00B781830000000000000000000000000000000000000000006FB7FF00E8F4
+      FF00FFFFFF00FFFFFF00FFFFFF00A5D1FF003599FF003398FF003398FF003296
+      FE003095FE002F93FD002C92FB002F92FB00B9DAFE00FFFFFF00FFFFFF00EDF6
+      FF002A94FF00027FFF00000000000000000000000000B4827600241CED00241C
+      ED00241CED00241CED00241CED00241CED00241CED00E5E1E000E5E1E000E5E1
+      E000E5E1E000E5E1E000E5E1E000E5E1E000E5E1E000E4DFDF00F2EDEC00F1E7
+      E600CC8D8C00C1575700C06061009A4D4E000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000000000000000000000000000DAAB
       8D00FFFFFF00FFFFFF00FDEFE000FDEFE000FDEFE000FDEFE000FDEFE000FDEF
       E000FDEFE000FDEFE000FDEFE000FDEFE000FDEFE000FDEFE000F9F4EF00F9F3
-      ED00B78183000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      ED00B7818300000000000000000000000000000000000000000077BAFF00A3D0
+      FF00FAFDFF00FFFFFF00FFFFFF00FFFFFF00FAFDFF0092C8FF0056AAFF0046A2
+      FF0046A1FE005BACFE00A1CFFE00FFFFFF00FFFFFF00FFFFFF00FCFEFF0064B1
+      FF00017FFF000A84FF00000000000000000000000000241CED00241CED00241C
+      ED00241CED00241CED00241CED00241CED00E5E1E000E5E1E000E5E1E000E5E1
+      E000E5E1E000E5E1E000E5E1E000E5E1E000E5E1E000E4DFDF00F2EDEC00F1E7
+      E600CC8D8C00C1575700C06061009A4D4E000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000000000000000000000000000DEAD
       8E00FFFFFF00FFFFFF00FECC9A00FECC9A00FECC9A00FECC9A00FECC9A00FECC
       9A00FECC9A00FECC9A00FECC9A00FECC9A00FECC9A00FECC9A00FAF6F100FAF5
-      EF00B78183000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      EF00B781830000000000000000000000000000000000000000000000000076B9
+      FF00AFD7FF00F5FAFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00DCEDFF0060AFFF000782
+      FF000F86FF00000000000000000000000000241CED00241CED00241CED00241C
+      ED00241CED00241CED00241CED00D2CFCF00D3D1D000D3D1D000D3D1D000D3D1
+      D000D3D1D000D3D1D000D3D1D000D3D1D000D3D1D000D0CECE00E9E4E300F2E8
+      E700CC8D8C00C1575700C06061009A4D4E000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000000000000000000000000000DEAD
       8E00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFEFC00FEFCFA00FDFBF800FCF9F600FBF8F400FAF6
       F200B78183000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      000079BBFF0091C8FF00DBEDFF00FAFDFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00EDF6FF00A1CFFF003599FF000E85FF001489
+      FF0000000000000000000000000000000000241CED00241CED00241CED00241C
+      ED00241CED00241CED00FCF5F400FDF6F500FDF6F500FDF6F500FDF6F500FDF6
+      F500FDF6F500FDF6F500FDF6F500FDF6F500FDF6F500FDF6F500FFF8F700F1E7
+      E600CC8D8C00C3595900C16162009A4D4E000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000000000000000000000000000DEAD
       8E00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFEFE00FEFDFB00FEFBF900FDFAF700FBF8
       F500B78183000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000097CAFF0075B9FF009ECEFF00CAE5FF00E3F1FF00EDF6FF00EDF6
+      FF00E6F3FF00D4E9FF00ABD4FF006DB5FF003097FF001D8DFF00000000000000
+      000000000000000000000000000000000000241CED00241CED00241CED00241C
+      ED00241CED00F3F3F200EFE9E800EFE9E800EFE9E800EFE9E800EFE9E800EFE9
+      E800EFE9E800EFE9E800EFE9E800EFE9E800EFE9E800EFE9E800F0ECEB00E8E0
+      DF00C88B8A00B8535300B85C5D009A4D4E000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000000000000000000000000000DEAD
       8F00DAA48200DAA48200DAA48200DAA48200DAA48200DAA48200DAA48200DAA4
       8200DAA48200DAA48200DAA48200DAA48200DAA48200DAA48200DAA48200DAA4
       8200AA807C000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000095C9FF0075B9FF0075B9FF007BBCFF007BBC
+      FF006DB5FF0058ABFF0044A1FF002D95FF000000000000000000000000000000
+      000000000000000000000000000000000000241CED00241CED00241CED00241C
+      ED00B6898700C6CBCB00C4C3C300C4C3C300C4C3C300C4C3C300C4C3C300C4C3
+      C300C4C3C300C4C3C300C4C3C300C4C3C300C4C3C300C4C3C300C3C3C300CFC9
+      C800B8848400964445009A4C4D00000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2937,16 +1825,16 @@ object FAktRashoda: TFAktRashoda
       FF005B7CFF003C60FB003559F7003355F2000000000000000000000000000000
       000000000000000000000000000000000000424D3E000000000000003E000000
       2800000060000000480000000100010000000000600300000000000000000000
-      000000000000000000000000FFFFFF00E00007000000000000000000E0000700
-      0000000000000000E00007000000000000000000E00007000000000000000000
-      E00007000000000000000000E00007000000000000000000E000070000000000
-      00000000E00007000000000000000000E0000700000000000000000000000000
-      0000000000000000600006000000000000000000600006000000000000000000
-      600006000000000000000000000000000000000000000000E000070000000000
-      00000000E00007000000000000000000E00007000000000000000000E0000700
-      0000000000000000E00007000000000000000000E00007000000000000000000
-      E00007000000000000000000E00007000000000000000000E000070000000000
-      00000000E00007000000000000000000FFFFFFFF81FFE00003800FFFFFFFFFFE
+      000000000000000000000000FFFFFF00E00007FF81FFC00000000000E00007FE
+      007F800000000000E00007F8001F800000000000E00007F0000F800000000000
+      E00007E00007800000000000E00007C00003800000000000E00007C000038000
+      00000000E00007800001800000000000E0000780000180000000000000000000
+      0000800000000000600006000000800000000000600006000000800000000000
+      600006000000800000000000000000000000800000000000E000070000008000
+      00000000E00007000000800000000000E00007800001800000000000E0000780
+      0001800000000000E00007C00003800000000000E00007C00003800000000000
+      E00007E00007000000000000E00007F0000F000000000000E00007F8003F0000
+      00000000E00007FE00FF000001000000FFFFFFFF81FFE00003800FFFFFFFFFFE
       007FE000030007FF0001FFF8001FE000030007FF0001FFF0000FE000030007FF
       0001FFE00007E000030000FF0001FFC00003E0000300003F0001FFC000038000
       0000041F0001FF800001A0000200060F0001FF800001A000020000000001FF00
@@ -2964,8 +1852,7 @@ object FAktRashoda: TFAktRashoda
       1F000000800000E00003FC007F000001800000E00003FC00FF80000180000000
       0003FC01FF800003800000000003FC01FFC00003800000000003FC01FFC00007
       800000000003FC01FFE0000F800000E00003F803FFF0001F800000E00003F803
-      FFFC003FC00001E1FFFFF007FFFF00FF00000000000000000000000000000000
-      000000000000}
+      FFFC003FC00001E1FFFFF007FFFF00FF}
   end
   object DocTipParam: TRxIBQuery
     Database = DM1.BELMED
@@ -3185,6 +2072,7 @@ object FAktRashoda: TFAktRashoda
   object cenaQ: TRxIBQuery
     Database = DM1.BELMED
     Transaction = DM1.IBT_Read
+    CachedUpdates = True
     SQL.Strings = (
       
         'select ostatki.ksm_id, ostatki.struk_id, ostatki.cena_uch, ostat' +
@@ -3225,5 +2113,1421 @@ object FAktRashoda: TFAktRashoda
       Origin = '"OSTATKI"."KEI_ID"'
       Required = True
     end
+  end
+  object q_specKart: TRxIBQuery
+    Database = DM1.BELMED
+    Transaction = DM1.IBT_Read
+    CachedUpdates = True
+    SQL.Strings = (
+      
+        'select document.ndok, document.struk_id, document.klient_id, doc' +
+        'ument.date_dok,'
+      
+        'document.tip_op_id, document.tip_dok_id, kart.ksm_id, kart.kol_r' +
+        'ash, kart.kart_id,'
+      'kart.stroka_id, kart.cena, kart.cena_vp, kart.doc_id'
+      'from kart'
+      'inner join document on kart.doc_id = document.doc_id'
+      'where document.struk_id = :struk_id'
+      'and document.date_dok between :dat1 and :dat2'
+      'and document.tip_op_id = 32 and document.tip_dok_id = 198'
+      'and %usl')
+    UpdateObject = upd_specKart
+    Macros = <
+      item
+        DataType = ftString
+        Name = 'usl'
+        ParamType = ptInput
+        Value = '0=0'
+      end>
+    Left = 640
+    Top = 64
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'struk_id'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'dat1'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'dat2'
+        ParamType = ptUnknown
+      end>
+    object q_specKartNDOK: TIBStringField
+      FieldName = 'NDOK'
+      Origin = '"DOCUMENT"."NDOK"'
+    end
+    object q_specKartSTRUK_ID: TSmallintField
+      FieldName = 'STRUK_ID'
+      Origin = '"DOCUMENT"."STRUK_ID"'
+    end
+    object q_specKartKLIENT_ID: TIntegerField
+      FieldName = 'KLIENT_ID'
+      Origin = '"DOCUMENT"."KLIENT_ID"'
+    end
+    object q_specKartDATE_DOK: TDateField
+      FieldName = 'DATE_DOK'
+      Origin = '"DOCUMENT"."DATE_DOK"'
+    end
+    object q_specKartTIP_OP_ID: TSmallintField
+      FieldName = 'TIP_OP_ID'
+      Origin = '"DOCUMENT"."TIP_OP_ID"'
+    end
+    object q_specKartTIP_DOK_ID: TSmallintField
+      FieldName = 'TIP_DOK_ID'
+      Origin = '"DOCUMENT"."TIP_DOK_ID"'
+    end
+    object q_specKartKSM_ID: TIntegerField
+      FieldName = 'KSM_ID'
+      Origin = '"KART"."KSM_ID"'
+      Required = True
+    end
+    object q_specKartKOL_RASH: TFMTBCDField
+      FieldName = 'KOL_RASH'
+      Origin = '"KART"."KOL_RASH"'
+      Precision = 18
+      Size = 6
+    end
+    object q_specKartKART_ID: TIntegerField
+      FieldName = 'KART_ID'
+      Origin = '"KART"."KART_ID"'
+      Required = True
+    end
+    object q_specKartSTROKA_ID: TIntegerField
+      FieldName = 'STROKA_ID'
+      Origin = '"KART"."STROKA_ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object q_specKartCENA: TIBBCDField
+      FieldName = 'CENA'
+      Origin = '"KART"."CENA"'
+      Precision = 18
+      Size = 4
+    end
+    object q_specKartCENA_VP: TIBBCDField
+      FieldName = 'CENA_VP'
+      Origin = '"KART"."CENA_VP"'
+      Precision = 18
+      Size = 4
+    end
+    object q_specKartDOC_ID: TIntegerField
+      FieldName = 'DOC_ID'
+      Origin = '"KART"."DOC_ID"'
+      Required = True
+    end
+  end
+  object q_specDoc: TRxIBQuery
+    Database = DM1.BELMED
+    Transaction = DM1.IBT_Read
+    CachedUpdates = True
+    SQL.Strings = (
+      
+        'select document.doc_id, document.ndok, document.struk_id, docume' +
+        'nt.klient_id, document.date_dok,'
+      'document.tip_op_id, document.tip_dok_id, document.date_op'
+      'from document'
+      'where document.struk_id = :struk_id'
+      'and document.date_dok between :dat1 and :dat2'
+      'and document.tip_op_id = 32 and document.tip_dok_id = 198'
+      'and %usl')
+    UpdateObject = upd_specDoc
+    Macros = <
+      item
+        DataType = ftString
+        Name = 'usl'
+        ParamType = ptInput
+        Value = '0=0'
+      end>
+    Left = 680
+    Top = 64
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'struk_id'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'dat1'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'dat2'
+        ParamType = ptUnknown
+      end>
+    object q_specDocDOC_ID: TIntegerField
+      FieldName = 'DOC_ID'
+      Origin = '"DOCUMENT"."DOC_ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object q_specDocNDOK: TIBStringField
+      FieldName = 'NDOK'
+      Origin = '"DOCUMENT"."NDOK"'
+    end
+    object q_specDocSTRUK_ID: TSmallintField
+      FieldName = 'STRUK_ID'
+      Origin = '"DOCUMENT"."STRUK_ID"'
+      Required = True
+    end
+    object q_specDocKLIENT_ID: TIntegerField
+      FieldName = 'KLIENT_ID'
+      Origin = '"DOCUMENT"."KLIENT_ID"'
+      Required = True
+    end
+    object q_specDocDATE_DOK: TDateField
+      FieldName = 'DATE_DOK'
+      Origin = '"DOCUMENT"."DATE_DOK"'
+    end
+    object q_specDocTIP_OP_ID: TSmallintField
+      FieldName = 'TIP_OP_ID'
+      Origin = '"DOCUMENT"."TIP_OP_ID"'
+      Required = True
+    end
+    object q_specDocTIP_DOK_ID: TSmallintField
+      FieldName = 'TIP_DOK_ID'
+      Origin = '"DOCUMENT"."TIP_DOK_ID"'
+      Required = True
+    end
+    object q_specDocDATE_OP: TDateField
+      FieldName = 'DATE_OP'
+      Origin = '"DOCUMENT"."DATE_OP"'
+    end
+  end
+  object upd_specKart: TIBUpdateSQLW
+    RefreshSQL.Strings = (
+      'Select '
+      '  NDOK,'
+      '  STRUK_ID,'
+      '  KLIENT_ID,'
+      '  DATE_DOK,'
+      '  TIP_OP_ID,'
+      '  TIP_DOK_ID,'
+      '  KSM_ID,'
+      '  KOL_RASH,'
+      '  KART_ID,'
+      '  STROKA_ID,'
+      '  CENA,'
+      '  CENA_VP,'
+      '  DOC_ID'
+      'from kart '
+      'where'
+      '  STROKA_ID = :STROKA_ID')
+    ModifySQL.Strings = (
+      'update kart'
+      'set'
+      '  CENA = :CENA,'
+      '  CENA_VP = :CENA_VP,'
+      '  DOC_ID = :DOC_ID,'
+      '  KART_ID = :KART_ID,'
+      '  KOL_RASH = :KOL_RASH,'
+      '  KSM_ID = :KSM_ID,'
+      '  STROKA_ID = :STROKA_ID'
+      'where'
+      '  STROKA_ID = :OLD_STROKA_ID')
+    InsertSQL.Strings = (
+      'insert into kart'
+      '  (CENA, CENA_VP, DOC_ID, KART_ID, KOL_RASH, KSM_ID, STROKA_ID)'
+      'values'
+      
+        '  (:CENA, :CENA_VP, :DOC_ID, :KART_ID, :KOL_RASH, :KSM_ID, :STRO' +
+        'KA_ID)')
+    DeleteSQL.Strings = (
+      'delete from kart'
+      'where'
+      '  STROKA_ID = :OLD_STROKA_ID')
+    AutoCommit = False
+    UpdateTransaction = DM1.IBT_Write
+    Left = 640
+    Top = 96
+  end
+  object upd_specDoc: TIBUpdateSQLW
+    RefreshSQL.Strings = (
+      'Select '
+      '  DOC_ID,'
+      '  NDOK,'
+      '  STRUK_ID,'
+      '  KLIENT_ID,'
+      '  DATE_DOK,'
+      '  TIP_OP_ID,'
+      '  TIP_DOK_ID,'
+      '  DATE_OP'
+      'from document '
+      'where'
+      '  DOC_ID = :DOC_ID')
+    ModifySQL.Strings = (
+      'update document'
+      'set'
+      '  DATE_DOK = :DATE_DOK,'
+      '  DATE_OP = :DATE_OP,'
+      '  DOC_ID = :DOC_ID,'
+      '  KLIENT_ID = :KLIENT_ID,'
+      '  NDOK = :NDOK,'
+      '  STRUK_ID = :STRUK_ID,'
+      '  TIP_DOK_ID = :TIP_DOK_ID,'
+      '  TIP_OP_ID = :TIP_OP_ID'
+      'where'
+      '  DOC_ID = :OLD_DOC_ID')
+    InsertSQL.Strings = (
+      'insert into document'
+      
+        '  (DATE_DOK, DATE_OP, DOC_ID, KLIENT_ID, NDOK, STRUK_ID, TIP_DOK' +
+        '_ID, TIP_OP_ID)'
+      'values'
+      
+        '  (:DATE_DOK, :DATE_OP, :DOC_ID, :KLIENT_ID, :NDOK, :STRUK_ID, :' +
+        'TIP_DOK_ID, '
+      '   :TIP_OP_ID)')
+    DeleteSQL.Strings = (
+      'delete from document'
+      'where'
+      '  DOC_ID = :OLD_DOC_ID')
+    AutoCommit = False
+    UpdateTransaction = DM1.IBT_Write
+    Left = 680
+    Top = 96
+  end
+  object q_specOst: TRxIBQuery
+    Database = DM1.BELMED
+    Transaction = DM1.IBT_Read
+    SQL.Strings = (
+      'select ostatki.*'
+      'from ostatki'
+      'where ostatki.struk_id = :struk_id'
+      'and ostatki.ksm_id = :ksm_id'
+      'and  %usl_account'
+      'and coalesce(ostatki.ksm_idpr, 0) = 0'
+      'and coalesce(ostatki.ot_s, 0) <> 0')
+    Macros = <
+      item
+        DataType = ftString
+        Name = 'usl_account'
+        ParamType = ptInput
+        Value = '0=0'
+      end>
+    Left = 728
+    Top = 64
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'struk_id'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'ksm_id'
+        ParamType = ptUnknown
+      end>
+    object q_specOstMES: TSmallintField
+      FieldName = 'MES'
+      Origin = '"OSTATKI"."MES"'
+      Required = True
+    end
+    object q_specOstSTRUK_ID: TIntegerField
+      FieldName = 'STRUK_ID'
+      Origin = '"OSTATKI"."STRUK_ID"'
+      Required = True
+    end
+    object q_specOstKSM_ID: TIntegerField
+      FieldName = 'KSM_ID'
+      Origin = '"OSTATKI"."KSM_ID"'
+      Required = True
+    end
+    object q_specOstONM_S: TFMTBCDField
+      FieldName = 'ONM_S'
+      Origin = '"OSTATKI"."ONM_S"'
+      Precision = 18
+      Size = 6
+    end
+    object q_specOstCENA_UCH: TFloatField
+      FieldName = 'CENA_UCH'
+      Origin = '"OSTATKI"."CENA_UCH"'
+    end
+    object q_specOstGOD: TSmallintField
+      FieldName = 'GOD'
+      Origin = '"OSTATKI"."GOD"'
+      Required = True
+    end
+    object q_specOstSPROD_ID: TIntegerField
+      FieldName = 'SPROD_ID'
+      Origin = '"OSTATKI"."SPROD_ID"'
+    end
+    object q_specOstKEI_ID: TSmallintField
+      FieldName = 'KEI_ID'
+      Origin = '"OSTATKI"."KEI_ID"'
+      Required = True
+    end
+    object q_specOstONM_NZ: TFMTBCDField
+      FieldName = 'ONM_NZ'
+      Origin = '"OSTATKI"."ONM_NZ"'
+      Precision = 18
+      Size = 6
+    end
+    object q_specOstOT_S: TFMTBCDField
+      FieldName = 'OT_S'
+      Origin = '"OSTATKI"."OT_S"'
+      Precision = 18
+      Size = 6
+    end
+    object q_specOstOT_NZ: TFMTBCDField
+      FieldName = 'OT_NZ'
+      Origin = '"OSTATKI"."OT_NZ"'
+      Precision = 18
+      Size = 6
+    end
+    object q_specOstKOL_TRANS: TFloatField
+      FieldName = 'KOL_TRANS'
+      Origin = '"OSTATKI"."KOL_TRANS"'
+    end
+    object q_specOstNOMU_ID_TRANS: TSmallintField
+      FieldName = 'NOMU_ID_TRANS'
+      Origin = '"OSTATKI"."NOMU_ID_TRANS"'
+    end
+    object q_specOstKART_ID: TIntegerField
+      FieldName = 'KART_ID'
+      Origin = '"OSTATKI"."KART_ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object q_specOstSERIA_ID: TIntegerField
+      FieldName = 'SERIA_ID'
+      Origin = '"OSTATKI"."SERIA_ID"'
+    end
+    object q_specOstOT_FD: TFMTBCDField
+      FieldName = 'OT_FD'
+      Origin = '"OSTATKI"."OT_FD"'
+      Precision = 18
+      Size = 6
+    end
+    object q_specOstONM_FD: TFMTBCDField
+      FieldName = 'ONM_FD'
+      Origin = '"OSTATKI"."ONM_FD"'
+      Precision = 18
+      Size = 6
+    end
+    object q_specOstNOMU_ID_GRP: TSmallintField
+      FieldName = 'NOMU_ID_GRP'
+      Origin = '"OSTATKI"."NOMU_ID_GRP"'
+    end
+    object q_specOstKOL_GRP: TFloatField
+      FieldName = 'KOL_GRP'
+      Origin = '"OSTATKI"."KOL_GRP"'
+    end
+    object q_specOstVES_TRANS: TIBBCDField
+      FieldName = 'VES_TRANS'
+      Origin = '"OSTATKI"."VES_TRANS"'
+      Precision = 9
+      Size = 2
+    end
+    object q_specOstVOL_TRANS: TFMTBCDField
+      FieldName = 'VOL_TRANS'
+      Origin = '"OSTATKI"."VOL_TRANS"'
+      Precision = 18
+      Size = 6
+    end
+    object q_specOstUSER_NAME: TIBStringField
+      FieldName = 'USER_NAME'
+      Origin = '"OSTATKI"."USER_NAME"'
+      FixedChar = True
+      Size = 10
+    end
+    object q_specOstORG_RESERV: TIntegerField
+      FieldName = 'ORG_RESERV'
+      Origin = '"OSTATKI"."ORG_RESERV"'
+    end
+    object q_specOstOT_DOKUM: TFMTBCDField
+      FieldKind = fkInternalCalc
+      FieldName = 'OT_DOKUM'
+      Origin = '"OSTATKI"."OT_DOKUM"'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 6
+    end
+    object q_specOstONM_DOKUM: TFMTBCDField
+      FieldKind = fkInternalCalc
+      FieldName = 'ONM_DOKUM'
+      Origin = '"OSTATKI"."ONM_DOKUM"'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 6
+    end
+    object q_specOstDATE_TIME_UPDATE: TDateTimeField
+      FieldName = 'DATE_TIME_UPDATE'
+      Origin = '"OSTATKI"."DATE_TIME_UPDATE"'
+    end
+    object q_specOstKSM_IDPR: TIntegerField
+      FieldName = 'KSM_IDPR'
+      Origin = '"OSTATKI"."KSM_IDPR"'
+    end
+    object q_specOstRAZDEL_ID: TSmallintField
+      FieldName = 'RAZDEL_ID'
+      Origin = '"OSTATKI"."RAZDEL_ID"'
+    end
+    object q_specOstINV_ID: TIntegerField
+      FieldName = 'INV_ID'
+      Origin = '"OSTATKI"."INV_ID"'
+    end
+    object q_specOstACCOUNT: TIBStringField
+      FieldName = 'ACCOUNT'
+      Origin = '"OSTATKI"."ACCOUNT"'
+      FixedChar = True
+      Size = 5
+    end
+    object q_specOstSUMMA_KART: TIBBCDField
+      FieldName = 'SUMMA_KART'
+      Origin = '"OSTATKI"."SUMMA_KART"'
+      Precision = 18
+      Size = 2
+    end
+    object q_specOstOT_S2: TFMTBCDField
+      FieldName = 'OT_S2'
+      Origin = '"OSTATKI"."OT_S2"'
+      Precision = 18
+      Size = 6
+    end
+    object q_specOstKEI_ID2: TSmallintField
+      FieldName = 'KEI_ID2'
+      Origin = '"OSTATKI"."KEI_ID2"'
+    end
+    object q_specOstVOL_GRP: TFMTBCDField
+      FieldName = 'VOL_GRP'
+      Origin = '"OSTATKI"."VOL_GRP"'
+      Precision = 18
+      Size = 6
+    end
+    object q_specOstVES_GRP: TIBBCDField
+      FieldName = 'VES_GRP'
+      Origin = '"OSTATKI"."VES_GRP"'
+      Precision = 9
+      Size = 3
+    end
+    object q_specOstPROC_OV: TFMTBCDField
+      FieldName = 'PROC_OV'
+      Origin = '"OSTATKI"."PROC_OV"'
+      Precision = 18
+      Size = 6
+    end
+    object q_specOstCENA_OPT: TIBBCDField
+      FieldName = 'CENA_OPT'
+      Origin = '"OSTATKI"."CENA_OPT"'
+      Precision = 18
+      Size = 2
+    end
+    object q_specOstONM_S_P: TFMTBCDField
+      FieldName = 'ONM_S_P'
+      Origin = '"OSTATKI"."ONM_S_P"'
+      Precision = 18
+      Size = 6
+    end
+    object q_specOstSTRUK_ID_RELA: TIntegerField
+      FieldName = 'STRUK_ID_RELA'
+      Origin = '"OSTATKI"."STRUK_ID_RELA"'
+    end
+    object q_specOstBSO: TSmallintField
+      FieldName = 'BSO'
+      Origin = '"OSTATKI"."BSO"'
+    end
+    object q_specOstDATE_VID: TDateField
+      FieldName = 'DATE_VID'
+      Origin = '"OSTATKI"."DATE_VID"'
+    end
+    object q_specOstSROK: TIBBCDField
+      FieldName = 'SROK'
+      Origin = '"OSTATKI"."SROK"'
+      Precision = 9
+      Size = 2
+    end
+    object q_specOstNLK: TIntegerField
+      FieldName = 'NLK'
+      Origin = '"OSTATKI"."NLK"'
+    end
+    object q_specOstSUMMA_SPIS: TIBBCDField
+      FieldName = 'SUMMA_SPIS'
+      Origin = '"OSTATKI"."SUMMA_SPIS"'
+      Precision = 18
+      Size = 2
+    end
+    object q_specOstCENA_UCH_NM: TIBBCDField
+      FieldName = 'CENA_UCH_NM'
+      Origin = '"OSTATKI"."CENA_UCH_NM"'
+      Precision = 18
+      Size = 4
+    end
+    object q_specOstACCOUNT_OLD: TIBStringField
+      FieldName = 'ACCOUNT_OLD'
+      Origin = '"OSTATKI"."ACCOUNT_OLD"'
+      FixedChar = True
+      Size = 5
+    end
+  end
+  object q_prixDoc: TRxIBQuery
+    Database = DM1.BELMED
+    Transaction = DM1.IBT_Read
+    CachedUpdates = True
+    SQL.Strings = (
+      'select document.*'
+      'from document'
+      'where document.struk_id = :struk_id'
+      'and document.klient_id = :klient_id'
+      'and document.date_dok between :dat1 and :dat2'
+      'and document.tip_op_id = 30 and document.tip_dok_id = 37'
+      'and document.ndok like '#39#1056#1087'%'#39)
+    Macros = <>
+    Left = 808
+    Top = 64
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'struk_id'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'klient_id'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'dat1'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'dat2'
+        ParamType = ptUnknown
+      end>
+    object q_prixDocNDOK: TIBStringField
+      FieldName = 'NDOK'
+      Origin = '"DOCUMENT"."NDOK"'
+    end
+    object q_prixDocDOC_ID: TIntegerField
+      FieldName = 'DOC_ID'
+      Origin = '"DOCUMENT"."DOC_ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object q_prixDocPRIZ_ID: TSmallintField
+      FieldName = 'PRIZ_ID'
+      Origin = '"DOCUMENT"."PRIZ_ID"'
+      Required = True
+    end
+    object q_prixDocTIP_OP_ID: TSmallintField
+      FieldName = 'TIP_OP_ID'
+      Origin = '"DOCUMENT"."TIP_OP_ID"'
+      Required = True
+    end
+    object q_prixDocTIP_DOK_ID: TSmallintField
+      FieldName = 'TIP_DOK_ID'
+      Origin = '"DOCUMENT"."TIP_DOK_ID"'
+      Required = True
+    end
+    object q_prixDocDATE_DOK: TDateField
+      FieldName = 'DATE_DOK'
+      Origin = '"DOCUMENT"."DATE_DOK"'
+    end
+    object q_prixDocDOK_OSN_ID: TIntegerField
+      FieldName = 'DOK_OSN_ID'
+      Origin = '"DOCUMENT"."DOK_OSN_ID"'
+    end
+    object q_prixDocSTRUK_ID: TSmallintField
+      FieldName = 'STRUK_ID'
+      Origin = '"DOCUMENT"."STRUK_ID"'
+      Required = True
+    end
+    object q_prixDocVP_ID: TSmallintField
+      FieldName = 'VP_ID'
+      Origin = '"DOCUMENT"."VP_ID"'
+    end
+    object q_prixDocKPV: TFMTBCDField
+      FieldName = 'KPV'
+      Origin = '"DOCUMENT"."KPV"'
+      Precision = 18
+      Size = 6
+    end
+    object q_prixDocKLIENT_ID: TIntegerField
+      FieldName = 'KLIENT_ID'
+      Origin = '"DOCUMENT"."KLIENT_ID"'
+      Required = True
+    end
+    object q_prixDocSUM_BRB: TIBBCDField
+      FieldName = 'SUM_BRB'
+      Origin = '"DOCUMENT"."SUM_BRB"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixDocSUM_ISP1: TIBBCDField
+      FieldName = 'SUM_ISP1'
+      Origin = '"DOCUMENT"."SUM_ISP1"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixDocSUM_ISP2: TIBBCDField
+      FieldName = 'SUM_ISP2'
+      Origin = '"DOCUMENT"."SUM_ISP2"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixDocSUM_VP: TIBBCDField
+      FieldName = 'SUM_VP'
+      Origin = '"DOCUMENT"."SUM_VP"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixDocSUM_ISP1_VP: TIBBCDField
+      FieldName = 'SUM_ISP1_VP'
+      Origin = '"DOCUMENT"."SUM_ISP1_VP"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixDocSUM_ISP2_VP: TIBBCDField
+      FieldName = 'SUM_ISP2_VP'
+      Origin = '"DOCUMENT"."SUM_ISP2_VP"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixDocNDS: TIBBCDField
+      FieldName = 'NDS'
+      Origin = '"DOCUMENT"."NDS"'
+      Precision = 9
+      Size = 2
+    end
+    object q_prixDocSUM_NDS: TIBBCDField
+      FieldName = 'SUM_NDS'
+      Origin = '"DOCUMENT"."SUM_NDS"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixDocSUM_NDS_VP: TIBBCDField
+      FieldName = 'SUM_NDS_VP'
+      Origin = '"DOCUMENT"."SUM_NDS_VP"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixDocDATE_OP: TDateField
+      FieldName = 'DATE_OP'
+      Origin = '"DOCUMENT"."DATE_OP"'
+    end
+    object q_prixDocDATE_VVOD: TDateTimeField
+      FieldName = 'DATE_VVOD'
+      Origin = '"DOCUMENT"."DATE_VVOD"'
+    end
+    object q_prixDocZADACHA_ID: TIBStringField
+      FieldName = 'ZADACHA_ID'
+      Origin = '"DOCUMENT"."ZADACHA_ID"'
+      FixedChar = True
+      Size = 10
+    end
+    object q_prixDocUSER_NAME: TIBStringField
+      FieldName = 'USER_NAME'
+      Origin = '"DOCUMENT"."USER_NAME"'
+      FixedChar = True
+      Size = 10
+    end
+    object q_prixDocDOV: TIntegerField
+      FieldName = 'DOV'
+      Origin = '"DOCUMENT"."DOV"'
+    end
+    object q_prixDocDATE_TIME_UPDATE: TDateTimeField
+      FieldName = 'DATE_TIME_UPDATE'
+      Origin = '"DOCUMENT"."DATE_TIME_UPDATE"'
+    end
+    object q_prixDocJORN_ID: TSmallintField
+      FieldName = 'JORN_ID'
+      Origin = '"DOCUMENT"."JORN_ID"'
+    end
+    object q_prixDocRCHET_ID: TIntegerField
+      FieldName = 'RCHET_ID'
+      Origin = '"DOCUMENT"."RCHET_ID"'
+    end
+    object q_prixDocTAG: TIntegerField
+      FieldName = 'TAG'
+      Origin = '"DOCUMENT"."TAG"'
+    end
+    object q_prixDocKPV_OLD: TFMTBCDField
+      FieldName = 'KPV_OLD'
+      Origin = '"DOCUMENT"."KPV_OLD"'
+      Precision = 18
+      Size = 6
+    end
+  end
+  object q_prixKart: TRxIBQuery
+    Database = DM1.BELMED
+    Transaction = DM1.IBT_Read
+    CachedUpdates = True
+    SQL.Strings = (
+      'select kart.*'
+      'from kart'
+      'where kart.doc_id = :doc_id'
+      'and coalesce(kart.kol_rash, 0) <> 0')
+    UpdateObject = upd_prixKart
+    Macros = <>
+    Left = 848
+    Top = 64
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'doc_id'
+        ParamType = ptInput
+      end>
+    object q_prixKartDOC_ID: TIntegerField
+      FieldName = 'DOC_ID'
+      Origin = '"KART"."DOC_ID"'
+      Required = True
+    end
+    object q_prixKartSTROKA_ID: TIntegerField
+      FieldName = 'STROKA_ID'
+      Origin = '"KART"."STROKA_ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object q_prixKartKSM_ID: TIntegerField
+      FieldName = 'KSM_ID'
+      Origin = '"KART"."KSM_ID"'
+      Required = True
+    end
+    object q_prixKartCENA: TIBBCDField
+      FieldName = 'CENA'
+      Origin = '"KART"."CENA"'
+      Precision = 18
+      Size = 4
+    end
+    object q_prixKartKOL_PRIH: TFMTBCDField
+      FieldName = 'KOL_PRIH'
+      Origin = '"KART"."KOL_PRIH"'
+      Precision = 18
+      Size = 6
+    end
+    object q_prixKartCENA_VP: TIBBCDField
+      FieldName = 'CENA_VP'
+      Origin = '"KART"."CENA_VP"'
+      Precision = 18
+      Size = 4
+    end
+    object q_prixKartNDS: TIBBCDField
+      FieldName = 'NDS'
+      Origin = '"KART"."NDS"'
+      Precision = 9
+      Size = 2
+    end
+    object q_prixKartSUM_NDS: TIBBCDField
+      FieldName = 'SUM_NDS'
+      Origin = '"KART"."SUM_NDS"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixKartSUM_NDS_VP: TIBBCDField
+      FieldName = 'SUM_NDS_VP'
+      Origin = '"KART"."SUM_NDS_VP"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixKartKOL_RASH: TFMTBCDField
+      FieldName = 'KOL_RASH'
+      Origin = '"KART"."KOL_RASH"'
+      Precision = 18
+      Size = 6
+    end
+    object q_prixKartKART_ID: TIntegerField
+      FieldName = 'KART_ID'
+      Origin = '"KART"."KART_ID"'
+      Required = True
+    end
+    object q_prixKartORG_ID_BRAK: TIntegerField
+      FieldName = 'ORG_ID_BRAK'
+      Origin = '"KART"."ORG_ID_BRAK"'
+    end
+    object q_prixKartOSNOV_BRAK_ID: TSmallintField
+      FieldName = 'OSNOV_BRAK_ID'
+      Origin = '"KART"."OSNOV_BRAK_ID"'
+    end
+    object q_prixKartUSER_NAME: TIBStringField
+      FieldName = 'USER_NAME'
+      Origin = '"KART"."USER_NAME"'
+      FixedChar = True
+      Size = 10
+    end
+    object q_prixKartDATE_TIME_UPDATE: TDateTimeField
+      FieldName = 'DATE_TIME_UPDATE'
+      Origin = '"KART"."DATE_TIME_UPDATE"'
+    end
+    object q_prixKartPARENT: TIntegerField
+      FieldName = 'PARENT'
+      Origin = '"KART"."PARENT"'
+    end
+    object q_prixKartRAZDEL_ID: TSmallintField
+      FieldName = 'RAZDEL_ID'
+      Origin = '"KART"."RAZDEL_ID"'
+    end
+    object q_prixKartSKIDKA: TIBBCDField
+      FieldName = 'SKIDKA'
+      Origin = '"KART"."SKIDKA"'
+      Precision = 9
+      Size = 2
+    end
+    object q_prixKartKEI_ID: TSmallintField
+      FieldName = 'KEI_ID'
+      Origin = '"KART"."KEI_ID"'
+    end
+    object q_prixKartSUMMA: TIBBCDField
+      FieldName = 'SUMMA'
+      Origin = '"KART"."SUMMA"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixKartSUMMA_VP: TIBBCDField
+      FieldName = 'SUMMA_VP'
+      Origin = '"KART"."SUMMA_VP"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixKartSUM_SKID: TIBBCDField
+      FieldName = 'SUM_SKID'
+      Origin = '"KART"."SUM_SKID"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixKartSUM_SKID_VP: TIBBCDField
+      FieldName = 'SUM_SKID_VP'
+      Origin = '"KART"."SUM_SKID_VP"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixKartSUMMA_S_NDS: TIBBCDField
+      FieldName = 'SUMMA_S_NDS'
+      Origin = '"KART"."SUMMA_S_NDS"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixKartSUMMA_S_NDS_VP: TIBBCDField
+      FieldName = 'SUMMA_S_NDS_VP'
+      Origin = '"KART"."SUMMA_S_NDS_VP"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixKartTAG: TIntegerField
+      FieldName = 'TAG'
+      Origin = '"KART"."TAG"'
+    end
+    object q_prixKartKOL_PRIH_EDIZ: TFloatField
+      FieldName = 'KOL_PRIH_EDIZ'
+      Origin = '"KART"."KOL_PRIH_EDIZ"'
+    end
+    object q_prixKartKOL_RASH_EDIZ: TFloatField
+      FieldName = 'KOL_RASH_EDIZ'
+      Origin = '"KART"."KOL_RASH_EDIZ"'
+    end
+    object q_prixKartTIP_OP_ID: TSmallintField
+      FieldName = 'TIP_OP_ID'
+      Origin = '"KART"."TIP_OP_ID"'
+    end
+    object q_prixKartTIP_DOK_ID: TSmallintField
+      FieldName = 'TIP_DOK_ID'
+      Origin = '"KART"."TIP_DOK_ID"'
+    end
+    object q_prixKartTAG1: TIntegerField
+      FieldName = 'TAG1'
+      Origin = '"KART"."TAG1"'
+    end
+    object q_prixKartTOV_SKIDKA: TSmallintField
+      FieldName = 'TOV_SKIDKA'
+      Origin = '"KART"."TOV_SKIDKA"'
+    end
+    object q_prixKartKEI_ID2: TSmallintField
+      FieldName = 'KEI_ID2'
+      Origin = '"KART"."KEI_ID2"'
+    end
+    object q_prixKartCENA_PRICE: TIBBCDField
+      FieldName = 'CENA_PRICE'
+      Origin = '"KART"."CENA_PRICE"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixKartSKID_CEN: TIBBCDField
+      FieldName = 'SKID_CEN'
+      Origin = '"KART"."SKID_CEN"'
+      Precision = 9
+      Size = 2
+    end
+    object q_prixKartCOMMENT: TIBStringField
+      FieldName = 'COMMENT'
+      Origin = '"KART"."COMMENT"'
+      Size = 40
+    end
+    object q_prixKartDOP_SUM: TIBBCDField
+      FieldName = 'DOP_SUM'
+      Origin = '"KART"."DOP_SUM"'
+      Precision = 9
+      Size = 4
+    end
+    object q_prixKartDEBET: TIBStringField
+      FieldName = 'DEBET'
+      Origin = '"KART"."DEBET"'
+      FixedChar = True
+      Size = 5
+    end
+    object q_prixKartDTYPESUB_ID: TSmallintField
+      FieldName = 'DTYPESUB_ID'
+      Origin = '"KART"."DTYPESUB_ID"'
+    end
+    object q_prixKartDCODE: TIntegerField
+      FieldName = 'DCODE'
+      Origin = '"KART"."DCODE"'
+    end
+    object q_prixKartCREDIT: TIBStringField
+      FieldName = 'CREDIT'
+      Origin = '"KART"."CREDIT"'
+      FixedChar = True
+      Size = 5
+    end
+    object q_prixKartCTYPESUB_ID: TSmallintField
+      FieldName = 'CTYPESUB_ID'
+      Origin = '"KART"."CTYPESUB_ID"'
+    end
+    object q_prixKartCCODE: TIntegerField
+      FieldName = 'CCODE'
+      Origin = '"KART"."CCODE"'
+    end
+    object q_prixKartSROK: TSmallintField
+      FieldName = 'SROK'
+      Origin = '"KART"."SROK"'
+    end
+    object q_prixKartDATE_VID: TDateField
+      FieldName = 'DATE_VID'
+      Origin = '"KART"."DATE_VID"'
+    end
+    object q_prixKartDOP_RASH: TIBBCDField
+      FieldName = 'DOP_RASH'
+      Origin = '"KART"."DOP_RASH"'
+      Precision = 18
+      Size = 2
+    end
+    object q_prixKartDOP_RASH_ID: TSmallintField
+      FieldName = 'DOP_RASH_ID'
+      Origin = '"KART"."DOP_RASH_ID"'
+    end
+    object q_prixKartNORM_RASH: TFMTBCDField
+      FieldName = 'NORM_RASH'
+      Origin = '"KART"."NORM_RASH"'
+      Precision = 18
+      Size = 6
+    end
+    object q_prixKartKOL_RAB: TFMTBCDField
+      FieldName = 'KOL_RAB'
+      Origin = '"KART"."KOL_RAB"'
+      Precision = 18
+      Size = 6
+    end
+  end
+  object upd_prixKart: TIBUpdateSQLW
+    RefreshSQL.Strings = (
+      'Select '
+      '  kart.*'
+      'from kart '
+      'where'
+      '  STROKA_ID = :STROKA_ID')
+    ModifySQL.Strings = (
+      'update kart'
+      'set'
+      '  CENA = :CENA,'
+      '  CENA_VP = :CENA_VP,'
+      '  DOC_ID = :DOC_ID,'
+      '  KART_ID = :KART_ID,'
+      '  KEI_ID = :KEI_ID,'
+      '  KOL_PRIH = :KOL_PRIH,'
+      '  KOL_PRIH_EDIZ = :KOL_PRIH_EDIZ,'
+      '  KOL_RASH = :KOL_RASH,'
+      '  KOL_RASH_EDIZ = :KOL_RASH_EDIZ,'
+      '  KSM_ID = :KSM_ID,'
+      '  RAZDEL_ID = :RAZDEL_ID,'
+      '  STROKA_ID = :STROKA_ID'
+      'where'
+      '  STROKA_ID = :OLD_STROKA_ID')
+    InsertSQL.Strings = (
+      'insert into kart'
+      
+        '  (CENA, CENA_VP, DOC_ID, KART_ID, KEI_ID, KOL_PRIH, KOL_PRIH_ED' +
+        'IZ, KOL_RASH, '
+      '   KOL_RASH_EDIZ, KSM_ID, RAZDEL_ID, STROKA_ID)'
+      'values'
+      
+        '  (:CENA, :CENA_VP, :DOC_ID, :KART_ID, :KEI_ID, :KOL_PRIH, :KOL_' +
+        'PRIH_EDIZ, '
+      '   :KOL_RASH, :KOL_RASH_EDIZ, :KSM_ID, :RAZDEL_ID, :STROKA_ID)')
+    DeleteSQL.Strings = (
+      'delete from kart'
+      'where'
+      '  STROKA_ID = :OLD_STROKA_ID')
+    AutoCommit = False
+    UpdateTransaction = DM1.IBT_Write
+    Left = 848
+    Top = 104
+  end
+  object q_ostatki: TRxIBQuery
+    Database = DM1.BELMED
+    Transaction = DM1.IBT_Read
+    SQL.Strings = (
+      'select ostatki.*'
+      'from ostatki'
+      'where ostatki.struk_id = :struk_id'
+      'and ostatki.ksm_id = :ksm_id'
+      'and coalesce(ostatki.ksm_idpr, 0) = :ksm_idpr')
+    UpdateObject = upd_ostatki
+    Macros = <>
+    Left = 888
+    Top = 64
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'struk_id'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'ksm_id'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'ksm_idpr'
+        ParamType = ptUnknown
+      end>
+    object q_ostatkiKART_ID: TIntegerField
+      FieldName = 'KART_ID'
+      Origin = '"OSTATKI"."KART_ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object q_ostatkiOT_S: TFMTBCDField
+      FieldName = 'OT_S'
+      Origin = '"OSTATKI"."OT_S"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiKSM_ID: TIntegerField
+      FieldName = 'KSM_ID'
+      Origin = '"OSTATKI"."KSM_ID"'
+      Required = True
+    end
+    object q_ostatkiSTRUK_ID: TIntegerField
+      FieldName = 'STRUK_ID'
+      Origin = '"OSTATKI"."STRUK_ID"'
+      Required = True
+    end
+    object q_ostatkiMES: TSmallintField
+      FieldName = 'MES'
+      Origin = '"OSTATKI"."MES"'
+      Required = True
+    end
+    object q_ostatkiONM_S: TFMTBCDField
+      FieldName = 'ONM_S'
+      Origin = '"OSTATKI"."ONM_S"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiCENA_UCH: TFloatField
+      FieldName = 'CENA_UCH'
+      Origin = '"OSTATKI"."CENA_UCH"'
+    end
+    object q_ostatkiGOD: TSmallintField
+      FieldName = 'GOD'
+      Origin = '"OSTATKI"."GOD"'
+      Required = True
+    end
+    object q_ostatkiSPROD_ID: TIntegerField
+      FieldName = 'SPROD_ID'
+      Origin = '"OSTATKI"."SPROD_ID"'
+    end
+    object q_ostatkiKEI_ID: TSmallintField
+      FieldName = 'KEI_ID'
+      Origin = '"OSTATKI"."KEI_ID"'
+      Required = True
+    end
+    object q_ostatkiONM_NZ: TFMTBCDField
+      FieldName = 'ONM_NZ'
+      Origin = '"OSTATKI"."ONM_NZ"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiOT_NZ: TFMTBCDField
+      FieldName = 'OT_NZ'
+      Origin = '"OSTATKI"."OT_NZ"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiKOL_TRANS: TFloatField
+      FieldName = 'KOL_TRANS'
+      Origin = '"OSTATKI"."KOL_TRANS"'
+    end
+    object q_ostatkiNOMU_ID_TRANS: TSmallintField
+      FieldName = 'NOMU_ID_TRANS'
+      Origin = '"OSTATKI"."NOMU_ID_TRANS"'
+    end
+    object q_ostatkiSERIA_ID: TIntegerField
+      FieldName = 'SERIA_ID'
+      Origin = '"OSTATKI"."SERIA_ID"'
+    end
+    object q_ostatkiOT_FD: TFMTBCDField
+      FieldName = 'OT_FD'
+      Origin = '"OSTATKI"."OT_FD"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiONM_FD: TFMTBCDField
+      FieldName = 'ONM_FD'
+      Origin = '"OSTATKI"."ONM_FD"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiNOMU_ID_GRP: TSmallintField
+      FieldName = 'NOMU_ID_GRP'
+      Origin = '"OSTATKI"."NOMU_ID_GRP"'
+    end
+    object q_ostatkiKOL_GRP: TFloatField
+      FieldName = 'KOL_GRP'
+      Origin = '"OSTATKI"."KOL_GRP"'
+    end
+    object q_ostatkiVES_TRANS: TIBBCDField
+      FieldName = 'VES_TRANS'
+      Origin = '"OSTATKI"."VES_TRANS"'
+      Precision = 9
+      Size = 2
+    end
+    object q_ostatkiVOL_TRANS: TFMTBCDField
+      FieldName = 'VOL_TRANS'
+      Origin = '"OSTATKI"."VOL_TRANS"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiUSER_NAME: TIBStringField
+      FieldName = 'USER_NAME'
+      Origin = '"OSTATKI"."USER_NAME"'
+      FixedChar = True
+      Size = 10
+    end
+    object q_ostatkiORG_RESERV: TIntegerField
+      FieldName = 'ORG_RESERV'
+      Origin = '"OSTATKI"."ORG_RESERV"'
+    end
+    object q_ostatkiOT_DOKUM: TFMTBCDField
+      FieldKind = fkInternalCalc
+      FieldName = 'OT_DOKUM'
+      Origin = '"OSTATKI"."OT_DOKUM"'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiONM_DOKUM: TFMTBCDField
+      FieldKind = fkInternalCalc
+      FieldName = 'ONM_DOKUM'
+      Origin = '"OSTATKI"."ONM_DOKUM"'
+      ProviderFlags = []
+      ReadOnly = True
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiDATE_TIME_UPDATE: TDateTimeField
+      FieldName = 'DATE_TIME_UPDATE'
+      Origin = '"OSTATKI"."DATE_TIME_UPDATE"'
+    end
+    object q_ostatkiKSM_IDPR: TIntegerField
+      FieldName = 'KSM_IDPR'
+      Origin = '"OSTATKI"."KSM_IDPR"'
+    end
+    object q_ostatkiRAZDEL_ID: TSmallintField
+      FieldName = 'RAZDEL_ID'
+      Origin = '"OSTATKI"."RAZDEL_ID"'
+    end
+    object q_ostatkiINV_ID: TIntegerField
+      FieldName = 'INV_ID'
+      Origin = '"OSTATKI"."INV_ID"'
+    end
+    object q_ostatkiACCOUNT: TIBStringField
+      FieldName = 'ACCOUNT'
+      Origin = '"OSTATKI"."ACCOUNT"'
+      FixedChar = True
+      Size = 5
+    end
+    object q_ostatkiSUMMA_KART: TIBBCDField
+      FieldName = 'SUMMA_KART'
+      Origin = '"OSTATKI"."SUMMA_KART"'
+      Precision = 18
+      Size = 2
+    end
+    object q_ostatkiOT_S2: TFMTBCDField
+      FieldName = 'OT_S2'
+      Origin = '"OSTATKI"."OT_S2"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiKEI_ID2: TSmallintField
+      FieldName = 'KEI_ID2'
+      Origin = '"OSTATKI"."KEI_ID2"'
+    end
+    object q_ostatkiVOL_GRP: TFMTBCDField
+      FieldName = 'VOL_GRP'
+      Origin = '"OSTATKI"."VOL_GRP"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiVES_GRP: TIBBCDField
+      FieldName = 'VES_GRP'
+      Origin = '"OSTATKI"."VES_GRP"'
+      Precision = 9
+      Size = 3
+    end
+    object q_ostatkiPROC_OV: TFMTBCDField
+      FieldName = 'PROC_OV'
+      Origin = '"OSTATKI"."PROC_OV"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiCENA_OPT: TIBBCDField
+      FieldName = 'CENA_OPT'
+      Origin = '"OSTATKI"."CENA_OPT"'
+      Precision = 18
+      Size = 2
+    end
+    object q_ostatkiONM_S_P: TFMTBCDField
+      FieldName = 'ONM_S_P'
+      Origin = '"OSTATKI"."ONM_S_P"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiSTRUK_ID_RELA: TIntegerField
+      FieldName = 'STRUK_ID_RELA'
+      Origin = '"OSTATKI"."STRUK_ID_RELA"'
+    end
+    object q_ostatkiBSO: TSmallintField
+      FieldName = 'BSO'
+      Origin = '"OSTATKI"."BSO"'
+    end
+    object q_ostatkiDATE_VID: TDateField
+      FieldName = 'DATE_VID'
+      Origin = '"OSTATKI"."DATE_VID"'
+    end
+    object q_ostatkiSROK: TIBBCDField
+      FieldName = 'SROK'
+      Origin = '"OSTATKI"."SROK"'
+      Precision = 9
+      Size = 2
+    end
+    object q_ostatkiNLK: TIntegerField
+      FieldName = 'NLK'
+      Origin = '"OSTATKI"."NLK"'
+    end
+    object q_ostatkiSUMMA_SPIS: TIBBCDField
+      FieldName = 'SUMMA_SPIS'
+      Origin = '"OSTATKI"."SUMMA_SPIS"'
+      Precision = 18
+      Size = 2
+    end
+    object q_ostatkiCENA_UCH_NM: TIBBCDField
+      FieldName = 'CENA_UCH_NM'
+      Origin = '"OSTATKI"."CENA_UCH_NM"'
+      Precision = 18
+      Size = 4
+    end
+    object q_ostatkiACCOUNT_OLD: TIBStringField
+      FieldName = 'ACCOUNT_OLD'
+      Origin = '"OSTATKI"."ACCOUNT_OLD"'
+      FixedChar = True
+      Size = 5
+    end
+  end
+  object upd_ostatki: TIBUpdateSQLW
+    RefreshSQL.Strings = (
+      'Select '
+      ' ostatki.*'
+      'from ostatki '
+      'where'
+      '  KART_ID = :KART_ID')
+    ModifySQL.Strings = (
+      'update ostatki'
+      'set'
+      '  ACCOUNT = :ACCOUNT,'
+      '  CENA_UCH = :CENA_UCH,'
+      '  KART_ID = :KART_ID,'
+      '  KEI_ID = :KEI_ID,'
+      '  KSM_ID = :KSM_ID,'
+      '  KSM_IDPR = :KSM_IDPR,'
+      '  STRUK_ID = :STRUK_ID'
+      'where'
+      '  KART_ID = :OLD_KART_ID')
+    InsertSQL.Strings = (
+      'insert into ostatki'
+      
+        '  (ACCOUNT, CENA_UCH, KART_ID, KEI_ID, KSM_ID, KSM_IDPR, STRUK_I' +
+        'D)'
+      'values'
+      
+        '  (:ACCOUNT, :CENA_UCH, :KART_ID, :KEI_ID, :KSM_ID, :KSM_IDPR, :' +
+        'STRUK_ID)')
+    DeleteSQL.Strings = (
+      'delete from ostatki'
+      'where'
+      '  KART_ID = :OLD_KART_ID')
+    AutoCommit = False
+    UpdateTransaction = DM1.IBT_Write
+    Left = 888
+    Top = 104
+  end
+  object mem_notAdded: TkbmMemTable
+    DesignActivation = True
+    AttachedAutoRefresh = True
+    AttachMaxCount = 1
+    FieldDefs = <>
+    IndexDefs = <>
+    SortOptions = []
+    AllDataOptions = [mtfSaveData, mtfSaveNonVisible, mtfSaveBlobs, mtfSaveFiltered, mtfSaveIgnoreRange, mtfSaveIgnoreMasterDetail, mtfSaveDeltas]
+    CommaTextOptions = [mtfSaveData]
+    CSVQuote = '"'
+    CSVFieldDelimiter = ','
+    CSVRecordDelimiter = ','
+    CSVTrueString = 'True'
+    CSVFalseString = 'False'
+    PersistentSaveOptions = [mtfSaveData, mtfSaveNonVisible, mtfSaveIgnoreRange, mtfSaveIgnoreMasterDetail]
+    PersistentBackup = False
+    ProgressFlags = [mtpcLoad, mtpcSave, mtpcCopy]
+    FilterOptions = []
+    Version = '2.53g'
+    LanguageID = 0
+    SortID = 0
+    SubLanguageID = 1
+    LocaleID = 1024
+    Left = 728
+    Top = 104
+    object mem_notAddedKSM_ID: TIntegerField
+      FieldName = 'KSM_ID'
+    end
+    object mem_notAddedNMAT_KSM: TStringField
+      DisplayWidth = 60
+      FieldName = 'NMAT_KSM'
+      Size = 60
+    end
+    object mem_notAddedKOL: TFloatField
+      FieldName = 'KOL'
+    end
+  end
+  object frxNotAdded: TfrxDBDataset
+    UserName = 'frxNotAdded'
+    CloseDataSource = False
+    FieldAliases.Strings = (
+      'KSM_ID=KSM_ID'
+      'NMAT_KSM=NMAT_KSM'
+      'KOL=KOL')
+    DataSet = mem_notAdded
+    BCDToCurrency = False
+    Left = 560
+    Top = 56
   end
 end

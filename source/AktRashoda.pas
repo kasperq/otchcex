@@ -7,7 +7,7 @@ uses
   Dialogs, frxClass, frxDBSet, frxDCtrl, DB, IBCustomDataSet, IBQuery, RxIBQuery,
   Grids, DBGridEh, StdCtrls, RxMemDS, Buttons, RxStrUtils, VCLUtils, Menus,
   RxMenus, IBDataBase, ToolWin, ComCtrls, ImgList, ExtCtrls, SplshWnd,
-  IBUpdateSQL, IBUpdSQLW, RXCtrls, Math;
+  IBUpdateSQL, IBUpdSQLW, RXCtrls, Math, kbmMemTable;
 
 type                                                      
   TIFPair = class(TObject)
@@ -127,6 +127,215 @@ type
     cenaQCENA_UCH: TFloatField;
     cenaQKSM_IDPR: TIntegerField;
     cenaQKEI_ID: TSmallintField;
+    q_specKart: TRxIBQuery;
+    q_specDoc: TRxIBQuery;
+    q_specDocDOC_ID: TIntegerField;
+    q_specDocNDOK: TIBStringField;
+    q_specDocSTRUK_ID: TSmallintField;
+    q_specDocKLIENT_ID: TIntegerField;
+    q_specDocDATE_DOK: TDateField;
+    q_specDocTIP_OP_ID: TSmallintField;
+    q_specDocTIP_DOK_ID: TSmallintField;
+    upd_specKart: TIBUpdateSQLW;
+    q_specDocDATE_OP: TDateField;
+    upd_specDoc: TIBUpdateSQLW;
+    q_specOst: TRxIBQuery;
+    q_specOstMES: TSmallintField;
+    q_specOstSTRUK_ID: TIntegerField;
+    q_specOstKSM_ID: TIntegerField;
+    q_specOstONM_S: TFMTBCDField;
+    q_specOstCENA_UCH: TFloatField;
+    q_specOstGOD: TSmallintField;
+    q_specOstSPROD_ID: TIntegerField;
+    q_specOstKEI_ID: TSmallintField;
+    q_specOstONM_NZ: TFMTBCDField;
+    q_specOstOT_S: TFMTBCDField;
+    q_specOstOT_NZ: TFMTBCDField;
+    q_specOstKOL_TRANS: TFloatField;
+    q_specOstNOMU_ID_TRANS: TSmallintField;
+    q_specOstKART_ID: TIntegerField;
+    q_specOstSERIA_ID: TIntegerField;
+    q_specOstOT_FD: TFMTBCDField;
+    q_specOstONM_FD: TFMTBCDField;
+    q_specOstNOMU_ID_GRP: TSmallintField;
+    q_specOstKOL_GRP: TFloatField;
+    q_specOstVES_TRANS: TIBBCDField;
+    q_specOstVOL_TRANS: TFMTBCDField;
+    q_specOstUSER_NAME: TIBStringField;
+    q_specOstORG_RESERV: TIntegerField;
+    q_specOstOT_DOKUM: TFMTBCDField;
+    q_specOstONM_DOKUM: TFMTBCDField;
+    q_specOstDATE_TIME_UPDATE: TDateTimeField;
+    q_specOstKSM_IDPR: TIntegerField;
+    q_specOstRAZDEL_ID: TSmallintField;
+    q_specOstINV_ID: TIntegerField;
+    q_specOstACCOUNT: TIBStringField;
+    q_specOstSUMMA_KART: TIBBCDField;
+    q_specOstOT_S2: TFMTBCDField;
+    q_specOstKEI_ID2: TSmallintField;
+    q_specOstVOL_GRP: TFMTBCDField;
+    q_specOstVES_GRP: TIBBCDField;
+    q_specOstPROC_OV: TFMTBCDField;
+    q_specOstCENA_OPT: TIBBCDField;
+    q_specOstONM_S_P: TFMTBCDField;
+    q_specOstSTRUK_ID_RELA: TIntegerField;
+    q_specOstBSO: TSmallintField;
+    q_specOstDATE_VID: TDateField;
+    q_specOstSROK: TIBBCDField;
+    q_specOstNLK: TIntegerField;
+    q_specOstSUMMA_SPIS: TIBBCDField;
+    q_specOstCENA_UCH_NM: TIBBCDField;
+    q_specOstACCOUNT_OLD: TIBStringField;
+    q_prixDoc: TRxIBQuery;
+    q_prixDocNDOK: TIBStringField;
+    q_prixDocDOC_ID: TIntegerField;
+    q_prixDocPRIZ_ID: TSmallintField;
+    q_prixDocTIP_OP_ID: TSmallintField;
+    q_prixDocTIP_DOK_ID: TSmallintField;
+    q_prixDocDATE_DOK: TDateField;
+    q_prixDocDOK_OSN_ID: TIntegerField;
+    q_prixDocSTRUK_ID: TSmallintField;
+    q_prixDocVP_ID: TSmallintField;
+    q_prixDocKPV: TFMTBCDField;
+    q_prixDocKLIENT_ID: TIntegerField;
+    q_prixDocSUM_BRB: TIBBCDField;
+    q_prixDocSUM_ISP1: TIBBCDField;
+    q_prixDocSUM_ISP2: TIBBCDField;
+    q_prixDocSUM_VP: TIBBCDField;
+    q_prixDocSUM_ISP1_VP: TIBBCDField;
+    q_prixDocSUM_ISP2_VP: TIBBCDField;
+    q_prixDocNDS: TIBBCDField;
+    q_prixDocSUM_NDS: TIBBCDField;
+    q_prixDocSUM_NDS_VP: TIBBCDField;
+    q_prixDocDATE_OP: TDateField;
+    q_prixDocDATE_VVOD: TDateTimeField;
+    q_prixDocZADACHA_ID: TIBStringField;
+    q_prixDocUSER_NAME: TIBStringField;
+    q_prixDocDOV: TIntegerField;
+    q_prixDocDATE_TIME_UPDATE: TDateTimeField;
+    q_prixDocJORN_ID: TSmallintField;
+    q_prixDocRCHET_ID: TIntegerField;
+    q_prixDocTAG: TIntegerField;
+    q_prixDocKPV_OLD: TFMTBCDField;
+    q_prixKart: TRxIBQuery;
+    q_prixKartDOC_ID: TIntegerField;
+    q_prixKartSTROKA_ID: TIntegerField;
+    q_prixKartKSM_ID: TIntegerField;
+    q_prixKartCENA: TIBBCDField;
+    q_prixKartKOL_PRIH: TFMTBCDField;
+    q_prixKartCENA_VP: TIBBCDField;
+    q_prixKartNDS: TIBBCDField;
+    q_prixKartSUM_NDS: TIBBCDField;
+    q_prixKartSUM_NDS_VP: TIBBCDField;
+    q_prixKartKOL_RASH: TFMTBCDField;
+    q_prixKartKART_ID: TIntegerField;
+    q_prixKartORG_ID_BRAK: TIntegerField;
+    q_prixKartOSNOV_BRAK_ID: TSmallintField;
+    q_prixKartUSER_NAME: TIBStringField;
+    q_prixKartDATE_TIME_UPDATE: TDateTimeField;
+    q_prixKartPARENT: TIntegerField;
+    q_prixKartRAZDEL_ID: TSmallintField;
+    q_prixKartSKIDKA: TIBBCDField;
+    q_prixKartKEI_ID: TSmallintField;
+    q_prixKartSUMMA: TIBBCDField;
+    q_prixKartSUMMA_VP: TIBBCDField;
+    q_prixKartSUM_SKID: TIBBCDField;
+    q_prixKartSUM_SKID_VP: TIBBCDField;
+    q_prixKartSUMMA_S_NDS: TIBBCDField;
+    q_prixKartSUMMA_S_NDS_VP: TIBBCDField;
+    q_prixKartTAG: TIntegerField;
+    q_prixKartKOL_PRIH_EDIZ: TFloatField;
+    q_prixKartKOL_RASH_EDIZ: TFloatField;
+    q_prixKartTIP_OP_ID: TSmallintField;
+    q_prixKartTIP_DOK_ID: TSmallintField;
+    q_prixKartTAG1: TIntegerField;
+    q_prixKartTOV_SKIDKA: TSmallintField;
+    q_prixKartKEI_ID2: TSmallintField;
+    q_prixKartCENA_PRICE: TIBBCDField;
+    q_prixKartSKID_CEN: TIBBCDField;
+    q_prixKartCOMMENT: TIBStringField;
+    q_prixKartDOP_SUM: TIBBCDField;
+    q_prixKartDEBET: TIBStringField;
+    q_prixKartDTYPESUB_ID: TSmallintField;
+    q_prixKartDCODE: TIntegerField;
+    q_prixKartCREDIT: TIBStringField;
+    q_prixKartCTYPESUB_ID: TSmallintField;
+    q_prixKartCCODE: TIntegerField;
+    q_prixKartSROK: TSmallintField;
+    q_prixKartDATE_VID: TDateField;
+    q_prixKartDOP_RASH: TIBBCDField;
+    q_prixKartDOP_RASH_ID: TSmallintField;
+    q_prixKartNORM_RASH: TFMTBCDField;
+    q_prixKartKOL_RAB: TFMTBCDField;
+    upd_prixKart: TIBUpdateSQLW;
+    q_specKartNDOK: TIBStringField;
+    q_specKartSTRUK_ID: TSmallintField;
+    q_specKartKLIENT_ID: TIntegerField;
+    q_specKartDATE_DOK: TDateField;
+    q_specKartTIP_OP_ID: TSmallintField;
+    q_specKartTIP_DOK_ID: TSmallintField;
+    q_specKartKSM_ID: TIntegerField;
+    q_specKartKOL_RASH: TFMTBCDField;
+    q_specKartKART_ID: TIntegerField;
+    q_specKartSTROKA_ID: TIntegerField;
+    q_specKartCENA: TIBBCDField;
+    q_specKartCENA_VP: TIBBCDField;
+    q_specKartDOC_ID: TIntegerField;
+    q_ostatki: TRxIBQuery;
+    q_ostatkiKART_ID: TIntegerField;
+    q_ostatkiOT_S: TFMTBCDField;
+    q_ostatkiKSM_ID: TIntegerField;
+    q_ostatkiSTRUK_ID: TIntegerField;
+    q_ostatkiMES: TSmallintField;
+    q_ostatkiONM_S: TFMTBCDField;
+    q_ostatkiCENA_UCH: TFloatField;
+    q_ostatkiGOD: TSmallintField;
+    q_ostatkiSPROD_ID: TIntegerField;
+    q_ostatkiKEI_ID: TSmallintField;
+    q_ostatkiONM_NZ: TFMTBCDField;
+    q_ostatkiOT_NZ: TFMTBCDField;
+    q_ostatkiKOL_TRANS: TFloatField;
+    q_ostatkiNOMU_ID_TRANS: TSmallintField;
+    q_ostatkiSERIA_ID: TIntegerField;
+    q_ostatkiOT_FD: TFMTBCDField;
+    q_ostatkiONM_FD: TFMTBCDField;
+    q_ostatkiNOMU_ID_GRP: TSmallintField;
+    q_ostatkiKOL_GRP: TFloatField;
+    q_ostatkiVES_TRANS: TIBBCDField;
+    q_ostatkiVOL_TRANS: TFMTBCDField;
+    q_ostatkiUSER_NAME: TIBStringField;
+    q_ostatkiORG_RESERV: TIntegerField;
+    q_ostatkiOT_DOKUM: TFMTBCDField;
+    q_ostatkiONM_DOKUM: TFMTBCDField;
+    q_ostatkiDATE_TIME_UPDATE: TDateTimeField;
+    q_ostatkiKSM_IDPR: TIntegerField;
+    q_ostatkiRAZDEL_ID: TSmallintField;
+    q_ostatkiINV_ID: TIntegerField;
+    q_ostatkiACCOUNT: TIBStringField;
+    q_ostatkiSUMMA_KART: TIBBCDField;
+    q_ostatkiOT_S2: TFMTBCDField;
+    q_ostatkiKEI_ID2: TSmallintField;
+    q_ostatkiVOL_GRP: TFMTBCDField;
+    q_ostatkiVES_GRP: TIBBCDField;
+    q_ostatkiPROC_OV: TFMTBCDField;
+    q_ostatkiCENA_OPT: TIBBCDField;
+    q_ostatkiONM_S_P: TFMTBCDField;
+    q_ostatkiSTRUK_ID_RELA: TIntegerField;
+    q_ostatkiBSO: TSmallintField;
+    q_ostatkiDATE_VID: TDateField;
+    q_ostatkiSROK: TIBBCDField;
+    q_ostatkiNLK: TIntegerField;
+    q_ostatkiSUMMA_SPIS: TIBBCDField;
+    q_ostatkiCENA_UCH_NM: TIBBCDField;
+    q_ostatkiACCOUNT_OLD: TIBStringField;
+    upd_ostatki: TIBUpdateSQLW;
+    mem_notAdded: TkbmMemTable;
+    mem_notAddedKSM_ID: TIntegerField;
+    mem_notAddedKOL: TFloatField;
+    NormiMemDatSPEC: TIntegerField;
+    btn_notAdded: TToolButton;
+    frxNotAdded: TfrxDBDataset;
+    mem_notAddedNMAT_KSM: TStringField;
     function GetCehNum(cehName : string) : integer;
     function SetMonthCombo(month : integer) : boolean;
     function activateNormQuery() : boolean;
@@ -209,12 +418,27 @@ type
     procedure DBGridEh1TitleClick(Column: TColumnEh);
     procedure DBGridEh2KeyPress(Sender: TObject; var Key: Char);
     procedure ToolButton8Click(Sender: TObject);
+    procedure btn_notAddedClick(Sender: TObject);
 
   private
 //    procedure formCenaQ(allMem : boolean);
 //    procedure distributeCena(allMem : boolean);
 //    procedure setCurNormiMemDatCena;
 //    procedure editNormiMemDatCena(cena : double);
+    procedure findAndSet10Account;
+    function findSpecKart(strukId, ksmId : integer; date1, date2 : TDate) : boolean;
+    function openSpecDoc() : boolean;
+    procedure deleteSpecKart;
+    procedure createSpecDoc;
+    function findSpecOstAllOr11(ksmId : integer; allAccs : boolean) : boolean;
+    procedure insertRecToSpecKart;
+    function findPrepOst(ksmId : integer) : boolean;
+    procedure addRecToNotAdded;
+
+    function findPrixDoc() : boolean;
+    procedure openPrixKart;
+    procedure deletePrixKart;
+    function addSpecRec2Prixod() : boolean;
 
   public
     DataBaseName : TIBDataBase;
@@ -352,6 +576,230 @@ end;
 //  end;
 //end;
 
+function TFAktRashoda.findPrixDoc() : boolean;
+begin
+  result := false;
+  q_prixDoc.Close;
+  q_prixDoc.ParamByName('struk_id').AsInteger := vStruk_Id;
+  q_prixDoc.ParamByName('klient_id').AsInteger := s_kodp;
+  q_prixDoc.ParamByName('dat1').AsDate := StrToDate(s_dat1);
+  q_prixDoc.ParamByName('dat2').AsDate := StrToDate(s_dat2);
+  q_prixDoc.Open;
+  if (q_prixDoc.RecordCount > 0) then
+    result := true;
+end;
+
+procedure TFAktRashoda.openPrixKart;
+begin
+  q_prixKart.Close;
+  q_prixKart.ParamByName('doc_id').AsInteger := q_prixDocDOC_ID.AsInteger;
+  q_prixKart.Open;
+end;
+
+procedure TFAktRashoda.deletePrixKart;
+begin
+  if (findPrixDoc()) then
+    openPrixKart;
+
+  if (q_prixKart.RecordCount > 0) then
+  begin
+    q_prixKart.First;
+    while (not q_prixKart.Eof) do
+      q_prixKart.Delete;
+    q_prixKart.ApplyUpdates;
+    dm1.commitWriteTrans(true);
+  end;
+end;
+
+procedure TFAktRashoda.insertRecToSpecKart;
+var
+  ostKol : double;
+begin
+  ostKol := NormiMemDatFACTRASHOD.AsFloat;
+  if (findPrepOst(NormiMemDatKSM_ID.AsInteger)) then
+  begin
+    q_ostatki.First;
+    while (not q_ostatki.Eof) and (ostKol <> 0) do
+    begin
+      q_specKart.Append;
+      q_specKartKART_ID.AsInteger := q_ostatkiKART_ID.AsInteger;
+      q_specKartDOC_ID.AsInteger := q_specDocDOC_ID.AsInteger;
+      q_specKartKSM_ID.AsInteger := NormiMemDatKSM_ID.AsInteger;
+      q_specKartCENA.AsFloat := q_specOstCENA_UCH.AsFloat;
+      q_specKartCENA_VP.AsFloat := q_specOstCENA_UCH.AsFloat;
+      DM1.Add_KartDok.StoredProcName := 'ADD_KART';
+      DM1.Add_KartDok.ExecProc;
+      q_specKartSTROKA_ID.AsInteger := DM1.Add_KartDok.Params.Items[0].AsInteger;
+      q_specKartKOL_RASH.AsFloat := ostKol;
+      q_specKart.Post;
+
+      if (q_ostatkiACCOUNT.AsString <> '10/11') then
+      begin
+        q_ostatki.Edit;
+        q_ostatkiACCOUNT.AsString := '10/11';
+        q_ostatki.Post;
+        q_ostatki.ApplyUpdates;
+      end;
+
+      q_ostatki.Next;
+    end;
+  end;
+  q_specKart.ApplyUpdates;
+  dm1.commitWriteTrans(true);
+  NormiMemDat.Edit;
+  NormiMemDatSPEC.AsInteger := 1;
+  NormiMemDat.Post;
+//  q_specOst.First;
+//  while (not q_specOst.Eof) and (ostKol <> 0) do
+//  begin
+//    if (ostKol > q_specOstOT_S.AsFloat) then
+//    begin
+//      curKol := q_specOstOT_S.AsFloat;
+//      curKartId := q_specOstKART_ID.AsInteger;
+//      ostKol := ostKol - curKol;
+//    end
+//    else
+//    begin
+//      curKol := ostKol;
+//      curKartId := q_specOstKART_ID.AsInteger;
+//      ostKol := 0;
+//    end;
+//    q_specKart.Append;
+//    q_specKartKART_ID.AsInteger := curKartId;
+//    q_specKartDOC_ID.AsInteger := q_specDocDOC_ID.AsInteger;
+//    q_specKartKSM_ID.AsInteger := NormiMemDatKSM_ID.AsInteger;
+//    q_specKartCENA.AsFloat := q_specOstCENA_UCH.AsFloat;
+//    q_specKartCENA_VP.AsFloat := q_specOstCENA_UCH.AsFloat;
+//    DM1.Add_KartDok.StoredProcName := 'ADD_KARTV';
+//    DM1.Add_KartDok.ExecProc;
+//    q_specKartSTROKA_ID.AsInteger := DM1.Add_KartDok.Params.Items[0].AsInteger;
+//    q_specKartKOL_RASH.AsFloat := curKol;
+//    q_specKart.Post;
+//  end;
+end;
+
+procedure TFAktRashoda.addRecToNotAdded;
+begin
+  mem_notAdded.Append;
+  mem_notAdded.Edit;
+  mem_notAddedKSM_ID.AsInteger := NormiMemDatKSM_ID.AsInteger;
+  mem_notAddedKOL.AsFloat := NormiMemDatFACTRASHOD.AsFloat;
+  mem_notAddedNMAT_KSM.AsString := NormiMemDatNMAT_KSM.AsString;
+  mem_notAdded.Post;
+  NormiMemDat.Edit;
+  NormiMemDatSPEC.AsInteger := 2;
+  NormiMemDatFACTRASHOD.AsFloat := 0;
+  NormiMemDat.Post;
+end;
+
+function TFAktRashoda.findPrepOst(ksmId : integer) : boolean;
+begin
+  result := false;
+  q_ostatki.close;
+  q_ostatki.ParamByName('struk_id').AsInteger := vStruk_Id;
+  q_ostatki.ParamByName('ksm_id').AsInteger := ksmId;
+  q_ostatki.ParamByName('ksm_idpr').AsInteger := s_kodp;
+  q_ostatki.Open;
+  q_ostatki.FetchAll;
+  if (q_ostatki.RecordCount > 0) then
+    result := true;
+end;
+
+function TFAktRashoda.findSpecOstAllOr11(ksmId : integer; allAccs : boolean) : boolean;
+begin
+  result := false;
+  q_specOst.Close;
+  q_specOst.ParamByName('ksm_id').AsInteger := ksmId;
+  q_specOst.ParamByName('struk_id').AsInteger := vStruk_Id;
+  if (allAccs) then  
+    q_specOst.MacroByName('usl_account').AsString := 'ostatki.account in (''10/10'', ''10/11'') '
+  else
+    q_specOst.MacroByName('usl_account').AsString := 'ostatki.account in (''10/11'') ';
+  q_specOst.Open;
+  if (q_specOst.RecordCount > 0) then
+    result := true;
+end;
+
+procedure TFAktRashoda.createSpecDoc;
+begin
+  if (not q_specDoc.Active) then
+    openSpecDoc();
+
+  DM1.Add_KartDok.StoredProcName := 'ADD_DOCUMENT';
+  DM1.Add_KartDok.ExecProc;
+
+  q_specDoc.Insert;
+  q_specDocNDOK.AsString := 'мик.' + IntToStr(monthCombo.ItemIndex + 1)
+                            + '.' + yearEdit.Text;
+  q_specDocSTRUK_ID.AsInteger := vStruk_Id;
+  q_specDocKLIENT_ID.AsInteger := vStruk_Id;
+  q_specDocTIP_OP_ID.AsInteger := 32;
+  q_specDocTIP_DOK_ID.AsInteger := 198;
+  q_specDocDOC_ID.AsInteger := DM1.Add_KartDok.Params.Items[0].AsInteger;
+  q_specDocDATE_DOK.AsDateTime := StrToDate('01.'
+                                            + IntToStr(monthCombo.ItemIndex + 1)
+                                            + '.' + yearEdit.Text);
+  q_specDocDATE_OP.AsDateTime := StrToDate('01.'
+                                           + IntToStr(monthCombo.ItemIndex + 1)
+                                           + '.' + yearEdit.Text);
+  q_specDoc.Post;
+  q_specDoc.ApplyUpdates;
+  dm1.commitWriteTrans(true);
+end;
+
+function TFAktRashoda.openSpecDoc() : boolean;
+begin
+  result := false;
+  q_specDoc.Close;
+  q_specDoc.MacroByName('usl').AsString := ' document.ndok = ''мик.'
+                                              + IntToStr(monthCombo.ItemIndex + 1)
+                                              + '.' + yearEdit.Text + ''' ';
+  q_specDoc.ParamByName('struk_id').AsInteger := vStruk_Id;
+  q_specDoc.ParamByName('dat1').AsDate := StrToDate(s_dat1);
+  q_specDoc.ParamByName('dat2').AsDate := StrToDate(s_dat2);
+  q_specDoc.Open;
+  q_specDoc.First;
+  if (q_specDoc.RecordCount > 0) and (not q_specDoc.Eof) then
+    result := true;
+end;
+
+procedure TFAktRashoda.findAndSet10Account;
+begin
+  if (NormiMemDat.RecordCount > 0) then
+  begin
+    NormiMemDat.First;
+    while (not NormiMemDat.Eof) do
+    begin
+      if (NormiMemDatFACTRASHOD.AsFloat = 0)
+         and (findSpecKart(vStruk_Id, NormiMemDatKSM_ID.AsInteger, StrToDate(s_dat1), StrToDate(s_dat2))) then
+      begin
+        NormiMemDat.Edit;
+        NormiMemDatFACTRASHOD.AsFloat := q_specKartKOL_RASH.AsFloat;
+        NormiMemDat.Post;
+      end;
+      NormiMemDat.Next;
+    end;
+  end;
+end;
+
+function TFAktRashoda.findSpecKart(strukId, ksmId : integer; date1, date2 : TDate) : boolean;
+begin
+  result := false;
+  q_specKart.Close;
+  q_specKart.MacroByName('usl').AsString := ' document.ndok = ''мик.'
+                                              + IntToStr(monthCombo.ItemIndex + 1)
+                                              + '.' + yearEdit.Text + ''' ';
+  if (ksmId <> 0) then
+    q_specKart.MacroByName('usl').AsString := q_specKart.MacroByName('usl').AsString
+                                              + ' and kart.ksm_id = ' + IntToStr(ksmId) + ' ';
+  q_specKart.ParamByName('struk_id').AsInteger := strukId;
+  q_specKart.ParamByName('dat1').AsDateTime := date1;
+  q_specKart.ParamByName('dat2').AsDateTime := date2;
+  q_specKart.Open;
+  if (q_specKart.RecordCount > 0) then
+    result := true;
+end;
+
 procedure TFAktRashoda.BitBtn1Click(Sender: TObject);
 begin
   PopupMenu1.Popup(Mouse.CursorPos.x,Mouse.CursorPos.y);
@@ -384,7 +832,15 @@ begin
       saveDocTipParam();
     end;
     NormiMemDat.EnableControls;
+    btn_notAdded.Visible := false;
     Splash.Free;
+    if (mem_notAdded.RecordCount > 0) then
+    begin
+      btn_notAdded.Visible := true;
+      ShowMessage('Не все материалы были сохранены, т.к. не хватает количества или '
+                  + #10#13 + 'не были введены в эксплуатацию!'
+                  + #10#13 + 'Увидеть их можно нажав на кнопку с перечеркнутой дискетой на панели');
+    end;
   end;
 end;
 
@@ -499,8 +955,7 @@ end;
 procedure TFAktRashoda.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   destroyTIFPairArr;
-
-//  NormVQuery.Active := False;
+  btn_notAdded.Visible := false;
   closeQueries();
 end;
 
@@ -508,6 +963,7 @@ procedure TFAktRashoda.FormShow(Sender: TObject);
 var
   nmat : string;
 begin
+  btn_notAdded.Visible := false;
   firstLoad := 0;
   descend := false;
   initTIFPairArr;
@@ -603,6 +1059,8 @@ begin
     if (DM1.Kart.RecordCount > 0) then
       // Сначала удаляем из Карта все, чего нету в мемори таблице
       deleteKart();
+    deleteSpecKart;
+    deletePrixKart;
       // Затем переносим все изменения из мемори таблицы в Карт и сохраняем
     saveAllMem2Kart();
     result := true;
@@ -612,22 +1070,44 @@ begin
   end;
 end;
 
+procedure TFAktRashoda.deleteSpecKart;
+begin
+  if (findSpecKart(vStruk_Id, 0, StrToDate(s_dat1), StrToDate(s_dat2))) then
+  begin
+    q_specKart.First;
+    while (not q_specKart.Eof) do
+      q_specKart.Delete;
+    q_specKart.ApplyUpdates;
+    dm1.commitWriteTrans(true);
+  end;
+end;
+
 function TFAktRashoda.deleteKart() : boolean;
 begin
   DM1.Kart.First;
   while (not DM1.Kart.Eof) do
-  begin
-    if (not NormiMemDat.Locate('ksm_id', dm1.KartKSM_ID.AsInteger, [])) then
-    begin
-      DM1.Kart.Delete;
-      DM1.Kart.ApplyUpdates;
-      DM1.IBT_Write.CommitRetaining;
-    end
-    else
-      DM1.Kart.Next;
-  end;
+    DM1.Kart.Delete;
+  DM1.Kart.ApplyUpdates;
+  DM1.IBT_Write.CommitRetaining;
   result := true;
 end;
+
+//function TFAktRashoda.deleteKart() : boolean;
+//begin
+//  DM1.Kart.First;
+//  while (not DM1.Kart.Eof) do
+//  begin
+//    if (not NormiMemDat.Locate('ksm_id', dm1.KartKSM_ID.AsInteger, [])) then
+//    begin
+//      DM1.Kart.Delete;
+//      DM1.Kart.ApplyUpdates;
+//      DM1.IBT_Write.CommitRetaining;
+//    end
+//    else
+//      DM1.Kart.Next;
+//  end;
+//  result := true;
+//end;
 
 function TFAktRashoda.saveMemRec2Kart() : boolean;
 begin
@@ -640,7 +1120,11 @@ begin
     DM1.KartDoc_Id.AsInteger := DM1.DocumentDOC_ID.AsInteger;
     DM1.Karttip_op_id.AsInteger := DM1.DocumentTIP_OP_ID.AsInteger;
     DM1.Karttip_dok_id.AsInteger := DM1.DocumentTIP_DOK_ID.AsInteger;
-    DM1.Kartkol_rash_ediz.AsFloat := NormiMemDatFACTRASHOD.AsFloat;
+    if (NormiMemDatSPEC.AsInteger = 1) then
+      DM1.Kartkol_rash_ediz.AsFloat := 0
+    else
+      if (NormiMemDatSPEC.AsInteger = 0) then
+        DM1.Kartkol_rash_ediz.AsFloat := NormiMemDatFACTRASHOD.AsFloat;
     DM1.KartKSM_ID.AsInteger := NormiMemDatKSM_ID.AsInteger;
     DM1.KartRAZDEL_ID.AsInteger := NormiMemDatRAZDEL_ID.AsInteger;
     DM1.KartKEI_ID.AsInteger := NormiMemDatKEI_ID.AsInteger;
@@ -666,44 +1150,80 @@ begin
     NormiMemDat.First;
     if (not DM1.Kart.Active) then
       dm1.Kart.Open;
+    mem_notAdded.EmptyTable;
+    mem_notAdded.Open;
+    if (not openSpecDoc()) then
+      createSpecDoc;
+    findSpecKart(vStruk_Id, 0, StrToDate(s_dat1), StrToDate(s_dat2));
     while (not NormiMemDat.Eof) do
     begin
-      if (dm1.Kart.Locate('ksm_id', NormiMemDatKSM_ID.AsInteger, [])) then
+      if (NormiMemDatFACTRASHOD.AsFloat <> 0) then
       begin
-        if (NormiMemDatFACTRASHOD.AsFloat = 0) then
+        if (findSpecOstAllOr11(NormiMemDatKSM_ID.AsInteger, true)) then
         begin
-          dm1.Kart.Delete;
-          dm1.Kart.ApplyUpdates;
-          dm1.commitWriteTrans(true);                                                                                                                      //////
+          if (findSpecOstAllOr11(NormiMemDatKSM_ID.AsInteger, false)) then
+          begin
+            if (addSpecRec2Prixod()) then
+              insertRecToSpecKart;
+          end
+          else
+            addRecToNotAdded;
         end
         else
         begin
-          if (DM1.KartKOL_RASH_EDIZ.AsFloat <> NormiMemDatFACTRASHOD.AsFloat)
-             or (DM1.KartRAZDEL_ID.AsInteger <> NormiMemDatRAZDEL_ID.AsInteger)
-             or (Dm1.KartKEI_IDN.AsInteger <> NormiMemDatKEI_ID.AsInteger)
-             {or (dm1.KartCENA.AsFloat <> NormiMemDatCENA.AsFloat)} then
-          begin
-            DM1.Kart.Edit;
-            DM1.KartKOL_RASH_EDIZ.AsFloat := NormiMemDatFACTRASHOD.AsFloat;
-            DM1.KartRAZDEL_ID.AsInteger := NormiMemDatRAZDEL_ID.AsInteger;
-            DM1.KartKEI_ID.AsInteger := NormiMemDatKEI_ID.AsInteger;
-//            dm1.KartCENA.AsFloat := NormiMemDatCENA.AsFloat;
-//            dm1.KartCENA_VP.AsFloat := NormiMemDatCENA.AsFloat;
-            VDOCUMENT_ID := DM1.DocumentDOC_ID.AsInteger;
-            vKart_id := DM1.KartKART_ID.AsInteger;
-            DM1.Kart.Post;
-          end;
+          NormiMemDat.Edit;
+          NormiMemDatSPEC.AsInteger := 0;
+          NormiMemDat.Post;
         end;
-      end
-      else
-        if (NormiMemDatFACTRASHOD.AsFloat <> 0) then
-          saveMemRec2Kart();
+        saveMemRec2Kart();
+      end;
+      
+
+//      if (dm1.Kart.Locate('ksm_id', NormiMemDatKSM_ID.AsInteger, [])) then
+//      begin
+//        if (NormiMemDatFACTRASHOD.AsFloat = 0) then
+//        begin
+//          dm1.Kart.Delete;
+//          dm1.Kart.ApplyUpdates;
+//          dm1.commitWriteTrans(true);                                                                                                                      //////
+//        end
+//        else
+//        begin
+//          if (DM1.KartKOL_RASH_EDIZ.AsFloat <> NormiMemDatFACTRASHOD.AsFloat)
+//             or (DM1.KartRAZDEL_ID.AsInteger <> NormiMemDatRAZDEL_ID.AsInteger)
+//             or (Dm1.KartKEI_IDN.AsInteger <> NormiMemDatKEI_ID.AsInteger)
+//             {or (dm1.KartCENA.AsFloat <> NormiMemDatCENA.AsFloat)} then
+//          begin
+//            DM1.Kart.Edit;
+//            DM1.KartKOL_RASH_EDIZ.AsFloat := NormiMemDatFACTRASHOD.AsFloat;
+//            DM1.KartRAZDEL_ID.AsInteger := NormiMemDatRAZDEL_ID.AsInteger;
+//            DM1.KartKEI_ID.AsInteger := NormiMemDatKEI_ID.AsInteger;
+////            dm1.KartCENA.AsFloat := NormiMemDatCENA.AsFloat;
+////            dm1.KartCENA_VP.AsFloat := NormiMemDatCENA.AsFloat;
+//            VDOCUMENT_ID := DM1.DocumentDOC_ID.AsInteger;
+//            vKart_id := DM1.KartKART_ID.AsInteger;
+//            DM1.Kart.Post;
+//          end;
+//        end;
+//      end
+//      else
+//        if (NormiMemDatFACTRASHOD.AsFloat <> 0) then
+//          saveMemRec2Kart();
+
       NormiMemDat.Next;
     end;
     saveKart2DB();
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     add2Prixod();//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    NormiMemDat.First;
+    while (not NormiMemDat.Eof) do
+    begin
+      NormiMemDat.Edit;
+      NormiMemDatSPEC.AsInteger := 0;
+      NormiMemDat.Post;
+      NormiMemDat.Next;
+    end;
     result := true;
   except
     on e: exception do
@@ -713,6 +1233,60 @@ begin
     end;
   end;
 end;
+
+//function TFAktRashoda.saveAllMem2Kart() : boolean;
+//begin
+//  try
+//    NormiMemDat.First;
+//    if (not DM1.Kart.Active) then
+//      dm1.Kart.Open;
+//    while (not NormiMemDat.Eof) do
+//    begin
+//      if (dm1.Kart.Locate('ksm_id', NormiMemDatKSM_ID.AsInteger, [])) then
+//      begin
+//        if (NormiMemDatFACTRASHOD.AsFloat = 0) then
+//        begin
+//          dm1.Kart.Delete;
+//          dm1.Kart.ApplyUpdates;
+//          dm1.commitWriteTrans(true);                                                                                                                      //////
+//        end
+//        else
+//        begin
+//          if (DM1.KartKOL_RASH_EDIZ.AsFloat <> NormiMemDatFACTRASHOD.AsFloat)
+//             or (DM1.KartRAZDEL_ID.AsInteger <> NormiMemDatRAZDEL_ID.AsInteger)
+//             or (Dm1.KartKEI_IDN.AsInteger <> NormiMemDatKEI_ID.AsInteger)
+//             {or (dm1.KartCENA.AsFloat <> NormiMemDatCENA.AsFloat)} then
+//          begin
+//            DM1.Kart.Edit;
+//            DM1.KartKOL_RASH_EDIZ.AsFloat := NormiMemDatFACTRASHOD.AsFloat;
+//            DM1.KartRAZDEL_ID.AsInteger := NormiMemDatRAZDEL_ID.AsInteger;
+//            DM1.KartKEI_ID.AsInteger := NormiMemDatKEI_ID.AsInteger;
+////            dm1.KartCENA.AsFloat := NormiMemDatCENA.AsFloat;
+////            dm1.KartCENA_VP.AsFloat := NormiMemDatCENA.AsFloat;
+//            VDOCUMENT_ID := DM1.DocumentDOC_ID.AsInteger;
+//            vKart_id := DM1.KartKART_ID.AsInteger;
+//            DM1.Kart.Post;
+//          end;
+//        end;
+//      end
+//      else
+//        if (NormiMemDatFACTRASHOD.AsFloat <> 0) then
+//          saveMemRec2Kart();
+//      NormiMemDat.Next;
+//    end;
+//    saveKart2DB();
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//    add2Prixod();//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//    result := true;
+//  except
+//    on e: exception do
+//    begin
+//      MessageDlg('Произошла ошибка! ' + #13 + E.Message, mtWarning, [mbOK], 0);
+//      result := false;
+//    end;
+//  end;
+//end;
 
 procedure TFAktRashoda.N1Click(Sender: TObject);
 begin
@@ -913,6 +1487,12 @@ begin
   if FOstSyr = nil then
     FOstSyr := TFOstSyr.Create(Application);
   FOstSyr.ShowModal;
+end;
+
+procedure TFAktRashoda.btn_notAddedClick(Sender: TObject);
+begin
+  frxReport1.LoadFromFile(reportsPath + 'AktRashoda_not_added.fr3');
+  frxReport1.ShowReport(true);  
 end;
 
 procedure TFAktRashoda.activateFindMatrop;
@@ -1367,6 +1947,7 @@ begin
     NormiMemDatKEI_ID.AsInteger := keiId;
     NormiMemDatKRAZ.AsInteger := kRaz;
     NormiMemDatOST_STRUK_ID.AsInteger := ostStrukId;
+    NormiMemDatSPEC.AsInteger := 0;
 //    if (NormiMemDatCENA.AsFloat = 0) and (cena <> 0) then
 //      NormiMemDatCENA.AsFloat := cena;
 
@@ -1463,6 +2044,7 @@ begin
     activateNormQuery();
     loadKart(vStruk_Id, DM1.DocumentDOC_ID.AsInteger);
     addKart2Mem();
+    findAndSet10Account;
     addNormi2Mem();
     NormiMemDat.SortOnFields('Razdel_Id', true, false);
     nDocEdit.Text := DM1.DocumentNDOK.AsString;
@@ -1481,6 +2063,34 @@ begin
   end;
 end;
 
+function TFAktRashoda.addSpecRec2Prixod() : boolean;
+begin
+  try
+  // добавление в приход
+    v_raspred := NormiMemDatFACTRASHOD.AsFloat;
+    v_raspred_dob := NormiMemDatFACTRASHOD.AsFloat;
+    s_ksm := NormiMemDatKsm_id.AsInteger;
+    v_kein := NormiMemDatKei_id.AsInteger;
+    vklient_id := s_kodp;
+    v_razdel := NormiMemDatRazdel_id.AsInteger;
+    tochn := -6;
+    pr_kor := 0;
+    DM1.DobPrixPrep(true);
+
+    dm1.startReadTrans;
+    dm1.startWriteTrans;
+    DM1.IBT_WRITE.CommitRetaining;
+    DM1.IBT_READ.CommitRetaining;
+    result := true;
+  except
+  on e: exception do
+  begin
+    result := false;
+    MessageDlg('Произошла ошибка при добавлении в приход! '+ #13 + E.Message, mtWarning, [mbOK], 0);
+  end;
+  end;
+end;
+
 function TFAktRashoda.add2Prixod() : boolean;
 //var
 //  curIndex : integer;
@@ -1489,18 +2099,19 @@ begin
 //    curIndex := 0;
   // добавление в приход
     NormiMemDat.First;
-    while not NormiMemDat.Eof do
+    while (not NormiMemDat.Eof) do
     begin
 //      if memState[curIndex].GetValue <> NormiMemDatFACTRASHOD.AsFloat then
 //      begin
-        v_raspred_dob := NormiMemDatFACTRASHOD.AsFloat;
-        s_ksm := NormiMemDatKsm_id.AsInteger;
-        v_kein := NormiMemDatKei_id.AsInteger;
-        vklient_id := s_kodp;
-        v_razdel := NormiMemDatRazdel_id.AsInteger;
-        tochn := -6;
-        pr_kor := 0;
-        DM1.DobPrixPrep;
+      v_raspred_dob := NormiMemDatFACTRASHOD.AsFloat;
+      s_ksm := NormiMemDatKsm_id.AsInteger;
+      v_kein := NormiMemDatKei_id.AsInteger;
+      vklient_id := s_kodp;
+      v_razdel := NormiMemDatRazdel_id.AsInteger;
+      tochn := -6;
+      pr_kor := 0;
+      if (NormiMemDatSPEC.AsInteger <> 2) and (NormiMemDatSPEC.AsInteger <> 1) then
+        DM1.DobPrixPrep(false);
 //      end;
 //      curIndex := curIndex + 1;
       NormiMemDat.Next;
