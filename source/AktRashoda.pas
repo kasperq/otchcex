@@ -333,6 +333,9 @@ type
     mem_notAddedKSM_ID: TIntegerField;
     mem_notAddedKOL: TFloatField;
     NormiMemDatSPEC: TIntegerField;
+    btn_notAdded: TToolButton;
+    frxNotAdded: TfrxDBDataset;
+    mem_notAddedNMAT_KSM: TStringField;
     function GetCehNum(cehName : string) : integer;
     function SetMonthCombo(month : integer) : boolean;
     function activateNormQuery() : boolean;
@@ -415,6 +418,7 @@ type
     procedure DBGridEh1TitleClick(Column: TColumnEh);
     procedure DBGridEh2KeyPress(Sender: TObject; var Key: Char);
     procedure ToolButton8Click(Sender: TObject);
+    procedure btn_notAddedClick(Sender: TObject);
 
   private
 //    procedure formCenaQ(allMem : boolean);
@@ -426,7 +430,7 @@ type
     function openSpecDoc() : boolean;
     procedure deleteSpecKart;
     procedure createSpecDoc;
-    function findSpecOst(ksmId : integer; allAccs : boolean) : boolean;
+    function findSpecOstAllOr11(ksmId : integer; allAccs : boolean) : boolean;
     procedure insertRecToSpecKart;
     function findPrepOst(ksmId : integer) : boolean;
     procedure addRecToNotAdded;
@@ -434,6 +438,7 @@ type
     function findPrixDoc() : boolean;
     procedure openPrixKart;
     procedure deletePrixKart;
+    function addSpecRec2Prixod() : boolean;
 
   public
     DataBaseName : TIBDataBase;
@@ -679,6 +684,7 @@ begin
   mem_notAdded.Edit;
   mem_notAddedKSM_ID.AsInteger := NormiMemDatKSM_ID.AsInteger;
   mem_notAddedKOL.AsFloat := NormiMemDatFACTRASHOD.AsFloat;
+  mem_notAddedNMAT_KSM.AsString := NormiMemDatNMAT_KSM.AsString;
   mem_notAdded.Post;
   NormiMemDat.Edit;
   NormiMemDatSPEC.AsInteger := 2;
@@ -699,7 +705,7 @@ begin
     result := true;
 end;
 
-function TFAktRashoda.findSpecOst(ksmId : integer; allAccs : boolean) : boolean;
+function TFAktRashoda.findSpecOstAllOr11(ksmId : integer; allAccs : boolean) : boolean;
 begin
   result := false;
   q_specOst.Close;
@@ -826,11 +832,15 @@ begin
       saveDocTipParam();
     end;
     NormiMemDat.EnableControls;
+    btn_notAdded.Visible := false;
     Splash.Free;
     if (mem_notAdded.RecordCount > 0) then
+    begin
+      btn_notAdded.Visible := true;
       ShowMessage('Не все материалы были сохранены, т.к. не хватает количества или '
                   + #10#13 + 'не были введены в эксплуатацию!'
                   + #10#13 + 'Увидеть их можно нажав на кнопку с перечеркнутой дискетой на панели');
+    end;
   end;
 end;
 
@@ -945,8 +955,7 @@ end;
 procedure TFAktRashoda.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   destroyTIFPairArr;
-
-//  NormVQuery.Active := False;
+  btn_notAdded.Visible := false;
   closeQueries();
 end;
 
@@ -954,6 +963,7 @@ procedure TFAktRashoda.FormShow(Sender: TObject);
 var
   nmat : string;
 begin
+  btn_notAdded.Visible := false;
   firstLoad := 0;
   descend := false;
   initTIFPairArr;
@@ -1149,10 +1159,13 @@ begin
     begin
       if (NormiMemDatFACTRASHOD.AsFloat <> 0) then
       begin
-        if (findSpecOst(NormiMemDatKSM_ID.AsInteger, true)) then
+        if (findSpecOstAllOr11(NormiMemDatKSM_ID.AsInteger, true)) then
         begin
-          if (findSpecOst(NormiMemDatKSM_ID.AsInteger, false)) then
-            insertRecToSpecKart
+          if (findSpecOstAllOr11(NormiMemDatKSM_ID.AsInteger, false)) then
+          begin
+            if (addSpecRec2Prixod()) then
+              insertRecToSpecKart;
+          end
           else
             addRecToNotAdded;
         end
@@ -1203,6 +1216,14 @@ begin
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     add2Prixod();//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    NormiMemDat.First;
+    while (not NormiMemDat.Eof) do
+    begin
+      NormiMemDat.Edit;
+      NormiMemDatSPEC.AsInteger := 0;
+      NormiMemDat.Post;
+      NormiMemDat.Next;
+    end;
     result := true;
   except
     on e: exception do
@@ -1466,6 +1487,12 @@ begin
   if FOstSyr = nil then
     FOstSyr := TFOstSyr.Create(Application);
   FOstSyr.ShowModal;
+end;
+
+procedure TFAktRashoda.btn_notAddedClick(Sender: TObject);
+begin
+  frxReport1.LoadFromFile(reportsPath + 'AktRashoda_not_added.fr3');
+  frxReport1.ShowReport(true);  
 end;
 
 procedure TFAktRashoda.activateFindMatrop;
@@ -1920,6 +1947,7 @@ begin
     NormiMemDatKEI_ID.AsInteger := keiId;
     NormiMemDatKRAZ.AsInteger := kRaz;
     NormiMemDatOST_STRUK_ID.AsInteger := ostStrukId;
+    NormiMemDatSPEC.AsInteger := 0;
 //    if (NormiMemDatCENA.AsFloat = 0) and (cena <> 0) then
 //      NormiMemDatCENA.AsFloat := cena;
 
@@ -2035,6 +2063,34 @@ begin
   end;
 end;
 
+function TFAktRashoda.addSpecRec2Prixod() : boolean;
+begin
+  try
+  // добавление в приход
+    v_raspred := NormiMemDatFACTRASHOD.AsFloat;
+    v_raspred_dob := NormiMemDatFACTRASHOD.AsFloat;
+    s_ksm := NormiMemDatKsm_id.AsInteger;
+    v_kein := NormiMemDatKei_id.AsInteger;
+    vklient_id := s_kodp;
+    v_razdel := NormiMemDatRazdel_id.AsInteger;
+    tochn := -6;
+    pr_kor := 0;
+    DM1.DobPrixPrep(true);
+
+    dm1.startReadTrans;
+    dm1.startWriteTrans;
+    DM1.IBT_WRITE.CommitRetaining;
+    DM1.IBT_READ.CommitRetaining;
+    result := true;
+  except
+  on e: exception do
+  begin
+    result := false;
+    MessageDlg('Произошла ошибка при добавлении в приход! '+ #13 + E.Message, mtWarning, [mbOK], 0);
+  end;
+  end;
+end;
+
 function TFAktRashoda.add2Prixod() : boolean;
 //var
 //  curIndex : integer;
@@ -2054,8 +2110,8 @@ begin
       v_razdel := NormiMemDatRazdel_id.AsInteger;
       tochn := -6;
       pr_kor := 0;
-      if (NormiMemDatSPEC.AsInteger <> 2) then
-        DM1.DobPrixPrep;
+      if (NormiMemDatSPEC.AsInteger <> 2) and (NormiMemDatSPEC.AsInteger <> 1) then
+        DM1.DobPrixPrep(false);
 //      end;
 //      curIndex := curIndex + 1;
       NormiMemDat.Next;

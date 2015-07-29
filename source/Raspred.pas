@@ -741,7 +741,7 @@ begin
        else tochn:=-3
       else tochn:=-3;
       pr_kor:=0;
-      DM1.DobPrixPrep;
+      DM1.DobPrixPrep(false);
       RaspSyr.Next;
     end;
     DM1.IBT_WRITE.Commit;

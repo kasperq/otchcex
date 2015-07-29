@@ -1025,7 +1025,7 @@ begin
      else tochn:=-3
     else tochn:=-3;
     pr_kor:=0;
-    DM1.DobPrixPrep;
+    DM1.DobPrixPrep(false);
     TexGur.Next;
    end;
    FSprFormul.CEH_NormZ.Close;
