@@ -754,7 +754,7 @@ uses
     procedure RaspredZagOt;
     procedure RaspredRas;
     procedure RaspredRasOt;
-    procedure DobPrixPrep;
+    procedure DobPrixPrep(spec : boolean);
 
 // IGOR'S PROCEDURES ARE HERE *************************************************************//
     procedure writeMyUserNameToTxt;
@@ -1421,7 +1421,7 @@ begin
   DM1.IBQuery1.First;
 end;
 
-procedure TDM1.DobPrixPrep;
+procedure TDM1.DobPrixPrep(spec : boolean);
 var
   v_docSt : integer;
   v_tipSt : integer;
@@ -1431,14 +1431,24 @@ begin
   v_tipSt := vTip_op_id;
   v_kartSt := vKart_id;
  // расчет необходимого кол-ва прихода на препарат с учетом остатков
-  v_raspred := getNeededPrixInMatropEdiz();    // v_raspred- в ед.изм.справочника (табл.Matrop)
+  if (not spec) then
+    v_raspred := getNeededPrixInMatropEdiz();    // v_raspred- в ед.изм.справочника (табл.Matrop)
   v_raspred_dob := getNeededPrixInNormnEdiz();   // v_raspred_dob - в ед.изм. норм (табл.Normn)
 // поиск карточки сырья цеха, ели нет-создать
-  v_dok_kart := SelectToVarIB('select Ostatki.kart_id '
-                              + 'FROM Ostatki WHERE Ostatki.STRUK_ID = ' + INTTOSTR(VsTRUK_ID)
-                              + ' AND ostatki.ksm_id = ' + inttostr(s_Ksm)
-                              + ' AND (Ostatki.Ksm_idpr is null or OSTatki.KSM_IDPR = 0)',
-                              dm1.belmed, dm1.ibt_read);
+  if (spec) then
+    v_dok_kart := SelectToVarIB('select Ostatki.kart_id '
+                                + 'FROM Ostatki WHERE Ostatki.STRUK_ID = ' + INTTOSTR(VsTRUK_ID)
+                                + ' AND ostatki.ksm_id = ' + inttostr(s_Ksm)
+                                + ' AND (coalesce(Ostatki.Ksm_idpr, 0) = 0) '
+                                + ' and ostatki.ot_s <> 0 ',
+                                dm1.belmed, dm1.ibt_read)
+  else
+    v_dok_kart := SelectToVarIB('select Ostatki.kart_id '
+                                + 'FROM Ostatki WHERE Ostatki.STRUK_ID = ' + INTTOSTR(VsTRUK_ID)
+                                + ' AND ostatki.ksm_id = ' + inttostr(s_Ksm)
+                                + ' AND (coalesce(Ostatki.Ksm_idpr, 0) = 0)',
+                                dm1.belmed, dm1.ibt_read);
+
   If (v_dok_kart = Null) then
     createKartIdInOstatki   //  карточки нету, создаем ее
   else
@@ -2039,7 +2049,7 @@ begin
          dm1.Kart.BeforePost:=KartBeforePost;
          pr_kor:=0;
          DM1.ApplyUpdatesDoc;
-         DM1.DobPrixPrep;
+         DM1.DobPrixPrep(false);
         end;
        end;
       end;
