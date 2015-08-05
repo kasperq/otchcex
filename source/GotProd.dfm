@@ -44,10 +44,6 @@ object FGotProd: TFGotProd
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
     object VipuskPage: TTabSheet
       Caption = #1042#1099#1087#1091#1089#1082
@@ -58,10 +54,6 @@ object FGotProd: TFGotProd
       Font.Style = [fsBold]
       ImageIndex = 1
       ParentFont = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
   end
   object StrukQuery: TIBQuery
@@ -148,5 +140,225 @@ object FGotProd: TFGotProd
     DataSet = StrukQuery
     Left = 816
     Top = 32
+  end
+  object q_seria: TRxIBQuery
+    Database = DM1.BELMED
+    Transaction = DM1.IBT_Read
+    BeforeInsert = q_seriaBeforeInsert
+    OnNewRecord = q_seriaNewRecord
+    CachedUpdates = True
+    SQL.Strings = (
+      
+        'SELECT Seria.COMMENT,Seria. DATE_PASPORT, Seria.DATE_SERTIF,Seri' +
+        'a. DATE_TIME_UPDATE,Seria. DATE_VIPUSK, Seria.DATE_ZAG, Seria.FI' +
+        'O_MASTER,Seria. FIO_RASH, Seria.FORMA_VIPUSK,Seria. KEI_ID, Seri' +
+        'a.KOD_TM, Seria.KODTN, Seria.KOL_SERIA,Seria. KOL_TM, Seria.KSM_' +
+        'ID, Seria.OB_ZAG, Seria.PASPORT, Seria.SERIA, Seria.SERIA_ID, Se' +
+        'ria.SERTIF, Seria.SHEMA,Seria. SROK_GODN, Seria.USER_NAME,Seria.' +
+        ' VLAG_TM, matrop.nmat nmat_dob'
+      ' FROM Seria'
+      'left join matrop on (seria.kod_tm=matrop.ksm_id)'
+      'WHERE seria.KSM_ID = :KSM_ID'
+      ' AND  %usl'
+      '')
+    UpdateObject = IBUpdateSeria
+    Macros = <
+      item
+        DataType = ftString
+        Name = 'usl'
+        ParamType = ptInput
+        Value = '0=0'
+      end>
+    Left = 386
+    Top = 17
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'KSM_ID'
+        ParamType = ptInput
+      end>
+    object q_seriaSERIA_ID: TIntegerField
+      FieldName = 'SERIA_ID'
+      Origin = '"SERIA"."SERIA_ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object q_seriaKSM_ID: TIntegerField
+      FieldName = 'KSM_ID'
+      Origin = '"SERIA"."KSM_ID"'
+      Required = True
+    end
+    object q_seriaSERIA: TIBStringField
+      FieldName = 'SERIA'
+      Origin = '"SERIA"."SERIA"'
+    end
+    object q_seriaSROK_GODN: TDateField
+      FieldName = 'SROK_GODN'
+      Origin = '"SERIA"."SROK_GODN"'
+    end
+    object q_seriaSERTIF: TIBStringField
+      FieldName = 'SERTIF'
+      Origin = '"SERIA"."SERTIF"'
+      Size = 25
+    end
+    object q_seriaDATE_SERTIF: TDateField
+      FieldName = 'DATE_SERTIF'
+      Origin = '"SERIA"."DATE_SERTIF"'
+    end
+    object q_seriaPASPORT: TIBStringField
+      FieldName = 'PASPORT'
+      Origin = '"SERIA"."PASPORT"'
+      FixedChar = True
+      Size = 10
+    end
+    object q_seriaDATE_PASPORT: TDateField
+      FieldName = 'DATE_PASPORT'
+      Origin = '"SERIA"."DATE_PASPORT"'
+    end
+    object q_seriaKOL_SERIA: TFMTBCDField
+      FieldName = 'KOL_SERIA'
+      Origin = '"SERIA"."KOL_SERIA"'
+      Precision = 18
+      Size = 6
+    end
+    object q_seriaDATE_VIPUSK: TDateField
+      FieldName = 'DATE_VIPUSK'
+      Origin = '"SERIA"."DATE_VIPUSK"'
+    end
+    object q_seriaFORMA_VIPUSK: TIBStringField
+      FieldName = 'FORMA_VIPUSK'
+      Origin = '"SERIA"."FORMA_VIPUSK"'
+      Size = 100
+    end
+    object q_seriaKEI_ID: TSmallintField
+      FieldName = 'KEI_ID'
+      Origin = '"SERIA"."KEI_ID"'
+    end
+    object q_seriaDATE_TIME_UPDATE: TDateTimeField
+      FieldName = 'DATE_TIME_UPDATE'
+      Origin = '"SERIA"."DATE_TIME_UPDATE"'
+    end
+    object q_seriaUSER_NAME: TIBStringField
+      FieldName = 'USER_NAME'
+      Origin = '"SERIA"."USER_NAME"'
+      FixedChar = True
+      Size = 10
+    end
+    object q_seriaSHEMA: TIBStringField
+      FieldName = 'SHEMA'
+      Origin = '"SERIA"."SHEMA"'
+      FixedChar = True
+      Size = 3
+    end
+    object q_seriaKODTN: TIBStringField
+      FieldName = 'KODTN'
+      Origin = '"SERIA"."KODTN"'
+      FixedChar = True
+      Size = 10
+    end
+    object q_seriaDATE_ZAG: TDateField
+      FieldName = 'DATE_ZAG'
+      Origin = '"SERIA"."DATE_ZAG"'
+    end
+    object q_seriaFIO_RASH: TIBStringField
+      FieldName = 'FIO_RASH'
+      Origin = '"SERIA"."FIO_RASH"'
+      Size = 30
+    end
+    object q_seriaFIO_MASTER: TIBStringField
+      FieldName = 'FIO_MASTER'
+      Origin = '"SERIA"."FIO_MASTER"'
+      Size = 30
+    end
+    object q_seriaCOMMENT: TIBStringField
+      FieldName = 'COMMENT'
+      Origin = '"SERIA"."COMMENT"'
+      Size = 120
+    end
+    object q_seriaOB_ZAG: TFloatField
+      FieldName = 'OB_ZAG'
+      Origin = '"SERIA"."OB_ZAG"'
+    end
+    object q_seriaVLAG_TM: TFloatField
+      FieldName = 'VLAG_TM'
+      Origin = '"SERIA"."VLAG_TM"'
+    end
+    object q_seriaKOD_TM: TIntegerField
+      FieldName = 'KOD_TM'
+      Origin = '"SERIA"."KOD_TM"'
+    end
+    object q_seriaKOL_TM: TFloatField
+      FieldName = 'KOL_TM'
+      Origin = '"SERIA"."KOL_TM"'
+      DisplayFormat = '########0.0#####'
+    end
+  end
+  object IBUpdateSeria: TIBUpdateSQLW
+    RefreshSQL.Strings = (
+      'SELECT Seria.COMMENT,Seria. DATE_PASPORT, Seria.DATE_SERTIF,'
+      'Seria. DATE_TIME_UPDATE,Seria. DATE_VIPUSK, Seria.DATE_ZAG,'
+      
+        ' Seria.FIO_MASTER,Seria. FIO_RASH, Seria.FORMA_VIPUSK,Seria. KEI' +
+        '_ID,'
+      
+        ' Seria.KOD_TM, Seria.KODTN, Seria.KOL_SERIA,Seria. KOL_TM, Seria' +
+        '.KSM_ID,'
+      
+        ' Seria.OB_ZAG, Seria.PASPORT, Seria.SERIA, Seria.SERIA_ID, Seria' +
+        '.SERTIF,'
+      
+        ' Seria.SHEMA,Seria. SROK_GODN, Seria.USER_NAME,Seria. VLAG_TM,DA' +
+        'TE_VIPUSK,'
+      'Seria.COMMENT'
+      ' FROM Seria'
+      'where seria_id=:seria_id'
+      '')
+    ModifySQL.Strings = (
+      'update Seria'
+      'set'
+      '  DATE_ZAG = :DATE_ZAG,'
+      '  FIO_MASTER = :FIO_MASTER,'
+      '  FIO_RASH = :FIO_RASH,'
+      '  FORMA_VIPUSK = :FORMA_VIPUSK,'
+      '  KOD_TM = :KOD_TM,'
+      '  KOL_SERIA = :KOL_SERIA,'
+      '  KOL_TM = :KOL_TM,'
+      '  KSM_ID = :KSM_ID,'
+      '  OB_ZAG = :OB_ZAG,'
+      '  SERIA = :SERIA,'
+      '  SERIA_ID = :SERIA_ID,'
+      '  SROK_GODN = :SROK_GODN,'
+      '  VLAG_TM = :VLAG_TM,'
+      '  DATE_VIPUSK=:DATE_VIPUSK,'
+      '  COMMENT = :COMMENT'
+      'where'
+      '  SERIA_ID = :OLD_SERIA_ID')
+    InsertSQL.Strings = (
+      'insert into Seria'
+      
+        '  (DATE_ZAG, FIO_MASTER, FIO_RASH, FORMA_VIPUSK, KOD_TM, KOL_SER' +
+        'IA, KOL_TM, '
+      
+        '   KSM_ID, OB_ZAG, SERIA, SERIA_ID, SROK_GODN, VLAG_TM,DATE_VIPU' +
+        'SK, COMMENT)'
+      'values'
+      
+        '  (:DATE_ZAG, :FIO_MASTER, :FIO_RASH, :FORMA_VIPUSK, :KOD_TM, :K' +
+        'OL_SERIA, '
+      
+        '   :KOL_TM, :KSM_ID, :OB_ZAG, :SERIA, :SERIA_ID, :SROK_GODN, :VL' +
+        'AG_TM,:DATE_VIPUSK, :COMMENT)')
+    DeleteSQL.Strings = (
+      'delete from Seria'
+      'where'
+      '  SERIA_ID = :OLD_SERIA_ID')
+    AutoCommit = False
+    Left = 384
+    Top = 67
+  end
+  object DS_Seria: TDataSource
+    DataSet = q_seria
+    Left = 384
+    Top = 123
   end
 end
