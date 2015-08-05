@@ -5,7 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ComCtrls, DBGridEh, DBCtrlsEh, DBLookupEh, Mask, Grids,
-  ExtCtrls, DB, IBCustomDataSet, IBQuery, GotProdNaklTbl, GotProdVipusk;
+  ExtCtrls, DB, IBCustomDataSet, IBQuery, GotProdNaklTbl, GotProdVipusk,
+  IBUpdateSQL, IBUpdSQLW, RxIBQuery;
 
 type
   TFGotProd = class(TForm)
@@ -26,6 +27,33 @@ type
     StrukQuerySTKOD: TIBStringField;
     StrukQueryPRECISION: TSmallintField;
     DSStrukQuery: TDataSource;
+    q_seria: TRxIBQuery;
+    q_seriaSERIA_ID: TIntegerField;
+    q_seriaKSM_ID: TIntegerField;
+    q_seriaSERIA: TIBStringField;
+    q_seriaSROK_GODN: TDateField;
+    q_seriaSERTIF: TIBStringField;
+    q_seriaDATE_SERTIF: TDateField;
+    q_seriaPASPORT: TIBStringField;
+    q_seriaDATE_PASPORT: TDateField;
+    q_seriaKOL_SERIA: TFMTBCDField;
+    q_seriaDATE_VIPUSK: TDateField;
+    q_seriaFORMA_VIPUSK: TIBStringField;
+    q_seriaKEI_ID: TSmallintField;
+    q_seriaDATE_TIME_UPDATE: TDateTimeField;
+    q_seriaUSER_NAME: TIBStringField;
+    q_seriaSHEMA: TIBStringField;
+    q_seriaKODTN: TIBStringField;
+    q_seriaDATE_ZAG: TDateField;
+    q_seriaFIO_RASH: TIBStringField;
+    q_seriaFIO_MASTER: TIBStringField;
+    q_seriaCOMMENT: TIBStringField;
+    q_seriaOB_ZAG: TFloatField;
+    q_seriaVLAG_TM: TFloatField;
+    q_seriaKOD_TM: TIntegerField;
+    q_seriaKOL_TM: TFloatField;
+    IBUpdateSeria: TIBUpdateSQLW;
+    DS_Seria: TDataSource;
 
     procedure setStruk(strukId : integer);
     procedure setBeginEndDate(sender : integer);
@@ -40,6 +68,8 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure GotProdTabChange(Sender: TObject);
+    procedure q_seriaBeforeInsert(DataSet: TDataSet);
+    procedure q_seriaNewRecord(DataSet: TDataSet);
   private
     { Private declarations }
   public
@@ -161,29 +191,46 @@ end;
 procedure TFGotProd.PostSeria(seria : string; ksmId : integer; dateVipusk : TDate;
                               kolSeria : double; comment : string);
 begin
-  dm1.Seria.Active := false;
-  dm1.Seria.ParamByName('KSM_ID').AsInteger := ksmId;
-  dm1.Seria.Active := true;
-  dm1.Seria.First;
-  if ((dm1.Seria.Locate('seria', seria, [])) and (seria <> ''))
-     or (dm1.Seria.locate('comment', comment, []) and (seria = '') and (comment <> '')) then
+  q_Seria.Active := false;
+  q_Seria.ParamByName('KSM_ID').AsInteger := ksmId;
+  q_Seria.Active := true;
+  q_Seria.First;
+
+  if ((q_Seria.Locate('seria', VarArrayOf([seria]), [])) and (seria <> ''))
+     or (q_Seria.locate('comment', comment, []) and (seria = '') and (comment <> '')) then
   begin
-    dm1.Seria.Edit;
-    dm1.SeriaDate_vipusk.AsDateTime := dateVipusk;
-    vseria_id := dm1.SeriaSeria_id.AsInteger;
-    dm1.Seria.Post;
+    q_Seria.Edit;
+    q_SeriaDate_vipusk.AsDateTime := dateVipusk;
+    vseria_id := q_SeriaSeria_id.AsInteger;
+    q_Seria.Post;
   end
   else
   begin
     s_ksm := ksmId;
     s_seria := seria;
-    dm1.Seria.Insert;
-    dm1.SeriaDate_vipusk.AsDateTime := dateVipusk;
-    dm1.SeriaCOMMENT.AsString := UserName + '/' + seria + '/' + DateTimeToStr(Now) + '/'
-                                 + FloatToStr(kolSeria) + '/' + DM1.SeriaSERIA_ID.AsString;
-    dm1.Seria.Post;
+    q_Seria.Insert;
+    q_SeriaDate_vipusk.AsDateTime := dateVipusk;
+    q_SeriaCOMMENT.AsString := UserName + '/' + seria + '/' + DateTimeToStr(Now) + '/'
+                                 + FloatToStr(kolSeria) + '/' + q_SeriaSERIA_ID.AsString;
+    q_Seria.Post;
   end;
-  dm1.Seria.ApplyUpdates;
+  q_Seria.ApplyUpdates;
+end;
+
+procedure TFGotProd.q_seriaBeforeInsert(DataSet: TDataSet);
+begin
+  DM1.AddSeria.ExecProc;
+  vSERIA_ID := DM1.AddSeria.Params.Items[0].AsInteger;
+end;
+
+procedure TFGotProd.q_seriaNewRecord(DataSet: TDataSet);
+begin
+  q_SeriaSERIA_ID.AsInteger := vSeria_Id;
+  q_SeriaKSM_ID.AsInteger := S_KSM;
+//  DM1.SeriaSrok_Godn.AsDateTime:=S_Srok_Godn;
+  q_SeriaSERIA.AsString := s_SERIA;
+  if (q_SeriaKol_Seria.AsVariant = '') then
+    q_SeriaKol_Seria.AsFloat := 0;
 end;
 
 procedure TFGotProd.setStruk(strukId: Integer);
