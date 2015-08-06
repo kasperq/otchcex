@@ -191,30 +191,32 @@ end;
 procedure TFGotProd.PostSeria(seria : string; ksmId : integer; dateVipusk : TDate;
                               kolSeria : double; comment : string);
 begin
-  q_Seria.Active := false;
-  q_Seria.ParamByName('KSM_ID').AsInteger := ksmId;
-  q_Seria.Active := true;
-  q_Seria.First;
+  dm1.Seria.Active := false;
+  dm1.Seria.ParamByName('KSM_ID').AsInteger := ksmId;
+  dm1.Seria.Active := true;
+  dm1.Seria.First;
 
-  if ((q_Seria.Locate('seria', VarArrayOf([seria]), [])) and (seria <> ''))
-     or (q_Seria.locate('comment', comment, []) and (seria = '') and (comment <> '')) then
+  if ((dm1.Seria.Locate('seria', VarArrayOf([seria]), [])) and (seria <> ''))
+     or (dm1.Seria.locate('comment', comment, []) and (seria = '') and (comment <> '')) then
   begin
-    q_Seria.Edit;
-    q_SeriaDate_vipusk.AsDateTime := dateVipusk;
-    vseria_id := q_SeriaSeria_id.AsInteger;
-    q_Seria.Post;
+    dm1.Seria.Edit;
+    dm1.SeriaDate_vipusk.AsDateTime := dateVipusk;
+    vseria_id := dm1.SeriaSeria_id.AsInteger;
+    dm1.Seria.Post;
   end
   else
   begin
     s_ksm := ksmId;
     s_seria := seria;
-    q_Seria.Insert;
-    q_SeriaDate_vipusk.AsDateTime := dateVipusk;
-    q_SeriaCOMMENT.AsString := UserName + '/' + seria + '/' + DateTimeToStr(Now) + '/'
-                                 + FloatToStr(kolSeria) + '/' + q_SeriaSERIA_ID.AsString;
-    q_Seria.Post;
+    dm1.Seria.Insert;
+    dm1.SeriaDate_vipusk.AsDateTime := dateVipusk;
+    dm1.SeriaCOMMENT.AsString := UserName + '/' + seria + '/' + DateTimeToStr(Now) + '/'
+                                 + FloatToStr(kolSeria) + '/' + dm1.SeriaSERIA_ID.AsString;
+    dm1.Seria.Post;
   end;
-  q_Seria.ApplyUpdates;
+  dm1.Seria.ApplyUpdates;
+  dm1.commitWriteTrans(true);
+  dm1.seria.close;
 end;
 
 procedure TFGotProd.q_seriaBeforeInsert(DataSet: TDataSet);
