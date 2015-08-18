@@ -1059,7 +1059,8 @@ begin
     if (DM1.Kart.RecordCount > 0) then
       // Сначала удаляем из Карта все, чего нету в мемори таблице
       deleteKart();
-    deleteSpecKart;
+    if (vTip_Doc_Id = 144) then
+      deleteSpecKart;
     deletePrixKart;
       // Затем переносим все изменения из мемори таблицы в Карт и сохраняем
     saveAllMem2Kart();
@@ -1159,7 +1160,7 @@ begin
     begin
       if (NormiMemDatFACTRASHOD.AsFloat <> 0) then
       begin
-        if (findSpecOstAllOr11(NormiMemDatKSM_ID.AsInteger, true)) then
+        if (findSpecOstAllOr11(NormiMemDatKSM_ID.AsInteger, true)) and (vTip_Doc_Id = 144) then
         begin
           if (findSpecOstAllOr11(NormiMemDatKSM_ID.AsInteger, false)) then
           begin
@@ -1177,39 +1178,6 @@ begin
         end;
         saveMemRec2Kart();
       end;
-      
-
-//      if (dm1.Kart.Locate('ksm_id', NormiMemDatKSM_ID.AsInteger, [])) then
-//      begin
-//        if (NormiMemDatFACTRASHOD.AsFloat = 0) then
-//        begin
-//          dm1.Kart.Delete;
-//          dm1.Kart.ApplyUpdates;
-//          dm1.commitWriteTrans(true);                                                                                                                      //////
-//        end
-//        else
-//        begin
-//          if (DM1.KartKOL_RASH_EDIZ.AsFloat <> NormiMemDatFACTRASHOD.AsFloat)
-//             or (DM1.KartRAZDEL_ID.AsInteger <> NormiMemDatRAZDEL_ID.AsInteger)
-//             or (Dm1.KartKEI_IDN.AsInteger <> NormiMemDatKEI_ID.AsInteger)
-//             {or (dm1.KartCENA.AsFloat <> NormiMemDatCENA.AsFloat)} then
-//          begin
-//            DM1.Kart.Edit;
-//            DM1.KartKOL_RASH_EDIZ.AsFloat := NormiMemDatFACTRASHOD.AsFloat;
-//            DM1.KartRAZDEL_ID.AsInteger := NormiMemDatRAZDEL_ID.AsInteger;
-//            DM1.KartKEI_ID.AsInteger := NormiMemDatKEI_ID.AsInteger;
-////            dm1.KartCENA.AsFloat := NormiMemDatCENA.AsFloat;
-////            dm1.KartCENA_VP.AsFloat := NormiMemDatCENA.AsFloat;
-//            VDOCUMENT_ID := DM1.DocumentDOC_ID.AsInteger;
-//            vKart_id := DM1.KartKART_ID.AsInteger;
-//            DM1.Kart.Post;
-//          end;
-//        end;
-//      end
-//      else
-//        if (NormiMemDatFACTRASHOD.AsFloat <> 0) then
-//          saveMemRec2Kart();
-
       NormiMemDat.Next;
     end;
     saveKart2DB();
