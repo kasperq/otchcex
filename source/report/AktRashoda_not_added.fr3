@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TfrxReport Version="4.9.32" DotMatrixReport="False" IniFile="\Software\Fast Reports" PreviewOptions.Buttons="4095" PreviewOptions.Zoom="1" PrintOptions.Printer="�� ���������" PrintOptions.PrintOnSheet="0" ReportOptions.CreateDate="42214,6525199537" ReportOptions.Description.Text="" ReportOptions.LastChange="42214,685595625" ScriptLanguage="PascalScript" ScriptText.Text="&#13;&#10;begin&#13;&#10;&#13;&#10;end." PropData="044C65667403300203546F70020E08446174617365747301010C3000000020446174615365743D226672784E6F7441646465642220446174615365744E616D653D226672784E6F744164646564220000095661726961626C65730100055374796C650100">
+  <TfrxDataPage Name="Data" Height="1000" Left="0" Top="0" Width="1000"/>
+  <TfrxReportPage Name="Page1" PaperWidth="210" PaperHeight="297" PaperSize="9" LeftMargin="10" RightMargin="10" TopMargin="10" BottomMargin="10" ColumnWidth="0" ColumnPositions.Text="" HGuides.Text="" VGuides.Text="">
+    <TfrxReportTitle Name="ReportTitle1" Height="20" Left="0" Top="16" Width="718,1107">
+      <TfrxMemoView Name="Memo4" Left="0" Top="0" Width="718" Height="18" ShowHint="False" Font.Charset="1" Font.Color="0" Font.Height="-16" Font.Name="Arial" Font.Style="0" HAlign="haCenter" ParentFont="False" VAlign="vaCenter" Text="Несохраненное сырье"/>
+    </TfrxReportTitle>
+    <TfrxMasterData Name="MasterData1" Height="16" Left="0" Top="136" Width="718,1107" ColumnWidth="0" ColumnGap="0" DataSet="frxNotAdded" DataSetName="frxNotAdded" RowCount="0">
+      <TfrxMemoView Name="Memo2" Left="0" Top="0" Width="117" Height="16" ShowHint="False" DataField="KSM_ID" DataSet="frxNotAdded" DataSetName="frxNotAdded" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haCenter" ParentFont="False" Text="[frxNotAdded.&#34;KSM_ID&#34;]"/>
+      <TfrxMemoView Name="Memo3" Left="447" Top="0" Width="117" Height="16" ShowHint="False" DataField="KOL" DataSet="frxNotAdded" DataSetName="frxNotAdded" Frame.Typ="15" Text="[frxNotAdded.&#34;KOL&#34;]"/>
+      <TfrxMemoView Name="Memo8" Left="117" Top="0" Width="330" Height="16" ShowHint="False" DataField="NMAT_KSM" DataSet="frxNotAdded" DataSetName="frxNotAdded" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" ParentFont="False" VAlign="vaCenter" Text="[frxNotAdded.&#34;NMAT_KSM&#34;]"/>
+    </TfrxMasterData>
+    <TfrxPageFooter Name="PageFooter1" Height="14" Left="0" Top="212" Width="718,1107">
+      <TfrxMemoView Name="Memo1" Left="259,5201" Top="0" Width="458,5906" Height="13,89765" ShowHint="False" Font.Charset="1" Font.Color="0" Font.Height="-9" Font.Name="Arial" Font.Style="0" HAlign="haRight" ParentFont="False" Text="Документ сформирован программным обеспечением ОАСУ"/>
+    </TfrxPageFooter>
+    <TfrxPageHeader Name="PageHeader1" Height="18" Left="0" Top="56" Width="718,1107">
+      <TfrxMemoView Name="Memo5" Left="0" Top="0" Width="117" Height="16" ShowHint="False" DataSet="frxNotAdded" DataSetName="frxNotAdded" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haCenter" ParentFont="False" VAlign="vaCenter" Text="Код"/>
+      <TfrxMemoView Name="Memo6" Left="447" Top="0" Width="117" Height="16" ShowHint="False" DataSet="frxNotAdded" DataSetName="frxNotAdded" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haCenter" ParentFont="False" VAlign="vaCenter" Text="Количество"/>
+      <TfrxMemoView Name="Memo7" Left="117" Top="0" Width="330" Height="16" ShowHint="False" DataSet="frxNotAdded" DataSetName="frxNotAdded" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haCenter" ParentFont="False" VAlign="vaCenter" Text="Наименование"/>
+    </TfrxPageHeader>
+  </TfrxReportPage>
+</TfrxReport>
