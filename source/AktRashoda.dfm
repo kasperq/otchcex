@@ -958,7 +958,7 @@ object FAktRashoda: TFAktRashoda
     Width = 24
     Left = 808
     Bitmap = {
-      494C01010B001C00240018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B001C002C0018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       000000000000000000000000000000000000000000000000000000000000A87D
       7800B7818300B7818300B7818300B7818300B7818300B7818300B7818300B781
@@ -2682,7 +2682,7 @@ object FAktRashoda: TFAktRashoda
       'and document.klient_id = :klient_id'
       'and document.date_dok between :dat1 and :dat2'
       'and document.tip_op_id = 30 and document.tip_dok_id = 37'
-      'and document.ndok like '#39#1056#1087'%'#39)
+      '--and document.ndok like '#39#1056#1087'%'#39)
     Macros = <>
     Left = 808
     Top = 64
@@ -3531,5 +3531,49 @@ object FAktRashoda: TFAktRashoda
     BCDToCurrency = False
     Left = 560
     Top = 56
+  end
+  object q_curOst: TRxIBQuery
+    Database = DM1.BELMED
+    Transaction = DM1.IBT_Read
+    SQL.Strings = (
+      'select sum(ost.ostatok_end_s) ostatok_end_s'
+      
+        'from select_ost_ksm_acc(:dat1, :dat2, 1, :struk_id, :ksm_id, :ac' +
+        'count) ost')
+    Macros = <>
+    Left = 760
+    Top = 64
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'dat1'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'dat2'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'struk_id'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'ksm_id'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'account'
+        ParamType = ptUnknown
+      end>
+    object q_curOstOSTATOK_END_S: TFMTBCDField
+      FieldName = 'OSTATOK_END_S'
+      ProviderFlags = []
+      Precision = 18
+      Size = 6
+    end
   end
 end

@@ -336,6 +336,8 @@ type
     btn_notAdded: TToolButton;
     frxNotAdded: TfrxDBDataset;
     mem_notAddedNMAT_KSM: TStringField;
+    q_curOst: TRxIBQuery;
+    q_curOstOSTATOK_END_S: TFMTBCDField;
     function GetCehNum(cehName : string) : integer;
     function SetMonthCombo(month : integer) : boolean;
     function activateNormQuery() : boolean;
@@ -431,6 +433,7 @@ type
     procedure deleteSpecKart;
     procedure createSpecDoc;
     function findSpecOstAllOr11(ksmId : integer; allAccs : boolean) : boolean;
+    function getCurOst11() : double;
     procedure insertRecToSpecKart;
     function findPrepOst(ksmId : integer) : boolean;
     procedure addRecToNotAdded;
@@ -718,6 +721,18 @@ begin
   q_specOst.Open;
   if (q_specOst.RecordCount > 0) then
     result := true;
+end;
+
+function TFAktRashoda.getCurOst11() : double;
+begin
+  q_curOst.Close;
+  q_curOst.ParamByName('ksm_id').AsInteger := NormiMemDatKSM_ID.AsInteger;
+  q_curOst.ParamByName('struk_id').AsInteger := vStruk_Id;
+  q_curOst.ParamByName('dat1').AsDate := StrToDate(s_dat1);
+  q_curOst.ParamByName('dat2').AsDate := StrToDate(s_dat2);
+  q_curOst.ParamByName('account').AsString := '10/11';
+  q_curOst.Open;
+  result := q_curOstOSTATOK_END_S.AsFloat;  
 end;
 
 procedure TFAktRashoda.createSpecDoc;
@@ -1162,7 +1177,8 @@ begin
       begin
         if (findSpecOstAllOr11(NormiMemDatKSM_ID.AsInteger, true)) and (vTip_Doc_Id = 144) then
         begin
-          if (findSpecOstAllOr11(NormiMemDatKSM_ID.AsInteger, false)) then
+          if (findSpecOstAllOr11(NormiMemDatKSM_ID.AsInteger, false))
+             and (getCurOst11() >= NormiMemDatFACTRASHOD.AsFloat) then
           begin
             if (addSpecRec2Prixod()) then
               insertRecToSpecKart;
@@ -1782,6 +1798,7 @@ begin
   try
     DM1.Document.Edit;
     DM1.DocumentNDOK.AsString := nDocEdit.Text;
+    dm1.DocumentKLIENT_ID.AsInteger := s_kodp;
     DM1.Document.Post;
     DM1.Document.ApplyUpdates;
     dm1.startReadTrans;
@@ -2009,6 +2026,7 @@ begin
       findCurDoc(vStruk_Id, curMonth, curYear, 145, 'ì');
       vTip_Doc_Id := 145;
     end;
+    vklient_id := s_kodp;
     activateNormQuery();
     loadKart(vStruk_Id, DM1.DocumentDOC_ID.AsInteger);
     addKart2Mem();

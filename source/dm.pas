@@ -775,7 +775,7 @@ uses
     function MesNameInRodPodezhSmall(Mes: integer): string;
     procedure createKartIdInOstatki;
     procedure createPrixodDocumOnPrep;
-    procedure findOstatkiSyrInCex;
+    procedure findOstatkiSyrInCex(spec : boolean);
     procedure createKartInPrixodDocumOnPrep;
     procedure activateSprFormul(ksmIdPr : integer; ksmIdMat : integer; razdelId : integer);
     procedure commitWriteTrans(retaining : boolean);
@@ -1406,16 +1406,25 @@ begin
   DM1.kart.ApplyUpdates;
 end;
 
-procedure TDM1.findOstatkiSyrInCex;   // поиск остатков сырья в цехе
+procedure TDM1.findOstatkiSyrInCex(spec : boolean);   // поиск остатков сырья в цехе
 begin
   DM1.IBQuery1.Active := False;
   DM1.IBQuery1.SQL.Clear;
   DM1.IBQuery1.SQL.Add('SELECT ostatki.kart_id, ostatki.OSTATOK_END_S, ostatki.struk_id, ');
   DM1.IBQuery1.SQL.Add(' (select kol_new from ceh_ost_ediz(ostatki.KSM_ID, ostatki.KEI_ID,'
                         + inttostr(v_kein) + ', ostatki.OSTATOK_END_S)) Kot_S');
-  DM1.IBQuery1.SQL.Add(' FROM  SELECT_OST_KSM1 (' + '''' + s_dat1 + '''' + ','
+  if (spec) then
+  begin
+    DM1.IBQuery1.SQL.Add(' FROM  SELECT_OST_KSM_ACC (' + '''' + s_dat1 + '''' + ','
+                            + '''' + s_dat2 + '''' + ',1,' + inttostr(vSTRUK_ID)
+                        + ',' + inttostr(s_KSM) + ', ''10/11'') ostatki ');
+  end
+  else
+  begin
+    DM1.IBQuery1.SQL.Add(' FROM  SELECT_OST_KSM1 (' + '''' + s_dat1 + '''' + ','
                         + '''' + s_dat2 + '''' + ',1,' + inttostr(vSTRUK_ID)
                         + ',' + inttostr(s_KSM) + ', 0) ostatki ');
+  end;
   DM1.IBQuery1.SQL.Add(' order by ostatki.kart_id ');
   DM1.IBQuery1.Active := True;
   DM1.IBQuery1.First;
@@ -1440,6 +1449,7 @@ begin
                                 + 'FROM Ostatki WHERE Ostatki.STRUK_ID = ' + INTTOSTR(VsTRUK_ID)
                                 + ' AND ostatki.ksm_id = ' + inttostr(s_Ksm)
                                 + ' AND (coalesce(Ostatki.Ksm_idpr, 0) = 0) '
+                                + ' and ostatki.account = ''10/11'' '
                                 + ' and ostatki.ot_s <> 0 ',
                                 dm1.belmed, dm1.ibt_read)
   else
@@ -1467,7 +1477,10 @@ begin
     end;
     dm1.Kart.BeforePost := nil;
 // цикл по сериям сырья (OSTATKI)- QUERY
-    findOstatkiSyrInCex;
+    if (spec) then
+      findOstatkiSyrInCex(true)
+    else
+      findOstatkiSyrInCex(false);
     createKartInPrixodDocumOnPrep;    // запись необходимого прихода на препарат в Kart
   end;
   vdocument_id := v_docSt;
