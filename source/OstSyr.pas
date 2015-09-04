@@ -46,6 +46,9 @@ type
     procedure curMonthComboChange(Sender: TObject);
     procedure monthSpnBtnDownClick(Sender: TObject);
     procedure monthSpnBtnUpClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure DBGridEh1KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
 
   private
     procedure setDateEdits;
@@ -65,6 +68,13 @@ procedure TFOstSyr.curMonthComboChange(Sender: TObject);
 begin
   setDateEdits;
   SpeedButton1Click(Sender);
+end;
+
+procedure TFOstSyr.DBGridEh1KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if (key = VK_ESCAPE) then
+    self.Close;
 end;
 
 procedure TFOstSyr.Edit1Click(Sender: TObject);
@@ -96,6 +106,13 @@ end;
 procedure TFOstSyr.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
  dm1.OstSyr.Close;
+end;
+
+procedure TFOstSyr.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if (key = VK_ESCAPE) then
+    self.Close;
 end;
 
 procedure TFOstSyr.FormShow(Sender: TObject);
