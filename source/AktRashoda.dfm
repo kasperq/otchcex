@@ -15,6 +15,7 @@ object FAktRashoda: TFAktRashoda
   Position = poDesigned
   WindowState = wsMaximized
   OnClose = FormClose
+  OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -82,9 +83,11 @@ object FAktRashoda: TFAktRashoda
     object ToolButton8: TToolButton
       Left = 205
       Top = 0
-      Hint = #1055#1088#1086#1089#1084#1086#1090#1088' '#1082#1072#1088#1090#1086#1095#1082#1080' '#1089#1099#1088#1100#1103
-      Caption = 'ToolButton8'
+      Hint = #1055#1086#1076#1088#1086#1073#1085#1077#1077' '#1086' '#1089#1099#1088#1100#1077' (Ctrl + I)'
+      Caption = 'Action1'
       ImageIndex = 8
+      ParentShowHint = False
+      ShowHint = True
       OnClick = ToolButton8Click
     end
     object btn_notAdded: TToolButton
@@ -958,7 +961,7 @@ object FAktRashoda: TFAktRashoda
     Width = 24
     Left = 808
     Bitmap = {
-      494C01010B001C002C0018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B001C00300018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       000000000000000000000000000000000000000000000000000000000000A87D
       7800B7818300B7818300B7818300B7818300B7818300B7818300B7818300B781
@@ -3575,5 +3578,71 @@ object FAktRashoda: TFAktRashoda
       Precision = 18
       Size = 6
     end
+  end
+  object q_configumc: TRxIBQuery
+    Database = DM1.BELMED
+    Transaction = DM1.IBT_Read
+    CachedUpdates = True
+    SQL.Strings = (
+      'select configumc.mes, configumc.god, configumc.struk_id'
+      'from configumc'
+      'where configumc.struk_id = :struk_id')
+    UpdateObject = upd_configumc
+    Macros = <>
+    Left = 344
+    Top = 64
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'struk_id'
+        ParamType = ptUnknown
+      end>
+    object q_configumcMES: TSmallintField
+      FieldName = 'MES'
+      Origin = '"CONFIGUMC"."MES"'
+      Required = True
+    end
+    object q_configumcGOD: TSmallintField
+      FieldName = 'GOD'
+      Origin = '"CONFIGUMC"."GOD"'
+      Required = True
+    end
+    object q_configumcSTRUK_ID: TSmallintField
+      FieldName = 'STRUK_ID'
+      Origin = '"CONFIGUMC"."STRUK_ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+  end
+  object upd_configumc: TIBUpdateSQLW
+    RefreshSQL.Strings = (
+      'Select '
+      '  MES,'
+      '  GOD,'
+      '  STRUK_ID'
+      'from configumc '
+      'where'
+      '  STRUK_ID = :STRUK_ID')
+    ModifySQL.Strings = (
+      'update configumc'
+      'set'
+      '  GOD = :GOD,'
+      '  MES = :MES,'
+      '  STRUK_ID = :STRUK_ID'
+      'where'
+      '  STRUK_ID = :OLD_STRUK_ID')
+    InsertSQL.Strings = (
+      'insert into configumc'
+      '  (GOD, MES, STRUK_ID)'
+      'values'
+      '  (:GOD, :MES, :STRUK_ID)')
+    DeleteSQL.Strings = (
+      'delete from configumc'
+      'where'
+      '  STRUK_ID = :OLD_STRUK_ID')
+    AutoCommit = False
+    UpdateTransaction = DM1.IBT_Write
+    Left = 344
+    Top = 104
   end
 end

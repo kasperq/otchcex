@@ -7,7 +7,8 @@ uses
   Dialogs, frxClass, frxDBSet, frxDCtrl, DB, IBCustomDataSet, IBQuery, RxIBQuery,
   Grids, DBGridEh, StdCtrls, RxMemDS, Buttons, RxStrUtils, VCLUtils, Menus,
   RxMenus, IBDataBase, ToolWin, ComCtrls, ImgList, ExtCtrls, SplshWnd,
-  IBUpdateSQL, IBUpdSQLW, RXCtrls, Math, kbmMemTable;
+  IBUpdateSQL, IBUpdSQLW, RXCtrls, Math, kbmMemTable, ActnList,
+  XPStyleActnCtrls, ActnMan;
 
 type                                                      
   TIFPair = class(TObject)
@@ -338,6 +339,11 @@ type
     mem_notAddedNMAT_KSM: TStringField;
     q_curOst: TRxIBQuery;
     q_curOstOSTATOK_END_S: TFMTBCDField;
+    q_configumc: TRxIBQuery;
+    upd_configumc: TIBUpdateSQLW;
+    q_configumcMES: TSmallintField;
+    q_configumcGOD: TSmallintField;
+    q_configumcSTRUK_ID: TSmallintField;
     function GetCehNum(cehName : string) : integer;
     function SetMonthCombo(month : integer) : boolean;
     function activateNormQuery() : boolean;
@@ -421,8 +427,11 @@ type
     procedure DBGridEh2KeyPress(Sender: TObject; var Key: Char);
     procedure ToolButton8Click(Sender: TObject);
     procedure btn_notAddedClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
 
   private
+    realMonth, realYear : integer;
+    firstMonthChange : boolean;
 //    procedure formCenaQ(allMem : boolean);
 //    procedure distributeCena(allMem : boolean);
 //    procedure setCurNormiMemDatCena;
@@ -442,6 +451,9 @@ type
     procedure openPrixKart;
     procedure deletePrixKart;
     function addSpecRec2Prixod() : boolean;
+
+    procedure openConfigumc;
+    procedure setAktOrCurMonth2Conf(setAktMonth : boolean);
 
   public
     DataBaseName : TIBDataBase;
@@ -578,6 +590,52 @@ end;
 //    NormiMemDat.Post;
 //  end;
 //end;
+
+procedure TFAktRashoda.openConfigumc;
+begin
+  q_configumc.Close;
+  q_configumc.ParamByName('struk_id').AsInteger := vStruk_Id;
+  q_configumc.Open;
+end;
+
+procedure TFAktRashoda.setAktOrCurMonth2Conf(setAktMonth : boolean);
+var
+  setMonth, setYear : integer;
+begin
+  if (AnsiLowerCase(UserName) = 'igor') then
+  begin
+    openConfigumc;
+    if (setAktMonth) then
+    begin
+      if (firstMonthChange) then
+      begin
+        realMonth := q_configumcMES.AsInteger;
+        realYear := q_configumcGOD.AsInteger;
+        firstMonthChange := false;
+      end;
+      setMonth := monthCombo.ItemIndex + 1;
+      setYear := StrToInt(yearEdit.Text);
+    end
+    else
+    begin
+      setMonth := realMonth;
+      setYear := realYear;
+      firstMonthChange := true;
+    end;
+
+    q_configumc.Edit;
+    if (q_configumcGOD.AsInteger <> setYear) then
+      q_configumcGOD.AsInteger := setYear;
+    if (q_configumcMES.AsInteger <> setMonth) then
+      q_configumcMES.AsInteger := setMonth;
+    if (q_configumc.Modified) or (q_configumc.State = dsEdit) then
+    begin
+      q_configumc.Post;
+      q_configumc.ApplyUpdates;
+      DM1.commitWriteTrans(true);
+    end;
+  end;
+end;
 
 function TFAktRashoda.findPrixDoc() : boolean;
 begin
@@ -833,28 +891,35 @@ begin
     MessageDlg('Перед сохранением введите номер документа! ', mtWarning, [mbOK], 0)
   else
   begin
-    Splash := ShowSplashWindow(AniBmp1,
-              'Сохранение данных. Подождите, пожалуйста...', True, nil);
-    NormiMemDat.DisableControls;
-    curMonth := monthCombo.ItemIndex + 1;
-    curYear := StrToInt(yearEdit.Text);
-    if (not findCurDoc(vStruk_Id, curMonth, curYear, vTip_Doc_Id, '')) then
-      createCurDoc(vStruk_Id, curMonth, curYear, '');
-    if (saveDoc()) then
-    begin
-      loadKart(vStruk_Id, DM1.DocumentDOC_ID.AsInteger);
-      saveMemToKart();
-      saveDocTipParam();
-    end;
-    NormiMemDat.EnableControls;
-    btn_notAdded.Visible := false;
-    Splash.Free;
-    if (mem_notAdded.RecordCount > 0) then
-    begin
-      btn_notAdded.Visible := true;
-      ShowMessage('Не все материалы были сохранены, т.к. не хватает количества или '
-                  + #10#13 + 'не были введены в эксплуатацию!'
-                  + #10#13 + 'Увидеть их можно нажав на кнопку с перечеркнутой дискетой на панели');
+    try
+      Splash := ShowSplashWindow(AniBmp1,
+                'Сохранение данных. Подождите, пожалуйста...', True, nil);
+      NormiMemDat.DisableControls;
+      setAktOrCurMonth2Conf(true);
+      curMonth := monthCombo.ItemIndex + 1;
+      curYear := StrToInt(yearEdit.Text);
+      if (not findCurDoc(vStruk_Id, curMonth, curYear, vTip_Doc_Id, '')) then
+        createCurDoc(vStruk_Id, curMonth, curYear, '');
+      if (saveDoc()) then
+      begin
+        loadKart(vStruk_Id, DM1.DocumentDOC_ID.AsInteger);
+        saveMemToKart();
+        saveDocTipParam();
+      end;
+      NormiMemDat.EnableControls;
+      btn_notAdded.Visible := false;
+      Splash.Free;
+      if (mem_notAdded.RecordCount > 0) then
+      begin
+        btn_notAdded.Visible := true;
+        ShowMessage('Не все материалы были сохранены, т.к. не хватает количества или '
+                    + #10#13 + 'не были введены в эксплуатацию!'
+                    + #10#13 + 'Увидеть их можно нажав на кнопку с перечеркнутой дискетой на панели');
+      end;
+      setAktOrCurMonth2Conf(false);
+    except
+      on e : exception do
+        setAktOrCurMonth2Conf(false);
     end;
   end;
 end;
@@ -972,6 +1037,11 @@ begin
   destroyTIFPairArr;
   btn_notAdded.Visible := false;
   closeQueries();
+end;
+
+procedure TFAktRashoda.FormCreate(Sender: TObject);
+begin
+  firstMonthChange := true;
 end;
 
 procedure TFAktRashoda.FormShow(Sender: TObject);
@@ -1748,6 +1818,20 @@ begin
         ShowMessage('Не найдено такое сырье');
       tempQuery.Active := false;
     end;
+  end;
+
+  if (key = 73) and (Shift = [ssCtrl]) then
+  begin
+    S_ksm := NormiMemDatKSM_ID.AsInteger;
+    FOstSyr.Edit1.text := inttostr(NormiMemDatKSM_ID.AsInteger);
+    FOstSyr.Label7.Caption := NormiMemDatNMAT_KSM.AsString;
+    FOstSyr.label8.Caption := NormiMemDatNEIS.AsString;
+
+    FOstSyr.DateEdit3.Date := strtodate(s_dat1);
+    FOstSyr.DateEdit4.Date := strtodate(s_dat2);
+    if FOstSyr = nil then
+      FOstSyr := TFOstSyr.Create(Application);
+    FOstSyr.ShowModal;
   end;
 end;
 
