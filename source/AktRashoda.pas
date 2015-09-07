@@ -660,15 +660,22 @@ end;
 procedure TFAktRashoda.deletePrixKart;
 begin
   if (findPrixDoc()) then
-    openPrixKart;
-
-  if (q_prixKart.RecordCount > 0) then
   begin
-    q_prixKart.First;
-    while (not q_prixKart.Eof) do
-      q_prixKart.Delete;
-    q_prixKart.ApplyUpdates;
-    dm1.commitWriteTrans(true);
+    q_prixDoc.First;
+    while (not q_prixDoc.Eof) do
+    begin
+      openPrixKart;
+
+      if (q_prixKart.RecordCount > 0) then
+      begin
+        q_prixKart.First;
+        while (not q_prixKart.Eof) do
+          q_prixKart.Delete;
+        q_prixKart.ApplyUpdates;
+        dm1.commitWriteTrans(true);
+      end;
+      q_prixDoc.Next;
+    end;
   end;
 end;
 
