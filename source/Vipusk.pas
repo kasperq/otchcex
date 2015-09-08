@@ -21,7 +21,6 @@ type
     Label1: TLabel;
     Label2: TLabel;
     DSPlvipusk: TDataSource;
-    Label4: TLabel;
     Label3: TLabel;
     SpinEdit3: TSpinEdit;
     SpinEdit4: TSpinEdit;
@@ -43,6 +42,11 @@ type
     frDBDataSet1: TfrDBDataSet;
     PlVipuskkol: TFloatField;
     RadioGroup1: TRadioGroup;
+    Panel1: TPanel;
+    Splitter1: TSplitter;
+    Panel2: TPanel;
+    Panel3: TPanel;
+    Panel4: TPanel;
     procedure FormShow(Sender: TObject);
     procedure SpinEdit3Change(Sender: TObject);
     procedure SpinEdit4Change(Sender: TObject);
