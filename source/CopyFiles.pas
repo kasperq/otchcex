@@ -2,7 +2,7 @@ unit CopyFiles;
 
 interface
 uses
-  Windows, Messages, SysUtils;
+  Windows, Messages, SysUtils, Math;
 
   Procedure FileCopy(Const SourceFileName, TargetFileName: String);
   function WindowsCopyFile(FromFile, ToDir : string) : boolean;
@@ -13,6 +13,7 @@ uses
   function MyTrunc(value : double) : Int64;
 	function MyFrac(value : double) : double;
 	function MyCeil(const X: Extended): Integer;
+  function getCurZnak(value : double; znak : integer) : integer;
 
 implementation
 
@@ -335,6 +336,28 @@ begin
   Result := Integer(MyTrunc(X));
   if (MyFrac(X) > 0) then
     Inc(Result);
+end;
+
+function getCurZnak(value : double; znak : integer) : integer;
+var
+  curZnak : integer;
+  strValue : string;
+begin
+  curZnak := KolZnakovPosleZap(value);
+  if (curZnak > 6) then
+  begin
+    strValue := FloatToStr(SimpleRoundTo(value, -6));
+    if (strValue[length(strValue)] = '9') and (KolZnakovPosleZap(SimpleRoundTo(value, -6)) = 6) then
+      if (StrToInt(strValue[length(strValue) - 1]) > 7) then
+        curZnak := KolZnakovPosleZap(SimpleRoundTo(value, -4))
+      else
+        curZnak := KolZnakovPosleZap(SimpleRoundTo(value, -5))
+    else
+      curZnak := KolZnakovPosleZap(SimpleRoundTo(value, -6));
+  end;
+  if (znak < curZnak) then
+    znak := curZnak;
+  result := znak;
 end;
 
 

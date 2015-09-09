@@ -442,7 +442,7 @@ object Fact_spirt: TFact_spirt
     Left = 520
     Top = 4
     Bitmap = {
-      494C01010A000C000C0018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010A000C00100018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1746,7 +1746,7 @@ object Fact_spirt: TFact_spirt
     PrintOptions.Printer = #1055#1086' '#1091#1084#1086#1083#1095#1072#1085#1080#1102
     PrintOptions.PrintOnSheet = 0
     ReportOptions.CreateDate = 40528.524028067100000000
-    ReportOptions.LastChange = 41654.452875787000000000
+    ReportOptions.LastChange = 42229.579367870400000000
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
       ''
@@ -2545,7 +2545,7 @@ object Fact_spirt: TFact_spirt
           DataSet = frxDBDataset1
           DataSetName = 'frxDBDataset1'
           DisplayFormat.DecimalSeparator = ','
-          DisplayFormat.FormatStr = '%2.3f'
+          DisplayFormat.FormatStr = '%2.4f'
           DisplayFormat.Kind = fkNumeric
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -3339,7 +3339,7 @@ object Fact_spirt: TFact_spirt
         end
         object Memo78: TfrxMemoView
           Left = 3.000000000000000000
-          Top = 3.779530000000022000
+          Top = 3.779530000000020000
           Width = 94.488250000000000000
           Height = 18.897650000000000000
           ShowHint = False
@@ -3355,7 +3355,7 @@ object Fact_spirt: TFact_spirt
         end
         object Memo79: TfrxMemoView
           Left = 209.433210000000000000
-          Top = 3.779530000000022000
+          Top = 3.779530000000020000
           Width = 56.913420000000000000
           Height = 18.897650000000000000
           ShowHint = False
@@ -3375,7 +3375,7 @@ object Fact_spirt: TFact_spirt
         end
         object Memo80: TfrxMemoView
           Left = 266.346630000000000000
-          Top = 3.779530000000022000
+          Top = 3.779530000000020000
           Width = 71.811070000000000000
           Height = 18.897650000000000000
           ShowHint = False
@@ -3395,7 +3395,7 @@ object Fact_spirt: TFact_spirt
         end
         object Memo81: TfrxMemoView
           Left = 339.157700000000000000
-          Top = 3.779530000000022000
+          Top = 3.779530000000020000
           Width = 57.795300000000000000
           Height = 18.897650000000000000
           ShowHint = False
@@ -3415,7 +3415,7 @@ object Fact_spirt: TFact_spirt
         end
         object Memo82: TfrxMemoView
           Left = 396.953000000000000000
-          Top = 3.779530000000022000
+          Top = 3.779530000000020000
           Width = 65.354360000000000000
           Height = 18.897650000000000000
           ShowHint = False
@@ -3435,7 +3435,7 @@ object Fact_spirt: TFact_spirt
         end
         object Memo83: TfrxMemoView
           Left = 532.913730000000000000
-          Top = 3.779530000000022000
+          Top = 3.779530000000020000
           Width = 68.252010000000000000
           Height = 18.897650000000000000
           ShowHint = False
@@ -3455,7 +3455,7 @@ object Fact_spirt: TFact_spirt
         end
         object Memo84: TfrxMemoView
           Left = 646.299630000000000000
-          Top = 3.779530000000022000
+          Top = 3.779530000000020000
           Width = 68.031540000000000000
           Height = 18.897650000000000000
           ShowHint = False
@@ -3475,7 +3475,7 @@ object Fact_spirt: TFact_spirt
         end
         object Memo85: TfrxMemoView
           Left = 714.331170000000000000
-          Top = 3.779530000000022000
+          Top = 3.779530000000020000
           Width = 68.031540000000000000
           Height = 18.897650000000000000
           ShowHint = False
@@ -3495,7 +3495,7 @@ object Fact_spirt: TFact_spirt
         end
         object Memo86: TfrxMemoView
           Left = 884.410020000000000000
-          Top = 3.779530000000022000
+          Top = 3.779530000000020000
           Width = 56.692950000000000000
           Height = 18.897650000000000000
           ShowHint = False
@@ -3515,7 +3515,7 @@ object Fact_spirt: TFact_spirt
         end
         object Memo87: TfrxMemoView
           Left = 835.276130000000000000
-          Top = 3.779530000000022000
+          Top = 3.779530000000020000
           Width = 52.913420000000000000
           Height = 18.897650000000000000
           ShowHint = False
@@ -3535,7 +3535,7 @@ object Fact_spirt: TFact_spirt
         end
         object Memo88: TfrxMemoView
           Left = 778.583180000000000000
-          Top = 3.779530000000022000
+          Top = 3.779530000000020000
           Width = 56.692950000000000000
           Height = 18.897650000000000000
           ShowHint = False
@@ -3555,7 +3555,7 @@ object Fact_spirt: TFact_spirt
         end
         object Memo89: TfrxMemoView
           Left = 941.102970000000000000
-          Top = 3.779530000000022000
+          Top = 3.779530000000020000
           Width = 65.133890000000000000
           Height = 18.897650000000000000
           ShowHint = False
@@ -3575,7 +3575,7 @@ object Fact_spirt: TFact_spirt
         end
         object Memo90: TfrxMemoView
           Left = 2.000000000000000000
-          Top = 23.236240000000010000
+          Top = 23.236240000000000000
           Width = 155.401670000000000000
           Height = 18.897650000000000000
           ShowHint = False
@@ -3592,7 +3592,7 @@ object Fact_spirt: TFact_spirt
         end
         object Memo91: TfrxMemoView
           Left = 166.960730000000000000
-          Top = 27.236240000000010000
+          Top = 27.236240000000000000
           Width = 71.811070000000000000
           Height = 14.897650000000000000
           ShowHint = False
@@ -3612,7 +3612,7 @@ object Fact_spirt: TFact_spirt
         end
         object Memo92: TfrxMemoView
           Left = 238.330860000000000000
-          Top = 26.236240000000010000
+          Top = 26.236240000000000000
           Width = 38.015770000000000000
           Height = 18.897650000000000000
           ShowHint = False
@@ -3629,7 +3629,7 @@ object Fact_spirt: TFact_spirt
         end
         object Memo93: TfrxMemoView
           Left = 275.905690000000000000
-          Top = 26.236240000000010000
+          Top = 26.236240000000000000
           Width = 64.692950000000000000
           Height = 18.897650000000000000
           ShowHint = False
@@ -3649,7 +3649,7 @@ object Fact_spirt: TFact_spirt
         end
         object Memo94: TfrxMemoView
           Left = 344.157700000000000000
-          Top = 27.236240000000010000
+          Top = 27.236240000000000000
           Width = 30.236240000000000000
           Height = 14.897650000000000000
           ShowHint = False
@@ -3666,7 +3666,7 @@ object Fact_spirt: TFact_spirt
         end
         object Memo95: TfrxMemoView
           Left = 374.173470000000000000
-          Top = 26.236240000000010000
+          Top = 26.236240000000000000
           Width = 68.031540000000000000
           Height = 18.897650000000000000
           ShowHint = False
@@ -3686,7 +3686,7 @@ object Fact_spirt: TFact_spirt
         end
         object Memo96: TfrxMemoView
           Left = 441.984540000000000000
-          Top = 26.236240000000010000
+          Top = 26.236240000000000000
           Width = 30.236240000000000000
           Height = 18.897650000000000000
           ShowHint = False
@@ -3703,7 +3703,7 @@ object Fact_spirt: TFact_spirt
         end
         object Memo97: TfrxMemoView
           Left = 471.779840000000000000
-          Top = 25.236240000000010000
+          Top = 25.236240000000000000
           Width = 68.031540000000000000
           Height = 18.897650000000000000
           ShowHint = False
@@ -3723,7 +3723,7 @@ object Fact_spirt: TFact_spirt
         end
         object Memo98: TfrxMemoView
           Left = 539.590910000000000000
-          Top = 26.236240000000010000
+          Top = 26.236240000000000000
           Width = 26.456710000000000000
           Height = 14.897650000000000000
           ShowHint = False
@@ -3740,7 +3740,7 @@ object Fact_spirt: TFact_spirt
         end
         object Memo99: TfrxMemoView
           Left = 566.047620000000000000
-          Top = 26.236240000000010000
+          Top = 26.236240000000000000
           Width = 68.031540000000000000
           Height = 14.897650000000000000
           ShowHint = False
@@ -3760,7 +3760,7 @@ object Fact_spirt: TFact_spirt
         end
         object Memo100: TfrxMemoView
           Left = 641.638220000000000000
-          Top = 26.236240000000010000
+          Top = 26.236240000000000000
           Width = 30.236240000000000000
           Height = 14.897650000000000000
           ShowHint = False
@@ -3777,7 +3777,7 @@ object Fact_spirt: TFact_spirt
         end
         object Memo101: TfrxMemoView
           Left = 671.874460000000000000
-          Top = 26.236240000000010000
+          Top = 26.236240000000000000
           Width = 64.252010000000000000
           Height = 14.897650000000000000
           ShowHint = False
@@ -3797,7 +3797,7 @@ object Fact_spirt: TFact_spirt
         end
         object Memo102: TfrxMemoView
           Left = 739.685530000000000000
-          Top = 26.236240000000010000
+          Top = 26.236240000000000000
           Width = 34.015770000000000000
           Height = 14.897650000000000000
           ShowHint = False
@@ -3814,7 +3814,7 @@ object Fact_spirt: TFact_spirt
         end
         object Memo103: TfrxMemoView
           Left = 777.260360000000000000
-          Top = 26.236240000000010000
+          Top = 26.236240000000000000
           Width = 64.252010000000000000
           Height = 14.897650000000000000
           ShowHint = False
@@ -3963,7 +3963,7 @@ object Fact_spirt: TFact_spirt
           ParentFont = False
         end
         object Memo77: TfrxMemoView
-          Top = 49.913419999999970000
+          Top = 49.913420000000000000
           Width = 1084.725110000000000000
           Height = 49.354360000000000000
           ShowHint = False

@@ -195,7 +195,8 @@ var
   spisano : double;
 
 implementation
-uses dm,Find_Spprod,Find_Matrop,Ediz,razdel,GlMenu,SprFormul;
+
+uses dm, Find_Spprod, Find_Matrop, Ediz, razdel, GlMenu, SprFormul, CopyFiles;
 {$R *.dfm}
 
 procedure TFact_spirt.Edit1Click(Sender: TObject);
@@ -537,7 +538,12 @@ begin
       tochn := 3;
   end
   else
-    tochn := 3;
+  begin
+    if (dm1.stkod = '1600') then
+      tochn := getCurZnak(Spirt_OtchetOSTATOK_BEGIN_S.AsFloat, 3)
+    else
+      tochn := 3;
+  end;
   Spirt_OtchetZNAK.AsInteger := tochn;
 end;
 
