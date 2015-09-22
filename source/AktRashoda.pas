@@ -1151,7 +1151,7 @@ begin
     if (DM1.Kart.RecordCount > 0) then
       // Сначала удаляем из Карта все, чего нету в мемори таблице
       deleteKart();
-    if (vTip_Doc_Id = 144) then
+    if (vTip_Doc_Id = 144) and (yearEdit.Text >= '2015') then
       deleteSpecKart;
     deletePrixKart;
       // Затем переносим все изменения из мемори таблицы в Карт и сохраняем
@@ -1245,14 +1245,18 @@ begin
       dm1.Kart.Open;
     mem_notAdded.EmptyTable;
     mem_notAdded.Open;
-    if (not openSpecDoc()) then
-      createSpecDoc;
-    findSpecKart(vStruk_Id, 0, StrToDate(s_dat1), StrToDate(s_dat2));
+    if (yearEdit.Text >= '2015') then
+    begin
+      if (not openSpecDoc()) then
+        createSpecDoc;
+      findSpecKart(vStruk_Id, 0, StrToDate(s_dat1), StrToDate(s_dat2));
+    end;
     while (not NormiMemDat.Eof) do
     begin
       if (NormiMemDatFACTRASHOD.AsFloat <> 0) then
       begin
-        if (findSpecOstAllOr11(NormiMemDatKSM_ID.AsInteger, true)) and (vTip_Doc_Id = 144) then
+        if (findSpecOstAllOr11(NormiMemDatKSM_ID.AsInteger, true)) and (vTip_Doc_Id = 144)
+           and (yearEdit.Text >= '2015') then
         begin
           if (findSpecOstAllOr11(NormiMemDatKSM_ID.AsInteger, false))
              and (getCurOst11() >= NormiMemDatFACTRASHOD.AsFloat) then

@@ -1864,8 +1864,8 @@ object FGotProdNaklView: TFGotProdNaklView
     PreviewOptions.Zoom = 1.000000000000000000
     PrintOptions.Printer = #1055#1086' '#1091#1084#1086#1083#1095#1072#1085#1080#1102
     PrintOptions.PrintOnSheet = 0
-    ReportOptions.CreateDate = 41967.564686562500000000
-    ReportOptions.LastChange = 41967.564686562500000000
+    ReportOptions.CreateDate = 40323.521267361100000000
+    ReportOptions.LastChange = 41754.407686990700000000
     ScriptLanguage = 'PascalScript'
     StoreInDFM = False
     OnGetValue = frxReport1GetValue
@@ -2422,6 +2422,10 @@ object FGotProdNaklView: TFGotProdNaklView
     object N6: TMenuItem
       Caption = #1055#1077#1095#1072#1090#1100' '#1076#1083#1103' '#1077#1076'. '#1080#1079#1084'. '#39#1058' '#1059#1055#39' '#1080#1083#1080' '#39#1058' '#1064#1058#39'... '#1059#1087#1088#1086#1097#1077#1085#1085#1072#1103
       OnClick = N6Click
+    end
+    object printForMlnP: TMenuItem
+      Caption = #1055#1077#1095#1072#1090#1100' '#1076#1083#1103' '#1077#1076'. '#1080#1079#1084'. '#39#1052#1051#1053' '#1055#1045#39
+      OnClick = printForMlnPClick
     end
   end
   object VipDocument: TRxIBQuery
@@ -3477,6 +3481,7 @@ object FGotProdNaklView: TFGotProdNaklView
     end
   end
   object seriaArr: TRxMemoryData
+    Active = True
     FieldDefs = <
       item
         Name = 'SERIA'
@@ -3525,8 +3530,21 @@ object FGotProdNaklView: TFGotProdNaklView
         DataType = ftFloat
       end
       item
+        Name = 'VES_TARA'
+        DataType = ftFloat
+      end
+      item
+        Name = 'VES_UPAK'
+        DataType = ftFloat
+      end
+      item
         Name = 'VES_GRP'
         DataType = ftFloat
+      end
+      item
+        Name = 'UPAK_TRANS'
+        DataType = ftString
+        Size = 20
       end>
     Left = 1008
     Top = 264
@@ -3911,7 +3929,22 @@ object FGotProdNaklView: TFGotProdNaklView
     Top = 392
   end
   object IbTaraMem: TRxMemoryData
-    FieldDefs = <>
+    Active = True
+    FieldDefs = <
+      item
+        Name = 'SIZE_UPAK'
+        DataType = ftString
+        Size = 65
+      end
+      item
+        Name = 'UPAK_TRANS'
+        DataType = ftString
+        Size = 20
+      end
+      item
+        Name = 'VOL_TRANS'
+        DataType = ftFloat
+      end>
     Left = 920
     Top = 408
     object IbTaraMemSIZE_UPAK: TStringField

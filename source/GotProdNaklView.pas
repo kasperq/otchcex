@@ -368,6 +368,7 @@ type
     IBTaraUPAK_TRANS2: TIBStringField;
     IBTaraSIZE_UPAK2: TIBStringField;
     btn_underSign: TSpeedButton;
+    printForMlnP: TMenuItem;
 
     procedure setDokDate(value : string);
     function isDateValid(value : string) : boolean;
@@ -390,6 +391,7 @@ type
     procedure openNaklS;
     procedure getKeiId;
     procedure printForUpak;
+    procedure printForMlnPE;
     procedure printForUpakSimple;
     procedure printForKg;
     procedure printForLitr;
@@ -502,6 +504,7 @@ type
     procedure N6Click(Sender: TObject);
     procedure IBTaraAfterOpen(DataSet: TDataSet);
     procedure btn_underSignClick(Sender: TObject);
+    procedure printForMlnPClick(Sender: TObject);
 
   private
     lookUnderS : TFLookupUnderSign;
@@ -1102,6 +1105,16 @@ begin
   begin
     prepareDataForPrint;
     printForUpakSimple;
+    FrxReport1.ShowReport(true);
+  end;
+end;
+
+procedure TFGotProdNaklView.printForMlnPClick(Sender: TObject);
+begin
+  if (GotKartQuery.RecordCount > 0) then
+  begin
+    prepareDataForPrint;
+    printForMlnPE;
     FrxReport1.ShowReport(true);
   end;
 end;
@@ -1848,6 +1861,112 @@ begin
   FrxReport1.LoadFromFile(reportsPath + 'Got_Prod_n_simple.fr3');
 end;
 
+procedure TFGotProdNaklView.printForMlnPE;
+var
+  st : String;
+  v_kol_upak : integer;
+  v_kol_upak1 : integer;
+  v_seria1 : string;
+
+begin
+  while (not MD_Nakl_s.Eof) do
+  begin
+    v_kol_upak1 := 0;
+    MD_Nakl_s.Edit;
+    MD_Nakl_s.FieldByName('kol_upak').AsInteger := MD_Nakl_s.FieldByName('kol_grp').AsInteger;
+    st := SumToString(Round(MD_Nakl_s.FieldByName('kol_grp').AsInteger));
+    MD_Nakl_s.FieldByName('kol_upak_prop').AsString := st;
+    v_kol_upak := Trunc(StrToFloat(MD_Nakl_s.FieldByName('KOL_RASH').AsString) * 1000000
+                        / StrToFloat(MD_Nakl_s.FieldByName('kol_trans').AsString));
+    if (cbRF.Checked) then                                                            // для Реополюглюкина на РФ для 1 цеха
+    begin
+      v_kol_upak := trunc(StrToFloat(MD_Nakl_s.FieldByName('KOL_RASH').AsString) * 1000000);          // для Реополюглюкина на РФ для 1 цеха
+      if (v_kol_upak  = 0) then
+        v_kol_upak := trunc(1 / (StrToFloat(MD_Nakl_s.FieldByName('KOL_RASH').AsString) * 1000000));
+    end;
+
+    if v_kol_upak < (MD_Nakl_s.FieldByName('KOL_RASH').AsFloat * 1000000)
+                     / MD_Nakl_s.FieldByName('kol_trans').AsFloat then
+      v_kol_upak1 := 1;
+
+    if (cbRF.Checked) then
+      if (frac(StrToFloat(MD_Nakl_s.FieldByName('KOL_RASH').AsString) * 1000000) > 0) then
+        v_kol_upak1 := 1;
+
+    GetUpak.Close;
+    GetUpak.ParamByName('name_upak').AsString := MD_Nakl_s.FieldByName('upak_trans').AsString;
+    GetUpak.Open;
+    if (not GetUpak.Eof) then
+    begin
+      MD_Nakl_s.FieldByName('size_upak').AsString := GetUpak.FieldByName('len_up').AsString
+                                                     + 'x'
+                                                     + GetUpak.FieldByName('width_up').AsString
+                                                     + 'x'
+                                                     + GetUpak.FieldByName('height_up').AsString;
+      MD_Nakl_s.FieldByName('vol_trans').AsFloat := GetUpak.FieldByName('vol_up').AsFloat
+    end;
+    if (v_kol_upak <> 0) then
+    begin
+      RMUpak.Append;
+      RMUpak.FieldByName('kol_upak').AsInteger := v_kol_upak;
+      RMUpak.FieldByName('kol_trans').AsFloat := MD_Nakl_s.FieldByName('KOL_trans').AsFloat;
+      RMUpak.FieldByName('seria').AsString := MD_Nakl_s.FieldByName('seria').AsString;
+      st := SumToString(v_kol_upak);
+      RMUpak.FieldByName('kol_upak_prop').AsString := st;
+      RMUpak.FieldByName('ves_trans').AsFloat := MD_Nakl_s.FieldByName('Ves_trans').AsFloat;
+      RMUpak.FieldByName('ves_upak').AsFloat := MD_Nakl_s.FieldByName('Ves_tara').AsFloat;
+      RMUpak.Post;
+    end;
+//      s_vesup:=RMUpak.FieldByName('ves_upak').AsFloat;
+    if (v_kol_upak1 = 1) then
+    begin
+      RMUpak.Append;
+      RMUpak.FieldByName('seria').asstring := v_seria1;
+      RMUpak.FieldByName('kol_upak').AsInteger := v_kol_upak1;
+
+      vv := MyCeil(MD_Nakl_s.FieldByName('KOL_RASH').AsFloat * 1000000);
+
+      RMUpak.FieldByName('kol_trans').AsFloat := vv - (MD_Nakl_s.FieldByName('KOL_trans').AsFloat * v_kol_upak);
+
+      if (cbRF.Checked) then
+      begin
+        RMUpak.FieldByName('kol_trans').AsInteger := trunc(SimpleRoundTo(frac(MD_Nakl_s.FieldByName('KOL_RASH').AsFloat
+                                                                              * 1000000)
+                                                      * MD_Nakl_s.FieldByName('KOL_trans').AsInteger, 0));
+      end;
+
+      if (MD_Nakl_s.FieldByName('KOL_grp').AsInteger <> 0) then
+        RMUpak.FieldByName('ves_upak').AsFloat := MD_Nakl_s.FieldByName('Ves_upak').AsFloat
+                                                  + (RMUpak.FieldByName('kol_trans').AsInteger
+                                                     / MD_Nakl_s.FieldByName('KOL_grp').AsInteger
+                                                     * MD_Nakl_s.FieldByName('ves_grp').AsFloat)
+      else
+        RMUpak.FieldByName('ves_upak').AsFloat := MD_Nakl_s.FieldByName('Ves_upak').AsFloat;
+      if (MD_Nakl_s.FieldByName('KOL_trans').AsInteger <> 0) then
+        RMUpak.FieldByName('ves_trans').AsFloat := roundto(((vv
+                                                             - (MD_Nakl_s.FieldByName('KOL_trans').AsInteger
+                                                             * v_kol_upak))
+                                                             * MD_Nakl_s.FieldByName('Ves_trans').AsFloat)
+                                                             / MD_Nakl_s.FieldByName('KOL_trans').AsInteger,
+                                                           -2)
+      else
+        RMUpak.FieldByName('ves_trans').AsFloat := 0;
+
+      if (cbRF.Checked) then                                                                          // реополюглюкин на РФ для 1 цеха
+        RMUpak.FieldByName('ves_trans').AsFloat := RMUpak.FieldByName('KOL_trans').AsFloat
+                                                   / GotKartQueryKOL_TRANS.AsFloat
+                                                   * GotKartQueryVES_TRANS.AsFloat;
+
+      RMUpak.FieldByName('seria').AsString := MD_Nakl_s.FieldByName('seria').AsString;
+      st := SumToString(v_kol_upak1);
+      RMUpak.FieldByName('kol_upak_prop').AsString := st;
+      RMUpak.Post;
+    end;
+    MD_Nakl_s.Next;
+  end;
+  FrxReport1.LoadFromFile(reportsPath + 'Got_Prod_n.fr3');
+end;
+
 procedure TFGotProdNaklView.printForUpak;
 var
   st : String;
@@ -2446,12 +2565,16 @@ begin
     if ((keiId = 166) or (keiId = 170) or (keiId = 163) or (keiId = 122)) then
       st := AnsiUpperCase(FloatToText(MD_Naklad.FieldByName('KOL_RASH').AsFloat, 3))
     else
-//      st := SumToString(Round(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000));
-      st := FloatToText(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000,
-                        KolZnakovPosleZap(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000));
+    begin
+      if (keiId = 660) then
+        st := FloatToText(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000000,
+                          KolZnakovPosleZap(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000000))
+      else
+        st := FloatToText(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000,
+                          KolZnakovPosleZap(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000));
+    end;
 
     if (cbRF.Checked) then
-//      st := FloatToText(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000, 3);
       st := FloatToText(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000,
                         KolZnakovPosleZap(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000));
     MD_Naklad.FieldByName('SUM_PROP').AsString := st;
@@ -2614,7 +2737,7 @@ end;
 procedure TFGotProdNaklView.printForMeds(Sender: TObject);
 begin
   createSeriaArr;
-//  createUpakArr; 
+//  createUpakArr;
   ibtara.Active := false;
   ibtara.paramByName('doc').AsInteger := GotDocumentDOC_ID.AsInteger;
   IbTara.Active := true;
@@ -2802,6 +2925,8 @@ begin
     printForMeds(Sender);
   if (keiId = 122) or (keiId = 123) then
     printForLiters(sender);
+  if (keiId = 660) then
+    printForMlnPClick(sender);
   printVibor := 0;
 end;
 
