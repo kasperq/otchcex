@@ -348,13 +348,40 @@ begin
   While (not Query_Otchet.Eof) do
   begin
     Otchet.First;
-    IF Otchet.Locate('ksm_id;razdel_id',
+    IF (Otchet.Locate('ksm_id;razdel_id',
                       VarArrayOf([Query_OtchetKsm_id.AsInteger,
-                                  Query_OtchetRazdel_id.AsInteger]), []) THEN
+                                  Query_OtchetRazdel_id.AsInteger]), [])) THEN
     begin
-      s_ksm := OtchetKsm_ID.AsInteger;
-      v_keiN := OtchetKEI_idn.AsInteger;
-      Otchet.Edit
+      if (vStruk_id = 540) then
+      begin
+        if (otchet.Locate('ksm_id;razdel_id;kart_id',
+                        VarArrayOf([Query_OtchetKsm_id.AsInteger,
+                                    Query_OtchetRazdel_id.AsInteger,
+                                    Query_OtchetKART_ID.AsInteger]), [])) then
+        begin
+          s_ksm := OtchetKsm_ID.AsInteger;
+          v_keiN := OtchetKEI_idn.AsInteger;
+          Otchet.Edit;
+        end
+        else
+        begin
+          Otchet.Insert;
+          Otchet.FieldByName('kSM_ID').AsInteger := Query_OtchetKSM_ID.AsIntEger;
+          Otchet.FieldByName('RAZDEL_ID').AsInteger := Query_OtchetRAZDEL_ID.AsInteger;
+          Otchet.FieldByName('NMAT').AsString := Query_OtchetNMAT.AsString;
+          Otchet.FieldByName('NEIS').AsString := Query_OtchetNEISn.AsString;
+          Otchet.FieldByName('KRAZ').AsInteger := Query_OtchetKRAZ.AsInteger;
+          Otchet.FieldByName('NAMRAZ').AsString := Query_OtchetNAMRAZ.AsString;
+          v_keiN := Query_OtchetKEI_IDN.AsInteger;
+          s_ksm := Query_Otchet.FieldByName('ksm_id').AsInteger;
+        end;
+      end
+      else
+      begin
+        s_ksm := OtchetKsm_ID.AsInteger;
+        v_keiN := OtchetKEI_idn.AsInteger;
+        Otchet.Edit;
+      end;
     end
     else
     begin
@@ -390,6 +417,7 @@ begin
                                             * dm1.Koef_per(v_kein, s_kei, s_ksm);
     Otchet.FieldByName('OT_NZ').AsVariant := Query_Otchet.FieldByName('Ostatok_end_NZ').AsFloat
                                              * dm1.Koef_per(v_kein, s_kei, s_ksm);
+    Otchet.FieldByName('KART_ID').AsVariant := Query_OtchetKART_ID.AsInteger;
     Otchet.Post;
     Query_Otchet.Next;
   end;

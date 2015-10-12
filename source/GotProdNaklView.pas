@@ -319,7 +319,6 @@ type
     frxDBDataset4: TfrxDBDataset;
     frxDBDataset5: TfrxDBDataset;
     frxDBDataset6: TfrxDBDataset;
-    newPrintBtn: TSpeedButton;
     N4: TMenuItem;
     seriaArrNAM: TStringField;
     frxDBDataset7: TfrxDBDataset;
@@ -369,6 +368,7 @@ type
     IBTaraSIZE_UPAK2: TIBStringField;
     btn_underSign: TSpeedButton;
     printForMlnP: TMenuItem;
+    newPrintBtn: TSpeedButton;
 
     procedure setDokDate(value : string);
     function isDateValid(value : string) : boolean;
@@ -511,6 +511,8 @@ type
 
     function isNecessaryDocFieldsValid() : boolean;
     function isNecessaryKartFieldsValid() : boolean;
+
+    function is1Seria2Codes() : boolean;
 
   public
     { Public declarations }
@@ -1166,6 +1168,8 @@ begin
         deleteSkladKart(SkladDocumentDOC_ID.AsInteger);
         dm1.commitReadTrans(true);
         SkladDocument.Delete;
+        SkladDocument.ApplyUpdates;
+        dm1.commitWriteTrans(true);
       end;
     end;
     skladKart.Close;
@@ -2928,6 +2932,16 @@ begin
   if (keiId = 660) then
     printForMlnPClick(sender);
   printVibor := 0;
+end;
+
+function TFGotProdNaklView.is1Seria2Codes() : boolean;
+begin
+  GotKartQuery.DisableControls;
+  if (GotKartQuery.RecordCount > 3) then
+  begin
+
+  end;
+  GotKartQuery.EnableControls;
 end;
 
 function TFGotProdNaklView.isNecessaryDocFieldsValid() : boolean;
