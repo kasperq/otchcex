@@ -540,7 +540,19 @@ begin
   else
   begin
     if (dm1.stkod = '1600') then
-      tochn := getCurZnak(Spirt_OtchetOSTATOK_BEGIN_S.AsFloat, 3)
+    begin
+      tochn := getCurZnak(Spirt_OtchetOSTATOK_BEGIN_S.AsFloat, 3);
+      if (getCurZnak(Spirt_OtchetPRIX_PERIOD.AsFloat, 3) > tochn) then
+        tochn := getCurZnak(Spirt_OtchetPRIX_PERIOD.AsFloat, 3);
+      if (getCurZnak(Spirt_OtchetZAG_PERIOD.AsFloat, 3) > tochn) then
+        tochn := getCurZnak(Spirt_OtchetZAG_PERIOD.AsFloat, 3);
+      if (getCurZnak(Spirt_OtchetRASH_VIRAB_PERIOD.AsFloat, 3) > tochn) then
+        tochn := getCurZnak(Spirt_OtchetRASH_VIRAB_PERIOD.AsFloat, 3);
+      if (getCurZnak(Spirt_OtchetPEREDANO_RASH_S.AsFloat, 3) > tochn) then
+        tochn := getCurZnak(Spirt_OtchetPEREDANO_RASH_S.AsFloat, 3);
+      if (getCurZnak(Spirt_OtchetPEREDANO_RASH_NZ.AsFloat, 3) > tochn) then
+        tochn := getCurZnak(Spirt_OtchetPEREDANO_RASH_NZ.AsFloat, 3);
+    end
     else
       tochn := 3;
   end;

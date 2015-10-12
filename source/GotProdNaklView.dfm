@@ -2928,6 +2928,7 @@ object FGotProdNaklView: TFGotProdNaklView
   object SkladDocument: TRxIBQuery
     Database = DM1.BELMED
     Transaction = DM1.IBT_Read
+    CachedUpdates = True
     SQL.Strings = (
       'select *'
       'from document'
@@ -3762,6 +3763,7 @@ object FGotProdNaklView: TFGotProdNaklView
   object SkladKart: TRxIBQuery
     Database = DM1.BELMED
     Transaction = DM1.IBT_Read
+    CachedUpdates = True
     SQL.Strings = (
       'select *'
       'from kart'
