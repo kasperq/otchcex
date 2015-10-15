@@ -191,7 +191,8 @@ begin
                                                + 'configumc.struk_id = 544 or '
                                                + 'configumc.struk_id = 545 or '
                                                + 'configumc.struk_id = 546 or '
-                                               + 'configumc.struk_id = 708) ';
+                                               + 'configumc.struk_id = 708 '
+                                               + 'configumc.struk_id = 760) ';
   DM1.ConfigUMC.Open;
   dm1.IBMatr_pr.Open;
 end;
