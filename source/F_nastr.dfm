@@ -126,7 +126,7 @@ object FNastr: TFNastr
     Top = 5
     Width = 254
     Height = 19
-    DropDownBox.Rows = 19
+    DropDownBox.Rows = 20
     DropDownBox.Sizable = True
     EditButtons = <>
     Flat = True
