@@ -743,6 +743,7 @@ uses
     VipuskMemNAME_ORG: TStringField;
     FactVipuskQuerySPROD_ID: TIntegerField;
     KartCENA_UCH: TFloatField;
+    DocumentDOK_OSN_ID: TIntegerField;
     procedure DataModuleCreate(Sender: TObject);
     procedure FormToObject(PopupForm : TForm; ControlObject : TControl; HTop:Integer=0; YesWidth:Integer=1);
     procedure VoprosWriteDoc;
@@ -754,7 +755,7 @@ uses
     procedure RaspredZagOt;
     procedure RaspredRas;
     procedure RaspredRasOt;
-    procedure DobPrixPrep(spec : boolean);
+    procedure DobPrixPrep;
 
 // IGOR'S PROCEDURES ARE HERE *************************************************************//
     procedure writeMyUserNameToTxt;
@@ -775,7 +776,7 @@ uses
     function MesNameInRodPodezhSmall(Mes: integer): string;
     procedure createKartIdInOstatki;
     procedure createPrixodDocumOnPrep;
-    procedure findOstatkiSyrInCex(spec : boolean);
+    procedure findOstatkiSyrInCex;
     procedure createKartInPrixodDocumOnPrep;
     procedure activateSprFormul(ksmIdPr : integer; ksmIdMat : integer; razdelId : integer);
     procedure commitWriteTrans(retaining : boolean);
@@ -1406,31 +1407,22 @@ begin
   DM1.kart.ApplyUpdates;
 end;
 
-procedure TDM1.findOstatkiSyrInCex(spec : boolean);   // поиск остатков сырья в цехе
+procedure TDM1.findOstatkiSyrInCex;   // поиск остатков сырья в цехе
 begin
   DM1.IBQuery1.Active := False;
   DM1.IBQuery1.SQL.Clear;
   DM1.IBQuery1.SQL.Add('SELECT ostatki.kart_id, ostatki.OSTATOK_END_S, ostatki.struk_id, ');
   DM1.IBQuery1.SQL.Add(' (select kol_new from ceh_ost_ediz(ostatki.KSM_ID, ostatki.KEI_ID,'
                         + inttostr(v_kein) + ', ostatki.OSTATOK_END_S)) Kot_S');
-  if (spec) then
-  begin
-    DM1.IBQuery1.SQL.Add(' FROM  SELECT_OST_KSM_ACC (' + '''' + s_dat1 + '''' + ','
-                            + '''' + s_dat2 + '''' + ',1,' + inttostr(vSTRUK_ID)
-                        + ',' + inttostr(s_KSM) + ', ''10/11'') ostatki ');
-  end
-  else
-  begin
-    DM1.IBQuery1.SQL.Add(' FROM  SELECT_OST_KSM1 (' + '''' + s_dat1 + '''' + ','
-                        + '''' + s_dat2 + '''' + ',1,' + inttostr(vSTRUK_ID)
-                        + ',' + inttostr(s_KSM) + ', 0) ostatki ');
-  end;
+  DM1.IBQuery1.SQL.Add(' FROM  SELECT_OST_KSM1 (' + '''' + s_dat1 + '''' + ','
+                       + '''' + s_dat2 + '''' + ',1,' + inttostr(vSTRUK_ID)
+                       + ',' + inttostr(s_KSM) + ', 0) ostatki ');
   DM1.IBQuery1.SQL.Add(' order by ostatki.kart_id ');
   DM1.IBQuery1.Active := True;
   DM1.IBQuery1.First;
 end;
 
-procedure TDM1.DobPrixPrep(spec : boolean);
+procedure TDM1.DobPrixPrep;
 var
   v_docSt : integer;
   v_tipSt : integer;
@@ -1440,24 +1432,14 @@ begin
   v_tipSt := vTip_op_id;
   v_kartSt := vKart_id;
  // расчет необходимого кол-ва прихода на препарат с учетом остатков
-  if (not spec) then
-    v_raspred := getNeededPrixInMatropEdiz();    // v_raspred- в ед.изм.справочника (табл.Matrop)
+  v_raspred := getNeededPrixInMatropEdiz();    // v_raspred- в ед.изм.справочника (табл.Matrop)
   v_raspred_dob := getNeededPrixInNormnEdiz();   // v_raspred_dob - в ед.изм. норм (табл.Normn)
 // поиск карточки сырья цеха, ели нет-создать
-  if (spec) then
-    v_dok_kart := SelectToVarIB('select Ostatki.kart_id '
-                                + 'FROM Ostatki WHERE Ostatki.STRUK_ID = ' + INTTOSTR(VsTRUK_ID)
-                                + ' AND ostatki.ksm_id = ' + inttostr(s_Ksm)
-                                + ' AND (coalesce(Ostatki.Ksm_idpr, 0) = 0) '
-                                + ' and ostatki.account = ''10/11'' '
-                                + ' and ostatki.ot_s <> 0 ',
-                                dm1.belmed, dm1.ibt_read)
-  else
-    v_dok_kart := SelectToVarIB('select Ostatki.kart_id '
-                                + 'FROM Ostatki WHERE Ostatki.STRUK_ID = ' + INTTOSTR(VsTRUK_ID)
-                                + ' AND ostatki.ksm_id = ' + inttostr(s_Ksm)
-                                + ' AND (coalesce(Ostatki.Ksm_idpr, 0) = 0)',
-                                dm1.belmed, dm1.ibt_read);
+  v_dok_kart := SelectToVarIB('select Ostatki.kart_id '
+                              + 'FROM Ostatki WHERE Ostatki.STRUK_ID = ' + INTTOSTR(VsTRUK_ID)
+                              + ' AND ostatki.ksm_id = ' + inttostr(s_Ksm)
+                              + ' AND (coalesce(Ostatki.Ksm_idpr, 0) = 0)',
+                              dm1.belmed, dm1.ibt_read);
 
   If (v_dok_kart = Null) then
     createKartIdInOstatki   //  карточки нету, создаем ее
@@ -1477,10 +1459,7 @@ begin
     end;
     dm1.Kart.BeforePost := nil;
 // цикл по сериям сырья (OSTATKI)- QUERY
-    if (spec) then
-      findOstatkiSyrInCex(true)
-    else
-      findOstatkiSyrInCex(false);
+    findOstatkiSyrInCex;
     createKartInPrixodDocumOnPrep;    // запись необходимого прихода на препарат в Kart
   end;
   vdocument_id := v_docSt;
@@ -2062,7 +2041,7 @@ begin
          dm1.Kart.BeforePost:=KartBeforePost;
          pr_kor:=0;
          DM1.ApplyUpdatesDoc;
-         DM1.DobPrixPrep(false);
+         DM1.DobPrixPrep;
         end;
        end;
       end;

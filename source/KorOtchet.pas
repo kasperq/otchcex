@@ -1903,7 +1903,7 @@ begin
 //          else
 //            tochn := -3;
           pr_kor := 0;
-          DM1.DobPrixPrep(false);
+          DM1.DobPrixPrep;
         end;
         RaspSyrPrep.Next;
       end;

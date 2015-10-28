@@ -340,7 +340,7 @@ begin
    v_raspred_dob:=PoterZagPoteri.AsFloat-v_ost_syr;
    v_raspred:=v_raspred-PoterZagOstatok_end_s.AsFloat;
    vklient_id:=PoterZagKsm_idpr.AsInteger;
-   DM1.DobPrixPrep(false);
+   DM1.DobPrixPrep;
    st_kart:=PoterZagKart_id.AsInteger;
    if v_raspred_dob=0 then
    begin
