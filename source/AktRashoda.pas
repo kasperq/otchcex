@@ -1061,6 +1061,8 @@ begin
   dm1.Kart.MacroByName('usl').AsString := '0=0';
   dm1.Ostatki.Close;
   dm1.Ostatki.MacroByName('usl').AsString := '0=0';
+  dm1.IBT_Read.RollbackRetaining;
+  dm1.IBT_Write.RollbackRetaining;
   s_kodp := 0;
   s_nmat := '';
   vklient_id := 0;
@@ -2007,6 +2009,8 @@ begin
     dm1.Kart.MacroByName('usl').AsString := '0=0';
     dm1.Ostatki.Close;
     dm1.Ostatki.MacroByName('usl').AsString := '0=0';
+    dm1.IBT_Read.RollbackRetaining;
+    dm1.IBT_Write.RollbackRetaining;
     s_kodp := 0;
     s_nmat := '';
     vklient_id := 0;
