@@ -8,7 +8,7 @@ uses
   Grids, DBGridEh, StdCtrls, RxMemDS, Buttons, RxStrUtils, VCLUtils, Menus,
   RxMenus, IBDataBase, ToolWin, ComCtrls, ImgList, ExtCtrls, SplshWnd,
   IBUpdateSQL, IBUpdSQLW, RXCtrls, Math, kbmMemTable, ActnList,
-  XPStyleActnCtrls, ActnMan;
+  XPStyleActnCtrls, ActnMan, UtilRIb;
 
 type                                                      
   TIFPair = class(TObject)
@@ -344,6 +344,9 @@ type
     q_configumcMES: TSmallintField;
     q_configumcGOD: TSmallintField;
     q_configumcSTRUK_ID: TSmallintField;
+    IBQuery1: TIBQuery;
+    q_specDocDOK_OSN_ID: TIntegerField;
+    q_docParam: TRxIBQuery;
     function GetCehNum(cehName : string) : integer;
     function SetMonthCombo(month : integer) : boolean;
     function activateNormQuery() : boolean;
@@ -439,6 +442,7 @@ type
     procedure findAndSet10Account;
     function findSpecKart(strukId, ksmId : integer; date1, date2 : TDate) : boolean;
     function openSpecDoc() : boolean;
+    procedure deleteSpecDoc;
     procedure deleteSpecKart;
     procedure createSpecDoc;
     function findSpecOstAllOr11(ksmId : integer; allAccs : boolean) : boolean;
@@ -452,8 +456,18 @@ type
     procedure deletePrixKart;
     function addSpecRec2Prixod() : boolean;
 
+    procedure DobPrixPrep(spec : boolean);
+    function getNeededPrixInMatropEdiz() : double;
+    function getNeededPrixInNormnEdiz() : double;
+    procedure createKartIdInOstatki;
+    procedure createPrixodDocumOnPrep;
+    procedure removeKartByDocidKsmidRazdelid(docId, ksmId, razdelId: Integer);
+    procedure findOstatkiSyrInCex(spec : boolean);
+    procedure createKartInPrixodDocumOnPrep;
+
     procedure openConfigumc;
     procedure setAktOrCurMonth2Conf(setAktMonth : boolean);
+
 
   public
     DataBaseName : TIBDataBase;
@@ -471,6 +485,7 @@ var
   znak : integer;
   firstLoad : integer;
   descend : boolean;
+  curDocId : integer;
 
 implementation
 
@@ -717,33 +732,6 @@ begin
   NormiMemDat.Edit;
   NormiMemDatSPEC.AsInteger := 1;
   NormiMemDat.Post;
-//  q_specOst.First;
-//  while (not q_specOst.Eof) and (ostKol <> 0) do
-//  begin
-//    if (ostKol > q_specOstOT_S.AsFloat) then
-//    begin
-//      curKol := q_specOstOT_S.AsFloat;
-//      curKartId := q_specOstKART_ID.AsInteger;
-//      ostKol := ostKol - curKol;
-//    end
-//    else
-//    begin
-//      curKol := ostKol;
-//      curKartId := q_specOstKART_ID.AsInteger;
-//      ostKol := 0;
-//    end;
-//    q_specKart.Append;
-//    q_specKartKART_ID.AsInteger := curKartId;
-//    q_specKartDOC_ID.AsInteger := q_specDocDOC_ID.AsInteger;
-//    q_specKartKSM_ID.AsInteger := NormiMemDatKSM_ID.AsInteger;
-//    q_specKartCENA.AsFloat := q_specOstCENA_UCH.AsFloat;
-//    q_specKartCENA_VP.AsFloat := q_specOstCENA_UCH.AsFloat;
-//    DM1.Add_KartDok.StoredProcName := 'ADD_KARTV';
-//    DM1.Add_KartDok.ExecProc;
-//    q_specKartSTROKA_ID.AsInteger := DM1.Add_KartDok.Params.Items[0].AsInteger;
-//    q_specKartKOL_RASH.AsFloat := curKol;
-//    q_specKart.Post;
-//  end;
 end;
 
 procedure TFAktRashoda.addRecToNotAdded;
@@ -822,6 +810,7 @@ begin
   q_specDocDATE_OP.AsDateTime := StrToDate('01.'
                                            + IntToStr(monthCombo.ItemIndex + 1)
                                            + '.' + yearEdit.Text);
+  q_specDocDOK_OSN_ID.AsInteger := curDocId;
   q_specDoc.Post;
   q_specDoc.ApplyUpdates;
   dm1.commitWriteTrans(true);
@@ -840,7 +829,17 @@ begin
   q_specDoc.Open;
   q_specDoc.First;
   if (q_specDoc.RecordCount > 0) and (not q_specDoc.Eof) then
+  begin
     result := true;
+    if (q_specDocDOK_OSN_ID.AsInteger <> curDocId) then
+    begin
+      q_specDoc.Edit;
+      q_specDocDOK_OSN_ID.AsInteger := curDocId;
+      q_specDoc.Post;
+      q_specDoc.ApplyUpdates;
+      dm1.commitWriteTrans(true);
+    end;
+  end;
 end;
 
 procedure TFAktRashoda.findAndSet10Account;
@@ -924,6 +923,7 @@ begin
                     + #10#13 + 'Увидеть их можно нажав на кнопку с перечеркнутой дискетой на панели');
       end;
       setAktOrCurMonth2Conf(false);
+      reloadNorms(0);
     except
       on e : exception do
         setAktOrCurMonth2Conf(false);
@@ -974,19 +974,19 @@ begin
   if edit1.text <> ''   then
   begin
     skod := replacestr(edit1.text,',','.')+'%';
-    DM1.IBQuery1.Active := False;
-    DM1.IBQuery1.SQL.Clear;
-    DM1.IBQuery1.SQL.Add('SELECT SPPROD.STRUK_ID,SPPROD.NMAT, SPPROD.KOD_PROD, SPPROD.KEI_ID,SPPROD.KSM_ID,');
-    DM1.IBQuery1.SQL.Add('SPPROD.GOST,EDIZ.NEIS,SPPROD.KORG,SPPROD.XARKT,SPPROD.ACTIVP,SPRORG.NAM');
-    DM1.IBQuery1.SQL.Add(' FROM SPPROD');
-    DM1.IBQuery1.SQL.Add('  INNER JOIN EDIZ ON (SPPROD.KEI_ID = EDIZ.KEI_ID)');
-    DM1.IBQuery1.SQL.Add('  left JOIN SPRORG ON (SPPROD.KORG = SPRORG.KOD)');
-    DM1.IBQuery1.SQL.Add(' WHERE SPPROD.KOD_PROD like ' + '''' + skod + ''''
+    IBQuery1.Active := False;
+    IBQuery1.SQL.Clear;
+    IBQuery1.SQL.Add('SELECT SPPROD.STRUK_ID,SPPROD.NMAT, SPPROD.KOD_PROD, SPPROD.KEI_ID,SPPROD.KSM_ID,');
+    IBQuery1.SQL.Add('SPPROD.GOST,EDIZ.NEIS,SPPROD.KORG,SPPROD.XARKT,SPPROD.ACTIVP,SPRORG.NAM');
+    IBQuery1.SQL.Add(' FROM SPPROD');
+    IBQuery1.SQL.Add('  INNER JOIN EDIZ ON (SPPROD.KEI_ID = EDIZ.KEI_ID)');
+    IBQuery1.SQL.Add('  left JOIN SPRORG ON (SPPROD.KORG = SPRORG.KOD)');
+    IBQuery1.SQL.Add(' WHERE SPPROD.KOD_PROD like ' + '''' + skod + ''''
                           + ' AND SPPROD.STRUK_ID=' + INTTOSTR(vStruk_Id));
-    DM1.IBQuery1.Active := True;
-    if not dm1.IBQuery1.Eof then
-      Label19.Caption := DM1.IBQuery1.FieldByName('kod_PROD').Asstring
-                          + DM1.IBQuery1.FieldByName('nmat').AsString
+    IBQuery1.Active := True;
+    if not IBQuery1.Eof then
+      Label19.Caption := IBQuery1.FieldByName('kod_PROD').Asstring
+                          + IBQuery1.FieldByName('nmat').AsString
     else
       Label19.Caption := '';
 
@@ -1007,14 +1007,14 @@ begin
   if key=vk_return then
   begin
     StartWait;
-    if (edit1.text <> '') and (not dm1.IBQuery1.Eof)  then
+    if (edit1.text <> '') and (not IBQuery1.Eof)  then
     begin
       EDIT1.OnChange := nil;
-      edit1.text := DM1.IBQuery1.FieldByName('kod_PROD').Asstring;
+      edit1.text := IBQuery1.FieldByName('kod_PROD').Asstring;
       EDIT1.OnChange := Edit1Change;
-      s_kodp := DM1.IBQuery1.FieldByName('KSM_ID').value;
-      s_nmat := DM1.IBQuery1.FieldByName('NMAT').AsString;
-      if DM1.IBQuery1.FieldByName('ACTIVP').Asinteger = 1 then
+      s_kodp := IBQuery1.FieldByName('KSM_ID').value;
+      s_nmat := IBQuery1.FieldByName('NMAT').AsString;
+      if IBQuery1.FieldByName('ACTIVP').Asinteger = 1 then
         s_lab11 := 'Действующие'
       else
         s_lab11 := 'Недействующие';
@@ -1055,6 +1055,21 @@ procedure TFAktRashoda.FormShow(Sender: TObject);
 var
   nmat : string;
 begin
+  DM1.Document.Close;
+  dm1.Document.MacroByName('usl').AsString := '0=0';
+  DM1.Kart.Close;
+  dm1.Kart.MacroByName('usl').AsString := '0=0';
+  dm1.Ostatki.Close;
+  dm1.Ostatki.MacroByName('usl').AsString := '0=0';
+  dm1.IBT_Read.RollbackRetaining;
+  dm1.IBT_Write.RollbackRetaining;
+  s_kodp := 0;
+  s_nmat := '';
+  vklient_id := 0;
+  s_ksm := 0;
+  v_razdel := 0;
+  v_kein := 0;
+  vdocument_id := 0;
   btn_notAdded.Visible := false;
   firstLoad := 0;
   descend := false;
@@ -1180,8 +1195,11 @@ begin
   DM1.Kart.First;
   while (not DM1.Kart.Eof) do
     DM1.Kart.Delete;
-  DM1.Kart.ApplyUpdates;
-  DM1.IBT_Write.CommitRetaining;
+  if (dm1.Kart.UpdatesPending) then
+  begin
+    DM1.Kart.ApplyUpdates;
+    DM1.IBT_Write.CommitRetaining;
+  end;
   result := true;
 end;
 
@@ -1255,17 +1273,20 @@ begin
     begin
       if (NormiMemDatFACTRASHOD.AsFloat <> 0) then
       begin
-        if (findSpecOstAllOr11(NormiMemDatKSM_ID.AsInteger, true)) and (vTip_Doc_Id = 144)
-           and (yearEdit.Text >= '2015') then
+        if (yearEdit.Text >= '2015') then
         begin
-          if (findSpecOstAllOr11(NormiMemDatKSM_ID.AsInteger, false))
-             and (getCurOst11() >= NormiMemDatFACTRASHOD.AsFloat) then
+          if (findSpecOstAllOr11(NormiMemDatKSM_ID.AsInteger, true))
+             and (vTip_Doc_Id = 144) then
           begin
-            if (addSpecRec2Prixod()) then
-              insertRecToSpecKart;
-          end
-          else
-            addRecToNotAdded;
+            if (findSpecOstAllOr11(NormiMemDatKSM_ID.AsInteger, false))
+               and (getCurOst11() >= NormiMemDatFACTRASHOD.AsFloat) then
+            begin
+              if (addSpecRec2Prixod()) then
+                insertRecToSpecKart;
+            end
+            else
+              addRecToNotAdded;
+          end;
         end
         else
         begin
@@ -1278,6 +1299,8 @@ begin
       NormiMemDat.Next;
     end;
     saveKart2DB();
+    if (vTip_Doc_Id = 144) then    
+      deleteSpecDoc;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     add2Prixod();//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1289,12 +1312,31 @@ begin
       NormiMemDat.Post;
       NormiMemDat.Next;
     end;
+
     result := true;
   except
     on e: exception do
     begin
       MessageDlg('Произошла ошибка! ' + #13 + E.Message, mtWarning, [mbOK], 0);
       result := false;
+    end;
+  end;
+end;
+
+procedure TFAktRashoda.deleteSpecDoc;
+begin
+  if (q_specKart.RecordCount = 0) then
+  begin
+    if (q_specDoc.RecordCount <> 0) then
+    begin
+      q_specKart.Close;
+      q_docParam.Close;
+      q_docParam.ParamByName('doc_id').AsInteger := q_specDocDOC_ID.AsInteger;
+      q_docParam.Open;
+      dm1.commitReadTrans(true);
+      q_specDoc.Delete;
+      q_specDoc.ApplyUpdates;
+      dm1.commitWriteTrans(true);
     end;
   end;
 end;
@@ -1522,7 +1564,7 @@ begin
   if showViborPrep() then
   begin
     reloadNorms(0);
-  end; 
+  end;
 end;
 
 procedure TFAktRashoda.ToolButton5Click(Sender: TObject);
@@ -1667,10 +1709,13 @@ begin
                                               '''';
   DM1.Document.Active := true;
 
-  if DM1.Document.Eof then
+  if (DM1.Document.Eof) then
     result := false
   else
+  begin
+    curDocId := dm1.DocumentDOC_ID.AsInteger;
     result := true;
+  end;
 end;
 
 function TFAktRashoda.showViborPrep() : boolean;
@@ -1681,6 +1726,7 @@ begin
   FindSpprod.ReadOnly := true;
   FindSpprod.Usl_Struk := 'spprod.struk_id=' + inttostr(vStruk_id);
   FindSpprod.ShowModal;
+
   if FindSpprod.ModalResult > 50 then
   begin
     EDIT1.OnChange := nil;
@@ -1900,6 +1946,7 @@ begin
     dm1.startWriteTrans;
     DM1.IBT_WRITE.CommitRetaining;
     DM1.IBT_READ.CommitRetaining;
+    curDocId := dm1.DocumentDOC_ID.AsInteger;
     result := true;
   except
   on e: exception do
@@ -1941,10 +1988,7 @@ begin
     if (DM1.Kart.UpdatesPending) then
     begin
       DM1.Kart.ApplyUpdates;
-      dm1.startReadTrans;
-      dm1.startWriteTrans;
-      DM1.IBT_Write.CommitRetaining;
-      DM1.IBT_Read.CommitRetaining;
+      dm1.commitWriteTrans(true);
     end;
     result := true;
   except
@@ -1959,8 +2003,23 @@ end;
 function TFAktRashoda.closeQueries() : boolean;
 begin
   try
-    DM1.Document.Active := false;
-    DM1.Kart.Active := false;
+    DM1.Document.Close;
+    dm1.Document.MacroByName('usl').AsString := '0=0';
+    DM1.Kart.Close;
+    dm1.Kart.MacroByName('usl').AsString := '0=0';
+    dm1.Ostatki.Close;
+    dm1.Ostatki.MacroByName('usl').AsString := '0=0';
+    dm1.IBT_Read.RollbackRetaining;
+    dm1.IBT_Write.RollbackRetaining;
+    s_kodp := 0;
+    s_nmat := '';
+    vklient_id := 0;
+    s_ksm := 0;
+    v_razdel := 0;
+    v_kein := 0;
+    vdocument_id := 0;
+    curDocId := 0;
+
     FindSpprod.IBSpprod.Active := false;
     NormiMemDat.EmptyTable;
     NormiMemDat.Active := false;
@@ -2156,7 +2215,7 @@ begin
     v_razdel := NormiMemDatRazdel_id.AsInteger;
     tochn := -6;
     pr_kor := 0;
-    DM1.DobPrixPrep(true);
+    self.DobPrixPrep(true);
 
     dm1.startReadTrans;
     dm1.startWriteTrans;
@@ -2192,7 +2251,7 @@ begin
       tochn := -6;
       pr_kor := 0;
       if (NormiMemDatSPEC.AsInteger <> 2) and (NormiMemDatSPEC.AsInteger <> 1) then
-        DM1.DobPrixPrep(false);
+        self.DobPrixPrep(false);
 //      end;
 //      curIndex := curIndex + 1;
       NormiMemDat.Next;
@@ -2461,6 +2520,261 @@ begin
     NormVQuery.Next;
   end;
   result := res;
+end;
+
+procedure TFAktRashoda.DobPrixPrep(spec : boolean);
+var
+  v_docSt : integer;
+  v_tipSt : integer;
+  v_kartSt : integer;
+begin
+  v_docSt := vDocument_id;
+  v_tipSt := vTip_op_id;
+  v_kartSt := vKart_id;
+ // расчет необходимого кол-ва прихода на препарат с учетом остатков
+  if (not spec) then
+    v_raspred := getNeededPrixInMatropEdiz();    // v_raspred- в ед.изм.справочника (табл.Matrop)
+  v_raspred_dob := getNeededPrixInNormnEdiz();   // v_raspred_dob - в ед.изм. норм (табл.Normn)
+// поиск карточки сырья цеха, ели нет-создать
+  if (spec) then
+    v_dok_kart := SelectToVarIB('select Ostatki.kart_id '
+                                + 'FROM Ostatki WHERE Ostatki.STRUK_ID = ' + INTTOSTR(VsTRUK_ID)
+                                + ' AND ostatki.ksm_id = ' + inttostr(s_Ksm)
+                                + ' AND (coalesce(Ostatki.Ksm_idpr, 0) = 0) '
+                                + ' and ostatki.account = ''10/11'' '
+                                + ' and ostatki.ot_s <> 0 ',
+                                dm1.belmed, dm1.ibt_read)
+  else
+    v_dok_kart := SelectToVarIB('select Ostatki.kart_id '
+                                + 'FROM Ostatki WHERE Ostatki.STRUK_ID = ' + INTTOSTR(VsTRUK_ID)
+                                + ' AND ostatki.ksm_id = ' + inttostr(s_Ksm)
+                                + ' AND (coalesce(Ostatki.Ksm_idpr, 0) = 0)',
+                                dm1.belmed, dm1.ibt_read);
+
+  If (v_dok_kart = Null) then
+    createKartIdInOstatki   //  карточки нету, создаем ее
+  else
+    st_kart := v_dok_kart;  // карточка сырья цеха есть, получаем сумму остатка в сырье
+  createPrixodDocumOnPrep;  //                 запись в Kart прихода сырья  на препарат
+  if (v_raspred_dob > 0) then
+  begin
+    if (not dm1.Kart.Active) then
+    begin
+      DM1.Kart.MacroByName('USL').AsString := 'WHERE document.klient_id = '
+                                              + inttostr(s_kodp)
+                                              + ' and document.date_op between '
+                                              + '''' + s_dat1 + '''' + ' and '
+                                              + '''' + s_dat2 + '''';
+      DM1.Kart.Open
+    end;
+    dm1.Kart.BeforePost := nil;
+// цикл по сериям сырья (OSTATKI)- QUERY
+    if (spec) then
+      findOstatkiSyrInCex(true)
+    else
+      findOstatkiSyrInCex(false);
+    createKartInPrixodDocumOnPrep;    // запись необходимого прихода на препарат в Kart
+  end;
+  vdocument_id := v_docSt;
+  vTip_Op_Id := v_tipSt;
+  vKart_id := v_kartSt;
+end;
+
+function TFAktRashoda.getNeededPrixInMatropEdiz() : double;   // расчет необходимого кол-ва прихода на препарат с учетом остатков
+begin
+  IBQuery1.Active := False;
+  IBQuery1.SQL.Clear;
+  IBQuery1.SQL.Add('SELECT ost.kei_id, ost.OSTATOK_begin_S, ost.zag_period, '
+                       + 'ost.peredano_rash_s, ost.peredano_prih_s, ost.razdel_id ');
+  IBQuery1.SQL.Add(' FROM  SELECT_OST_KSM (' + '''' + s_dat1 + '''' + ','
+                       + '''' + s_dat2 + '''' + ',' + inttostr(s_kodp) + ','
+                       + inttostr(vSTRUK_ID) + ',' + inttostr(s_KSM)
+                       + ') ost where ost.razdel_id = ' + inttostr(v_razdel));
+  IBQuery1.Active := True;
+  if (IBQuery1.RecordCount > 0) then
+    result := IBQuery1.FieldByName('zag_period').AsFloat
+              + IBQuery1.FieldByName('peredano_rash_s').AsFloat
+              - IBQuery1.FieldByName('OSTATOK_begin_S').AsFloat
+              - IBQuery1.FieldByName('peredano_prih_s').AsFloat
+  else
+    result := 0;
+end;
+
+function TFAktRashoda.getNeededPrixInNormnEdiz() : double;   // расчет необходимого кол-ва прихода на препарат с учетом остатков
+begin
+  IBQuery1.Active := False;
+  IBQuery1.SQL.Clear;
+  IBQuery1.SQL.Add('SELECT ost.kei_id, ost.OSTATOK_begin_S, ost.zag_period, '
+                       + 'ost.peredano_rash_s, ost.peredano_prih_s, ost.razdel_id ');
+  IBQuery1.SQL.Add(' FROM  SELECT_OST_KSM (' + '''' + s_dat1 + '''' + ','
+                       + '''' + s_dat2 + '''' + ',' + inttostr(s_kodp) + ','
+                       + inttostr(vSTRUK_ID) + ',' + inttostr(s_KSM)
+                       + ') ost where ost.razdel_id = ' + inttostr(v_razdel));
+  IBQuery1.Active := True;
+  if (IBQuery1.RecordCount > 0) then
+  begin
+    if (v_kein <> IBQuery1.FieldByName('kei_id').asinteger) then
+      result := roundto(v_raspred * dm1.Koef_per(v_Kein,
+                                                        IBQuery1.FieldByName('Kei_id').AsInteger,
+                                                        s_Ksm),
+                               tochn)
+    else
+      result := v_raspred;
+  end
+  else
+    result := v_raspred;
+end;
+
+procedure TFAktRashoda.createKartIdInOstatki;   // создание карточки сырья в остатках
+begin
+  IF (not DM1.Ostatki.Active) THEN
+    DM1.Ostatki.Active := TRUE
+  else
+    DM1.Ostatki.First;
+  DM1.Ostatki.Insert;
+  DM1.Ostatki.FieldByName('razdel_id').AsVariant := null;
+  DM1.Ostatki.FieldByName('ksm_idpr').AsVariant := null;
+  DM1.Ostatki.FieldByName('kei_id').AsVariant := null;
+  DM1.Ostatki.Post;
+  dm1.Ostatki.ApplyUpdates;
+  st_kart := vKart_id;
+end;
+
+procedure TFAktRashoda.createPrixodDocumOnPrep;  // создание приходного документа на препарат
+var
+  dat : TDate;
+begin
+  dat := strtodate(s_dat1);
+  vDocument_id := -1;
+  if (dm1.Document.Active) then
+    if (dm1.Document.Locate('struk_id;tip_op_id;klient_id;date_op',
+                            VarArrayOf([vStruk_id, 30, vKlient_id, dat]), [])) then
+      vDocument_id := dm1.DocumentDoc_id.AsInteger;
+  if (vDocument_id = -1) then  
+  begin
+    v_dok_Kart := SelectToVarIB('select DOcUMENT.doc_id FROM document '
+                                + ' WHERE DOcUMENT.STRUK_ID = ' + INTTOSTR(VsTRUK_ID)
+                                + ' AND DOCUMENT.TIP_OP_ID = 30'
+                                + ' AND Document.Date_op between ' + ''''
+                                + s_dat1 + '''' + ' and ' + '''' + s_dat2 + ''''
+                                + ' AND DOCUMENT.KLIENT_ID = ' + INTTOSTR(S_KODP),
+                                dm1.belmed, dm1.ibt_read);
+    if (v_dok_Kart <> Null) then
+    begin
+      vDocument_id := V_DOK_KART;
+//                         Удаление данных из KART
+      removeKartByDocidKsmidRazdelid(vDocument_id, s_ksm, v_razdel);
+    end
+    ELSE
+    BEGIN
+      vTip_Op_Id := 30;
+      vTip_Doc_Id := 37;
+      vNDoc := 'Рп-' + inttostr(S_Kodp) + '-' + inttostr(mes) + '.' + inttostr(god);
+      vKlient_Id := S_KODP;
+      vDate_op := strtodate(s_dat1);
+      vDate_dok := strtodate(s_dat1);
+      dm1.Document.open;
+      dm1.Document.Insert;
+      dm1.Document.Post;
+      dm1.Document.Edit;
+      dm1.Document.Post;
+      dm1.Document.ApplyUpdates;
+    END;
+  end;
+end;
+
+procedure TFAktRashoda.removeKartByDocidKsmidRazdelid(docId, ksmId, razdelId: Integer);
+begin
+  dm1.startWriteTrans;
+  dm1.IbDel.Active := false;
+  dm1.IbDel.SQL.Clear;
+  dm1.IbDel.SQL.Add('delete from kart where doc_id = ' + inttostr(vDocument_id)
+                + ' and ksm_id = ' + inttostr(s_ksm) + ' and razdel_id = '
+                + inttostr(v_razdel) + ' and parent is null ');
+  dm1.IbDel.Active := true;
+  dm1.commitWriteTrans(true);
+end;
+
+procedure TFAktRashoda.findOstatkiSyrInCex(spec : boolean);   // поиск остатков сырья в цехе
+begin
+  IBQuery1.Active := False;
+  IBQuery1.SQL.Clear;
+  IBQuery1.SQL.Add('SELECT ostatki.kart_id, ostatki.OSTATOK_END_S, ostatki.struk_id, ');
+  IBQuery1.SQL.Add(' (select kol_new from ceh_ost_ediz(ostatki.KSM_ID, ostatki.KEI_ID,'
+                        + inttostr(v_kein) + ', ostatki.OSTATOK_END_S)) Kot_S');
+  if (spec) then
+  begin
+    IBQuery1.SQL.Add(' FROM  SELECT_OST_KSM_ACC (' + '''' + s_dat1 + '''' + ','
+                            + '''' + s_dat2 + '''' + ',1,' + inttostr(vSTRUK_ID)
+                        + ',' + inttostr(s_KSM) + ', ''10/11'') ostatki ');
+  end
+  else
+  begin
+    IBQuery1.SQL.Add(' FROM  SELECT_OST_KSM1 (' + '''' + s_dat1 + '''' + ','
+                        + '''' + s_dat2 + '''' + ',1,' + inttostr(vSTRUK_ID)
+                        + ',' + inttostr(s_KSM) + ', 0) ostatki ');
+  end;
+  IBQuery1.SQL.Add(' order by ostatki.kart_id ');
+  IBQuery1.Active := True;
+  IBQuery1.First;
+end;
+
+procedure TFAktRashoda.createKartInPrixodDocumOnPrep;   // добавление необходимого прихода сырья на препарат в Kart
+var
+  v_ost : double;
+  v_ost_razn : double;
+  pr_vxod : integer;
+begin
+  pr_vxod := 1;
+  if (IBQuery1.RecordCount > 0) then
+  begin
+    v_ost_razn := v_raspred_dob;
+    while (not IBQuery1.eof) and ((v_ost_razn > 0) or (pr_vxod = 1))  do
+    begin
+      pr_vxod := pr_vxod + 1;
+      v_ost := IBQuery1.FieldByName('Kot_S').AsFloat;
+      IBQuery1.Next;
+      if (v_ost = 0) and (not IBQuery1.eof) then
+        IBQuery1.Prior
+      else
+      begin
+        if (IBQuery1.eof) then
+          v_raspred_dob := v_ost_razn
+        else
+        begin
+          if (v_ost <> 0) and (not IBQuery1.eof) then
+          begin
+            IBQuery1.Prior;
+            if (v_ost_razn - v_ost >= 0){ and (v_ost >= 0)} then
+            begin
+              v_raspred_dob := v_ost;
+              v_ost_razn := v_ost_razn - v_ost;
+            end
+            else
+            begin
+              v_raspred_dob := v_ost_razn;
+              v_ost_razn := v_ost_razn - v_ost;
+            end;
+          end;
+        end;
+        dm1.Kart.Insert;
+        dm1.setValues2Kart(s_ksm, vklient_id, v_razdel, v_kein, vdocument_id,
+                       IBQuery1.FieldByName('Kart_id').AsInteger,
+                       30, 37, v_raspred_dob, 0, 0, 0);
+        dm1.Kart.Post;
+      end;
+      IBQuery1.Next;
+    end;
+  end
+  else
+  begin
+    dm1.Kart.Insert;
+    dm1.setValues2Kart(s_ksm, vklient_id, v_razdel, v_kein, vdocument_id, st_Kart,
+                   30, 37, v_raspred_dob, 0, 0, 0);
+    dm1.Kart.Post
+  end;
+  dm1.Kart.BeforePost := dm1.KartBeforePost;
+  DM1.kart.ApplyUpdates;
 end;
 
 end.

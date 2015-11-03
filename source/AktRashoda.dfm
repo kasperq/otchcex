@@ -961,7 +961,7 @@ object FAktRashoda: TFAktRashoda
     Width = 24
     Left = 808
     Bitmap = {
-      494C01010B001C00380018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B001C00440018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       000000000000000000000000000000000000000000000000000000000000A87D
       7800B7818300B7818300B7818300B7818300B7818300B7818300B7818300B781
@@ -2235,7 +2235,9 @@ object FAktRashoda: TFAktRashoda
       
         'select document.doc_id, document.ndok, document.struk_id, docume' +
         'nt.klient_id, document.date_dok,'
-      'document.tip_op_id, document.tip_dok_id, document.date_op'
+      
+        'document.tip_op_id, document.tip_dok_id, document.date_op, docum' +
+        'ent.dok_osn_id'
       'from document'
       'where document.struk_id = :struk_id'
       'and document.date_dok between :dat1 and :dat2'
@@ -2305,6 +2307,10 @@ object FAktRashoda: TFAktRashoda
       FieldName = 'DATE_OP'
       Origin = '"DOCUMENT"."DATE_OP"'
     end
+    object q_specDocDOK_OSN_ID: TIntegerField
+      FieldName = 'DOK_OSN_ID'
+      Origin = '"DOCUMENT"."DOK_OSN_ID"'
+    end
   end
   object upd_specKart: TIBUpdateSQLW
     RefreshSQL.Strings = (
@@ -2363,7 +2369,8 @@ object FAktRashoda: TFAktRashoda
       '  DATE_DOK,'
       '  TIP_OP_ID,'
       '  TIP_DOK_ID,'
-      '  DATE_OP'
+      '  DATE_OP, '
+      '  DOK_OSN_ID'
       'from document '
       'where'
       '  DOC_ID = :DOC_ID')
@@ -2377,19 +2384,21 @@ object FAktRashoda: TFAktRashoda
       '  NDOK = :NDOK,'
       '  STRUK_ID = :STRUK_ID,'
       '  TIP_DOK_ID = :TIP_DOK_ID,'
-      '  TIP_OP_ID = :TIP_OP_ID'
+      '  TIP_OP_ID = :TIP_OP_ID,'
+      '  DOK_OSN_ID = :DOK_OSN_ID'
       'where'
       '  DOC_ID = :OLD_DOC_ID')
     InsertSQL.Strings = (
       'insert into document'
       
         '  (DATE_DOK, DATE_OP, DOC_ID, KLIENT_ID, NDOK, STRUK_ID, TIP_DOK' +
-        '_ID, TIP_OP_ID)'
+        '_ID, TIP_OP_ID,'
+      '   DOK_OSN_ID)'
       'values'
       
         '  (:DATE_DOK, :DATE_OP, :DOC_ID, :KLIENT_ID, :NDOK, :STRUK_ID, :' +
         'TIP_DOK_ID, '
-      '   :TIP_OP_ID)')
+      '   :TIP_OP_ID, :DOK_OSN_ID)')
     DeleteSQL.Strings = (
       'delete from document'
       'where'
@@ -3644,5 +3653,28 @@ object FAktRashoda: TFAktRashoda
     UpdateTransaction = DM1.IBT_Write
     Left = 344
     Top = 104
+  end
+  object IBQuery1: TIBQuery
+    Database = DM1.BELMED
+    Transaction = DM1.IBT_Read
+    Left = 576
+    Top = 160
+  end
+  object q_docParam: TRxIBQuery
+    Database = DM1.BELMED
+    Transaction = DM1.IBT_Read
+    SQL.Strings = (
+      'delete'
+      'from doc_param'
+      'where doc_param.doc_id = :doc_id')
+    Macros = <>
+    Left = 680
+    Top = 136
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'doc_id'
+        ParamType = ptUnknown
+      end>
   end
 end
