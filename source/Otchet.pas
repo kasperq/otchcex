@@ -124,6 +124,7 @@ type
     ToolButton2: TToolButton;
     ComboBox1: TComboBox;
     ComboBox2: TComboBox;
+    tbtn_delLine: TToolButton;
     procedure Edit1Change(Sender: TObject);
     procedure Edit1Click(Sender: TObject);
     procedure Edit1KeyDown(Sender: TObject; var Key: Word;
@@ -155,6 +156,7 @@ type
     procedure ToolButton2Click(Sender: TObject);
     procedure ComboBox1Change(Sender: TObject);
     procedure ComboBox2Change(Sender: TObject);
+    procedure tbtn_delLineClick(Sender: TObject);
 
   private
     { Private declarations }
@@ -570,6 +572,10 @@ end;
 
 procedure TFOtchet.FormShow(Sender: TObject);
 begin
+  if (AnsiLowerCase(dm.UserName) = 'ld_ceh16_1') or (AnsiLowerCase(dm.UserName) = 'igor') then
+    tbtn_delLine.Visible := true
+  else
+    tbtn_delLine.Visible := false;
 //  SpinEdit3.OnChange:=nil;
 //  SpinEdit4.OnChange:=nil;
 //  SpinEdit3.Value:=mes;
@@ -886,6 +892,11 @@ IF MES<10 THEN S_MES:='0'+INTTOSTR(MES) ELSE S_MES:=INTTOSTR(MES);
    END;
    SostOtchet;
   end; }
+end;
+
+procedure TFOtchet.tbtn_delLineClick(Sender: TObject);
+begin
+  Otchet.Delete;
 end;
 
 procedure TFOtchet.DBGridEh3SortMarkingChanged(Sender: TObject);
