@@ -3262,7 +3262,7 @@ begin
   IbDel.SQL.Clear;
   IbDel.SQL.Add('delete from kart where doc_id = ' + inttostr(vDocument_id)
                 + ' and ksm_id = ' + inttostr(s_ksm) + ' and razdel_id = '
-                + inttostr(v_razdel) + ' and parent is null ');
+                + inttostr(v_razdel) + '  ');
   IbDel.Active := true;
   dm1.IBT_WRITE.CommitRetaining;
   if not dm1.IBT_WRITE.Active then
