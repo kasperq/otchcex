@@ -826,13 +826,10 @@ end;
 
 procedure TFGotProdNaklView.createUpakArrFor3Koda;
 var
-  kolUpak, kolUpak1000, kolRash : double;
-  kodProd : string;
+  kolUpak, kolUpak1000 : double;
 begin
   upakArr.EmptyTable;
   upakArr.Open;
-  kolRash := 0;
-  kodProd := '';
   GotKartQuery.First;
   while (not GotKartQuery.Eof) do
   begin
@@ -847,16 +844,14 @@ begin
     upakArrves_upak.AsFloat := GotKartQueryVES_TARA.AsFloat;
     upakArrSERIA_ID.AsInteger := GotKartQuerySERIA_ID.AsInteger;
     upakArrKOD_PROD.AsString := GotKartQueryKOD_PROD.AsString;
-    if (kodProd = GotKartQueryKOD_PROD.AsString) then
-      upakArrKOL_RASH.AsFloat := kolRash + GotKartQueryKOL_RASH.AsFloat
-    else
-      upakArrKOL_RASH.AsFloat := GotKartQueryKOL_RASH.AsFloat;
-    kolRash := upakArrKOL_RASH.AsFloat;
-    kodProd := GotKartQueryKOD_PROD.AsString;
+    if (seriaArr.Locate('kod_prod', GotKartQueryKOD_PROD.AsString, [])) then
+    begin
+      upakArrKOL_RASH.AsFloat := seriaArrKOL_RASH.AsFloat;
+      upakArrKOL_PROPIS.AsString := seriaArrKOL_PROPIS.AsString;
+    end;
     upakArrNAM.AsString := GotKartQueryNAM.AsString;
     upakArrNMAT.AsString := GotKartQueryNMAT.AsString;
     upakArrNEIS.AsString := GotKartQueryNEIS.AsString;
-    upakArrKOL_PROPIS.AsString := SumToString(trunc(GotKartQueryKOL_RASH.AsFloat * 1000));
     upakArrSERIA.AsString := GotKartQuerySERIA.AsString;
     upakArr.Post;
     if (Frac(StrToFloat(FloatToStr(kolUpak))) <> 0) then
@@ -867,19 +862,17 @@ begin
       upakArrkol_upak.AsInteger := 1;
       upakArrSERIA_ID.AsInteger := GotKartQuerySERIA_ID.AsInteger;
       upakArrKOD_PROD.AsString := GotKartQueryKOD_PROD.AsString;
-      upakArrKOL_RASH.AsFloat := kolRash;
       upakArrNAM.AsString := GotKartQueryNAM.AsString;
       upakArrNMAT.AsString := GotKartQueryNMAT.AsString;
       upakArrNEIS.AsString := GotKartQueryNEIS.AsString;
-      upakArrKOL_PROPIS.AsString := SumToString(trunc(GotKartQueryKOL_RASH.AsFloat * 1000));
       upakArrSERIA.AsString := GotKartQuerySERIA.AsString;
       upakArrkol_upak_prop.AsString := SumToString(upakArrkol_upak.AsInteger);
-      if (GotKartQueryKOL_GRP.AsInteger <> 0) then
-        upakArrves_upak.AsFloat := GotKartQueryVES_UPAK.AsFloat + (upakArrkol_trans.AsFloat
-                                                               / GotKartQueryKOL_GRP.AsInteger
-                                                               * GotKartQueryVES_GRP.AsFloat)
-      else
-        upakArrves_upak.AsFloat := GotKartQueryVES_UPAK.AsFloat;
+      if (seriaArr.Locate('kod_prod', GotKartQueryKOD_PROD.AsString, [])) then
+      begin
+        upakArrKOL_RASH.AsFloat := seriaArrKOL_RASH.AsFloat;
+        upakArrKOL_PROPIS.AsString := seriaArrKOL_PROPIS.AsString;
+      end;
+
       if (GotKartQueryKOL_TRANS.AsInteger <> 0) then
         upakArrVES_TRANS.AsFloat := roundto(((round(kolUpak1000)
                                               - (GotKartQueryKOL_TRANS.AsInteger
@@ -1002,18 +995,8 @@ begin
     seriaArrNEIS.AsString := GotKartQueryNEIS.AsString;
     seriaArrKOD_PROD.AsString := GotKartQueryKOD_PROD.AsString;
     seriaArrKOL_RASH.AsFloat := seriaArrKOL_RASH.AsFloat + GotKartQueryKOL_RASH_EDIZ.AsFloat;
-    seriaArrKOL_PROPIS.AsString := FloatToText(sum * 1000, 2);
+    seriaArrKOL_PROPIS.AsString := FloatToText(seriaArrKOL_RASH.AsFloat * 1000, 2);
     seriaArrNAM.AsString := GotKartQueryNAM.AsString;
-//    if (GotKartQuery.RecNo = 1) or (GotKartQueryUPAK_TRANS.AsString <> upak) then
-//    begin
-//      seriaArrKOL_TRANS.AsFloat := GotKartQueryKOL_TRANS.AsFloat;
-//      seriaArrKOL_GRP.AsFloat := GotKartQueryKOL_GRP.AsFloat;
-//      seriaArrVES_TRANS.AsFloat := GotKartQueryVES_TRANS.AsFloat;
-//      seriaArrVES_TARA.AsFloat := GotKartQueryVES_TARA.AsFloat;
-//      seriaArrVES_UPAK.AsFloat := GotKartQueryVES_UPAK.AsFloat;
-//      seriaArrVES_GRP.AsFloat := GotKartQueryVES_GRP.AsFloat;
-//      seriaArrUPAK_TRANS.AsString := GotKartQueryUPAK_TRANS.AsString;
-//    end;
     upak := GotKartQueryUPAK_TRANS.AsString;
     kodProd := GotKartQueryKOD_PROD.AsString;
     seriaArr.Post;
