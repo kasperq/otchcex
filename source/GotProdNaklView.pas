@@ -513,6 +513,8 @@ type
     function isNecessaryKartFieldsValid() : boolean;
 
     function is1Seria2Codes() : boolean;
+    procedure createSeriaArrFor3Koda;
+    procedure createUpakArrFor3Koda;
 
   public
     { Public declarations }
@@ -629,8 +631,8 @@ begin
   if (GotKartQuery.RecordCount > 0) then
   begin
     printVibor := 1;
-    createSeriaArrFor2Koda;
-    createUpakArrFor2Koda;
+    createSeriaArrFor3Koda;
+    createUpakArrFor3Koda;
     ibtara.Active := false;
     ibtara.paramByName('doc').AsInteger := GotDocumentDOC_ID.AsInteger;
     IbTara.Active := true;
@@ -822,6 +824,78 @@ begin
   GotKartQuery.First;
 end;
 
+procedure TFGotProdNaklView.createUpakArrFor3Koda;
+var
+  kolUpak, kolUpak1000, kolRash : double;
+  kodProd : string;
+begin
+  upakArr.EmptyTable;
+  upakArr.Open;
+  kolRash := 0;
+  kodProd := '';
+  GotKartQuery.First;
+  while (not GotKartQuery.Eof) do
+  begin
+    upakArr.Append;
+    upakArr.Edit;
+    kolUpak1000 := GotKartQueryKOL_RASH.AsFloat * 1000;
+    kolUpak := kolUpak1000 / GotKartQueryKOL_TRANS.AsFloat;
+    upakArrkol_trans.AsFloat := GotKartQueryKOL_TRANS.AsFloat;
+    upakArrkol_upak.AsInteger := trunc(StrToFloat(FloatToStr(kolUpak)));
+    upakArrkol_upak_prop.AsString := SumToString(upakArrkol_upak.AsInteger);
+    upakArrves_trans.AsFloat := GotKartQueryVES_TRANS.AsFloat;
+    upakArrves_upak.AsFloat := GotKartQueryVES_TARA.AsFloat;
+    upakArrSERIA_ID.AsInteger := GotKartQuerySERIA_ID.AsInteger;
+    upakArrKOD_PROD.AsString := GotKartQueryKOD_PROD.AsString;
+    if (kodProd = GotKartQueryKOD_PROD.AsString) then
+      upakArrKOL_RASH.AsFloat := kolRash + GotKartQueryKOL_RASH.AsFloat
+    else
+      upakArrKOL_RASH.AsFloat := GotKartQueryKOL_RASH.AsFloat;
+    kolRash := upakArrKOL_RASH.AsFloat;
+    kodProd := GotKartQueryKOD_PROD.AsString;
+    upakArrNAM.AsString := GotKartQueryNAM.AsString;
+    upakArrNMAT.AsString := GotKartQueryNMAT.AsString;
+    upakArrNEIS.AsString := GotKartQueryNEIS.AsString;
+    upakArrKOL_PROPIS.AsString := SumToString(trunc(GotKartQueryKOL_RASH.AsFloat * 1000));
+    upakArrSERIA.AsString := GotKartQuerySERIA.AsString;
+    upakArr.Post;
+    if (Frac(StrToFloat(FloatToStr(kolUpak))) <> 0) then
+    begin
+      upakArr.Append;
+      upakArr.Edit;
+      upakArrkol_trans.AsInteger := round(Frac(kolUpak) * GotKartQueryKOL_TRANS.AsFloat);
+      upakArrkol_upak.AsInteger := 1;
+      upakArrSERIA_ID.AsInteger := GotKartQuerySERIA_ID.AsInteger;
+      upakArrKOD_PROD.AsString := GotKartQueryKOD_PROD.AsString;
+      upakArrKOL_RASH.AsFloat := kolRash;
+      upakArrNAM.AsString := GotKartQueryNAM.AsString;
+      upakArrNMAT.AsString := GotKartQueryNMAT.AsString;
+      upakArrNEIS.AsString := GotKartQueryNEIS.AsString;
+      upakArrKOL_PROPIS.AsString := SumToString(trunc(GotKartQueryKOL_RASH.AsFloat * 1000));
+      upakArrSERIA.AsString := GotKartQuerySERIA.AsString;
+      upakArrkol_upak_prop.AsString := SumToString(upakArrkol_upak.AsInteger);
+      if (GotKartQueryKOL_GRP.AsInteger <> 0) then
+        upakArrves_upak.AsFloat := GotKartQueryVES_UPAK.AsFloat + (upakArrkol_trans.AsFloat
+                                                               / GotKartQueryKOL_GRP.AsInteger
+                                                               * GotKartQueryVES_GRP.AsFloat)
+      else
+        upakArrves_upak.AsFloat := GotKartQueryVES_UPAK.AsFloat;
+      if (GotKartQueryKOL_TRANS.AsInteger <> 0) then
+        upakArrVES_TRANS.AsFloat := roundto(((round(kolUpak1000)
+                                              - (GotKartQueryKOL_TRANS.AsInteger
+                                                 * trunc(kolUpak)))
+                                             * GotKartQueryVES_TRANS.AsFloat)
+                                            / GotKartQueryKOL_TRANS.AsInteger,
+                                            -2)
+      else
+        upakArrVES_TRANS.AsFloat := 0;
+      upakArr.Post;
+    end;
+    GotKartQuery.Next;
+  end;
+  GotKartQuery.First;
+end;
+
 procedure TFGotProdNaklView.createSeriaArr;
 var
   sum : double;
@@ -901,7 +975,50 @@ begin
     upak := GotKartQueryUPAK_TRANS.AsString;
     seriaArr.Post;
     GotKartQuery.Next;
-  end; 
+  end;
+end;
+
+procedure TFGotProdNaklView.createSeriaArrFor3Koda;
+var
+  sum : double;
+  seria, kodProd, upak : string;
+begin
+  sum := 0;
+  seria := '';
+  seriaArr.EmptyTable;
+  seriaArr.Open;
+  GotKartQuery.First;
+  seriaArr.Append;
+  while (not GotKartQuery.Eof) do
+  begin
+    if (GotKartQuerySERIA.AsString <> seria)
+       or (GotKartQueryKOD_PROD.AsString <> kodProd) then
+      seriaArr.Append;
+    seria := GotKartQuerySERIA.AsString;
+    sum := sum + GotKartQueryKOL_RASH_EDIZ.AsFloat;
+    seriaArr.Edit;
+    seriaArrSERIA.AsString := GotKartQuerySERIA.AsString;
+    seriaArrNMAT.AsString := GotKartQueryNMAT.AsString;
+    seriaArrNEIS.AsString := GotKartQueryNEIS.AsString;
+    seriaArrKOD_PROD.AsString := GotKartQueryKOD_PROD.AsString;
+    seriaArrKOL_RASH.AsFloat := seriaArrKOL_RASH.AsFloat + GotKartQueryKOL_RASH_EDIZ.AsFloat;
+    seriaArrKOL_PROPIS.AsString := FloatToText(sum * 1000, 2);
+    seriaArrNAM.AsString := GotKartQueryNAM.AsString;
+//    if (GotKartQuery.RecNo = 1) or (GotKartQueryUPAK_TRANS.AsString <> upak) then
+//    begin
+//      seriaArrKOL_TRANS.AsFloat := GotKartQueryKOL_TRANS.AsFloat;
+//      seriaArrKOL_GRP.AsFloat := GotKartQueryKOL_GRP.AsFloat;
+//      seriaArrVES_TRANS.AsFloat := GotKartQueryVES_TRANS.AsFloat;
+//      seriaArrVES_TARA.AsFloat := GotKartQueryVES_TARA.AsFloat;
+//      seriaArrVES_UPAK.AsFloat := GotKartQueryVES_UPAK.AsFloat;
+//      seriaArrVES_GRP.AsFloat := GotKartQueryVES_GRP.AsFloat;
+//      seriaArrUPAK_TRANS.AsString := GotKartQueryUPAK_TRANS.AsString;
+//    end;
+    upak := GotKartQueryUPAK_TRANS.AsString;
+    kodProd := GotKartQueryKOD_PROD.AsString;
+    seriaArr.Post;
+    GotKartQuery.Next;
+  end;
 end;
 
 procedure TFGotProdNaklView.setFindPrepLblsVisible(visible : boolean);
@@ -2910,7 +3027,8 @@ begin
     abort;
   end;
   printVibor := 0;
-  SaveBtnClick(sender);
+  if (GOD_conf = curYear) and (MES_conf >= curMonth) and (MES_conf - curMonth < 2) then
+    SaveBtnClick(sender);
   if (keiId = 800) then                    // לכם רע
     printForMlnSht(sender);
   if ((keiId = 777) or (keiId = 682) or (keiId = 779) or (keiId = 785)
@@ -2935,11 +3053,25 @@ begin
 end;
 
 function TFGotProdNaklView.is1Seria2Codes() : boolean;
+var
+  curSeria : string;
 begin
+  result := false;
   GotKartQuery.DisableControls;
-  if (GotKartQuery.RecordCount > 3) then
+  if (GotKartQuery.RecordCount >= 3) then
   begin
-
+    GotKartQuery.First;
+    curSeria := '';
+    while (not GotKartQuery.Eof) do
+    begin
+      if (curSeria <> GotKartQuerySERIA.AsString) and (curSeria = '') then
+        curSeria := GotKartQuerySERIA.AsString
+      else
+        if (curSeria <> GotKartQuerySERIA.AsString) then
+          result := false
+        else
+          result := true;
+    end;
   end;
   GotKartQuery.EnableControls;
 end;
