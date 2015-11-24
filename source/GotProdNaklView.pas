@@ -681,21 +681,13 @@ begin
   SkladDocument.ParamByName('struk_id').AsInteger := strukId;
 //  SkladDocument.ParamByName('klient_id').AsInteger := klientId;
   SkladDocument.Active := true;
-
-{  select *         так было в запросе SkladDocument
-from document
-where document.dok_osn_id = :dok_osn_id
-and document.tip_op_id = 2
-and document.tip_dok_id = 90
-and document.struk_id = :klient_id
-and document.klient_id = :struk_id}
 end;
 
 procedure TFGotProdNaklView.loadSkladKart(docId : integer);
 begin
-  SkladKart.Active := false;
+  SkladKart.Close;
   SkladKart.ParamByName('doc_id').AsInteger := docId;
-  SkladKart.Active := true;
+  SkladKart.Open;
 end;
 
 function TFGotProdNaklView.skladDocumentIsProvided() : boolean;
@@ -3234,6 +3226,8 @@ begin
   begin
     SkladKart.Delete;
   end;
+  if (SkladKart.UpdatesPending) then
+    SkladKart.ApplyUpdates;
 end;
 
 procedure TFGotProdNaklView.FormClose(Sender: TObject;
