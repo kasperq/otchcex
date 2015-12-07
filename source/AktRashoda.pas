@@ -1231,9 +1231,9 @@ begin
     DM1.KartDoc_Id.AsInteger := DM1.DocumentDOC_ID.AsInteger;
     DM1.Karttip_op_id.AsInteger := DM1.DocumentTIP_OP_ID.AsInteger;
     DM1.Karttip_dok_id.AsInteger := DM1.DocumentTIP_DOK_ID.AsInteger;
-    if (NormiMemDatSPEC.AsInteger = 1) then
-      DM1.Kartkol_rash_ediz.AsFloat := 0
-    else
+//    if (NormiMemDatSPEC.AsInteger = 1) then
+//      DM1.Kartkol_rash_ediz.AsFloat := 0
+//    else
       if (NormiMemDatSPEC.AsInteger = 0) then
         DM1.Kartkol_rash_ediz.AsFloat := NormiMemDatFACTRASHOD.AsFloat;
     DM1.KartKSM_ID.AsInteger := NormiMemDatKSM_ID.AsInteger;
@@ -1294,7 +1294,8 @@ begin
           NormiMemDatSPEC.AsInteger := 0;
           NormiMemDat.Post;
         end;
-        saveMemRec2Kart();
+        if (NormiMemDatSPEC.AsInteger = 0) then
+          saveMemRec2Kart();
       end;
       NormiMemDat.Next;
     end;
@@ -2184,9 +2185,12 @@ begin
     activateNormQuery();
     loadKart(vStruk_Id, DM1.DocumentDOC_ID.AsInteger);
     addKart2Mem();
-    findAndSet10Account;
+//    findAndSet10Account;
     addNormi2Mem();
+    findAndSet10Account;
+//    NormiMemDat.SortOnFields('factrashod', true, true);
     NormiMemDat.SortOnFields('Razdel_Id', true, false);
+//    NormiMemDat.SortOnFields('factrashod', true, true);
     nDocEdit.Text := DM1.DocumentNDOK.AsString;
 
     loadDocTipParam(vTip_Doc_Id, vStruk_Id);
