@@ -180,7 +180,7 @@ object FKorOtchet: TFKorOtchet
     Top = 97
     Width = 1159
     Height = 577
-    ActivePage = TabSheet1
+    ActivePage = TabSheet3
     Align = alClient
     TabOrder = 1
     OnChange = PageControl1Change
@@ -1132,7 +1132,7 @@ object FKorOtchet: TFKorOtchet
     Left = 776
     Top = 212
     Bitmap = {
-      494C010108000900180018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101080009001C0018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2075,9 +2075,7 @@ object FKorOtchet: TFKorOtchet
       
         'SELECT DISTINCT cast(0 as integer) as vib, KART.KART_ID, KART.KE' +
         'I_ID, KART.KSM_ID,'
-      
-        'iif(document.tip_op_id = 30, kart.kol_prih_ediz, KART.KOL_RASH_E' +
-        'DIZ) kol_rash_ediz, '
+      'KART.KOL_RASH_EDIZ, '
       'KART.STROKA_ID, ostatki.kei_id  kei,'
       
         'DOCUMENT.NDOK, kart.parent, DOCUMENT.DOC_ID, document.Tip_op_id,' +
