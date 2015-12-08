@@ -413,8 +413,8 @@ begin
 //  RaspSyrPrep.MacroByName('SDAT').AsString:= Usl_DAT;
       RaspSyrPrep.MacroByName('stip').AsString := Usl_TIP;
       RaspSyrPrep.MacroByName('ksm').AsString := Usl_GROP;
-//      RaspSyrPrep.ParamByName('kodp').AsInteger := kod;
-      RaspSyrPrep.ParamByName('kodp').AsInteger := s_kodp;
+      RaspSyrPrep.ParamByName('kodp').AsInteger := kod;
+//      RaspSyrPrep.ParamByName('kodp').AsInteger := s_kodp;
       RaspSyrPrep.ParamByName('struk').AsInteger := vStruk_id;
       RaspSyrPrep.Active := True;
       RaspSyrPrep.First;
