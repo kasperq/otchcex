@@ -1295,7 +1295,7 @@ begin
  USL_SORT:='7,9';
  usl_dat:=' SERIA.Date_ZAG between '+''''+s_dat1_period+''''+' and '+''''+s_dat2_period+'''';
  IF DM1.ConfigUMC.Active THEN DM1.ConfigUMC.close;
- DM1.ConfigUMC.MacroByName('USL').AsString:='STRUK_ID = '+IntToStr(vSTRUK_ID);
+ DM1.ConfigUMC.MacroByName('USL').AsString:='configumc.STRUK_ID = '+IntToStr(vSTRUK_ID);
  DM1.ConfigUMC.Open;
  if (MES=DM1.ConfigUMCMES.AsInteger) and (GOD=DM1.ConfigUMCGOD.AsInteger) then
  begin
@@ -2406,7 +2406,7 @@ begin
   S_DAT1:='01.'+S_MES+'.'+copy(INTTOSTR(GOD),3,2);
   S_DAT2:=datetostr(IncMonth(strtodate(s_dat1_period),1)-1);
   IF DM1.ConfigUMC.Active THEN DM1.ConfigUMC.close;
- DM1.ConfigUMC.MacroByName('USL').AsString:='STRUK_ID = '+IntToStr(vSTRUK_ID);
+ DM1.ConfigUMC.MacroByName('USL').AsString:='configumc.STRUK_ID = '+IntToStr(vSTRUK_ID);
  DM1.ConfigUMC.Open;
  if (MES=DM1.ConfigUMCMES.AsInteger) and (GOD=DM1.ConfigUMCGOD.AsInteger) then
  begin
@@ -2467,7 +2467,7 @@ IF MES<10 THEN S_MES:='0'+INTTOSTR(MES) ELSE S_MES:=INTTOSTR(MES);
   S_DAT1:='01.'+S_MES+'.'+copy(INTTOSTR(GOD),3,2);
   S_DAT2:=datetostr(IncMonth(strtodate(s_dat1_period),1)-1);
   IF DM1.ConfigUMC.Active THEN DM1.ConfigUMC.close;
- DM1.ConfigUMC.MacroByName('USL').AsString:='STRUK_ID = '+IntToStr(vSTRUK_ID);
+ DM1.ConfigUMC.MacroByName('USL').AsString:='configumc.STRUK_ID = '+IntToStr(vSTRUK_ID);
  DM1.ConfigUMC.Open;
  if (MES=DM1.ConfigUMCMES.AsInteger) and (GOD=DM1.ConfigUMCGOD.AsInteger) then
  begin
