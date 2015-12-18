@@ -61,6 +61,8 @@ type
     SpinButton1: TSpinButton;
     GotNaklQuerySTRUK_ID: TSmallintField;
     GotNaklMemSTRUK_ID: TSmallintField;
+    GotNaklQueryHAS_PRIH: TIntegerField;
+    GotNaklMemHAS_PRIH: TIntegerField;
 
     procedure activateGotNaklQuery;
     procedure assignGotNaklQueryToGotNaklMem;
@@ -444,9 +446,15 @@ end;
 procedure TFGotProdNaklTbl.FormShow(Sender: TObject);
 begin
   if (UserName = 'IGOR') or (UserName = 'GRBOR') or (UserName = 'BVI') then
-    StrukCombo.Visible := true
+  begin
+    StrukCombo.Visible := true;
+    NaklGrid.Columns[11].Visible := true;
+  end
   else
+  begin
     StrukCombo.Visible := false;
+    NaklGrid.Columns[11].Visible := false;
+  end;
   loadGotNaklTbl; 
 end;
 

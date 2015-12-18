@@ -369,6 +369,7 @@ type
     btn_underSign: TSpeedButton;
     printForMlnP: TMenuItem;
     newPrintBtn: TSpeedButton;
+    btn_savePrih: TSpeedButton;
 
     procedure setDokDate(value : string);
     function isDateValid(value : string) : boolean;
@@ -505,6 +506,7 @@ type
     procedure IBTaraAfterOpen(DataSet: TDataSet);
     procedure btn_underSignClick(Sender: TObject);
     procedure printForMlnPClick(Sender: TObject);
+    procedure btn_savePrihClick(Sender: TObject);
 
   private
     lookUnderS : TFLookupUnderSign;
@@ -1526,7 +1528,7 @@ begin
   VipKart.Open;
   VipKart.FetchAll;
 
-  if (not VipKart.Locate('kol_prih_ediz;kei_id', VarArrayOf([kolRashEdiz, keiId]), [])) then
+  if (not VipKart.Locate('kol_prih_ediz;kei_id;kart_id', VarArrayOf([kolRashEdiz, keiId, kartId]), [])) then
   begin
     if (VipKartSERIA.AsString = '0') or (VipKart.RecordCount = 0) then
       VipKart.Insert;
@@ -1620,6 +1622,11 @@ begin
   GotKartQueryGOST.AsString := gost;
   GotKartQueryNEIS.AsString := neis;
   GotKartQuery.Post;
+end;
+
+procedure TFGotProdNaklView.btn_savePrihClick(Sender: TObject);
+begin
+  postVipusk;
 end;
 
 procedure TFGotProdNaklView.btn_underSignClick(Sender: TObject);
@@ -3258,6 +3265,13 @@ end;
 
 procedure TFGotProdNaklView.FormShow(Sender: TObject);
 begin
+  if (UserName = 'IGOR') or (UserName = 'GRBOR') or (UserName = 'BVI') then
+  begin
+    btn_savePrih.Visible := true;
+  end
+  else
+    btn_savePrih.Visible := false;
+    
   activateNDokDateDokSkladOnChange(false);
   cbRF.Checked := false;
   dm1.Sklad.Active := true;
