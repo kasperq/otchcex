@@ -347,6 +347,12 @@ type
     IBQuery1: TIBQuery;
     q_specDocDOK_OSN_ID: TIntegerField;
     q_docParam: TRxIBQuery;
+    q_specKartRAZDEL_ID: TSmallintField;
+    q_specKartKEI_ID: TSmallintField;
+    q_specKartNAMRAZ: TIBStringField;
+    q_specKartKRAZ: TSmallintField;
+    q_specKartNEIS: TIBStringField;
+    q_specKartNMAT: TIBStringField;
     function GetCehNum(cehName : string) : integer;
     function SetMonthCombo(month : integer) : boolean;
     function activateNormQuery() : boolean;
@@ -713,7 +719,11 @@ begin
       DM1.Add_KartDok.StoredProcName := 'ADD_KART';
       DM1.Add_KartDok.ExecProc;
       q_specKartSTROKA_ID.AsInteger := DM1.Add_KartDok.Params.Items[0].AsInteger;
-      q_specKartKOL_RASH.AsFloat := ostKol;
+      if (q_specOstOT_S.AsFloat < ostKol) and (q_specOst.RecNo < q_specOst.RecordCount) then
+        q_specKartKOL_RASH.AsFloat := q_specOstOT_S.AsFloat
+      else
+        q_specKartKOL_RASH.AsFloat := ostKol;
+      ostKol := ostKol - q_specKartKOL_RASH.AsFloat;
       q_specKart.Post;
 
       if (q_ostatkiACCOUNT.AsString <> '10/11') then
@@ -844,20 +854,27 @@ end;
 
 procedure TFAktRashoda.findAndSet10Account;
 begin
-  if (NormiMemDat.RecordCount > 0) then
+  findSpecKart(vStruk_Id, 0, StrToDate(s_dat1), StrToDate(s_dat2));
+  q_specKart.First;
+  while (not q_specKart.Eof) do
   begin
-    NormiMemDat.First;
-    while (not NormiMemDat.Eof) do
+    if (NormiMemDat.Locate('ksm_id', q_specKartKSM_ID.AsInteger, []))  then
     begin
-      if (NormiMemDatFACTRASHOD.AsFloat = 0)
-         and (findSpecKart(vStruk_Id, NormiMemDatKSM_ID.AsInteger, StrToDate(s_dat1), StrToDate(s_dat2))) then
-      begin
-        NormiMemDat.Edit;
-        NormiMemDatFACTRASHOD.AsFloat := q_specKartKOL_RASH.AsFloat;
-        NormiMemDat.Post;
-      end;
-      NormiMemDat.Next;
+      NormiMemDat.Edit;
+      NormiMemDatFACTRASHOD.AsFloat := q_specKartKOL_RASH.AsFloat;
+      NormiMemDat.Post;
+    end
+    else
+    begin
+      NormiMemDat.Last;
+      insertRec2MemDat(q_specKartKSM_ID.AsInteger, q_specKartSTRUK_ID.AsInteger,
+                       q_specKartRAZDEL_ID.AsInteger, 0,
+                       q_specKartKEI_ID.AsInteger, q_specKartKRAZ.AsInteger,
+                       q_specKartNMAT.AsString, q_specKartNEIS.AsString, '','',
+                       q_specKartNAMRAZ.AsString, 0, q_specKartKOL_RASH.AsFloat,
+                       q_specKartSTRUK_ID.AsInteger, 0);
     end;
+    q_specKart.Next;
   end;
 end;
 
@@ -1300,7 +1317,7 @@ begin
       NormiMemDat.Next;
     end;
     saveKart2DB();
-    if (vTip_Doc_Id = 144) then    
+    if (vTip_Doc_Id = 144) then
       deleteSpecDoc;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     add2Prixod();//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2632,7 +2649,11 @@ end;
 procedure TFAktRashoda.createKartIdInOstatki;   // создание карточки сырья в остатках
 begin
   IF (not DM1.Ostatki.Active) THEN
+  begin
+    dm1.Ostatki.MacroByName('usl').AsString := '0=0';
+    dm1.Ostatki.ParamByName('struk_id').AsInteger := vStruk_Id;
     DM1.Ostatki.Active := TRUE
+  end
   else
     DM1.Ostatki.First;
   DM1.Ostatki.Insert;
