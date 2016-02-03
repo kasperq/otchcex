@@ -961,7 +961,7 @@ object FAktRashoda: TFAktRashoda
     Width = 24
     Left = 808
     Bitmap = {
-      494C01010B001C00480018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B001C004C0018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       000000000000000000000000000000000000000000000000000000000000A87D
       7800B7818300B7818300B7818300B7818300B7818300B7818300B7818300B781
@@ -2130,9 +2130,20 @@ object FAktRashoda: TFAktRashoda
       
         'document.tip_op_id, document.tip_dok_id, kart.ksm_id, kart.kol_r' +
         'ash, kart.kart_id,'
-      'kart.stroka_id, kart.cena, kart.cena_vp, kart.doc_id'
+      
+        'kart.stroka_id, kart.cena, kart.cena_vp, kart.doc_id, ostatki.ra' +
+        'zdel_id, ostatki.kei_id,'
+      
+        'razdel.namraz, razdel.kraz, iif(coalesce(ediz.kei_id, 0) = 0, ed' +
+        '_ost.neis, ediz.neis) neis, '
+      'matrop.nmat'
       'from kart'
       'inner join document on kart.doc_id = document.doc_id'
+      'left join ostatki on ostatki.kart_id = kart.kart_id'
+      'left join razdel on razdel.razdel_id = ostatki.razdel_id'
+      'left join ediz on ediz.kei_id = kart.kei_id'
+      'left join matrop on matrop.ksm_id = kart.ksm_id'
+      'left join ediz ed_ost on ed_ost.kei_id = ostatki.kei_id'
       'where document.struk_id = :struk_id'
       'and document.date_dok between :dat1 and :dat2'
       'and document.tip_op_id = 32 and document.tip_dok_id = 198'
@@ -2225,6 +2236,34 @@ object FAktRashoda: TFAktRashoda
       FieldName = 'DOC_ID'
       Origin = '"KART"."DOC_ID"'
       Required = True
+    end
+    object q_specKartRAZDEL_ID: TSmallintField
+      FieldName = 'RAZDEL_ID'
+      Origin = '"OSTATKI"."RAZDEL_ID"'
+    end
+    object q_specKartKEI_ID: TSmallintField
+      FieldName = 'KEI_ID'
+      Origin = '"OSTATKI"."KEI_ID"'
+    end
+    object q_specKartNAMRAZ: TIBStringField
+      FieldName = 'NAMRAZ'
+      Origin = '"RAZDEL"."NAMRAZ"'
+      Size = 60
+    end
+    object q_specKartKRAZ: TSmallintField
+      FieldName = 'KRAZ'
+      Origin = '"RAZDEL"."KRAZ"'
+    end
+    object q_specKartNEIS: TIBStringField
+      FieldName = 'NEIS'
+      Origin = '"EDIZ"."NEIS"'
+      FixedChar = True
+      Size = 10
+    end
+    object q_specKartNMAT: TIBStringField
+      FieldName = 'NMAT'
+      Origin = '"MATROP"."NMAT"'
+      Size = 60
     end
   end
   object q_specDoc: TRxIBQuery
