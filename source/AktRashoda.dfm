@@ -235,6 +235,11 @@ object FAktRashoda: TFAktRashoda
         FieldName = 'SPEC'
         Footers = <>
         Visible = False
+      end
+      item
+        EditButtons = <>
+        FieldName = 'ACCOUNT'
+        Footers = <>
       end>
   end
   object Panel1: TPanel
@@ -502,6 +507,14 @@ object FAktRashoda: TFAktRashoda
       Width = 328
       Height = 21
       TabOrder = 3
+    end
+    object cb_saveNoSpec: TCheckBox
+      Left = 896
+      Top = 24
+      Width = 177
+      Height = 17
+      Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1073#1077#1079' '#1089#1087#1077#1094#1086#1076#1077#1078#1076#1099
+      TabOrder = 4
     end
   end
   object NormVQuery: TRxIBQuery
@@ -943,6 +956,10 @@ object FAktRashoda: TFAktRashoda
     object NormiMemDatSPEC: TIntegerField
       FieldName = 'SPEC'
     end
+    object NormiMemDatACCOUNT: TStringField
+      FieldName = 'ACCOUNT'
+      Size = 5
+    end
   end
   object PopupMenu1: TPopupMenu
     Left = 128
@@ -961,7 +978,7 @@ object FAktRashoda: TFAktRashoda
     Width = 24
     Left = 808
     Bitmap = {
-      494C01010B001C004C0018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B001C00500018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       000000000000000000000000000000000000000000000000000000000000A87D
       7800B7818300B7818300B7818300B7818300B7818300B7818300B7818300B781
@@ -2087,8 +2104,8 @@ object FAktRashoda: TFAktRashoda
       'where ostatki.struk_id = :struk_id'
       'order by ostatki.ksm_id, ostatki.ksm_idpr')
     Macros = <>
-    Left = 592
-    Top = 64
+    Left = 624
+    Top = 152
     ParamData = <
       item
         DataType = ftUnknown
@@ -2156,8 +2173,8 @@ object FAktRashoda: TFAktRashoda
         ParamType = ptInput
         Value = '0=0'
       end>
-    Left = 640
-    Top = 64
+    Left = 672
+    Top = 152
     ParamData = <
       item
         DataType = ftUnknown
@@ -2290,8 +2307,8 @@ object FAktRashoda: TFAktRashoda
         ParamType = ptInput
         Value = '0=0'
       end>
-    Left = 680
-    Top = 64
+    Left = 712
+    Top = 152
     ParamData = <
       item
         DataType = ftUnknown
@@ -2395,8 +2412,8 @@ object FAktRashoda: TFAktRashoda
       '  STROKA_ID = :OLD_STROKA_ID')
     AutoCommit = False
     UpdateTransaction = DM1.IBT_Write
-    Left = 640
-    Top = 96
+    Left = 672
+    Top = 184
   end
   object upd_specDoc: TIBUpdateSQLW
     RefreshSQL.Strings = (
@@ -2444,8 +2461,8 @@ object FAktRashoda: TFAktRashoda
       '  DOC_ID = :OLD_DOC_ID')
     AutoCommit = False
     UpdateTransaction = DM1.IBT_Write
-    Left = 680
-    Top = 96
+    Left = 712
+    Top = 184
   end
   object q_specOst: TRxIBQuery
     Database = DM1.BELMED
@@ -2465,8 +2482,8 @@ object FAktRashoda: TFAktRashoda
         ParamType = ptInput
         Value = '0=0'
       end>
-    Left = 728
-    Top = 64
+    Left = 760
+    Top = 152
     ParamData = <
       item
         DataType = ftUnknown
@@ -2735,8 +2752,8 @@ object FAktRashoda: TFAktRashoda
       'and document.tip_op_id = 30 and document.tip_dok_id = 37'
       '--and document.ndok like '#39#1056#1087'%'#39)
     Macros = <>
-    Left = 808
-    Top = 64
+    Left = 840
+    Top = 152
     ParamData = <
       item
         DataType = ftUnknown
@@ -2923,8 +2940,8 @@ object FAktRashoda: TFAktRashoda
       'and coalesce(kart.kol_rash, 0) <> 0')
     UpdateObject = upd_prixKart
     Macros = <>
-    Left = 848
-    Top = 64
+    Left = 880
+    Top = 152
     ParamData = <
       item
         DataType = ftInteger
@@ -3221,8 +3238,8 @@ object FAktRashoda: TFAktRashoda
       '  STROKA_ID = :OLD_STROKA_ID')
     AutoCommit = False
     UpdateTransaction = DM1.IBT_Write
-    Left = 848
-    Top = 104
+    Left = 880
+    Top = 192
   end
   object q_ostatki: TRxIBQuery
     Database = DM1.BELMED
@@ -3235,8 +3252,8 @@ object FAktRashoda: TFAktRashoda
       'and coalesce(ostatki.ksm_idpr, 0) = :ksm_idpr')
     UpdateObject = upd_ostatki
     Macros = <>
-    Left = 888
-    Top = 64
+    Left = 920
+    Top = 152
     ParamData = <
       item
         DataType = ftUnknown
@@ -3531,8 +3548,8 @@ object FAktRashoda: TFAktRashoda
       '  KART_ID = :OLD_KART_ID')
     AutoCommit = False
     UpdateTransaction = DM1.IBT_Write
-    Left = 888
-    Top = 104
+    Left = 920
+    Top = 192
   end
   object mem_notAdded: TkbmMemTable
     DesignActivation = True
@@ -3557,8 +3574,8 @@ object FAktRashoda: TFAktRashoda
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
-    Left = 728
-    Top = 104
+    Left = 760
+    Top = 192
     object mem_notAddedKSM_ID: TIntegerField
       FieldName = 'KSM_ID'
     end
@@ -3592,8 +3609,8 @@ object FAktRashoda: TFAktRashoda
         'from select_ost_ksm_acc(:dat1, :dat2, 1, :struk_id, :ksm_id, :ac' +
         'count) ost')
     Macros = <>
-    Left = 760
-    Top = 64
+    Left = 792
+    Top = 152
     ParamData = <
       item
         DataType = ftUnknown
@@ -3707,8 +3724,8 @@ object FAktRashoda: TFAktRashoda
       'from doc_param'
       'where doc_param.doc_id = :doc_id')
     Macros = <>
-    Left = 680
-    Top = 136
+    Left = 712
+    Top = 224
     ParamData = <
       item
         DataType = ftUnknown

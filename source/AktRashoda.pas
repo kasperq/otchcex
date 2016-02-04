@@ -353,6 +353,8 @@ type
     q_specKartKRAZ: TSmallintField;
     q_specKartNEIS: TIBStringField;
     q_specKartNMAT: TIBStringField;
+    NormiMemDatACCOUNT: TStringField;
+    cb_saveNoSpec: TCheckBox;
     function GetCehNum(cehName : string) : integer;
     function SetMonthCombo(month : integer) : boolean;
     function activateNormQuery() : boolean;
@@ -372,7 +374,7 @@ type
     function closeQueries() : boolean;
     function addNormi2Mem() : boolean;
     function insertRec2MemDat(ksmId, strukId, razdelId, medEnd, keiId, kRaz : integer;
-                              nMatKsm, nEIs, stname, nMat, namRaz : string;
+                              nMatKsm, nEIs, stname, nMat, namRaz, account : string;
                               plNorm, factRashod : double; ostStrukId : integer; cena : double) : boolean;
     function addKart2Mem(): boolean;
     function insertPlnorm2MemDat(plNorm : double; ksmId : integer) : boolean;
@@ -391,7 +393,7 @@ type
     procedure insertFindMatropInMemDat;
     procedure changeFindMatropInMemDat;
     function changeRecInMem(ksmId, strukId, razdelId, medEnd, keiId, kRaz : integer;
-                                     nMatKsm, nEIs, stName, nMat, namRaz : string;
+                                     nMatKsm, nEIs, stName, nMat, namRaz, account : string;
                                      plNorm, factRashod : double; ostStrukId : integer; cena : double) : boolean;
     function findRecInNorms(ksmId : integer) : boolean;
     procedure loadCehNormZ(ksmIdPr : integer);
@@ -862,6 +864,7 @@ begin
     begin
       NormiMemDat.Edit;
       NormiMemDatFACTRASHOD.AsFloat := q_specKartKOL_RASH.AsFloat;
+      NormiMemDatACCOUNT.AsString := '10/11';
       NormiMemDat.Post;
     end
     else
@@ -871,7 +874,7 @@ begin
                        q_specKartRAZDEL_ID.AsInteger, 0,
                        q_specKartKEI_ID.AsInteger, q_specKartKRAZ.AsInteger,
                        q_specKartNMAT.AsString, q_specKartNEIS.AsString, '','',
-                       q_specKartNAMRAZ.AsString, 0, q_specKartKOL_RASH.AsFloat,
+                       q_specKartNAMRAZ.AsString, '10/11', 0, q_specKartKOL_RASH.AsFloat,
                        q_specKartSTRUK_ID.AsInteger, 0);
     end;
     q_specKart.Next;
@@ -1292,7 +1295,8 @@ begin
       begin
         if (yearEdit.Text >= '2015') then
         begin
-          if (findSpecOstAllOr11(NormiMemDatKSM_ID.AsInteger, true))
+          if (not cb_saveNoSpec.Checked)
+             and (findSpecOstAllOr11(NormiMemDatKSM_ID.AsInteger, true))
              and (vTip_Doc_Id = 144) then
           begin
             if (findSpecOstAllOr11(NormiMemDatKSM_ID.AsInteger, false))
@@ -1881,6 +1885,7 @@ begin
                        NormiMemDatSTNAME.AsString,
                        NormiMemDatNMAT.AsString,
                        NormiMemDatNAMRAZ.AsString,
+                       '',
                        0,
                        NormiMemDatFACTRASHOD.AsFloat,
                        NormiMemDatOST_STRUK_ID.AsInteger,
@@ -2063,7 +2068,7 @@ begin
                        NormVQueryKEI_ID.AsInteger, NormVQueryKRAZ.AsInteger,
                        NormVQueryNMAT_KSM.AsString, NormVQueryNEIS.AsString,
                        NormVQuerySTNAME.AsString, NormVQueryNMAT.AsString,
-                       NormVQueryNAMRAZ.AsString, NormVQueryPLNORM.AsFloat, 0, vStruk_Id, 0)
+                       NormVQueryNAMRAZ.AsString, '', NormVQueryPLNORM.AsFloat, 0, vStruk_Id, 0)
     else
       insertPlnorm2MemDat(NormVQueryPLNORM.AsFloat, NormVQueryKSM_ID.AsInteger);
     NormVQuery.Next;
@@ -2072,19 +2077,19 @@ begin
 end;
 
 function TFAktRashoda.insertRec2MemDat(ksmId, strukId, razdelId, medEnd, keiId, kRaz : integer;
-                                       nMatKsm, nEIs, stName, nMat, namRaz : string;
+                                       nMatKsm, nEIs, stName, nMat, namRaz, account : string;
                                        plNorm, factRashod : double; ostStrukId : integer; cena : double) : boolean;
 begin
   if (not NormiMemDat.Active) then
     NormiMemDat.Active := True;
   NormiMemDat.Insert;
   changeRecInMem(ksmId, strukId, razdelId, medEnd, keiId, kRaz, nMatKsm, nEIs,
-                 stName, nMat, namRaz, plNorm, factRashod, ostStrukId, cena);
+                 stName, nMat, namRaz, account, plNorm, factRashod, ostStrukId, cena);
   result := true;
 end;
 
 function TFAktRashoda.changeRecInMem(ksmId, strukId, razdelId, medEnd, keiId, kRaz : integer;
-                                     nMatKsm, nEIs, stName, nMat, namRaz : string;
+                                     nMatKsm, nEIs, stName, nMat, namRaz, account : string;
                                      plNorm, factRashod : double; ostStrukId : integer; cena : double) : boolean;
 begin
   try
@@ -2105,6 +2110,7 @@ begin
     NormiMemDatKRAZ.AsInteger := kRaz;
     NormiMemDatOST_STRUK_ID.AsInteger := ostStrukId;
     NormiMemDatSPEC.AsInteger := 0;
+    NormiMemDatACCOUNT.AsString := account;
 //    if (NormiMemDatCENA.AsFloat = 0) and (cena <> 0) then
 //      NormiMemDatCENA.AsFloat := cena;
 
@@ -2136,7 +2142,7 @@ begin
                        DM1.KartRAZDEL_ID.AsInteger, NormVQueryMEDEND.AsInteger,
                        DM1.KartKEI_IDN.AsInteger, DM1.KartKRAZ.AsInteger,
                        DM1.KartNMAT.AsString, neis, '','',
-                       DM1.KartNAMRAZ.AsString, 0, DM1.KartKOL_RASH_EDIZ.AsFloat,
+                       DM1.KartNAMRAZ.AsString, '', 0, DM1.KartKOL_RASH_EDIZ.AsFloat,
                        dm1.KartOST_STRUK_ID.AsInteger, dm1.KartCENA.AsFloat);
       DM1.Kart.Next;
     end;
@@ -2204,7 +2210,8 @@ begin
     addKart2Mem();
 //    findAndSet10Account;
     addNormi2Mem();
-    findAndSet10Account;
+    if (vTip_Doc_id = 144) then    
+      findAndSet10Account;
 //    NormiMemDat.SortOnFields('factrashod', true, true);
     NormiMemDat.SortOnFields('Razdel_Id', true, false);
 //    NormiMemDat.SortOnFields('factrashod', true, true);
