@@ -95,7 +95,9 @@ uses
   Analit_aList in 'Source\Analit_aList.pas' {FAnalit_List},
   Unit3 in 'Source\Unit3.pas' {Form3},
   PererasFolga in 'Source\PererasFolga.pas' {FPererasFolga},
-  LookupUnderSign in 'Source\LookupUnderSign.pas' {FLookupUnderSign};
+  LookupUnderSign in 'Source\LookupUnderSign.pas' {FLookupUnderSign},
+  TechJournPrep in 'Source\TechJournPrep.pas' {FTechJournPrep},
+  TechJourn in 'Source\TechJourn.pas' {FTechJourn};
 
 {$R *.res}
 
