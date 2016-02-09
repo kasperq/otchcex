@@ -44,10 +44,6 @@ object FGotProd: TFGotProd
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
     object VipuskPage: TTabSheet
       Caption = #1042#1099#1087#1091#1089#1082
@@ -58,10 +54,6 @@ object FGotProd: TFGotProd
       Font.Style = [fsBold]
       ImageIndex = 1
       ParentFont = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
   end
   object StrukQuery: TIBQuery

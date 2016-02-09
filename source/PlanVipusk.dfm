@@ -3,7 +3,7 @@ object FPlanVipusk: TFPlanVipusk
   Top = 0
   Caption = #1055#1083#1072#1085#1086#1074#1099#1081' '#1074#1099#1087#1091#1089#1082
   ClientHeight = 628
-  ClientWidth = 721
+  ClientWidth = 813
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,10 +18,11 @@ object FPlanVipusk: TFPlanVipusk
   object ToolPanel: TPanel
     Left = 0
     Top = 0
-    Width = 721
+    Width = 813
     Height = 57
     Align = alTop
     TabOrder = 0
+    ExplicitWidth = 721
     object OpenSprBtn: TSpeedButton
       Left = 135
       Top = 1
@@ -288,10 +289,11 @@ object FPlanVipusk: TFPlanVipusk
   object Panel1: TPanel
     Left = 0
     Top = 57
-    Width = 721
+    Width = 813
     Height = 35
     Align = alTop
     TabOrder = 1
+    ExplicitWidth = 721
     object Label3: TLabel
       Left = 8
       Top = 10
@@ -381,7 +383,7 @@ object FPlanVipusk: TFPlanVipusk
   object PlanVipuskGrid: TDBGridEh
     Left = 0
     Top = 92
-    Width = 721
+    Width = 813
     Height = 536
     Align = alClient
     AllowedOperations = [alopAppendEh]
@@ -449,6 +451,12 @@ object FPlanVipusk: TFPlanVipusk
         Footers = <>
         Title.Caption = #1045#1076'.'#1080#1079#1084'.'
         ToolTips = True
+      end
+      item
+        EditButtons = <>
+        FieldName = 'KOL'
+        Footers = <>
+        Title.Caption = #1050#1086#1083'-'#1074#1086
       end>
   end
   object FindDlgEh1: TFindDlgEh

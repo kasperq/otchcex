@@ -41,7 +41,7 @@ var
   FPlanVipusk: TFPlanVipusk;
 
   s_kodp, s_kei, s_korg, s_Sprod_id : integer;
-  s_gost, s_xarkt, s_nmat, s_kodProd, s_namorg, s_neiz : string; 
+  s_gost, s_xarkt, s_nmat, s_kodProd, s_namorg, s_neiz, s_namreg : string; 
 
 implementation
 
@@ -61,6 +61,7 @@ begin
   s_namorg := dm1.VipuskMemNAME_ORG.AsString;
   s_neiz := dm1.VipuskMemNEIS.AsString;
   s_Sprod_id := dm1.VipuskMemSprod_Id.AsInteger;
+  s_namreg := dm1.VipuskMemNAM_REG.AsString;
   ModalResult := dm1.VipuskMemKSM_ID.AsInteger + 50;
 end;
 
