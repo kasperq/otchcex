@@ -82,6 +82,7 @@ type
     N51: TMenuItem;
     Timer1: TTimer;
     N52: TMenuItem;
+    N53: TMenuItem;
     procedure N14Click(Sender: TObject);
     procedure N15Click(Sender: TObject);
     procedure L1Click(Sender: TObject);
@@ -144,6 +145,7 @@ type
     procedure N52Click(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure RxLabel1DblClick(Sender: TObject);
+    procedure N53Click(Sender: TObject);
 
   private
     procedure activateRole;
@@ -164,7 +166,7 @@ uses prixcex, rascex, F_Splash, dm, f_options, NormCex, PerNovMes, Ostatki,
   f_nastr, Pech_Vibor, ViborPerioda, Vipusk, Got_Prod, KorOtchet, PerOtchet,
   KorOst, PererasZag, NesPrix, PererasPlenka, PererasFolga, Act_Spirt, Poteri,
   Unit3, ShellAPI, OstSyr, Otx_Spirt, InvOp, AktRashoda, act_aceton, vipusk_seria,
-  Find_Spprod, Find_Matrop, GotProd, Otpusk;
+  Find_Spprod, Find_Matrop, GotProd, Otpusk, TechJourn;
 
 {$R *.dfm}
 {$R x:\publicforms\anitanec.res}
@@ -743,6 +745,24 @@ begin
   FGotProd.OnHide := ChildFormHide;
   Label1.Caption := 'Готовая продукция';
   FGotProd.Show;
+end;
+
+procedure TFGlMenu.N53Click(Sender: TObject);
+begin
+  if (RXLabel1.Caption = '') then
+  begin
+    MessageDlg('Задайте подразделение !', mtWarning, [mbOK], 0);
+    Abort;
+  end;
+  if (FTechJourn = nil) then                       //
+    FTechJourn := TFTechJourn.Create(Application);  //
+  FTechJourn.Parent := Main_Panel;             //
+  if (ActiveForm <> nil) then
+    ActiveForm.Close;
+  ActiveForm := FTechJourn;                  //
+  FTechJourn.OnHide := ChildFormHide;    //
+  Label1.Caption := 'Технологический журнал';
+  FTechJourn.Show;     
 end;
 
 procedure TFGlMenu.N5Click(Sender: TObject);
