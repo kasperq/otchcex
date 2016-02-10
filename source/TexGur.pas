@@ -1010,8 +1010,10 @@ begin
       dm1.TexStad.ApplyUpdates;
    if Ceh_marsh.UpdatesPending then
       Ceh_marsh.ApplyUpdates;
-   DM1.IBT_WRITE.Commit;
-   DM1.IBT_READ.CommitRetaining;
+   dm1.commitWriteTrans(true);
+   dm1.commitReadTrans(true);
+//   DM1.IBT_WRITE.Commit;
+//   DM1.IBT_READ.CommitRetaining;
 //   Ceh_marsh.Close;
 //   dm1.TexStad.Close;
 //   dm1.Seria.Close;
@@ -1042,6 +1044,8 @@ begin
     TexGur.Next;
    end;
    FSprFormul.CEH_NormZ.Close;
+   dm1.commitWriteTrans(true);
+   dm1.commitReadTrans(true);
   except
    MessageDlg('Произошла ошибка при записи!', mtWarning, [mbOK], 0);
    DM1.IBT_Read.RollbackRetaining;
