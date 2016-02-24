@@ -198,7 +198,6 @@ type
     TexGurRAZDEL_ID: TSmallintField;
     TexGurNMAT: TIBStringField;
     TexGurXARKT: TIBStringField;
-    TexGurGOST: TIBStringField;
     TexGurKEI_ID: TSmallintField;
     TexGurNEIS: TIBStringField;
     TexGurSTROKA_ID: TIntegerField;
@@ -248,7 +247,6 @@ type
     Ceh_MarshKOL_DOB: TFloatField;
     Ceh_MarshNMAT: TIBStringField;
     Ceh_MarshXARKT: TIBStringField;
-    Ceh_MarshGOST: TIBStringField;
     Ceh_MarshVIB: TIntegerField;
     Ceh_MarshSERIA: TIBStringField;
     Ceh_MarshFORMULA: TIBStringField;
@@ -259,6 +257,8 @@ type
     ZagSyrNMAT_SYR: TIBStringField;
     btn_vipuskList: TToolButton;
     SpeedButton3: TSpeedButton;
+    TexGurGOST: TIBStringField;
+    Ceh_MarshGOST: TIBStringField;
     procedure MyGetValue(const s: String; var v: Variant);
     procedure MyGetValue1(const s: String; var v: Variant);
     procedure Edit1Change(Sender: TObject);
