@@ -4,7 +4,7 @@ object FSer: TFSer
   BorderIcons = []
   BorderStyle = bsNone
   ClientHeight = 250
-  ClientWidth = 102
+  ClientWidth = 174
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,7 +18,7 @@ object FSer: TFSer
   object DBGridEh4: TDBGridEh
     Left = 0
     Top = 0
-    Width = 102
+    Width = 174
     Height = 219
     Align = alClient
     DataSource = DM1.DS_Seria
@@ -45,22 +45,29 @@ object FSer: TFSer
         Title.Alignment = taCenter
         Title.Caption = #1057#1077#1088#1080#1103
         Width = 81
+      end
+      item
+        EditButtons = <>
+        FieldName = 'DATE_ZAG'
+        Footers = <>
+        Title.Caption = #1047#1072#1075#1088#1091#1079#1082#1072
       end>
   end
   object Panel2: TPanel
     Left = 0
     Top = 219
-    Width = 102
+    Width = 174
     Height = 31
     Align = alBottom
     Ctl3D = False
     ParentCtl3D = False
     TabOrder = 1
+    ExplicitWidth = 102
     DesignSize = (
-      102
+      174
       31)
     object SpeedButton1: TSpeedButton
-      Left = 20
+      Left = 92
       Top = 0
       Width = 31
       Height = 30
@@ -98,7 +105,7 @@ object FSer: TFSer
       ExplicitLeft = 22
     end
     object SpeedButton2: TSpeedButton
-      Left = 50
+      Left = 122
       Top = 0
       Width = 33
       Height = 30

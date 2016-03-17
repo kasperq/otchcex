@@ -17,11 +17,6 @@ type
     DSTexGur: TDataSource;
     TexGur: TRxIBQuery;
     TexGurUpdateSQLW1: TIBUpdateSQLW;
-    SprStad: TIBQuery;
-    DSSprStad: TDataSource;
-    SprStadSTADIA_ID: TIntegerField;
-    SprStadNAME_STAD: TIBStringField;
-    SprStadLEK_ID: TSmallintField;
     ToolBar1: TToolBar;
     ToolButton1: TToolButton;
     ToolButton2: TToolButton;
@@ -53,9 +48,6 @@ type
     Seria_sFIO_MASTER: TIBStringField;
     Seria_sCOMMENT: TIBStringField;
     Seria_sOB_ZAG: TFloatField;
-    Ceh_Marsh: TRxIBQuery;
-    IBceh_marsh: TIBUpdateSQLW;
-    DSceh_marsh: TDataSource;
     FindDlgEh1: TFindDlgEh;
     FindDlgEh2: TFindDlgEh;
     Label5: TLabel;
@@ -68,45 +60,6 @@ type
     PageControl1: TPageControl;
     TabSheet1: TTabSheet;
     DBGridEh3: TDBGridEh;
-    DBGridEh1: TDBGridEh;
-    Panel1: TPanel;
-    Label16: TLabel;
-    Label20: TLabel;
-    Label27: TLabel;
-    Label30: TLabel;
-    Label31: TLabel;
-    Label32: TLabel;
-    Label14: TLabel;
-    Label15: TLabel;
-    Label48: TLabel;
-    Label49: TLabel;
-    DBNavigator1: TDBNavigator;
-    Edit4: TEdit;
-    Edit5: TEdit;
-    Edit6: TEdit;
-    Edit7: TEdit;
-    Edit8: TEdit;
-    Button1: TButton;
-    DBEdit1: TDBEdit;
-    DBEdit2: TDBEdit;
-    DBEdit3: TDBEdit;
-    Edit20: TEdit;
-    GroupBox1: TGroupBox;
-    DBCtrlGrid1: TDBCtrlGrid;
-    GroupBox7: TGroupBox;
-    Label44: TLabel;
-    Label52: TLabel;
-    DBText2: TDBText;
-    Label51: TLabel;
-    Label53: TLabel;
-    Label54: TLabel;
-    Label47: TLabel;
-    DBEdit7: TDBEdit;
-    DBEdit9: TDBEdit;
-    DBEdit8: TDBEdit;
-    DBEdit11: TDBEdit;
-    DBEditEh1: TDBEditEh;
-    DBEditEh2: TDBEditEh;
     TabSheet2: TTabSheet;
     DBGridEh4: TDBGridEh;
     Panel3: TPanel;
@@ -142,11 +95,6 @@ type
     Label34: TLabel;
     Label75: TLabel;
     Label21: TLabel;
-    GroupBox4: TGroupBox;
-    Label4: TLabel;
-    Label40: TLabel;
-    Edit3: TEdit;
-    Edit13: TEdit;
     ToolButton6: TToolButton;
     SpeedButton2: TSpeedButton;
     PopupMenu1: TPopupMenu;
@@ -156,38 +104,12 @@ type
     N4: TMenuItem;
     Label7: TLabel;
     Label45: TLabel;
-    Label37: TLabel;
-    Edit12: TEdit;
     Label38: TLabel;
     Edit9: TEdit;
-    Label2: TLabel;
-    Edit11: TEdit;
     ToolButton8: TToolButton;
-    Label17: TLabel;
-    DBEdit4: TDBEdit;
     FormStorage1: TFormStorage;
-    Splitter2: TSplitter;
     Splitter1: TSplitter;
-    Splitter3: TSplitter;
-    Splitter4: TSplitter;
     Splitter5: TSplitter;
-    Splitter6: TSplitter;
-    Panel4: TPanel;
-    GroupBox5: TGroupBox;
-    Label64: TLabel;
-    Label66: TLabel;
-    Edit16: TEdit;
-    Edit10: TEdit;
-    Button2: TButton;
-    Button3: TButton;
-    GroupBox6: TGroupBox;
-    Label1: TLabel;
-    Label6: TLabel;
-    Label13: TLabel;
-    DBEditEh3: TDBEditEh;
-    DBEdit5: TDBEdit;
-    Label18: TLabel;
-    Edit14: TEdit;
     TexGurKODP: TIntegerField;
     TexGurOT_S: TFMTBCDField;
     TexGurOT_NZ: TFMTBCDField;
@@ -233,23 +155,6 @@ type
     ZagSyrKOL_RASH_EDIZ: TFloatField;
     ZagSyrNDOK: TIBStringField;
     TexGurDATE_OP: TDateField;
-    Ceh_MarshMARSH_ID: TSmallintField;
-    Ceh_MarshKSM_IDOV: TIntegerField;
-    Ceh_MarshSERIA_IDOV: TIntegerField;
-    Ceh_MarshZAG_OV: TFloatField;
-    Ceh_MarshSERIA_ID: TIntegerField;
-    Ceh_MarshKSM_ID: TIntegerField;
-    Ceh_MarshVLAGA_OV: TFloatField;
-    Ceh_MarshAKTIV_OV: TFloatField;
-    Ceh_MarshKOEFPER1: TFloatField;
-    Ceh_MarshKOEFPER2: TFloatField;
-    Ceh_MarshKSM_DOB: TIntegerField;
-    Ceh_MarshKOL_DOB: TFloatField;
-    Ceh_MarshNMAT: TIBStringField;
-    Ceh_MarshXARKT: TIBStringField;
-    Ceh_MarshVIB: TIntegerField;
-    Ceh_MarshSERIA: TIBStringField;
-    Ceh_MarshFORMULA: TIBStringField;
     ZagSyrKOD_PREP: TIBStringField;
     TexGurNOT_S: TFMTBCDField;
     TexGurOTN_S: TFMTBCDField;
@@ -258,7 +163,7 @@ type
     btn_vipuskList: TToolButton;
     SpeedButton3: TSpeedButton;
     TexGurGOST: TIBStringField;
-    Ceh_MarshGOST: TIBStringField;
+    ZagSyrDATE_TIME_UPDATE: TDateField;
     procedure MyGetValue(const s: String; var v: Variant);
     procedure MyGetValue1(const s: String; var v: Variant);
     procedure Edit1Change(Sender: TObject);
@@ -269,10 +174,8 @@ type
       Shift: TShiftState);
     procedure Edit1Click(Sender: TObject);
     procedure ToolButton3Click(Sender: TObject);
-    procedure DBGridEh1EditButtonClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure ToolButton9Click(Sender: TObject);
-    procedure TexGurAfterScroll(DataSet: TDataSet);
     procedure Button1Click(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -296,24 +199,14 @@ type
     procedure TexGurBeforePost(DataSet: TDataSet);
     procedure Seria_sBeforeInsert(DataSet: TDataSet);
     procedure Seria_sNewRecord(DataSet: TDataSet);
-    procedure Button2Click(Sender: TObject);
     procedure DBEditEh1EditButtons0Click(Sender: TObject;
       var Handled: Boolean);
-    procedure DBEditEh2EditButtons0Click(Sender: TObject;
-      var Handled: Boolean);
-    procedure Ceh_MarshNewRecord(DataSet: TDataSet);
-    procedure Ceh_MarshKSM_IDOVValidate(Sender: TField);
-    procedure Ceh_MarshSERIAValidate(Sender: TField);
     procedure DBEditEh3EditButtons0Click(Sender: TObject;
       var Handled: Boolean);
-    procedure DBEditEh3KeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
     procedure SpinEdit3Change(Sender: TObject);
     procedure SpinEdit4Change(Sender: TObject);
     procedure TexGurNewRecord(DataSet: TDataSet);
     procedure ToolButton4Click(Sender: TObject);
-    procedure DBEditEh2Click(Sender: TObject);
-    procedure DBEditEh1Click(Sender: TObject);
     procedure ToolButton6Click(Sender: TObject);
     procedure SpeedButton2Click(Sender: TObject);
     procedure Edit9KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -323,8 +216,6 @@ type
     procedure N4Click(Sender: TObject);
     procedure ToolButton8Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
-    procedure Edit3Click(Sender: TObject);
-    procedure Edit3KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure Edit13KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure TexGurAfterDelete(DataSet: TDataSet);
     procedure TexGurBeforeDelete(DataSet: TDataSet);
@@ -363,158 +254,121 @@ implementation
 
 procedure TFTexGur.TexGurSost;
 begin
-try
-     Ceh_marsh.Close;
-   dm1.TexStad.Close;
-   dm1.Seria.Close;
-   dm1.Kart.Close;
-   Seria_s.Close;
-   dm1.IBT_WRITE.Active:=FALSE;
-   dm1.IBT_READ.Active:=FALSE;
- StartWait;
- TexGur.BeforePost:=nil;
- s_seria:=edit2.Text;
- if s_seria<>'' then
- begin
-  USL_SORT:='7,9';
-  vNDoc:='Заг_'+copy(label19.Caption,1,5)+'_'+s_seria;
-  vDate_op:=strtodate(s_dat1_period);
-  vTip_Op_Id:=33;
-  vTip_Doc_Id:=34;
-  vKlient_Id:=s_kodp;
-  vDate_dok:=strtodate(s_dat1_period);
-  vpriz_id:=2;
-  if dm1.Document.Active then dm1.Document.Close;
-  DM1.DOcUMENT.MacroByName('USL').AsString:='WHERE DOcUMENT.STRUK_ID='+INTTOSTR(VsTRUK_ID)
-  + ' AND DOCUMENT.TIP_OP_ID=33 AND DOCUMENT.NDOK='+''''+VnDOC+''''
-  + ' AND Document.Date_dok between '+''''+s_dat1_period+'''' +' and '+''''+s_dat2_period+''''
-  + ' AND Document.Klient_id='+inttostr(vKlient_id);
-  dm1.Document.OPEN;
-  IF DM1.Document.Eof THEN
-  begin
-   IF MODE<2 THEN
-   BEGIN
-    dm1.Document.Insert;
-    if not dm1.IBT_Write.Active then dm1.IBT_Write.StartTransaction;
-    try
-     if (dm1.Document.State=dsEdit) or (dm1.Document.State=dsInsert)
-     then  dm1.Document.Post;
-     if dm1.Document.UpdatesPending then
-      dm1.Document.ApplyUpdates;
-     dm1.IBT_Write.Commit;
-     dm1.IBT_Read.CommitRetaining;
-     dm1.Document.Close;
-    except
-     MessageDlg('Произошла ошибка при записи документа!', mtError, [mbOK], 0);
-     DM1.IBT_Read.RollbackRetaining;
+  try
+    dm1.Seria.Close;
+    dm1.Kart.Close;
+    Seria_s.Close;
+    dm1.IBT_WRITE.Active := FALSE;
+    dm1.IBT_READ.Active := FALSE;
+    StartWait;
+    TexGur.BeforePost := nil;
+    s_seria := edit2.Text;
+    if (s_seria <> '') then
+    begin
+      USL_SORT := '7,9';
+      vNDoc := 'Заг_' + copy(label19.Caption, 1, 5) + '_' + s_seria;
+      vDate_op := strtodate(s_dat1_period);
+      vTip_Op_Id := 33;
+      vTip_Doc_Id := 34;
+      vKlient_Id := s_kodp;
+      vDate_dok := strtodate(s_dat1_period);
+      vpriz_id := 2;
+      if (dm1.Document.Active) then
+        dm1.Document.Close;
+      DM1.DOcUMENT.MacroByName('USL').AsString := 'WHERE DOcUMENT.STRUK_ID=' + INTTOSTR(VsTRUK_ID)
+                                                  + ' AND DOCUMENT.TIP_OP_ID=33 AND DOCUMENT.NDOK='
+                                                  + '''' + VnDOC + ''''
+                                                  + ' AND Document.Date_dok between '
+                                                  + '''' + s_dat1_period + ''''
+                                                  + ' and ' + '''' + s_dat2_period + ''''
+                                                  + ' AND Document.Klient_id=' + inttostr(vKlient_id);
+      dm1.Document.OPEN;
+      IF (DM1.Document.Eof) THEN
+      begin
+        IF (MODE < 2) THEN
+        BEGIN
+          dm1.Document.Insert;
+          dm1.startWriteTrans;
+          try
+            if (dm1.Document.State = dsEdit) or (dm1.Document.State = dsInsert) then
+              dm1.Document.Post;
+            if (dm1.Document.UpdatesPending) then
+              dm1.Document.ApplyUpdates;
+            dm1.commitWriteTrans(true);
+            dm1.commitReadTrans(true);
+            dm1.Document.Close;
+          except
+            MessageDlg('Произошла ошибка при записи документа!', mtError, [mbOK], 0);
+            DM1.IBT_Read.RollbackRetaining;
+          end;
+        end
+        ELSE
+          vDocument_id := 0;
+      END
+      ELSE
+        vDocument_id := dm1.DocumentDOC_ID.AsInteger;
+      if (not dm1.Seria.Active) then
+      begin
+        s_seria := edit2.Text;
+        Dm1.Seria.ParamByName('Ksm_id').AsInteger := S_KODP;
+        DM1.Seria.MacroByName('usl').AsString := 'SERIA.SERIA=' + '''' + S_SERIA + '''';
+        dm1.Seria.Active := true;
+        vSeria_id := dm1.SeriaSeria_id.AsInteger;
+      end;
+      if (edit9.Text <> '') and (edit9.Text <> '0') then
+        s_vip := strtofloat(edit9.Text)
+      else
+        s_vip := 0;
+      TexGur.BeforePost := nil;
+
+      TexGur.Close;
+      TexGur.ParamByName('Struk').AsInteger := vStruk_id;
+      TexGur.ParamByName('mes').AsInteger := mes;
+      TexGur.ParamByName('god').AsInteger := god;
+      TexGur.ParamByName('KODP').AsInteger := S_KODP;
+      TexGur.MacroByName('SORT').AsString := USL_SORT;
+      TexGur.MacroByName('pl').AsString := replacestr(floattostrf(s_vip, ffGeneral, 6, 15), ',', '.');
+      TexGur.ParamByName('doc').AsInteger := vDocument_id;
+      TexGur.MacroByName('dat1').AsString := '''' + S_DAT1_Period + '''';
+      TexGur.MacroByName('dat2').AsString := '''' + s_dat2_Period + '''';
+      TexGur.Open;
+      TexGur.DisableControls;
+
+      v_dok_kart := SelectToVarIB('select Ostatki.kart_id   FROM Ostatki '
+                                  + 'WHERE Ostatki.STRUK_ID=' + INTTOSTR(VsTRUK_ID)
+                                  + ' AND ostatki.ksm_id=' + inttostr(s_Kodp)
+                                  + ' AND Ostatki.seria_id=' + inttostr(vseria_id),
+                                  dm1.belmed, dm1.ibt_read);
+      If (v_dok_kart <> Null) then
+      begin
+        s_kart_id := 0;
+      end;
+      TexGur.First;
+      while (not TexGur.Eof) do
+      begin
+        if (TexGurDoc_id.AsInteger <> vDocument_id) then
+        begin
+          TexGur.Edit;
+          TexGurDoc_id.AsInteger := vDocument_id;
+          TexGur.Post;
+        end;
+        TexGur.Next;
+      end;
+      TexGur.First;
     end;
-   end
-   ELSE vDocument_id:=0;
-  END
-  ELSE vDocument_id:=dm1.DocumentDOC_ID.AsInteger;
-  if not dm1.Seria.Active then
-  begin
-   s_seria:=edit2.Text;
-   Dm1.Seria.ParamByName('Ksm_id').AsInteger:=S_KODP;
-   DM1.Seria.MacroByName('usl').AsString:='SERIA.SERIA='+''''+S_SERIA+'''';
-   dm1.Seria.Active:=true;
-   vSeria_id:=dm1.SeriaSeria_id.AsInteger;
-  end;
-  if (edit9.Text<>'') and (edit9.Text<>'0') then s_vip:=strtofloat(edit9.Text) else s_vip:=0;
-  TexGur.BeforePost:=nil;
 
-  TexGur.Close;
-  TexGur.ParamByName('Struk').AsInteger:=vStruk_id;
-  TexGur.ParamByName('mes').AsInteger:=mes;
-  TexGur.ParamByName('god').AsInteger:=god;
-  TexGur.ParamByName('KODP').AsInteger:=S_KODP;
-  TexGur.MacroByName('SORT').AsString:=USL_SORT;
-  TexGur.MacroByName('pl').AsString:=replacestr(floattostrf(s_vip,ffGeneral,6,15),',','.');
-  TexGur.ParamByName('doc').AsInteger:=vDocument_id;
-  TexGur.MacroByName('dat1').AsString:=''''+S_DAT1_Period+'''';
-  TexGur.MacroByName('dat2').AsString:=''''+s_dat2_Period+'''';
-  TexGur.Open;
-  TexGur.DisableControls;
-  
-  v_dok_kart:=SelectToVarIB('select Ostatki.kart_id   FROM Ostatki WHERE Ostatki.STRUK_ID='+INTTOSTR(VsTRUK_ID)
-  + ' AND ostatki.ksm_id='+inttostr(s_Kodp)
-  + ' AND Ostatki.seria_id='+inttostr(vseria_id),dm1.belmed,dm1.ibt_read);
-  If v_dok_kart <> Null then
-  begin
-   if dm1.TexStad.Active then dm1.TexStad.Active:=false;
-   dm1.TexStad.ParamByName('KartID').AsInteger:=v_dok_kart;
-   dm1.TexStad.Open;
-   if not dm1.TexStad.Eof then
-   begin
-    s_kart_id:=dm1.texStadKart_id.AsInteger;
-//     dm1.TexStad.Edit;
-   end
-   else
-   begin
-    s_kart_id:=0;
-   end;
-  end;
-  dm1.TexStad.Active:=true;
-  dm1.TexStad.Insert;
-//  SprStad.Close;
-//  SprStad.ParamByName('Lek_id').AsInteger:=s_Lek_id;
-//  SprStad.Open;
-//  SprStad.First;
-
- end;
-// if CEH_MARSH.Active=false then
-// begin
-//  CEH_MARSH.ParamByName('Kodp').AsInteger:=S_KODP;
-//  CEH_MARSH.ParamByName('seria').AsInteger:=vseria_id;
-//  CEH_MARSH.Active:=TRUE;
-// end;
-// ceh_marsh.First;
-// if not ceh_marsh.Eof then
-// begin
-//  if (DBedit7.Text<>'') and (Dbedit7.Text<>'0')then
-//  begin
-//   v_11:=0;
-//   if (edit16.Text='') then edit16.Text:='1';
-//   While not ceh_marsh.Eof  do
-//   begin
-//    if (DBedit7.Text='') then DBedit7.Text:='1';
-//    if (DBedit8.Text='') then DBedit8.Text:='1';
-//    if (DBedit11.Text='') then DBedit11.Text:='1';
-//    if (edit13.Text='') then edit13.Text:='1';
-//    v_11:=v_11+SimpleRoundTo(SimpleRoundTo((strtofloat(DBedit7.Text)*strtofloat(DBedit8.Text)/100)*(100-strtofloat(DBedit11.Text))/100,-3)
-//    *strtofloat(edit13.Text)/strtofloat(DBedit7.Text),-2);
-//    ceh_marsh.Next;
-//   end;
-//   ceh_marsh.First;
-//  end;
-//  if (edit3.Text<>'') and (edit3.Text<>'0')AND (edit16.Text<>'') and (edit16.Text<>'0')then
-//     edit10.Text:=floattostr(SimpleRoundTo(strtofloat(edit3.Text)*(100-strtofloat(edit16.Text))/100,-2))
-// end;
-// ceh_marsh.Edit;
- TexGur.First;
- while not TexGur.Eof do
- begin
-   if TexGurDoc_id.AsInteger<>vDocument_id then
-   begin
-    TexGur.Edit;
-    TexGurDoc_id.AsInteger:=vDocument_id;
-    TexGur.Post;
-   end;
-   TexGur.Next;
- end;
- TexGur.First;
- TexGur.EnableControls;
- DBGridEh3.SetFocus;
- TexGur.BeforePost:=TexGurBeforePost;
- StopWait;
-except
-  on E:EIBInterbaseError do
-     begin
+    TexGur.EnableControls;
+    if (PageControl1.ActivePage = tabsheet1) then    
+      DBGridEh3.SetFocus;
+    TexGur.BeforePost := TexGurBeforePost;
+    StopWait;
+  except
+    on E : EIBInterbaseError do
+    begin
       ShowMessage(E.Message);
       StopWait;
-     end;
-end;
- TexGurKol_rash_ediz.FocusControl;
+    end;
+  end;
 end;
 
 procedure TFTexGur.Edit1Change(Sender: TObject);
@@ -553,19 +407,16 @@ end;
 procedure TFTexGur.Edit1KeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-if key=vk_return then
- begin
-  StartWait;
-  if (edit1.text<>'') and (not dm1.IBQuery1.Eof)  then
-   begin
-
-    edit3.text:='';
+  if key = vk_return then
+  begin
+    StartWait;
+    if (edit1.text<>'') and (not dm1.IBQuery1.Eof)  then
+    begin
     edit9.text:='';
     EDIT1.OnChange:=nil;
     edit1.text:=DM1.IBQuery1.FieldByName('kod_PROD').Asstring;
     EDIT1.OnChange:=Edit1Change;
 //    edit17.text:=floattostr(DM1.IBQuery1.FieldByName('vol_ov').Asfloat);
-    edit13.text:=floattostr(DM1.IBQuery1.FieldByName('volumf').Asfloat);
     s_kodp:=DM1.IBQuery1.FieldByName('KSM_ID').value;
     s_gost:=DM1.IBQuery1.FieldByName('GOST').AsString;
     s_xarkt:=DM1.IBQuery1.FieldByName('XARKT').AsString;
@@ -666,7 +517,6 @@ begin
  begin
   if (edit2.text<>'') then
   begin
-   if ceh_marsh.Active=true then ceh_marsh.Close;
    if (edit9.Text<>'') and (edit9.Text<>'0') then s_vip:=strtofloat(edit9.Text) else s_vip:=0;
    s_seria:=edit2.Text;
    s_ksm:=s_kodp;
@@ -677,9 +527,7 @@ begin
    begin
     vseria_id:=dm1.SeriaSeria_id.AsInteger;
     s_kol_seria:=DM1.SeriaKol_Seria.AsFloat;
-    edit3.Text:=floattostr(SimpleRoundTo(DM1.SeriaOB_ZAG.AsFloat,-2));
     edit9.Text:=floattostr(s_kol_seria);
-    edit16.Text:=floattostr(dm1.Seriavlag_tm.AsFloat);
     if dm1.SeriaDATE_ZAG.AsVariant<>null then
     begin
      DateEdit1.Date:=dm1.SeriaDATE_ZAG.AsDateTime;
@@ -728,25 +576,6 @@ begin
    dm1.SeriaFORMA_VIPUSK.AsString:=s_Formv;
 //   DM1.SeriaKSM_ID.AsInteger:=S_Kodp;
    DM1.Seria.Post;
-  end;
- end;
-end;
-
-procedure TFTexGur.Edit3Click(Sender: TObject);
-begin
- edit3.Text:=''
-end;
-
-procedure TFTexGur.Edit3KeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  if key=vk_return then
- begin
-  if edit3.Text<>'' then
-  begin
-   if (edit13.Text<>'') and (edit13.Text<>'0') then
-    edit12.Text:=floattostr(Round(strtofloat(edit3.Text))*1000000/Round(strtofloat(edit13.Text)))
-   else MessageDlg(' Для расчета количества таблеток введите среднюю массу таблетки/капсулы ', mtWarning, [mbOK], 0);
   end;
  end;
 end;
@@ -933,8 +762,6 @@ begin
   S_KSM:=S_KODP;
   DM1.Seria.Edit;
   DM1.SeriaDate_ZAG.AsDateTime:=DateEdit1.Date;
-  if edit3.Text<>'' then dm1.SeriaOB_ZAG.AsFloat:=strtofloat(Edit3.Text) else dm1.SeriaOB_ZAG.AsFloat:=0;
-  if edit16.Text<>'' then DM1.SeriaVlag_TM.AsFloat:=strtofloat(Edit16.Text) else DM1.SeriaVlag_TM.AsFloat:=0;
   if edit9.Text<>'' then DM1.SeriaKol_seria.AsFloat:=strtofloat(Edit9.Text) else DM1.SeriaKol_seria.AsFloat:=0;
   DM1.Seria.Post;
   DM1.Seria.ApplyUpdates;
@@ -958,18 +785,6 @@ begin
    dm1.Ostatki.ApplyUpdates;
    s_kart_id:=vKart_id;
   end;
-  IF not dm1.TexStad.Active then dm1.TexStad.Active:=true;
-  dm1.TexStad.First;
-  while not dm1.TexStad.Eof do
-  begin
-   if dm1.TexStadKart_id.AsInteger=0 then
-   begin
-    dm1.TexStad.Edit;
-    dm1.TexStadKart_id.AsInteger:=s_kart_id;
-    dm1.TexStad.Post;
-   end;
-   dm1.TexStad.Next;
-  end;
 
   if (fsPRfORMUL.Ceh_Normz.Modified) or (fsPRfORMUL.Ceh_Normz.State =dsEdit)
     or (fsPRfORMUL.Ceh_Normz.State =dsInsert) then
@@ -983,17 +798,9 @@ begin
     or (Seria_s.State =dsInsert) then
      Seria_s.Post;
 
-   if (Ceh_marsh.Modified) or (Ceh_marsh.State =dsEdit)
-    or (Ceh_marsh.State =dsInsert) then
-   if ceh_marshZag_ov.AsFloat<>0 then
-    Ceh_marsh.Post;
-
   if (DM1.Ostatki.Modified) or (DM1.Ostatki.State =dsEdit)
     or (DM1.Ostatki.State =dsInsert) then
      DM1.Ostatki.Post;
-  if (dm1.TexStad.Modified) or (dm1.TexStad.State =dsEdit)
-    or (dm1.TexStad.State =dsInsert) then
-     dm1.TexStad.Post;
 
   try
    IF FSprFormul.Ceh_Normz.UpdatesPending THEN
@@ -1006,16 +813,12 @@ begin
       DM1.Ostatki.ApplyUpdates;
    if DM1.Kart.UpdatesPending then
       DM1.Kart.ApplyUpdates;
-   if dm1.TexStad.UpdatesPending then
-      dm1.TexStad.ApplyUpdates;
-   if Ceh_marsh.UpdatesPending then
-      Ceh_marsh.ApplyUpdates;
+
    dm1.commitWriteTrans(true);
    dm1.commitReadTrans(true);
 //   DM1.IBT_WRITE.Commit;
 //   DM1.IBT_READ.CommitRetaining;
-//   Ceh_marsh.Close;
-//   dm1.TexStad.Close;
+
 //   dm1.Seria.Close;
 //   dm1.Kart.Close;
 //   Seria_s.Close;
@@ -1055,24 +858,6 @@ begin
  end;
 end;
 
-procedure TFTexGur.DBGridEh1EditButtonClick(Sender: TObject);
-begin
-if dbgridEh1.SelectedField.FieldName='NAME_STAD' then
-BEGIN
-pr_N:=TRUE;
-if FSprStad=nil then FSprStad:=TFSprStad.Create(Application);
- FSprStad.ShowModal;
- if FSprStad.ModalResult > 50 then
-  begin
-   s_stad:=FSprStad.ModalResult-50;
-   dm1.TexStad.Edit;
-   dm1.TexStadNAME_STAD.AsString:=dm1.Ceh_StadName_stad.AsString;
-   dm1.TexStadStadia_ID.AsInteger:=S_STAD;
-   dbgridEh1.Refresh;
-  end;
-end;
-END;
-
 procedure TFTexGur.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
 
@@ -1080,28 +865,12 @@ begin
  IF DM1.Ostatki.Active THEN DM1.Ostatki.Close;
  IF DM1.Document.Active THEN DM1.Document.Close;
  IF TexGur.Active THEN TexGur.Close;
- IF dm1.TexStad.Active THEN dm1.TexStad.Close;
- IF SprStad.Active THEN SprStad.Close;
  vseria_id:=0;
 end;
 
 procedure TFTexGur.MyGetValue(const s: String; var v: Variant);
 begin
- if UpperCase(S)='K1' then if FTexGur.Edit5.Text<>'' then v:=strtofloat(FTexGur.Edit5.Text) else v:=0;
- if UpperCase(S)='K2' then if FTexGur.Edit6.Text<>'' then v:=strtofloat(FTexGur.Edit6.Text) else v:=0;
- if UpperCase(S)='K3' then if FTexGur.Edit7.Text<>'' then v:=strtofloat(FTexGur.Edit7.Text) else v:=0;
- if UpperCase(S)='K4' then if FTexGur.Edit8.Text<>'' then v:=strtofloat(FTexGur.Edit8.Text) else v:=0;
- if UpperCase(S)='WT' then if FTexGur.Edit16.Text<>'' then v:=strtofloat(FTexGur.Edit16.Text) else v:=0;
- if UpperCase(S)='MC' then if FTexGur.Edit10.Text<>'' then v:=strtofloat(FTexGur.Edit10.Text) else v:=0;
- if UpperCase(S)='MKC' then if FTexGur.Edit14.Text<>'' then v:=strtofloat(FTexGur.Edit14.Text) else v:=0;
- if UpperCase(S)='W' then if FTexGur.DBEdit11.Text<>'' then v:=strtofloat(FTexGur.DBEdit11.Text) else v:=0;
- if UpperCase(S)='C' then if FTexGur.DBEdit8.Text<>'' then v:=strtofloat(FTexGur.DBEdit8.Text) else v:=0;
- if UpperCase(S)='WK'  then if FTexGur.DBEdit5.Text<>'' then v:=strtofloat(FTexGur.DBEdit5.Text) else v:=0;
- if UpperCase(S)='MT' then if FTexGur.Edit3.Text<>'' then v:=strtofloat(FTexGur.Edit3.Text) else v:=0;
  if UpperCase(S)='V2' then if FTexGur.Edit9.Text<>'' then v:=strtofloat(FTexGur.Edit9.Text) else v:=0;
- if UpperCase(S)='MM' then if FTexGur.Edit13.Text<>'' then v:=strtofloat(FTexGur.Edit13.Text) else v:=0;
- if UpperCase(S)='M' then if FTexGur.dbEdit7.Text<>'' then v:=strtofloat(FTexGur.dbEdit7.Text) else v:=0;
- if UpperCase(S)='N' then if FTexGur.Edit12.Text<>'' then v:=strtofloat(FTexGur.Edit12.Text) else v:=0;
  if UpperCase(S)='PN' then v:=TexGurPlnorm.AsFloat;
 end;
 
@@ -1112,17 +881,7 @@ begin
  if UpperCase(S)='K2' then v:=TexGurKoef2.AsFloat;
  if UpperCase(S)='K3' then v:=TexGurKoef3.AsFloat;
  if UpperCase(S)='K4' then v:=TexGurProc.AsFloat;
- if UpperCase(S)='WT' then if FTexGur.Edit16.Text<>'' then v:=strtofloat(FTexGur.Edit16.Text) else v:=0;
- if UpperCase(S)='MC' then if FTexGur.Edit10.Text<>'' then v:=strtofloat(FTexGur.Edit10.Text) else v:=0;
- if UpperCase(S)='MKC' then if FTexGur.Edit14.Text<>'' then v:=strtofloat(FTexGur.Edit14.Text) else v:=0;
- if UpperCase(S)='W' then if FTexGur.DBEdit11.Text<>'' then v:=strtofloat(FTexGur.DBEdit11.Text) else v:=0;
- if UpperCase(S)='C' then if FTexGur.DBEdit8.Text<>'' then v:=strtofloat(FTexGur.DBEdit8.Text) else v:=0;
- if UpperCase(S)='WK'  then if FTexGur.DBEdit5.Text<>'' then v:=strtofloat(FTexGur.DBEdit5.Text) else v:=0;
- if UpperCase(S)='MT' then if FTexGur.Edit3.Text<>'' then v:=strtofloat(FTexGur.Edit3.Text) else v:=0;
  if UpperCase(S)='V2' then if FTexGur.Edit9.Text<>'' then v:=strtofloat(FTexGur.Edit9.Text) else v:=0;
- if UpperCase(S)='MM' then if FTexGur.Edit13.Text<>'' then v:=strtofloat(FTexGur.Edit13.Text) else v:=0;
- if UpperCase(S)='M' then if FTexGur.dbEdit7.Text<>'' then v:=strtofloat(FTexGur.dbEdit7.Text) else v:=0;
- if UpperCase(S)='N' then if FTexGur.Edit12.Text<>'' then v:=strtofloat(FTexGur.Edit12.Text) else v:=0;
  if UpperCase(S)='PN' then v:=TexGurPlnorm.AsFloat;
 
 end;
@@ -1195,21 +954,6 @@ begin
 end;
 end;
 
-procedure TFTexGur.TexGurAfterScroll(DataSet: TDataSet);
-begin
-edit4.Text:=texGurFormula.AsString;
-edit5.Text:=texGurKoef1.AsString;
-edit6.Text:=texGurKoef2.AsString;
-edit7.Text:=texGurKoef3.AsString;
-edit8.Text:=texGurproc.AsString;
-IF texGurDecznak.AsInteger<>0 THEN
- edit20.Text:=inttostr(texGurDecznak.AsInteger)
-else
- edit20.Text:='3';
- if Ceh_Marsh.Active then
-  Ceh_Marsh.Locate('ksm_idOV',texGurKsm_id.AsInteger,[]);
-end;
-
 procedure TFTexGur.btn_vipuskListClick(Sender: TObject);
 begin
   if (FVybPrep = nil) then
@@ -1234,12 +978,10 @@ begin
   EDIT1.OnChange:=nil;
   edit1.text:=DM1.IBQuery1.FieldByName('kod_PROD').Asstring;
   EDIT1.OnChange:=Edit1Change;
-  edit3.text:='';
   edit9.text:='';
   s_namreg := dm1.IBQuery1.FieldByName('Nam_reg').AsString;
   label3.Caption:=dm1.IBQuery1.FieldByName('Nam_reg').AsString;
 //  edit17.text:=floattostr(DM1.IBQuery1.FieldByName('vol_ov').Asfloat);
-  edit13.text:=floattostr(DM1.IBQuery1.FieldByName('volumf').Asfloat);
   s_kodp:=DM1.IBQuery1.FieldByName('KSM_ID').value;
   s_gost:=DM1.IBQuery1.FieldByName('GOST').AsString;
   s_xarkt:=DM1.IBQuery1.FieldByName('XARKT').AsString;
@@ -1345,43 +1087,15 @@ begin
   FSprFormul.CEH_NORMZKsm_id_mat.AsInteger:=texGurKsm_id.AsInteger;
   FSprFormul.CEH_NORMZRazdel_id.AsInteger:=texGurRazdel_id.AsInteger;
  END;
- FSprFormul.CEH_NORMZFormula.ASString:=edit4.text;
- IF edit5.text='' THEN FSprFormul.CEH_NORMZkoef1.AsFloat:=0 ELSE FSprFormul.CEH_NORMZkoef1.AsFloat:=strtofloat(edit5.text);
- IF edit6.text='' THEN FSprFormul.CEH_NORMZkoef2.AsFloat:=0 ELSE FSprFormul.CEH_NORMZkoef2.AsFloat:=strtofloat(edit6.text);
- IF edit7.text='' THEN FSprFormul.CEH_NORMZkoef3.AsFloat:=0 ELSE FSprFormul.CEH_NORMZkoef3.AsFloat:=strtofloat(edit7.text);
- IF edit8.text='' THEN FSprFormul.CEH_NORMZProc.AsFloat:=0 ELSE FSprFormul.CEH_NORMZProc.AsFloat:=strtofloat(edit8.text);
- IF edit20.text='' THEN
- BEGIN
-  FSprFormul.Ceh_NormzDECZNAK.AsInteger:=3;
-  edit20.text:='3'
- END
- ELSE  FSprFormul.Ceh_NormzDECZNAK.AsInteger:=strtoint(edit20.text);
+
  FSprFormul.CEH_NORMZ.Post;
  FSprFormul.CEH_NORMZ.ApplyUpdates;
  TEXGUR.Edit;
- TexGurFormula.ASString:=edit4.text;
- IF edit5.text='' THEN TexGurKoef1.AsFloat:=0 ELSE TexGurKoef1.AsFloat:=strtofloat(edit5.text);
- IF edit6.text='' THEN TexGurKoef2.AsFloat:=0 ELSE TexGurKoef2.AsFloat:=strtofloat(edit6.text);
- IF edit7.text='' THEN TexGurKoef3.AsFloat:=0 ELSE TexGurKoef3.AsFloat:=strtofloat(edit7.text);
- IF edit8.text='' THEN TexGurProc.AsFloat:=0 ELSE TexGurProc.AsFloat:=strtofloat(edit8.text);
- IF edit20.text='' THEN
- BEGIN
-  TexGurDECZNAK.AsInteger:=3;
-  edit20.text:='3';
- END
- ELSE TexGurDECZNAK.AsInteger:=strtoint(edit20.text);
+
  vFormula:=TfrParser.Create;
  try
-  Tochn:=0-strtoint(edit20.text);
    vFormula.OnGetValue:=MyGetValue;
    s_kol:=strtofloat(vFormula.Calc(TexGurFormula.Asstring));
-  If (NPos('M',edit4.text,1)>0) or (NPos('m',edit4.text,1)>0) then
-  begin
-   ceh_marsh.Edit;
-   ceh_marshZag_Ov.AsFloat:=s_kol;
-   ceh_marshKoefper1.AsFloat:=s_kol*(100-ceh_marshVlaga_ov.AsFloat)/100;
-   ceh_marsh.Post;
-  end;
   TexGurKol_Rash_ediz.asFloat:=SimpleRoundTo(s_kol,Tochn);
  finally
   vFormula.Free;
@@ -1390,31 +1104,31 @@ end;
 
 procedure TFTexGur.PageControl1Change(Sender: TObject);
 begin
-if PageControl1.ActivePage=tabsheet1 then
- BEGIN
-  ToolButton1.Visible:=true;
-  ToolButton2.Visible:=true;
-  ToolButton6.Visible:=true;
-  ToolButton3.Visible:=true;
-  btn_vipuskList.Visible := true;
-//  ToolButton9.Visible:=true;
-  USL_SORT:='7,9';
- end
- else
- begin
-  ToolButton1.Visible:=false;
-  ToolButton2.Visible:=false;
-  ToolButton3.Visible:=false;
-  ToolButton6.Visible:=true;
-  btn_vipuskList.Visible := false;
-  ZagSyr.Close;
-  ZagSyr.ParamByName('struk').AsInteger:=vStruk_id;
-//  ZagSyr.ParamByName('ksm_id').AsInteger:=TexGurKsm_id.AsInteger;
-  ZagSyr.MacroByName('SORT').AsString:='razdel.KRAZ';
-  ZagSyr.MacroByName('DAT1').AsString:=''''+s_dat1_period+'''';
-  ZagSyr.MacroByName('DAT2').AsString:=''''+s_dat2_period+'''';
-  ZagSyr.Open;
- end;
+  if (PageControl1.ActivePage = tabsheet1) then
+  BEGIN
+    ToolButton1.Visible := true;
+    ToolButton2.Visible := true;
+    ToolButton6.Visible := true;
+    ToolButton3.Visible := true;
+    btn_vipuskList.Visible := true;
+  //  ToolButton9.Visible:=true;
+    USL_SORT := '7,9';
+  end
+  else
+  begin
+    ToolButton1.Visible := false;
+    ToolButton2.Visible := false;
+    ToolButton3.Visible := false;
+    ToolButton6.Visible := true;
+    btn_vipuskList.Visible := false;
+    ZagSyr.Close;
+    ZagSyr.ParamByName('struk').AsInteger := vStruk_id;
+  //  ZagSyr.ParamByName('ksm_id').AsInteger:=TexGurKsm_id.AsInteger;
+    ZagSyr.MacroByName('SORT').AsString := 'razdel.KRAZ';
+    ZagSyr.MacroByName('DAT1').AsString := '''' + s_dat1_period + '''';
+    ZagSyr.MacroByName('DAT2').AsString := '''' + s_dat2_period + '''';
+    ZagSyr.Open;
+  end;
 end;
 
 procedure TFTexGur.FormShow(Sender: TObject);
@@ -1480,7 +1194,6 @@ begin
     edit1.text:=DM1.IBQuery1.FieldByName('kod_PROD').Asstring;
     EDIT1.OnChange:=Edit1Change;
 //    edit17.text:=floattostr(DM1.IBQuery1.FieldByName('vol_ov').Asfloat);
-    edit13.text:=floattostr(DM1.IBQuery1.FieldByName('volumf').Asfloat);
     s_kodp:=DM1.IBQuery1.FieldByName('KSM_ID').value;
     s_gost:=DM1.IBQuery1.FieldByName('GOST').AsString;
     s_xarkt:=DM1.IBQuery1.FieldByName('XARKT').AsString;
@@ -1561,7 +1274,6 @@ begin
   else
   begin
    Label3.Caption:='';
-   label6.Caption:='';
    label19.Caption:='';
    label3.Caption:='';
    label11.Caption:='';
@@ -1575,14 +1287,12 @@ begin
    label45.Caption:='';
    DateEdit1.Date:=date;
    Edit1.Text:='';
-   Edit13.Text:='';
 //   Edit17.Text:='';
   end;
  end
  else
  begin
   Label3.Caption:='';
-  label6.Caption:='';
   label19.Caption:='';
   label3.Caption:='';
   label11.Caption:='';
@@ -1596,23 +1306,10 @@ begin
   label45.Caption:='';
   DateEdit1.Date:=date;
   Edit1.Text:='';
-  Edit13.Text:='';
 //  Edit17.Text:='';
  end;
  Edit2.Text:='';
- Edit3.Text:='';
- Edit4.Text:='';
- Edit5.Text:='';
- Edit6.Text:='';
- Edit7.Text:='';
- Edit8.Text:='';
  Edit9.Text:='';
- Edit10.Text:='';
- Edit11.Text:='';
- Edit12.Text:='';
- Edit14.Text:='';
- Edit16.Text:='';
- Edit20.Text:='';
  pr_button9:=true;
  prov:=false;
  Edit1.SetFocus;
@@ -1745,7 +1442,6 @@ end;
 procedure TFTexGur.Edit2Click(Sender: TObject);
 begin
  edit2.text:='';
- edit3.text:='';
  edit9.text:='';
  TexGur.Close;
 end;
@@ -1860,7 +1556,6 @@ begin
  if ParName='nmat' then ParValue:=FTexGur.Label19.Caption;
  if ParName='neis' then ParValue:=FTexGur.Label21.Caption;
  if ParName='seria' then ParValue:=FTexGur.Edit2.Text;
- if ParName='obem' then ParValue:=FTexGur.Edit3.Text;
  if ParName='dat_ser' then ParValue:=FTexGur.DateEdit1.Text;
 
 
@@ -1868,8 +1563,6 @@ end;
 
 procedure TFTexGur.ToolButton5Click(Sender: TObject);
 begin
- dm1.TexStad.DisableControls;
- dm1.MDTexStad.EmptyTable;
  dm1.PechTexGur.EmptyTable;
  s_kodprod:=edit1.Text;
  s_gost:=label22.Caption;
@@ -1904,12 +1597,9 @@ begin
  begin
   dm1.PechTexGur.LoadFromDataSet(DM1.IBQuery1,0,lmAppend);
   dm1.PechTexGur.Active:=true;
-  dm1.MDTexStad.LoadFromDataSet(dm1.TexStad, 0, lmAppend);
-  dm1.MDTexStad.Active:=true;
   If not dm1.PechTexGur.Eof then
   PopupMenu1.Popup(Mouse.CursorPos.x,Mouse.CursorPos.y);
  end;
- dm1.TexStad.EnableControls;
 end;
 
 procedure TFTexGur.ToolButton6Click(Sender: TObject);
@@ -1953,92 +1643,90 @@ end;
 
 procedure TFTexGur.SpeedButton1Click(Sender: TObject);
 var
-usl_dat_s: string;
+  usl_dat_s : string;
 begin
- usl_dat_s:=usl_dat;
- usl_dat:=' 0=0';
- DM1.Seria.Active :=False;
- DM1.Seria.ParamByName('ksm_id').AsInteger:=s_kodp;
- DM1.Seria.MacroByName('usl').AsString:=usl_dat;
- dm1.Seria.Active:=true;
- if  not dm1.Seria.Eof then
- begin
-  dm1.Seria.Last;
-  if FSer=nil then FSer:=TFSer.Create(Application);
-  DM1.FormToObject(FSER,Edit2);
-  FSer.ShowModal;
-  if FSer.ModalResult > 50 then
-  begin
-   edit3.text:='';
-   edit9.text:='';
-   TexGur.Close;
-   vSeria_id:=FSer.ModalResult-50;
-   s_seria:=DM1.SeriaSeria.AsString;
-   s_kol_seria:=DM1.SeriaKol_Seria.AsFloat;
-//   EDIT9.OnChange:=nil;
-   edit9.Text:=floattostr(s_kol_seria);
-//   EDIT9.OnChange:=Edit9Change;
-   Edit2.Text:=s_Seria;
-   edit3.Text:=floattostr(SimpleRoundTo(dm1.SeriaOB_ZAG.AsFloat,-2));
-   edit16.Text:=floattostr(dm1.Seriavlag_tm.AsFloat);
-   if dm1.SeriaDATE_ZAG.AsVariant<>null then
-   begin
-     DateEdit1.Date:=dm1.SeriaDATE_ZAG.AsDateTime;
-//     DateEdit1.ReadOnly:=true;
-     TexGur.Close;
-     TexGurSost;
-     TexGur.First;
-   end
-   else
-   begin
-     DateEdit1.ReadOnly:=false;
-     DateEdit1.SetFocus;
-   end;
-  end;
- end
- else
- begin
-  DM1.Seria.Active :=False;
-  DM1.Seria.ParamByName('ksm_id').AsInteger:=s_kodp;
-  DM1.Seria.MacroByName('usl').AsString:=' 0=0';
+  usl_dat_s := usl_dat;
+  usl_dat := ' seria.date_pasport between ''' + s_dat1 + ''' and ''' + s_dat2 + ''' ';
+  DM1.Seria.Active := False;
+  DM1.Seria.ParamByName('ksm_id').AsInteger := s_kodp;
+  DM1.Seria.MacroByName('usl').AsString := usl_dat;
   dm1.Seria.Active:=true;
-  if  not dm1.Seria.Eof then
+  if (not dm1.Seria.Eof) then
   begin
-   if FSer=nil then FSer:=TFSer.Create(Application);
-   FSer.ShowModal;
-   if FSer.ModalResult > 50 then
-   begin
-    vSeria_id:=FSer.ModalResult-50;
-    s_seria:=DM1.SeriaSeria.AsString;
-    s_kol_seria:=DM1.SeriaKol_Seria.AsFloat;
-//    EDIT9.OnChange:=nil;
-    edit9.Text:=floattostr(s_kol_seria);
-//    EDIT9.OnChange:=Edit9Change;
-    Edit2.Text:=s_Seria;
-    Edit3.Text:=floattostr(dm1.SeriaOB_ZAG.AsFloat);
-    edit16.Text:=floattostr(dm1.Seriavlag_tm.AsFloat);
-    if dm1.SeriaDATE_ZAG.AsVariant<>null then
+    dm1.Seria.Last;
+    if (FSer = nil) then
+      FSer := TFSer.Create(Application);
+    DM1.FormToObject(FSER, Edit2, 0, 0);
+    FSer.ShowModal;
+    if (FSer.ModalResult > 50) then
     begin
-     DateEdit1.Date:=dm1.SeriaDATE_ZAG.AsDateTime;
+      edit9.text := '';
+      TexGur.Close;
+      vSeria_id := FSer.ModalResult - 50;
+      s_seria := DM1.SeriaSeria.AsString;
+      s_kol_seria := DM1.SeriaKol_Seria.AsFloat;
+//   EDIT9.OnChange:=nil;
+      edit9.Text := floattostr(s_kol_seria);
+//   EDIT9.OnChange:=Edit9Change;
+      Edit2.Text := s_Seria;
+      if (dm1.SeriaDATE_ZAG.AsVariant <> null) then
+      begin
+        DateEdit1.Date := dm1.SeriaDATE_ZAG.AsDateTime;
 //     DateEdit1.ReadOnly:=true;
-     TexGur.Close;
-     TexGurSost;
-     TexGur.First;
-    end
-    else
-    begin
-     DateEdit1.ReadOnly:=false;
-     DateEdit1.SetFocus;
+        TexGur.Close;
+        TexGurSost;
+        TexGur.First;
+      end
+      else
+      begin
+        DateEdit1.ReadOnly := false;
+        DateEdit1.SetFocus;
+      end;
     end;
-   end;
   end
   else
   begin
-   MessageDlg('Нет серии заданного препарата!', mtWarning, [mbOK], 0);
-   vseria_id:=0;
+    DM1.Seria.Active := False;
+    DM1.Seria.ParamByName('ksm_id').AsInteger := s_kodp;
+    DM1.Seria.MacroByName('usl').AsString := ' 0=0';
+    dm1.Seria.Active := true;
+    dm1.Seria.Last;
+    if (not dm1.Seria.Eof) then
+    begin
+      if (FSer = nil) then
+        FSer := TFSer.Create(Application);
+      FSer.ShowModal;
+      if (FSer.ModalResult > 50) then
+      begin
+        vSeria_id := FSer.ModalResult - 50;
+        s_seria := DM1.SeriaSeria.AsString;
+        s_kol_seria := DM1.SeriaKol_Seria.AsFloat;
+//    EDIT9.OnChange:=nil;
+        edit9.Text := floattostr(s_kol_seria);
+//    EDIT9.OnChange:=Edit9Change;
+        Edit2.Text := s_Seria;
+        if (dm1.SeriaDATE_ZAG.AsVariant <> null) then
+        begin
+          DateEdit1.Date := dm1.SeriaDATE_ZAG.AsDateTime;
+//     DateEdit1.ReadOnly:=true;
+          TexGur.Close;
+          TexGurSost;
+          TexGur.First;
+        end
+        else
+        begin
+          DateEdit1.ReadOnly := false;
+          DateEdit1.SetFocus;
+        end;
+      end;
+    end
+    else
+    begin
+      MessageDlg('Нет серии заданного препарата!', mtWarning, [mbOK], 0);
+      vseria_id := 0;
+    end;
   end;
- end;
- usl_dat:=usl_dat_s;
+  usl_dat := usl_dat_s;
 end;
 
 procedure TFTexGur.SpeedButton2Click(Sender: TObject);
@@ -2066,12 +1754,10 @@ if FindSpprod=nil then FindSpprod:=TfindSpprod.Create(Application);
   EDIT1.OnChange:=nil;
   edit1.text:=DM1.IBQuery1.FieldByName('kod_PROD').Asstring;
   EDIT1.OnChange:=Edit1Change;
-  edit3.text:='';
   edit9.text:='';
   s_namreg := dm1.IBQuery1.FieldByName('Nam_reg').AsString;
   label3.Caption:=dm1.IBQuery1.FieldByName('Nam_reg').AsString;
 //  edit17.text:=floattostr(DM1.IBQuery1.FieldByName('vol_ov').Asfloat);
-  edit13.text:=floattostr(DM1.IBQuery1.FieldByName('volumf').Asfloat);
   s_kodp:=DM1.IBQuery1.FieldByName('KSM_ID').value;
   s_gost:=DM1.IBQuery1.FieldByName('GOST').AsString;
   s_xarkt:=DM1.IBQuery1.FieldByName('XARKT').AsString;
@@ -2188,12 +1874,7 @@ procedure TFTexGur.Edit13KeyDown(Sender: TObject; var Key: Word;
 begin
  if key=vk_return then
  begin
-  if (edit13.Text<>'')and (edit13.Text<>'0 ') then
-  begin
-   if (edit3.Text<>'') then
-    edit12.Text:=floattostr(Round((strtofloat(edit3.Text)*1000000)/(strtofloat(edit13.Text))))
-   else MessageDlg(' Для расчета количество таблеточной массы ', mtWarning, [mbOK], 0);
-  end;
+
  end;
 end;
 
@@ -2309,122 +1990,12 @@ begin
  Seria_sSERIA.AsString:=s_SERIAs;
 end;
 
-procedure TFTexGur.Button2Click(Sender: TObject);
-var
-M_ov1: double;
-M_ov: double;
-M_ov2: double;
-M1: double;
-kol_zag: double;
-begin
-// расчет сухой ТМ
- if (edit3.Text<>'') and (edit3.Text<>'0')then
- begin
-   if (edit16.Text<>'') and (edit16.Text<>'0')then
-     edit10.Text:=floattostr(SimpleRoundTo(strtofloat(edit3.Text)*(100-strtofloat(edit16.Text))/100,-2))
-   else
-    MessageDlg('Введите количество ТМ', mtWarning, [mbOK], 0)
- end
- else
-   MessageDlg('Введите влагу ТМ!', mtWarning, [mbOK], 0);
-// расчет загрузки ОВ (zag_ob)и кол-ва сухого в-ва, добавленного до веса таблетки(MKC)
-  ceh_marsh.First;
-  v_11:=0;
-  TexGur.AfterScroll:=nil;
-  While not ceh_marsh.Eof  do
-  begin
-   kol_zag:=0;
-   ceh_marsh.Edit;
-   if (DBedit7.Text='') then DBedit7.Text:='1';
-   if (DBedit8.Text='') then
-   begin
-    ceh_marsh.Edit;
-    ceh_marshAktiv_ov.AsFloat:=1;
-    ceh_marsh.Post;
-   end;
-   if (DBedit11.Text='') then
-   begin
-    ceh_marsh.Edit;
-    ceh_marshVlaga_ov.AsFloat:=0;
-    ceh_marsh.Post;
-   end;
-   if (edit13.Text='') then edit13.Text:='1';
-   if (edit16.Text='') then edit16.Text:='1';
-   vFormula:=TfrParser.Create;
-   try
-    TexGur.First;
-    if TexGur.Locate('ksm_id;kraz',VarArrayOf([ceh_marshKsm_idov.AsInteger,21]),[]) then
-    begin
-     IF TexGurDECZNAK.AsVariant=null THEN  TexGurDECZNAK.AsInteger:=3;
-     Tochn:=0-TexGurDecznak.AsInteger;
-     ceh_marsh.Next;
-     if (ceh_marshKsm_idov.AsInteger=TexGurKsm_id.AsInteger)and(not ceh_marsh.Eof)  then
-     begin
-// 1-я серия
-      ceh_marsh.Prior;
-      M1:=ceh_marshZag_ov.AsFloat;
-      M_ov1:=SimpleRoundTo(M1*ceh_marshAktiv_ov.AsFloat*(100-ceh_marshVlaga_ov.AsFloat)/10000,tochn);
-      M_ov:=SimpleRoundTo(ceh_marshKoefper2.AsFloat*strtofloat(edit12.Text),tochn);
-      M_ov2:= M_ov-M_ov1;
-      ceh_marsh.Edit;
-      ceh_marshKoefper1.AsFloat:=M_ov1;
-      ceh_marsh.Post;
-// 2-я серия
-      ceh_marsh.Next;
-      kol_zag:=SimpleRoundTo(M_ov2*10000/ceh_marshAktiv_ov.AsFloat*(100-ceh_marshVlaga_ov.AsFloat),tochn);
-      ceh_marsh.Edit;
-      ceh_marshZag_ov.AsFloat:=kol_zag;
-      ceh_marshKoefper1.AsFloat:=M_ov2;
-      ceh_marsh.Post;
-      kol_zag:=kol_zag+M1;
-     end
-     else
-     begin
-      if not ceh_marsh.Eof  then ceh_marsh.Prior;
-      if (ceh_marshFormula.Asstring<>'  ')and (ceh_marshFormula.Asstring<>'0') then
-      begin
-       vFormula.OnGetValue:=MyGetValue1;
-       s_kol_zag:=vFormula.Calc(TexGurFormula.Asstring);
-       kol_zag:=strtofloat(s_kol_zag);
-       ceh_marsh.Edit;
-       ceh_marshZag_ov.AsFloat:=kol_zag;
-       ceh_marshKoefper1.AsFloat:=SimpleRoundTo(kol_zag*(100-ceh_marshVlaga_ov.AsFloat)/100,tochn);
-       ceh_marsh.Post;
-      end
-      else s_kol_zag:='0';
-     end;
-     TexGur.Edit;
-     TexGurKol_Rash_EDIZ.asFloat:=SimpleRoundTo(kol_zag,Tochn);
-    end
-    else ceh_marsh.Next;
- //     TexGur.Post;
-   finally
-    vFormula.Free;
-   end;
-   v_11:=v_11+SimpleRoundTo(ceh_marshKoefper1.AsFloat,Tochn);
-   ceh_marsh.Next;
-  end;
-  ceh_marsh.First;
-// Кол-во сухого в-ва     (МКС):
-  edit14.Text:=floattostr(SimpleRoundTo(strtofloat(edit10.Text)-v_11,-2));
-  TexGur.AfterScroll:=TexGurAfterScroll;
-end;
-
 procedure TFTexGur.Button3Click(Sender: TObject);
 begin
  if FKompTM=nil then FKompTM:=TFKompTM.Create(Application);
   FKompTM.Label2.Caption:=edit1.Text;
   FKompTM.Label3.Caption:=edit2.Text;
-  FKompTM.Label5.Caption:=edit3.Text;
-  FKompTM.Label6.Caption:=edit13.Text;
-  FKompTM.Label7.Caption:=edit12.Text;
-  FKompTM.Label8.Caption:=edit10.Text;
-  FKompTM.Label9.Caption:=edit16.Text;
-  FKompTM.Label24.Caption:=edit11.Text;
   FKompTM.Label9.Caption:=label19.Caption;
-  FKompTM.Label15.Caption:=label6.Caption;
-  FKompTM.Label14.Caption:=dbeditEh3.Text;
-  FKompTM.Label13.Caption:=dbedit5.Text;
   FKompTM.ShowModal;
 end;
 
@@ -2440,90 +2011,6 @@ begin
   dM1.Matrop.Active:=false;
   dM1.Matrop.ParamByName('ksm').AsInteger:=FindMatrop.ModalResult-50;
   dM1.Matrop.Active:=TRUE;
-  Ceh_Marsh.FieldByName('Ksm_Idov').AsInteger :=FindMatrop.ModalResult-50;
-  Ceh_Marsh.FieldByName('Gost').AsString :=dm1.MatropGOST.AsString;
-  Ceh_Marsh.FieldByName('Nmat').AsString :=dm1.MatropNMAT.AsString;
-  Ceh_Marsh.FieldByName('Xarkt').AsString :=dm1.MatropXARKT.AsString;
-  Ceh_Marsh.FieldByName('Ksm_Id').AsInteger :=s_kodp;
-  Ceh_Marsh.FieldByName('seria_id').AsInteger :=vSeria_id;
- end;
-end;
-
-procedure TFTexGur.DBEditEh2EditButtons0Click(Sender: TObject;
-  var Handled: Boolean);
-begin
- Seria_s.Active :=False;
- Seria_s.ParamByName('ksm_id').AsInteger:=Ceh_Marsh.FieldByName('Ksm_Idov').AsInteger;
- Seria_s.Active:=true;
- if  not Seria_s.Eof then
- begin
-  if FSer=nil then FSer:=TFSer.Create(Application);
-  dm1.DS_Seria.DataSet:=FTexGur.seria_s;
-  pr_ser:=1;
-  FSer.ShowModal;
-  if FSer.ModalResult > 50 then
-  begin
-   DBEditeh2.Text:=Seria_sSeria.AsString;
-   s_serias:=Seria_sSeria.AsString;
-   vSeria_ids:=FSer.ModalResult-50;
-   Ceh_Marsh.FieldByName('seria').AsString :=Seria_sSeria.AsString;
-   Ceh_Marsh.FieldByName('seria_idov').AsInteger :=Seria_sSeria_id.AsInteger;
-  end;
-  dm1.DS_Seria.DataSet:=dm1.Seria;
- end
- else
-  MessageDlg('Нет серии заданного сырья в справочнике серий!', mtWarning, [mbOK], 0);
-
-end;
-
-procedure TFTexGur.Ceh_MarshNewRecord(DataSet: TDataSet);
-begin
- CEH_MARSHseria_ID.AsInteger:=vSeria_Id;
- CEH_MARSHksm_ID.AsInteger:=s_kodp;
- Ceh_Marsh.FieldByName('SERIA').AsString:='';
-end;
-
-procedure TFTexGur.Ceh_MarshKSM_IDOVValidate(Sender: TField);
-begin
- dM1.Matrop.Active:=false;
- dM1.Matrop.ParamByName('ksm').AsInteger:=Ceh_marsh.FieldByName('ksm_idov').AsInteger;
- dM1.Matrop.Active:=TRUE;
- if not dm1.Matrop.eof then
- begin
-  Ceh_Marsh.FieldByName('Gost').AsString :=dm1.MatropGOST.AsString;
-  Ceh_Marsh.FieldByName('Nmat').AsString :=dm1.MatropNMAT.AsString;
-  Ceh_Marsh.FieldByName('Xarkt').AsString :=dm1.MatropXARKT.AsString;
- end
- else
-  showMessage('Нет такого кода! Воспользуйтесь справочником!');
-end;
-
-procedure TFTexGur.Ceh_MarshSERIAValidate(Sender: TField);
-begin
- if Ceh_Marsh.FieldByName('SERIA').AsString<>'' then
- begin
-  s_serias:=Ceh_Marsh.FieldByName('SERIA').AsString;
-  s_ksms:=Ceh_Marsh.FieldByName('Ksm_Idov').AsInteger;
-  Seria_s.Active :=False;
-  Seria_s.ParamByName('ksm_id').AsInteger:=Ceh_Marsh.FieldByName('Ksm_Idov').AsInteger;
-  Seria_s.Active:=true;
-  if  not Seria_s.Eof  then
-  begin
-   s_serias:=Ceh_Marsh.FieldByName('SERIA').AsString;
-   if Seria_s.Locate('seria',Ceh_Marsh.FieldByName('SERIA').AsString,[]) then
-    vSeria_ids:=Seria_sSeria_id.AsInteger else
-   BEGIN
-    vSeria_ids:=0;
-    Seria_S.Insert;
-   END;
-  end
-  else
-  BEGIN
-   vSeria_ids:=0;
-   Seria_S.Insert;
-  END;
-  Ceh_Marsh.FieldByName('seria_idov').AsInteger :=VSeria_IDS;
-  Seria_S.Post;
  end;
 end;
 
@@ -2542,86 +2029,79 @@ if FindMatrop=nil then FindMatrop:=TfindMatrop.Create(Application);
      dm1.Seria.Edit;
      dm1.Seria.FieldByName('Kod_tm').AsInteger :=FindMatrop.ModalResult-50;
      dm1.Seria.Post;
-     lABEL6.Caption:=dm1.MatropNMAT.AsString;
     end;
-end;
-
-procedure TFTexGur.DBEditEh3KeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-if key=vk_return then
- begin
-  if (dbeditEh3.text<>'') then
-  begin
-   dM1.Matrop.Active:=false;
-   dM1.Matrop.ParamByName('ksm').AsInteger:=Strtoint(dbeditEh3.text);
-   dM1.Matrop.Active:=TRUE;
-   if not dm1.Matrop.eof then lABEL6.Caption:=dm1.MatropNMAT.AsString
-   else
-    showMessage('Нет такого кода! Воспользуйтесь справочником!');
-  end;
- end;
 end;
 
 procedure TFTexGur.SpinEdit3Change(Sender: TObject);
 begin
- mes:=SpinEdit3.Value;
- IF MES<10 THEN S_MES:='0'+INTTOSTR(MES) ELSE S_MES:=INTTOSTR(MES);
-  S_DAT1_period:='01.'+S_MES+'.'+copy(INTTOSTR(GOD),3,2);
-  S_DAT2_period:=datetostr(IncMonth(strtodate(s_dat1_period),1)-1);
-  S_DAT1:='01.'+S_MES+'.'+copy(INTTOSTR(GOD),3,2);
-  S_DAT2:=datetostr(IncMonth(strtodate(s_dat1_period),1)-1);
-  IF DM1.ConfigUMC.Active THEN DM1.ConfigUMC.close;
- DM1.ConfigUMC.MacroByName('USL').AsString:='configumc.STRUK_ID = '+IntToStr(vSTRUK_ID);
- DM1.ConfigUMC.Open;
- if (MES=DM1.ConfigUMCMES.AsInteger) and (GOD=DM1.ConfigUMCGOD.AsInteger) then
- begin
-//      Label5.Caption:='(Текущий месяц)';
-   MODE:=0;
-   ToolButton1.Enabled:=True;
-   ToolButton2.Enabled:=True;
-   ToolButton3.Enabled:=True;
-   ToolButton9.Enabled:=True;
- end
- else
-  if ((MES=DM1.ConfigUMCMES.AsInteger-1) and (GOD=DM1.ConfigUMCGOD.AsInteger)) or ((GOD=DM1.ConfigUMCGOD.AsInteger-1) and (MES=12) and (DM1.ConfigUMCMES.AsInteger=1))then
+  mes := SpinEdit3.Value;
+  IF (MES < 10) THEN
+    S_MES := '0' + INTTOSTR(MES)
+  ELSE
+    S_MES := INTTOSTR(MES);
+  S_DAT1_period := '01.' + S_MES + '.' + copy(INTTOSTR(GOD), 3, 2);
+  S_DAT2_period := datetostr(IncMonth(strtodate(s_dat1_period), 1) - 1);
+  S_DAT1 := '01.' + S_MES + '.' + copy(INTTOSTR(GOD), 3, 2);
+  S_DAT2 := datetostr(IncMonth(strtodate(s_dat1_period), 1) -1);
+  IF (DM1.ConfigUMC.Active) THEN
+    DM1.ConfigUMC.close;
+  DM1.ConfigUMC.MacroByName('USL').AsString := 'configumc.STRUK_ID = ' + IntToStr(vSTRUK_ID);
+  DM1.ConfigUMC.Open;
+  if (MES = DM1.ConfigUMCMES.AsInteger) and (GOD = DM1.ConfigUMCGOD.AsInteger) then
   begin
-//     Label5.Caption:='(Прошлый месяц)';
-    MODE:=1;
-    ToolButton1.Enabled:=True;
-    ToolButton2.Enabled:=True;
-    ToolButton3.Enabled:=True;
-    ToolButton9.Enabled:=True;
+//      Label5.Caption:='(Текущий месяц)';
+    MODE := 0;
+    ToolButton1.Enabled := True;
+    ToolButton2.Enabled := True;
+    ToolButton3.Enabled := True;
+    ToolButton9.Enabled := True;
   end
   else
-  begin
-//      Label5.Caption:='(Только просмотр)';
-    MODE:=2;
-    ToolButton1.Enabled:=False;
-    ToolButton2.Enabled:=false;
-    ToolButton3.Enabled:=false;
-    ToolButton9.Enabled:=false;
-  end;
-  if (Edit1.Text<>'') then
-  BEGIN
-    IF MODE<2 THEN
-      TexGurSost
+    if ((MES = DM1.ConfigUMCMES.AsInteger - 1)
+        and (GOD = DM1.ConfigUMCGOD.AsInteger))
+       or ((GOD = DM1.ConfigUMCGOD.AsInteger - 1) and (MES = 12)
+           and (DM1.ConfigUMCMES.AsInteger = 1))then
+    begin
+  //     Label5.Caption:='(Прошлый месяц)';
+      MODE := 1;
+      ToolButton1.Enabled := True;
+      ToolButton2.Enabled := True;
+      ToolButton3.Enabled := True;
+      ToolButton9.Enabled := True;
+    end
+    else
+    begin
+  //      Label5.Caption:='(Только просмотр)';
+      MODE := 2;
+      ToolButton1.Enabled := False;
+      ToolButton2.Enabled := false;
+      ToolButton3.Enabled := false;
+      ToolButton9.Enabled := false;
+    end;
+    if (Edit1.Text <> '') then
+    BEGIN
+      IF (MODE < 2) THEN
+        TexGurSost
     ELSE
     BEGIN
-      if (edit9.Text<>'') and (edit9.Text<>'0') then s_vip:=strtofloat(edit9.Text) else s_vip:=0;
+      if (edit9.Text <> '') and (edit9.Text <> '0') then
+        s_vip := strtofloat(edit9.Text)
+      else
+        s_vip := 0;
       TexGur.Close;
-      TexGur.ParamByName('Struk').AsInteger:=vStruk_id;
-      TexGur.ParamByName('mes').AsInteger:=mes;
-      TexGur.ParamByName('god').AsInteger:=god;
-      TexGur.ParamByName('KODP').AsInteger:=S_KODP;
-      TexGur.MacroByName('SORT').AsString:=USL_SORT;
-      TexGur.MacroByName('pl').AsString:=replacestr(floattostrf(s_vip,ffGeneral,6,15),',','.');
-      TexGur.ParamByName('doc').AsInteger:=vDocument_id;
-      TexGur.MacroByName('dat1').AsString:=''''+S_DAT1_Period+'''';
-      TexGur.MacroByName('dat2').AsString:=''''+s_dat2_Period+'''';
+      TexGur.ParamByName('Struk').AsInteger := vStruk_id;
+      TexGur.ParamByName('mes').AsInteger := mes;
+      TexGur.ParamByName('god').AsInteger := god;
+      TexGur.ParamByName('KODP').AsInteger := S_KODP;
+      TexGur.MacroByName('SORT').AsString := USL_SORT;
+      TexGur.MacroByName('pl').AsString := replacestr(floattostrf(s_vip, ffGeneral, 6, 15), ',', '.');
+      TexGur.ParamByName('doc').AsInteger := vDocument_id;
+      TexGur.MacroByName('dat1').AsString := '''' + S_DAT1_Period + '''';
+      TexGur.MacroByName('dat2').AsString := '''' + s_dat2_Period + '''';
       TexGur.Open;
      END;
   END;
+  PageControl1Change(sender);
 end;
 
 procedure TFTexGur.SpinEdit4Change(Sender: TObject);
@@ -2693,20 +2173,9 @@ end;
 
 procedure TFTexGur.ToolButton4Click(Sender: TObject);
 begin
-If (Ceh_Marsh.Active) and (not Ceh_Marsh.Eof) then ksm_ov:=Ceh_Marsh.FieldByName('Ksm_Idov').AsInteger
- else ksm_ov:=0;
-if FAnalit1=nil then FAnalit1:=TFAnalit1.Create(Application);
+  ksm_ov:=0;
+  if FAnalit1=nil then FAnalit1:=TFAnalit1.Create(Application);
   FAnalit1.ShowModal;
-end;
-
-procedure TFTexGur.DBEditEh2Click(Sender: TObject);
-begin
-DBeditEH2.text:='';
-end;
-
-procedure TFTexGur.DBEditEh1Click(Sender: TObject);
-begin
-ksm_ov:=Ceh_MarshKsm_Idov.AsInteger;
 end;
 
 ENd.

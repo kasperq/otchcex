@@ -103,28 +103,28 @@ end;
 
 procedure TFKompTM.FormShow(Sender: TObject);
 begin
- Label8.Caption:=FTexgur.edit10.Text;
- Label5.Caption:=FTexgur.edit3.Text;
- Label24.Caption:=FTexgur.edit11.Text;
- Label6.Caption:=FTexgur.edit13.Text;
- Label7.Caption:=FTexgur.edit12.Text;
+// Label8.Caption:=FTexgur.edit10.Text;
+// Label5.Caption:=FTexgur.edit3.Text;
+// Label24.Caption:=FTexgur.edit11.Text;
+// Label6.Caption:=FTexgur.edit13.Text;
+// Label7.Caption:=FTexgur.edit12.Text;
  Label33.Caption:=FTexgur.edit9.Text;
- Label9.Caption:=FTexgur.edit16.Text;
- Label14.Caption:=FTexgur.DbeditEh3.Text;
- Label15.Caption:=FTexgur.Label6.Caption;
- Label3.Caption:=FTexgur.Dbedit5.Text;
+// Label9.Caption:=FTexgur.edit16.Text;
+// Label14.Caption:=FTexgur.DbeditEh3.Text;
+// Label15.Caption:=FTexgur.Label6.Caption;
+// Label3.Caption:=FTexgur.Dbedit5.Text;
  Label2.Caption:=FTexgur.edit1.Text;
  Label3.Caption:=FTexgur.edit2.Text;
  Label19.Caption:=FTexgur.label19.Caption;
- Label21.Caption:=FTexgur.edit14.Text;
+// Label21.Caption:=FTexgur.edit14.Text;
  Label30.Caption:=floattostr(SimpleRoundTo(strtofloat(Label21.Caption)*100/(100-strtofloat(Label13.Caption)),-2));
- if FTexgur.CEH_MARSH.Active=false then
-  begin
-   FTexgur.CEH_MARSH.ParamByName('Kodp').AsInteger:=S_KODP;
-   FTexgur.CEH_MARSH.ParamByName('seria').AsInteger:=vseria_id;
-   FTexgur.CEH_MARSH.Active:=TRUE;
-  end;
-  FTexgur.ceh_marsh.First;
+// if FTexgur.CEH_MARSH.Active=false then
+//  begin
+//   FTexgur.CEH_MARSH.ParamByName('Kodp').AsInteger:=S_KODP;
+//   FTexgur.CEH_MARSH.ParamByName('seria').AsInteger:=vseria_id;
+//   FTexgur.CEH_MARSH.Active:=TRUE;
+//  end;
+//  FTexgur.ceh_marsh.First;
 end;
 
 end.
