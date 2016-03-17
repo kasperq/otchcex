@@ -199,10 +199,6 @@ type
     procedure TexGurBeforePost(DataSet: TDataSet);
     procedure Seria_sBeforeInsert(DataSet: TDataSet);
     procedure Seria_sNewRecord(DataSet: TDataSet);
-    procedure DBEditEh1EditButtons0Click(Sender: TObject;
-      var Handled: Boolean);
-    procedure DBEditEh3EditButtons0Click(Sender: TObject;
-      var Handled: Boolean);
     procedure SpinEdit3Change(Sender: TObject);
     procedure SpinEdit4Change(Sender: TObject);
     procedure TexGurNewRecord(DataSet: TDataSet);
@@ -215,7 +211,6 @@ type
     procedure N3Click(Sender: TObject);
     procedure N4Click(Sender: TObject);
     procedure ToolButton8Click(Sender: TObject);
-    procedure Button3Click(Sender: TObject);
     procedure Edit13KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure TexGurAfterDelete(DataSet: TDataSet);
     procedure TexGurBeforeDelete(DataSet: TDataSet);
@@ -372,7 +367,6 @@ begin
 end;
 
 procedure TFTexGur.Edit1Change(Sender: TObject);
-
 begin
 if edit1.text<>''   then begin
  skod:=replacestr(edit1.text,',','.')+'%';
@@ -588,95 +582,13 @@ end;
 procedure TFTexGur.Edit9KeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
- if key=vk_return then
- begin
-  if edit9.Text<>'' then
+  if (key = vk_return) then
   begin
-//   TexGur.BeforePost:=nil;
-   s_vip:=strtofloat(edit9.Text);
-{   TexGur.Close;
-   TexGur.ParamByName('Struk').AsInteger:=vStruk_id;
-   TexGur.ParamByName('mes').AsInteger:=mes;
-   TexGur.ParamByName('god').AsInteger:=god;
-   TexGur.ParamByName('KODP').AsInteger:=S_KODP;
-   TexGur.MacroByName('SORT').AsString:=USL_SORT;
-   TexGur.MacroByName('pl').AsString:=replacestr(floattostrf(s_vip,ffGeneral,6,15),',','.');
-   TexGur.ParamByName('doc').AsInteger:=vDocument_id;
-   TexGur.MacroByName('dat1').AsString:=''''+S_DAT1_Period+'''';
-   TexGur.MacroByName('dat2').AsString:=''''+s_dat2_Period+'''';
-   TexGur.Open; }
-
-{   DM1.IBQuery1.Active := False;
-   DM1.IBQuery1.SQL.Clear;
-   DM1.IBQuery1.SQL.Add('SELECT distinct ostatki.kart_id, norm.KODP,NORM.KEI_ID KEIN, NORM.KSM_ID, NORM.KRAZ, NORM.MES, NORM.GOD, NORM.NAZPRPF,cast(norm.plnorm as numeric(16,7)) as PLNORM,ostatki.ot_s,ostatki.ot_nz,');
-   DM1.IBQuery1.SQL.Add(' MATROP.NMAT,MATROP.KEI_ID,matrop.xarkt,matrop.gost, EDIZ.NEIS,razdel.razdel_id,ceh_normz.formula,cEH_NORMZ.KOEF1,CEH_NORMZ.KOEF2, CEH_NORMZ.KOEF3, CEH_NORMZ.PROC,CEH_NORMZ.NORMZ_ID,CEH_NORMZ.decznak,');
-   DM1.IBQuery1.SQL.Add(' NORM.PLNORM*'+replacestr(floattostrf(s_vip,ffGeneral,6,15),',','.')+' as Rasch_Zag,');
-   DM1.IBQuery1.SQL.Add(' NORM.PLNORM*'+replacestr(floattostrf(s_vip,ffGeneral,6,15),',','.')+' as Proc_Zag,');
-   DM1.IBQuery1.SQL.Add(' (select kol_new from ceh_ost_ediz(norm.KSM_ID, MATROP.KEI_ID, norm.KEI_ID, ostatki.ot_s)) Kot_S,');
-   DM1.IBQuery1.SQL.Add(' (select kol_new from ceh_ost_ediz(norm.KSM_ID, MATROP.KEI_ID, norm.KEI_ID,  ostatki.ot_nz)) Kot_Nz');
-   DM1.IBQuery1.SQL.Add(' FROM NORM ');
-   DM1.IBQuery1.SQL.Add(' INNER JOIN MATROP ON (NORM.KSM_ID = MATROP.KSM_ID)');
-   DM1.IBQuery1.SQL.Add(' INNER JOIN EDIZ ON (NORM.KEI_ID = EDIZ.KEI_ID)');
-   DM1.IBQuery1.SQL.Add(' inner JOIN RAZDEL ON (NORM.KRAZ = RAZDEL.KRAZ)');
-   DM1.IBQuery1.SQL.Add(' left JOIN ceh_normz ON ((NORM.kodp = ceh_normz.ksm_id_pr) AND (norm.ksm_id=ceh_normz.ksm_id_mat) AND (razdel.razdel_id=ceh_normz.razdel_id))');
-   DM1.IBQuery1.SQL.Add(' left JOIN ostatki ON ((NORM.kodp = ostatki.ksm_idpr) AND (norm.ksm_id=ostatki.ksm_id) AND (razdel.razdel_id=ostatki.razdel_id))');
-   DM1.IBQuery1.SQL.Add(' WHERE  NORM.KODP = '+inttostr(S_kodp));
-   DM1.IBQuery1.SQL.Add(' and  NORM.mes = '+inttostr(mes));
-   DM1.IBQuery1.SQL.Add(' and  NORM.god = '+inttostr(god));
-   DM1.IBQuery1.SQL.Add(' ORDER BY '+Usl_Sort);
-   DM1.IBQuery1.Active := True;
-   DM1.IBQuery1.First;
-   if DM1.IBQuery1.Eof then
-   begin
-    if mes<>1 then
+    if (edit9.Text <> '') then
     begin
-     mes_s:=mes-1;
-     god_s:=god;
-    end
-    else
-    begin
-     mes_s:=12;
-     god_s:=god-1;
+      s_vip := strtofloat(edit9.Text);
     end;
-    DM1.IBQuery1.Active := False;
-    DM1.IBQuery1.SQL.Clear;
-    DM1.IBQuery1.SQL.Add('SELECT distinct ostatki.kart_id, norm.KODP,NORM.KEI_ID KEIN, NORM.KSM_ID, NORM.KRAZ, NORM.MES, NORM.GOD, NORM.NAZPRPF,cast(norm.plnorm as numeric(16,7)) as PLNORM,ostatki.ot_s,ostatki.ot_nz,');
-    DM1.IBQuery1.SQL.Add(' MATROP.NMAT,MATROP.KEI_ID,matrop.xarkt,matrop.gost, EDIZ.NEIS,razdel.razdel_id,ceh_normz.formula,cEH_NORMZ.KOEF1,CEH_NORMZ.KOEF2, CEH_NORMZ.KOEF3, CEH_NORMZ.PROC,CEH_NORMZ.NORMZ_ID,CEH_NORMZ.decznak,');
-    DM1.IBQuery1.SQL.Add(' NORM.PLNORM*'+replacestr(floattostrf(s_vip,ffGeneral,6,15),',','.')+' as Rasch_Zag,');
-    DM1.IBQuery1.SQL.Add(' NORM.PLNORM*'+replacestr(floattostrf(s_vip,ffGeneral,6,15),',','.')+' as Proc_Zag,');
-    DM1.IBQuery1.SQL.Add(' (select kol_new from ceh_ost_ediz(norm.KSM_ID, MATROP.KEI_ID, norm.KEI_ID, ostatki.ot_s)) Kot_S,');
-    DM1.IBQuery1.SQL.Add(' (select kol_new from ceh_ost_ediz(norm.KSM_ID, MATROP.KEI_ID, norm.KEI_ID,  ostatki.ot_nz)) Kot_Nz');
-    DM1.IBQuery1.SQL.Add(' FROM NORM ');
-    DM1.IBQuery1.SQL.Add(' INNER JOIN MATROP ON (NORM.KSM_ID = MATROP.KSM_ID)');
-    DM1.IBQuery1.SQL.Add(' INNER JOIN EDIZ ON (NORM.KEI_ID = EDIZ.KEI_ID)');
-    DM1.IBQuery1.SQL.Add(' inner JOIN RAZDEL ON (NORM.KRAZ = RAZDEL.KRAZ)');
-    DM1.IBQuery1.SQL.Add(' left JOIN ceh_normz ON ((NORM.kodp = ceh_normz.ksm_id_pr) AND (norm.ksm_id=ceh_normz.ksm_id_mat) AND (razdel.razdel_id=ceh_normz.razdel_id))');
-    DM1.IBQuery1.SQL.Add(' left JOIN ostatki ON ((NORM.kodp = ostatki.ksm_idpr) AND (norm.ksm_id=ostatki.ksm_id) AND (razdel.razdel_id=ostatki.razdel_id))');
-    DM1.IBQuery1.SQL.Add(' WHERE  NORM.KODP = '+inttostr(S_kodp));
-    DM1.IBQuery1.SQL.Add(' and  NORM.mes = '+inttostr(mes_s));
-    DM1.IBQuery1.SQL.Add(' and  NORM.god = '+inttostr(god_s));
-    DM1.IBQuery1.SQL.Add(' ORDER BY '+Usl_Sort);
-    DM1.IBQuery1.Active := True;
-    DM1.IBQuery1.First;
-   end;
-   TexGur.DisableControls;
-   while not DM1.IBQuery1.Eof do
-   begin
-    TexGur.First;
-    if NOT TexGur.Locate('ksm_id;kraz',VarArrayOf([dm1.IBQuery1.FieldByName('KSM_ID').AsInteger,dm1.IBQuery1.FieldByName('KRAZ').AsInteger]),[]) THEN
-    BEGIN
-     TexGur.edit;
-     TexGurPLnorm.AsFloat:=dm1.IBQuery1.FieldByName('Plnorm').AsFloat;
-     TexGurRasch_Zag.AsFloat:=dm1.IBQuery1.FieldByName('Rasch_Zag').AsFloat;
-     TexGurProc_Zag.AsFloat:=dm1.IBQuery1.FieldByName('Proc_Zag').AsFloat-TexGurkOt_Nz.AsFloat;
-     TexGur.Post;
-    END;
-    DM1.IBQuery1.Next;
-   end;
-   TexGur.EnableControls;
-   TexGur.BeforePost:=TexGurBeforePost; }
   end;
- end;
 end;
 
 procedure TFTexGur.Edit1Click(Sender: TObject);
@@ -1924,112 +1836,73 @@ end;
 
 procedure TFTexGur.TexGurBeforeDelete(DataSet: TDataSet);
 begin
-  if texGurStroka_id.AsVariant=null then
-   s_del:=0
+  if (texGurStroka_id.AsVariant = null) then
+    s_del := 0
   else
-   s_del:=texGurStroka_id.AsInteger;
+    s_del := texGurStroka_id.AsInteger;
 end;
 
 procedure TFTexGur.TexGurBeforePost(DataSet: TDataSet);
 var
-  seria_ids: integer;
+  seria_ids : integer;
 begin
-  If TexGurRazdel_id.AsInteger = 0 then
+  If (TexGurRazdel_id.AsInteger = 0) then
   begin
-   MessageDlg('¬ведите раздел!', mtWarning, [mbOK], 0);
-   Abort;
+    MessageDlg('¬ведите раздел!', mtWarning, [mbOK], 0);
+    Abort;
   end;
-  If TexGur.FieldByName('ksm_id').AsInteger = 0 then
+  If (TexGur.FieldByName('ksm_id').AsInteger = 0) then
   begin
-   MessageDlg('¬ведите код сырь€!', mtWarning, [mbOK], 0);
-   Abort;
+    MessageDlg('¬ведите код сырь€!', mtWarning, [mbOK], 0);
+    Abort;
   end;
-  If TexGur.FieldByName('kein').AsInteger = 0 then
+  If (TexGur.FieldByName('kein').AsInteger = 0) then
   begin
-   MessageDlg('¬ведите единицу измерени€!', mtWarning, [mbOK], 0);
-   Abort;
+    MessageDlg('¬ведите единицу измерени€!', mtWarning, [mbOK], 0);
+    Abort;
   end;
-  v_razdel:=TexGurRazdel_id.AsInteger;
-  s_kei:=TexGur.FieldByName('kei_id').AsInteger;
-  v_keiN:=TexGur.FieldByName('kein').AsInteger;
-  s_ksm:=TexGur.FieldByName('ksm_id').AsInteger;
-  v_raspred:=TexGurKol_Rash_ediz.AsFloat*dm1.Koef_per(s_kei,v_keiN,s_ksm);
-  v_prix_period:=TexGurKol_Prih.AsFloat;
-  seria_ids:=vSeria_id;
-  vseria_id:=0;
-  if (TexGurKart_id.AsVariant=null) or (TexGurKart_id.AsVariant=0) then
+  v_razdel := TexGurRazdel_id.AsInteger;
+  s_kei := TexGur.FieldByName('kei_id').AsInteger;
+  v_keiN := TexGur.FieldByName('kein').AsInteger;
+  s_ksm := TexGur.FieldByName('ksm_id').AsInteger;
+  v_raspred := TexGurKol_Rash_ediz.AsFloat*dm1.Koef_per(s_kei,v_keiN,s_ksm);
+  v_prix_period := TexGurKol_Prih.AsFloat;
+  seria_ids := vSeria_id;
+  vseria_id := 0;
+  if (TexGurKart_id.AsVariant = null) or (TexGurKart_id.AsVariant = 0) then
   begin
-   v_dok_kart:=SelectToVarIB('select Ostatki.kart_id   FROM Ostatki WHERE Ostatki.STRUK_ID='+INTTOSTR(VsTRUK_ID)
-   + ' AND ostatki.ksm_id='+inttostr(s_Ksm)
-   + ' AND Ostatki.razdel_id='+inttostr(v_razdel)
-   + ' AND Ostatki.Ksm_idpr='+ INTTOSTR(S_KODP),dm1.belmed,dm1.ibt_read);
-   If v_dok_kart = Null then
-   begin
-    IF DM1.Ostatki.Active=FALSE THEN DM1.Ostatki.Active:=TRUE;
-    DM1.Ostatki.Insert;
-    DM1.Ostatki.Post;
-    dm1.Ostatki.ApplyUpdates;
-    TexGurKart_id.AsInteger:=vKART_ID;
-   end
-   else
-    TexGurKart_id.AsInteger:=v_dok_kart;
+    v_dok_kart := SelectToVarIB('select Ostatki.kart_id   FROM Ostatki '
+                                + 'WHERE Ostatki.STRUK_ID=' + INTTOSTR(VsTRUK_ID)
+                                + ' AND ostatki.ksm_id=' + inttostr(s_Ksm)
+                                + ' AND Ostatki.razdel_id=' + inttostr(v_razdel)
+                                + ' AND Ostatki.Ksm_idpr=' + INTTOSTR(S_KODP),
+                                dm1.belmed, dm1.ibt_read);
+    If (v_dok_kart = Null) then
+    begin
+      IF (DM1.Ostatki.Active = FALSE) THEN
+        DM1.Ostatki.Active := TRUE;
+      DM1.Ostatki.Insert;
+      DM1.Ostatki.Post;
+      dm1.Ostatki.ApplyUpdates;
+      TexGurKart_id.AsInteger := vKART_ID;
+    end
+    else
+      TexGurKart_id.AsInteger := v_dok_kart;
   end;
-  vseria_id:=Seria_ids;
+  vseria_id := Seria_ids;
 end;
 
 procedure TFTexGur.Seria_sBeforeInsert(DataSet: TDataSet);
 begin
-DM1.AddSeria.ExecProc;
-vSERIA_IDs:=DM1.AddSeria.Params.Items[0].AsInteger;
+  DM1.AddSeria.ExecProc;
+  vSERIA_IDs := DM1.AddSeria.Params.Items[0].AsInteger;
 end;
 
 procedure TFTexGur.Seria_sNewRecord(DataSet: TDataSet);
 begin
- Seria_sSERIA_ID.AsInteger:=vSeria_Ids;
- Seria_sKSM_ID.AsInteger:=S_KSMs;
- Seria_sSERIA.AsString:=s_SERIAs;
-end;
-
-procedure TFTexGur.Button3Click(Sender: TObject);
-begin
- if FKompTM=nil then FKompTM:=TFKompTM.Create(Application);
-  FKompTM.Label2.Caption:=edit1.Text;
-  FKompTM.Label3.Caption:=edit2.Text;
-  FKompTM.Label9.Caption:=label19.Caption;
-  FKompTM.ShowModal;
-end;
-
-procedure TFTexGur.DBEditEh1EditButtons0Click(Sender: TObject;
-  var Handled: Boolean);
-begin
- if FindMatrop=nil then FindMatrop:=TfindMatrop.Create(Application);
- FindMatrop.DataBaseName:=dm1.BELMED;
- FindMatrop.ReadOnly:=true;
- FindMatrop.ShowModal;
- if FindMatrop.ModalResult > 50 then
- begin
-  dM1.Matrop.Active:=false;
-  dM1.Matrop.ParamByName('ksm').AsInteger:=FindMatrop.ModalResult-50;
-  dM1.Matrop.Active:=TRUE;
- end;
-end;
-
-procedure TFTexGur.DBEditEh3EditButtons0Click(Sender: TObject;
-  var Handled: Boolean);
-begin
-if FindMatrop=nil then FindMatrop:=TfindMatrop.Create(Application);
-    FindMatrop.DataBaseName:=dm1.BELMED;
-    FindMatrop.ReadOnly:=true;
-    FindMatrop.ShowModal;
-    if FindMatrop.ModalResult > 50 then
-    begin
-     dM1.Matrop.Active:=false;
-     dM1.Matrop.ParamByName('ksm').AsInteger:=FindMatrop.ModalResult-50;
-     dM1.Matrop.Active:=TRUE;
-     dm1.Seria.Edit;
-     dm1.Seria.FieldByName('Kod_tm').AsInteger :=FindMatrop.ModalResult-50;
-     dm1.Seria.Post;
-    end;
+  Seria_sSERIA_ID.AsInteger := vSeria_Ids;
+  Seria_sKSM_ID.AsInteger := S_KSMs;
+  Seria_sSERIA.AsString := s_SERIAs;
 end;
 
 procedure TFTexGur.SpinEdit3Change(Sender: TObject);
@@ -2167,14 +2040,17 @@ end;
 
 procedure TFTexGur.TexGurNewRecord(DataSet: TDataSet);
 begin
- IF TexGurkOL_PRIH.AsVariant=NULL THEN  TexGurkOL_PRIH.AsFloat:=0;
- IF TexGurkOL_PRIH_EDIZ.AsVariant=NULL THEN  TexGurkOL_PRIH_EDIZ.AsFloat:=0;
+  IF (TexGurkOL_PRIH.AsVariant = NULL) THEN
+    TexGurkOL_PRIH.AsFloat := 0;
+  IF (TexGurkOL_PRIH_EDIZ.AsVariant = NULL) THEN
+    TexGurkOL_PRIH_EDIZ.AsFloat := 0;
 end;
 
 procedure TFTexGur.ToolButton4Click(Sender: TObject);
 begin
-  ksm_ov:=0;
-  if FAnalit1=nil then FAnalit1:=TFAnalit1.Create(Application);
+  ksm_ov := 0;
+  if (FAnalit1 = nil) then
+    FAnalit1 := TFAnalit1.Create(Application);
   FAnalit1.ShowModal;
 end;
 

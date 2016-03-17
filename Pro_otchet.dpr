@@ -97,7 +97,9 @@ uses
   PererasFolga in 'Source\PererasFolga.pas' {FPererasFolga},
   LookupUnderSign in 'Source\LookupUnderSign.pas' {FLookupUnderSign},
   TechJournPrep in 'Source\TechJournPrep.pas' {FTechJournPrep},
-  TechJourn in 'Source\TechJourn.pas' {FTechJourn};
+  TechJourn in 'Source\TechJourn.pas' {FTechJourn},
+  DrugLoad in 'Source\DrugLoad.pas',
+  DMDrugLoad in 'Source\DMDrugLoad.pas' {FDMDrugLoad: TDataModule};
 
 {$R *.res}
 
