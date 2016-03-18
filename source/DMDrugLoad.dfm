@@ -16,8 +16,11 @@ object FDMDrugLoad: TFDMDrugLoad
     Top = 24
   end
   object trans_read: TIBTransaction
-    Active = True
     DefaultDatabase = db
+    Params.Strings = (
+      'read_committed'
+      'rec_version'
+      'nowait')
     Left = 32
     Top = 80
   end

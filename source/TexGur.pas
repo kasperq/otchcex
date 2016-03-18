@@ -2,7 +2,7 @@ unit TexGur;
 
 interface
 
-uses
+uses DrugLoad,
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, Mask, ToolEdit, StdCtrls, ImgList, ComCtrls, ToolWin, Grids,
   DBGridEh, FindDlgEh, Buttons, DB, IBCustomDataSet, IBQuery, DBCtrls,
@@ -216,8 +216,10 @@ type
     procedure TexGurBeforeDelete(DataSet: TDataSet);
     procedure btn_vipuskListClick(Sender: TObject);
     procedure SpeedButton3Click(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }
+    drLoad : TDrugLoad;
   public
     { Public declarations }
   end;
@@ -499,9 +501,13 @@ end;
 
 procedure TFTexGur.FormCreate(Sender: TObject);
 begin
-s_dat1_period:=s_dat1;
-s_dat2_period:=S_dat2;
+  s_dat1_period := s_dat1;
+  s_dat2_period := S_dat2;
+end;
 
+procedure TFTexGur.FormDestroy(Sender: TObject);
+begin
+  FreeAndNil(drLoad);
 end;
 
 procedure TFTexGur.Edit2KeyDown(Sender: TObject; var Key: Word;
@@ -772,7 +778,7 @@ end;
 
 procedure TFTexGur.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-
+  FreeAndNil(drLoad);
  IF DM1.Seria.Active THEN DM1.Seria.Close;
  IF DM1.Ostatki.Active THEN DM1.Ostatki.Close;
  IF DM1.Document.Active THEN DM1.Document.Close;
@@ -1044,187 +1050,210 @@ begin
 end;
 
 procedure TFTexGur.FormShow(Sender: TObject);
+var
+  i : integer;
 begin
- if FSprFormul=nil then FSprFormul:=TfSprFormul.Create(Application);
- if TexGur.Active then TexGur.Active:=false;
- SpinEdit3.Value:=mes;
- SpinEdit4.Value:=god;
- IF MES<10 THEN S_MES:='0'+INTTOSTR(MES) ELSE S_MES:=INTTOSTR(MES);
- S_DAT1_period:='01.'+S_MES+'.'+INTTOSTR(GOD);
- S_DAT2_period:=datetostr(IncMonth(strtodate(s_dat1_period),1)-1);
- PageControl1.ActivePage:=tabsheet1;
- USL_SORT:='7,9';
- usl_dat:=' SERIA.Date_ZAG between '+''''+s_dat1_period+''''+' and '+''''+s_dat2_period+'''';
- IF DM1.ConfigUMC.Active THEN DM1.ConfigUMC.close;
- DM1.ConfigUMC.MacroByName('USL').AsString:='configumc.STRUK_ID = '+IntToStr(vSTRUK_ID);
- DM1.ConfigUMC.Open;
- if (MES=DM1.ConfigUMCMES.AsInteger) and (GOD=DM1.ConfigUMCGOD.AsInteger) then
- begin
+  if (FSprFormul = nil) then
+    FSprFormul := TfSprFormul.Create(Application);
+  if (TexGur.Active) then
+    TexGur.Active := false;
+  SpinEdit3.Value := mes;
+  SpinEdit4.Value := god;
+  IF (MES < 10) THEN
+    S_MES := '0' + INTTOSTR(MES)
+  ELSE
+    S_MES := INTTOSTR(MES);
+  S_DAT1_period := '01.' + S_MES + '.' + INTTOSTR(GOD);
+  S_DAT2_period := datetostr(IncMonth(strtodate(s_dat1_period), 1) -1);
+  PageControl1.ActivePage := tabsheet1;
+  USL_SORT := '7,9';
+  usl_dat := ' SERIA.Date_ZAG between ' + '''' + s_dat1_period + '''' + ' and '
+             + '''' + s_dat2_period + '''';
+  IF (DM1.ConfigUMC.Active) THEN
+    DM1.ConfigUMC.close;
+  DM1.ConfigUMC.MacroByName('USL').AsString := 'configumc.STRUK_ID = ' + IntToStr(vSTRUK_ID);
+  DM1.ConfigUMC.Open;
+  if (MES = DM1.ConfigUMCMES.AsInteger) and (GOD = DM1.ConfigUMCGOD.AsInteger) then
+  begin
 //      Label5.Caption:='(Текущий месяц)';
-   MODE:=0;
-   ToolButton1.Enabled:=True;
-   ToolButton2.Enabled:=True;
-   ToolButton3.Enabled:=True;
-   ToolButton9.Enabled:=True;
- end
- else
-  if ((MES=DM1.ConfigUMCMES.AsInteger-1) and (GOD=DM1.ConfigUMCGOD.AsInteger)) or ((GOD=DM1.ConfigUMCGOD.AsInteger-1) and (MES=12) and (DM1.ConfigUMCMES.AsInteger=1))then
-  begin
-//     Label5.Caption:='(Прошлый месяц)';
-    MODE:=1;
-    ToolButton1.Enabled:=True;
-    ToolButton2.Enabled:=True;
-    ToolButton3.Enabled:=True;
-    ToolButton9.Enabled:=True;
+    MODE := 0;
+    ToolButton1.Enabled := True;
+    ToolButton2.Enabled := True;
+    ToolButton3.Enabled := True;
+    ToolButton9.Enabled := True;
   end
   else
-  begin
-//      Label5.Caption:='(Только просмотр)';
-    MODE:=2;
-    ToolButton1.Enabled:=False;
-    ToolButton2.Enabled:=false;
-    ToolButton3.Enabled:=false;
-    ToolButton9.Enabled:=false;
-  end;
- DM1.ConfigUMC.close;
- if s_kodp<>0 then
- begin
-  DM1.IBQuery1.Active := False;
-  DM1.IBQuery1.SQL.Clear;
-  DM1.IBQuery1.SQL.Add('SELECT SPPROD.STRUK_ID,SPPROD.NMAT, SPPROD.KOD_PROD, SPPROD.KEI_ID,SPPROD.KSM_ID,SPPROD.SPROD_ID,SPPROD.VOL_ov,SPPROD.VOLumf,');
-  DM1.IBQuery1.SQL.Add('SPPROD.GOST,EDIZ.NEIS,SPPROD.KORG,SPPROD.XARKT,SPPROD.ACTIVP,SPRORG.NAM,SPPROD.LEK_ID,SPFORMV.NAMEFv,region.nam nam_reg');
-  DM1.IBQuery1.SQL.Add(' FROM SPPROD');
-  DM1.IBQuery1.SQL.Add('  INNER JOIN EDIZ ON (SPPROD.KEI_ID = EDIZ.KEI_ID)');
-  DM1.IBQuery1.SQL.Add('  LEFT JOIN SPRORG ON (SPPROD.KORG = SPRORG.KOD)');
-  DM1.IBQuery1.SQL.Add('  LEFT JOIN SPFORMV ON (SPPROD.SPFV = SPFORMV.SPFV)');
-  DM1.IBQuery1.SQL.Add('  LEFT JOIN region ON (SPPROD.reg = region.reg)');
-  DM1.IBQuery1.SQL.Add(' WHERE SPPROD.Ksm_id='+inttostr(s_kodp)+' AND SPPROD.STRUK_ID='+INTTOSTR(vStruk_Id));
-  DM1.IBQuery1.Active := True;
-  if not dm1.IBQuery1.Eof then
-  begin
-   EDIT1.OnChange:=nil;
-    edit1.text:=DM1.IBQuery1.FieldByName('kod_PROD').Asstring;
-    EDIT1.OnChange:=Edit1Change;
-//    edit17.text:=floattostr(DM1.IBQuery1.FieldByName('vol_ov').Asfloat);
-    s_kodp:=DM1.IBQuery1.FieldByName('KSM_ID').value;
-    s_gost:=DM1.IBQuery1.FieldByName('GOST').AsString;
-    s_xarkt:=DM1.IBQuery1.FieldByName('XARKT').AsString;
-    s_nmat:=DM1.IBQuery1.FieldByName('NMAT').AsString;
-    s_kei:=DM1.IBQuery1.FieldByName('KEI_ID').VALUE;
-    s_korg:=DM1.IBQuery1.FieldByName('KORG').VALUE;
-    s_kodProd:=DM1.IBQuery1.FieldByName('KOD_PROD').AsString;
-    s_Lek_id:=DM1.IBQuery1.FieldByName('Lek_Id').VALUE;
-    s_namorg:=DM1.IBQuery1.FieldByName('NAM').AsString;
-    s_neiz:=DM1.IBQuery1.FieldByName('NEIS').AsString;
-    s_Formv:=DM1.IBQuery1.FieldByName('NAMEFV').AsString;
-    s_Sprod_id:=DM1.IBQuery1.FieldByName('Sprod_Id').VALUE;
-    s_namREG:=DM1.IBQuery1.FieldByName('NAM_ReG').AsString;
-    DM1.IBQuery1.Active := False;
-    DM1.IBQuery1.SQL.Clear;
-    DM1.IBQuery1.SQL.Add('SELECT *');
-    DM1.IBQuery1.SQL.Add(' FROM UTPLAN');
-    DM1.IBQuery1.SQL.Add(' WHERE UTPLAN.MES='+inttostr(mes)+' AND UTPLAN.GOD='+inttostr(god)+' AND UTPLAN.SPROD_ID='+inttostr(s_sprod_id));
-    DM1.IBQuery1.Active := True;
-    if not dm1.IBQuery1.Eof then
+    if ((MES = DM1.ConfigUMCMES.AsInteger - 1) and (GOD = DM1.ConfigUMCGOD.AsInteger))
+       or ((GOD = DM1.ConfigUMCGOD.AsInteger - 1) and (MES = 12) and (DM1.ConfigUMCMES.AsInteger = 1))then
     begin
-     Label26.Caption:=floattostr(DM1.IBQuery1.FieldByName('PLAN').AsFloat);
-     s_plan:=DM1.IBQuery1.FieldByName('PLAN').AsFloat;
+  //     Label5.Caption:='(Прошлый месяц)';
+      MODE := 1;
+      ToolButton1.Enabled := True;
+      ToolButton2.Enabled := True;
+      ToolButton3.Enabled := True;
+      ToolButton9.Enabled := True;
     end
     else
     begin
-     Label26.Caption:='0';
-     s_plan:=0;
+  //      Label5.Caption:='(Только просмотр)';
+      MODE := 2;
+      ToolButton1.Enabled := False;
+      ToolButton2.Enabled := false;
+      ToolButton3.Enabled := false;
+      ToolButton9.Enabled := false;
     end;
+  DM1.ConfigUMC.close;
+  if (s_kodp <> 0) then
+  begin
     DM1.IBQuery1.Active := False;
     DM1.IBQuery1.SQL.Clear;
-    DM1.IBQuery1.SQL.Add('SELECT kartv.kol_prih');
-    DM1.IBQuery1.SQL.Add(' FROM KARTV ');
-    DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTV.DOC_ID = DOCUMENT.DOC_ID)');
-    DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(VsTRUK_ID)
-    + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
-    + ' AND KARTV.KSM_ID='+INTTOSTR(s_KODP)
-    + ' AND Document.Date_op between '+''''+s_dat1_period+'''' +' and '+''''+s_dat2_period+'''');
+    DM1.IBQuery1.SQL.Add('SELECT SPPROD.STRUK_ID, SPPROD.NMAT, SPPROD.KOD_PROD, '
+                         + 'SPPROD.KEI_ID, SPPROD.KSM_ID, SPPROD.SPROD_ID, '
+                         + 'SPPROD.VOL_ov, SPPROD.VOLumf,');
+    DM1.IBQuery1.SQL.Add('SPPROD.GOST, EDIZ.NEIS, SPPROD.KORG, SPPROD.XARKT, '
+                         + 'SPPROD.ACTIVP, SPRORG.NAM, SPPROD.LEK_ID, SPFORMV.NAMEFv, region.nam nam_reg');
+    DM1.IBQuery1.SQL.Add(' FROM SPPROD');
+    DM1.IBQuery1.SQL.Add('  INNER JOIN EDIZ ON (SPPROD.KEI_ID = EDIZ.KEI_ID)');
+    DM1.IBQuery1.SQL.Add('  LEFT JOIN SPRORG ON (SPPROD.KORG = SPRORG.KOD)');
+    DM1.IBQuery1.SQL.Add('  LEFT JOIN SPFORMV ON (SPPROD.SPFV = SPFORMV.SPFV)');
+    DM1.IBQuery1.SQL.Add('  LEFT JOIN region ON (SPPROD.reg = region.reg)');
+    DM1.IBQuery1.SQL.Add(' WHERE SPPROD.Ksm_id=' + inttostr(s_kodp)
+                         + ' AND SPPROD.STRUK_ID=' + INTTOSTR(vStruk_Id));
     DM1.IBQuery1.Active := True;
-    if not dm1.IBQuery1.Eof then
+    if (not dm1.IBQuery1.Eof) then
     begin
-     Label34.Caption:=floattostr(DM1.IBQuery1.FieldByName('kol_prih').AsFloat);
-     s_OPLan:=DM1.IBQuery1.FieldByName('kol_prih').AsFloat;
+      EDIT1.OnChange := nil;
+      edit1.text := DM1.IBQuery1.FieldByName('kod_PROD').Asstring;
+      EDIT1.OnChange := Edit1Change;
+//  edit17.text:=floattostr(DM1.IBQuery1.FieldByName('vol_ov').Asfloat);
+      s_kodp := DM1.IBQuery1.FieldByName('KSM_ID').value;
+      s_gost := DM1.IBQuery1.FieldByName('GOST').AsString;
+      s_xarkt := DM1.IBQuery1.FieldByName('XARKT').AsString;
+      s_nmat := DM1.IBQuery1.FieldByName('NMAT').AsString;
+      s_kei := DM1.IBQuery1.FieldByName('KEI_ID').VALUE;
+      s_korg := DM1.IBQuery1.FieldByName('KORG').VALUE;
+      s_kodProd := DM1.IBQuery1.FieldByName('KOD_PROD').AsString;
+      s_Lek_id := DM1.IBQuery1.FieldByName('Lek_Id').VALUE;
+      s_namorg := DM1.IBQuery1.FieldByName('NAM').AsString;
+      s_neiz := DM1.IBQuery1.FieldByName('NEIS').AsString;
+      s_Formv := DM1.IBQuery1.FieldByName('NAMEFV').AsString;
+      s_Sprod_id := DM1.IBQuery1.FieldByName('Sprod_Id').VALUE;
+      s_namREG := DM1.IBQuery1.FieldByName('NAM_ReG').AsString;
+      DM1.IBQuery1.Active := False;
+      DM1.IBQuery1.SQL.Clear;
+      DM1.IBQuery1.SQL.Add('SELECT *');
+      DM1.IBQuery1.SQL.Add(' FROM UTPLAN');
+      DM1.IBQuery1.SQL.Add(' WHERE UTPLAN.MES=' + inttostr(mes)
+                           + ' AND UTPLAN.GOD=' + inttostr(god)
+                           + ' AND UTPLAN.SPROD_ID=' + inttostr(s_sprod_id));
+      DM1.IBQuery1.Active := True;
+      if (not dm1.IBQuery1.Eof) then
+      begin
+        Label26.Caption := floattostr(DM1.IBQuery1.FieldByName('PLAN').AsFloat);
+        s_plan := DM1.IBQuery1.FieldByName('PLAN').AsFloat;
+      end
+      else
+      begin
+        Label26.Caption := '0';
+        s_plan := 0;
+      end;
+      DM1.IBQuery1.Active := False;
+      DM1.IBQuery1.SQL.Clear;
+      DM1.IBQuery1.SQL.Add('SELECT kartv.kol_prih');
+      DM1.IBQuery1.SQL.Add(' FROM KARTV ');
+      DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTV.DOC_ID = DOCUMENT.DOC_ID)');
+      DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID=' + INTTOSTR(VsTRUK_ID)
+                           + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
+                           + ' AND KARTV.KSM_ID=' + INTTOSTR(s_KODP)
+                           + ' AND Document.Date_op between ' + '''' + s_dat1_period
+                           + '''' + ' and ' + '''' + s_dat2_period + '''');
+      DM1.IBQuery1.Active := True;
+      if (not dm1.IBQuery1.Eof) then
+      begin
+        Label34.Caption := floattostr(DM1.IBQuery1.FieldByName('kol_prih').AsFloat);
+        s_OPLan := DM1.IBQuery1.FieldByName('kol_prih').AsFloat;
+      end
+      else
+      begin
+        Label34.Caption := '0';
+        s_Oplan := 0;
+      end;
+      DM1.IBQuery1.Active := False;
+      DM1.IBQuery1.SQL.Clear;
+      DM1.IBQuery1.SQL.Add('SELECT SUM(kart.kol_prih) SDANO');
+      DM1.IBQuery1.SQL.Add(' FROM KART ');
+      DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KART.DOC_ID = DOCUMENT.DOC_ID)');
+      DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.KLIENT_ID=' + INTTOSTR(VsTRUK_ID)
+                           + ' AND DOCUMENT.TIP_OP_ID=2' + ' AND KART.KSM_ID='
+                           + INTTOSTR(s_KODP) + ' AND Document.Date_op between '
+                           + '''' + s_dat1_period + '''' + ' and ' + '''' + s_dat2_period + '''');
+      DM1.IBQuery1.Active := True;
+      if (not dm1.IBQuery1.Eof) then
+      begin
+    //     Label36.Caption:=floattostr(DM1.IBQuery1.FieldByName('SDANO').AsFloat);
+        s_SDANO := DM1.IBQuery1.FieldByName('SDANO').AsFloat;
+      end
+      else
+      begin
+    //     Label36.Caption:='0';
+        s_SDANO := 0;
+      end;
+      label19.caption := s_NMAT;
+      label28.caption := Inttostr(s_KORG);
+      label29.caption := s_namorg;
+      label21.caption := s_Neiz;
+      label22.caption := s_GOST;
+      label11.caption := s_Xarkt;
+      label45.caption := s_Formv;
+      label3.caption := s_namREG;
     end
     else
     begin
-     Label34.Caption:='0';
-     s_Oplan:=0;
+      Label3.Caption := '';
+      label19.Caption := '';
+      label3.Caption := '';
+      label11.Caption := '';
+      label29.Caption := '';
+      label21.Caption := '';
+      label22.Caption := '';
+      label26.Caption := '';
+      label34.Caption := '';
+  //   label36.Caption:='';
+      label28.Caption := '';
+      label45.Caption := '';
+      DateEdit1.Date := date;
+      Edit1.Text := '';
+  //   Edit17.Text:='';
     end;
-    DM1.IBQuery1.Active := False;
-    DM1.IBQuery1.SQL.Clear;
-    DM1.IBQuery1.SQL.Add('SELECT SUM(kart.kol_prih) SDANO');
-    DM1.IBQuery1.SQL.Add(' FROM KART ');
-    DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KART.DOC_ID = DOCUMENT.DOC_ID)');
-    DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.KLIENT_ID='+INTTOSTR(VsTRUK_ID)
-    + ' AND DOCUMENT.TIP_OP_ID=2'    + ' AND KART.KSM_ID='+INTTOSTR(s_KODP)
-    + ' AND Document.Date_op between '+''''+s_dat1_period+'''' +' and '+''''+s_dat2_period+'''');
-    DM1.IBQuery1.Active := True;
-    if not dm1.IBQuery1.Eof then
-     begin
-//     Label36.Caption:=floattostr(DM1.IBQuery1.FieldByName('SDANO').AsFloat);
-     s_SDANO:=DM1.IBQuery1.FieldByName('SDANO').AsFloat;
-     end
-    else
-    begin
-//     Label36.Caption:='0';
-     s_SDANO:=0;
-    end;
-    label19.caption:=s_NMAT;
-    label28.caption:=Inttostr(s_KORG);
-    label29.caption:=s_namorg;
-    label21.caption:=s_Neiz;
-    label22.caption:=s_GOST;
-    label11.caption:=s_Xarkt;
-    label45.caption:=s_Formv;
-    label3.caption:=s_namREG;
   end
   else
   begin
-   Label3.Caption:='';
-   label19.Caption:='';
-   label3.Caption:='';
-   label11.Caption:='';
-   label29.Caption:='';
-   label21.Caption:='';
-   label22.Caption:='';
-   label26.Caption:='';
-   label34.Caption:='';
-//   label36.Caption:='';
-   label28.Caption:='';
-   label45.Caption:='';
-   DateEdit1.Date:=date;
-   Edit1.Text:='';
-//   Edit17.Text:='';
-  end;
- end
- else
- begin
-  Label3.Caption:='';
-  label19.Caption:='';
-  label3.Caption:='';
-  label11.Caption:='';
-  label29.Caption:='';
-  label21.Caption:='';
-  label22.Caption:='';
-  label26.Caption:='';
-  label34.Caption:='';
-//  label36.Caption:='';
-  label28.Caption:='';
-  label45.Caption:='';
-  DateEdit1.Date:=date;
-  Edit1.Text:='';
+    Label3.Caption := '';
+    label19.Caption := '';
+    label3.Caption := '';
+    label11.Caption := '';
+    label29.Caption := '';
+    label21.Caption := '';
+    label22.Caption := '';
+    label26.Caption := '';
+    label34.Caption := '';
+    //  label36.Caption:='';
+    label28.Caption := '';
+    label45.Caption := '';
+    DateEdit1.Date := date;
+    Edit1.Text := '';
 //  Edit17.Text:='';
- end;
- Edit2.Text:='';
- Edit9.Text:='';
- pr_button9:=true;
- prov:=false;
- Edit1.SetFocus;
+  end;
+  Edit2.Text := '';
+  Edit9.Text := '';
+  pr_button9 := true;
+  prov := false;
+  Edit1.SetFocus;
+
+  drLoad := TDrugLoad.Create(dm1.BELMED.DatabaseName,
+                             dm1.BELMED.Params.Values['user_name'],
+                             dm1.BELMED.Params.Values['password'],
+                             dm1.BELMED.Params.Values['sql_role_name']);
 end;
 
 procedure TFTexGur.DBGridEh3SortMarkingChanged(Sender: TObject);
