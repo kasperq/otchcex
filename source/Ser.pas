@@ -28,7 +28,7 @@ var
 
 implementation
 
-uses dm, TexGur;
+uses dm, TexGur, TexGurOld;
 {$R *.dfm}
 
 procedure TFSer.DBGridEh4DblClick(Sender: TObject);
@@ -36,7 +36,7 @@ begin
   if (pr_ser = 0) then
     ModalResult := DM1.SeriaSERIA_ID.AsInteger + 50
   else
-    ModalResult := FTexGur.Seria_sSERIA_ID.AsInteger + 50;
+    ModalResult := FTexGurOld.Seria_sSERIA_ID.AsInteger + 50;
 end;
 
 procedure TFSer.SpeedButton1Click(Sender: TObject);
@@ -44,7 +44,7 @@ begin
   if (pr_ser = 0) then
     ModalResult := DM1.SeriaSERIA_ID.AsInteger + 50
   else
-    ModalResult := FTexGur.Seria_sSERIA_ID.AsInteger + 50;
+    ModalResult := FTexGurOld.Seria_sSERIA_ID.AsInteger + 50;
 end;
 
 procedure TFSer.SpeedButton2Click(Sender: TObject);
