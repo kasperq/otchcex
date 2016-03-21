@@ -99,7 +99,8 @@ uses
   TechJournPrep in 'Source\TechJournPrep.pas' {FTechJournPrep},
   TechJourn in 'Source\TechJourn.pas' {FTechJourn},
   DrugLoad in 'Source\DrugLoad.pas',
-  DMDrugLoad in 'Source\DMDrugLoad.pas' {FDMDrugLoad: TDataModule};
+  DMDrugLoad in 'Source\DMDrugLoad.pas' {FDMDrugLoad: TDataModule},
+  TexGurOld in 'Source\TexGurOld.pas' {FTexGurOld};
 
 {$R *.res}
 
@@ -177,5 +178,6 @@ begin
   Application.CreateForm(TFAnalit_List, FAnalit_List);
   Application.CreateForm(TForm3, Form3);
   Application.CreateForm(TFPererasFolga, FPererasFolga);
+  Application.CreateForm(TFTexGurOld, FTexGurOld);
   Application.Run;
 end.

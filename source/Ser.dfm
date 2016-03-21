@@ -62,7 +62,6 @@ object FSer: TFSer
     Ctl3D = False
     ParentCtl3D = False
     TabOrder = 1
-    ExplicitWidth = 102
     DesignSize = (
       174
       31)
