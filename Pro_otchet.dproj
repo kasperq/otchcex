@@ -460,12 +460,17 @@
     <DCCReference Include="Source\Dm1Ost.pas">
       <Form>DmOst</Form>
     </DCCReference>
+    <DCCReference Include="Source\DMDrugLoad.pas">
+      <Form>FDMDrugLoad</Form>
+      <DesignClass>TDataModule</DesignClass>
+    </DCCReference>
     <DCCReference Include="Source\Dob_peredano.pas">
       <Form>FDob_Peredano</Form>
     </DCCReference>
     <DCCReference Include="Source\DocP.pas">
       <Form>FdocP</Form>
     </DCCReference>
+    <DCCReference Include="Source\DrugLoad.pas" />
     <DCCReference Include="Source\ediz.pas">
       <Form>FEdiz</Form>
     </DCCReference>
@@ -610,6 +615,9 @@
     </DCCReference>
     <DCCReference Include="Source\TexGur.pas">
       <Form>FTexGur</Form>
+    </DCCReference>
+    <DCCReference Include="Source\TexGurOld.pas">
+      <Form>FTexGurOld</Form>
     </DCCReference>
     <DCCReference Include="Source\TipDoc.pas">
       <Form>FTipDoc</Form>

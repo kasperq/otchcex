@@ -966,7 +966,7 @@ var
 
 implementation
 
-uses NormCex,glmenu,Ostatki,SprStad, VibPrep, Start, rascex, TexGur,Got_Prod,Pech_Vibor,
+uses NormCex,glmenu,Ostatki,SprStad, VibPrep, Start, rascex, TexGurOld,Got_Prod,Pech_Vibor,
   SprFormul, Otchet,Analitlist_tg;
 
   
@@ -3238,7 +3238,7 @@ end;
 procedure TDM1.TexStadNewRecord(DataSet: TDataSet);
 begin
  TexStadKart_ID.AsInteger:=s_Kart_id;
- TexStadDate_Stad.AsDateTime:=FTexGur.DateEdit1.Date;
+ TexStadDate_Stad.AsDateTime:=FTexGurOld.DateEdit1.Date;
  TexStadDate_Time_Update.AsDateTime:=date;
  TexStadUser_Name.AsString:=UserName;
 end;
