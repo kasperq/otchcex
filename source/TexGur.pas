@@ -164,6 +164,7 @@ type
     SpeedButton3: TSpeedButton;
     TexGurGOST: TIBStringField;
     ZagSyrDATE_TIME_UPDATE: TDateField;
+    TexGurZAG_PERIOD: TFMTBCDField;
     procedure MyGetValue(const s: String; var v: Variant);
     procedure MyGetValue1(const s: String; var v: Variant);
     procedure Edit1Change(Sender: TObject);
@@ -778,7 +779,7 @@ end;
 
 procedure TFTexGur.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  FreeAndNil(drLoad);
+//  FreeAndNil(drLoad);
  IF DM1.Seria.Active THEN DM1.Seria.Close;
  IF DM1.Ostatki.Active THEN DM1.Ostatki.Close;
  IF DM1.Document.Active THEN DM1.Document.Close;
@@ -1250,10 +1251,10 @@ begin
   prov := false;
   Edit1.SetFocus;
 
-  drLoad := TDrugLoad.Create(dm1.BELMED.DatabaseName,
-                             dm1.BELMED.Params.Values['user_name'],
-                             dm1.BELMED.Params.Values['password'],
-                             dm1.BELMED.Params.Values['sql_role_name']);
+//  drLoad := TDrugLoad.Create(dm1.BELMED.DatabaseName,
+//                             dm1.BELMED.Params.Values['user_name'],
+//                             dm1.BELMED.Params.Values['password'],
+//                             dm1.BELMED.Params.Values['sql_role_name']);
 end;
 
 procedure TFTexGur.DBGridEh3SortMarkingChanged(Sender: TObject);
@@ -1310,45 +1311,56 @@ begin
 end;
 
 procedure TFTexGur.DBGridEh4SortMarkingChanged(Sender: TObject);
-
 var
-  i :Integer;
+  i : Integer;
 begin
- Usl_Sort := '';
- for i := 0 to DBGridEh4.SortMarkedColumns.Count-1 do
- BEGIN
-  if DBGridEh4.SortMarkedColumns[i].Title.SortMarker = smUpEh then
+  Usl_Sort := '';
+  for i := 0 to DBGridEh4.SortMarkedColumns.Count - 1 do
+  BEGIN
+    if (DBGridEh4.SortMarkedColumns[i].Title.SortMarker = smUpEh) then
+    begin
+      if (DBGridEh4.SortMarkedColumns[i].FieldName = 'KRAZ') then
+        Usl_Sort := USL_Sort + 'razdel."' + DBGridEh4.SortMarkedColumns[i].FieldName + '"' + ' DESC , '
+      else
+        if (DBGridEh4.SortMarkedColumns[i].FieldName = 'KSM_ID') then
+          Usl_Sort := USL_Sort + 'kart."' + DBGridEh4.SortMarkedColumns[i].FieldName + '"' + ' DESC , '
+        ELSE
+          if (DBGridEh4.SortMarkedColumns[i].FieldName = 'NDOK') then
+            Usl_Sort := USL_Sort + 'document."' + DBGridEh4.SortMarkedColumns[i].FieldName + '"' + ' DESC , '
+          ELSE
+            if (DBGridEh4.SortMarkedColumns[i].FieldName = 'DATE_TIME_UPDATE') then
+              Usl_Sort := USL_Sort + 'kart."' + DBGridEh4.SortMarkedColumns[i].FieldName + '"' + ' DESC , '
+            ELSE
+              Usl_Sort := USL_Sort + '"' + DBGridEh4.SortMarkedColumns[i].FieldName + '"' + ' DESC , ';
+    end
+    else
+    begin
+      if (DBGridEh4.SortMarkedColumns[i].FieldName = 'KRAZ') then
+        Usl_Sort := USL_Sort + 'razdel."' + DBGridEh4.SortMarkedColumns[i].FieldName + '"' + ', '
+      else
+        if (DBGridEh4.SortMarkedColumns[i].FieldName = 'KSM_ID') then
+          Usl_Sort := USL_Sort + 'kart."' + DBGridEh4.SortMarkedColumns[i].FieldName + '"   '// + ' DESC , '
+        ELSE
+          if (DBGridEh4.SortMarkedColumns[i].FieldName = 'NDOK') then
+            Usl_Sort := USL_Sort + 'document."' + DBGridEh4.SortMarkedColumns[i].FieldName + '"   '// + ' DESC , '
+          else
+            if (DBGridEh4.SortMarkedColumns[i].FieldName = 'DATE_TIME_UPDATE') then
+              Usl_Sort := USL_Sort + 'kart."' + DBGridEh4.SortMarkedColumns[i].FieldName + '"   '// + ' DESC , '
+            else
+              Usl_Sort := Usl_Sort + '"' + DBGridEh4.SortMarkedColumns[i].FieldName + '"' + ', ';
+    end;
+  END;
+  if (Usl_Sort <> '') then
   begin
-   if DBGridEh4.SortMarkedColumns[i].FieldName='KRAZ' then
-    Usl_Sort := USL_Sort+ 'razdel."'+ DBGridEh4.SortMarkedColumns[i].FieldName + '"'+ ' DESC , '
-   else
-    if DBGridEh4.SortMarkedColumns[i].FieldName='KSM_ID' then
-     Usl_Sort := USL_Sort+ 'kart."'+ DBGridEh4.SortMarkedColumns[i].FieldName + '"'+ ' DESC , '
-    ELSE
-     Usl_Sort := USL_Sort + '"'+ DBGridEh4.SortMarkedColumns[i].FieldName + '"'+ ' DESC , ';
-  end
-  else
-  begin
-   if DBGridEh4.SortMarkedColumns[i].FieldName='KRAZ' then
-    Usl_Sort := USL_Sort+ 'razdel."'+ DBGridEh4.SortMarkedColumns[i].FieldName + '"'+ ', '
-   else
-    if DBGridEh4.SortMarkedColumns[i].FieldName='KSM_ID' then
-    Usl_Sort := USL_Sort+ 'kart."'+ DBGridEh4.SortMarkedColumns[i].FieldName + '"'+ ' DESC , '
-    ELSE
-     Usl_Sort := Usl_Sort + '"'+DBGridEh4.SortMarkedColumns[i].FieldName + '"'+ ', ';
+    Usl_Sort := Copy(Usl_Sort, 1, Length(Usl_Sort) - 2);
+    ZagSyr.Close;
+//    ZagSyr.ParamByName('Ksm_Id').AsInteger := TexGurKsm_id.AsInteger;
+    ZagSyr.ParamByName('Struk').AsInteger := vStruk_id;
+    ZagSyr.MacroByName('SORT').AsString := Usl_Sort;
+    ZagSyr.MacroByName('DAT1').AsString := '''' + s_dat1_period + '''';
+    ZagSyr.MacroByName('DAT2').AsString := '''' + s_dat2_period + '''';
+    ZagSyr.Open;
   end;
- END;
- if Usl_Sort <> '' then
- begin
-  Usl_Sort := Copy(Usl_Sort,1,Length(Usl_Sort)-2);
-  ZagSyr.Close;
-  ZagSyr.ParamByName('Ksm_Id').AsInteger:=TexGurKsm_id.AsInteger;
-  ZagSyr.ParamByName('Struk').AsInteger:=vStruk_id;
-  ZagSyr.MacroByName('SORT').AsString:=Usl_Sort;
-  ZagSyr.MacroByName('DAT1').AsString:=''''+s_dat1_period+'''';
-  ZagSyr.MacroByName('DAT2').AsString:=''''+s_dat2_period+'''';
-  ZagSyr.Open;
- end;
 end;
 
 procedure TFTexGur.DateEdit1KeyDown(Sender: TObject; var Key: Word;
@@ -1587,7 +1599,7 @@ var
   usl_dat_s : string;
 begin
   usl_dat_s := usl_dat;
-  usl_dat := ' seria.date_pasport between ''' + s_dat1 + ''' and ''' + s_dat2 + ''' ';
+  usl_dat := ' seria.date_vipusk between ''' + s_dat1 + ''' and ''' + s_dat2 + ''' ';
   DM1.Seria.Active := False;
   DM1.Seria.ParamByName('ksm_id').AsInteger := s_kodp;
   DM1.Seria.MacroByName('usl').AsString := usl_dat;

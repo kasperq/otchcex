@@ -2583,7 +2583,7 @@ begin
     createKartIdInOstatki   //  карточки нету, создаем ее
   else
     st_kart := v_dok_kart;  // карточка сырья цеха есть, получаем сумму остатка в сырье
-  createPrixodDocumOnPrep;  //                 запись в Kart прихода сырья  на препарат
+  createPrixodDocumOnPrep;  //                 создаем документ прихода сырья  на препарат
   if (v_raspred_dob > 0) then
   begin
     if (not dm1.Kart.Active) then
@@ -2597,10 +2597,7 @@ begin
     end;
     dm1.Kart.BeforePost := nil;
 // цикл по сериям сырья (OSTATKI)- QUERY
-    if (spec) then
-      findOstatkiSyrInCex(true)
-    else
-      findOstatkiSyrInCex(false);
+    findOstatkiSyrInCex(spec);
     createKartInPrixodDocumOnPrep;    // запись необходимого прихода на препарат в Kart
   end;
   vdocument_id := v_docSt;
