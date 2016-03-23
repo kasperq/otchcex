@@ -1599,7 +1599,7 @@ var
   usl_dat_s : string;
 begin
   usl_dat_s := usl_dat;
-  usl_dat := ' seria.date_pasport between ''' + s_dat1 + ''' and ''' + s_dat2 + ''' ';
+  usl_dat := ' seria.date_vipusk between ''' + s_dat1 + ''' and ''' + s_dat2 + ''' ';
   DM1.Seria.Active := False;
   DM1.Seria.ParamByName('ksm_id').AsInteger := s_kodp;
   DM1.Seria.MacroByName('usl').AsString := usl_dat;
