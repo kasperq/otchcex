@@ -608,173 +608,185 @@ begin
 end;
 
 procedure TFTexGur.ToolButton3Click(Sender: TObject);
- var
- usl_ser: string;
+var
+  usl_ser : string;
 begin
 //Сохранение внесенных измененний по т/ж
- if TexGur.Modified then
-     TexGur.Post;
- s_seria:=edit2.Text;
- if s_seria<>'' then
- begin
-  Splash := ShowSplashWindow(AniBmp1,
-         'Сохранение данных. Подождите, пожалуйста...', True, nil);
-  if dm1.Kart.Active=false then
+  if (TexGur.Modified) then
+    TexGur.Post;
+  s_seria := edit2.Text;
+  if (s_seria <> '') then
   begin
-   DM1.Kart.MacroByName('USL').AsString:='WHERE document.klient_id='+inttostr(s_kodp)
-  +' and document.date_op between '+''''+ s_dat1+''''+' and '+''''+s_dat2+'''';
-   DM1.Kart.Open;
-  end;
-  dm1.Kart.BeforePost:=nil;
-  TexGur.First;
-  while not TexGur.Eof do
-  begin
-   if TexGurKart_id.AsInteger<>0 then
-   begin
-    if TexGurStroka_id.AsInteger=0 then
+    Splash := ShowSplashWindow(AniBmp1,
+                               'Сохранение данных. Подождите, пожалуйста...', True, nil);
+    if (dm1.Kart.Active = false) then
     begin
-     st_kart:=TexGurKart_id.AsInteger;
-     dm1.Kart.Insert;
-     DM1.Kart.FieldByName('Ksm_Id').AsInteger :=TexGurKsm_id.AsInteger;
-     dm1.KartKol_rash_ediz.AsFloat:=TexGurKol_Rash_Ediz.AsFloat;
-     dm1.KartKol_prih_ediz.AsFloat:=0;
-     dm1.KartKol_rash.AsFloat:=0;
-     dm1.KartKol_prih.AsFloat:=0;
-     DM1.Kart.FieldByName('razdel_Id').AsInteger :=TexGurRazdel_id.AsInteger;
-     DM1.Kart.FieldByName('kei_Id').AsInteger :=TexGurKein.AsInteger;
-     DM1.Kart.FieldByName('Doc_Id').AsInteger := VDOCUMENT_ID;
-     DM1.Kart.FieldByName('KART_Id').AsInteger :=TexGurKart_id.AsInteger;
-     DM1.Kart.FieldByName('TIP_OP_Id').AsInteger :=33;
-     DM1.Kart.FieldByName('TIP_DOK_Id').AsInteger :=37;
-     DM1.Kart.FieldByName('klient_Id').AsInteger :=s_kodp;
-     dm1.Kart.Post;
-    end
-    else
+      DM1.Kart.MacroByName('USL').AsString := 'WHERE document.klient_id=' + inttostr(s_kodp)
+                                              + ' and document.date_op between '
+                                              + '''' + s_dat1 + '''' + ' and '
+                                              + '''' + s_dat2 + '''';
+      DM1.Kart.Open;
+    end;
+    dm1.Kart.BeforePost := nil;
+    TexGur.First;
+    while (not TexGur.Eof) do
     begin
-     dm1.Kart.First;
-     if dm1.Kart.Locate('kart_id;doc_id',VarArrayOf([texGurKart_id.AsInteger,vDocument_id]),[]) then
-     begin
-      dm1.Kart.Edit;
-      DM1.Kart.FieldByName('KART_Id').AsInteger :=TexGurKart_id.AsInteger;
-      dm1.KartKol_rash_ediz.AsFloat:=TexGurKol_Rash_Ediz.AsFloat;
-      dm1.KartKol_prih_ediz.AsFloat:=0;
-      dm1.KartKol_rash.AsFloat:=0;
-      dm1.KartKol_prih.AsFloat:=0;
-      dm1.Kart.Post;
-     end
+      if (TexGurKart_id.AsInteger <> 0) then
+      begin
+        if (TexGurStroka_id.AsInteger = 0) then
+        begin
+          st_kart := TexGurKart_id.AsInteger;
+          dm1.Kart.Insert;
+          DM1.Kart.FieldByName('Ksm_Id').AsInteger := TexGurKsm_id.AsInteger;
+          dm1.KartKol_rash_ediz.AsFloat := TexGurKol_Rash_Ediz.AsFloat;
+          dm1.KartKol_prih_ediz.AsFloat := 0;
+          dm1.KartKol_rash.AsFloat := 0;
+          dm1.KartKol_prih.AsFloat := 0;
+          DM1.Kart.FieldByName('razdel_Id').AsInteger := TexGurRazdel_id.AsInteger;
+          DM1.Kart.FieldByName('kei_Id').AsInteger := TexGurKein.AsInteger;
+          DM1.Kart.FieldByName('Doc_Id').AsInteger := VDOCUMENT_ID;
+          DM1.Kart.FieldByName('KART_Id').AsInteger := TexGurKart_id.AsInteger;
+          DM1.Kart.FieldByName('TIP_OP_Id').AsInteger := 33;
+          DM1.Kart.FieldByName('TIP_DOK_Id').AsInteger := 37;
+          DM1.Kart.FieldByName('klient_Id').AsInteger := s_kodp;
+          dm1.Kart.Post;
+        end
+        else
+        begin
+          dm1.Kart.First;
+          if (dm1.Kart.Locate('kart_id;doc_id', VarArrayOf([texGurKart_id.AsInteger, vDocument_id]), [])) then
+          begin
+            dm1.Kart.Edit;
+            DM1.Kart.FieldByName('KART_Id').AsInteger := TexGurKart_id.AsInteger;
+            dm1.KartKol_rash_ediz.AsFloat := TexGurKol_Rash_Ediz.AsFloat;
+            dm1.KartKol_prih_ediz.AsFloat := 0;
+            dm1.KartKol_rash.AsFloat := 0;
+            dm1.KartKol_prih.AsFloat := 0;
+            dm1.Kart.Post;
+          end
 //     else
 //     st_kart:=st_kart;
+        end;
+      end;
+      TexGur.Next;
     end;
-   end;
-   TexGur.Next;
-  end;
-  s_seria:=edit2.Text;
-  dm1.Kart.BeforePost:=dm1.KartBeforePost;
-  if not  dm1.seria.Active then
-  begin
-   Dm1.Seria.ParamByName('Ksm_id').AsInteger:=S_KODP;
-   DM1.Seria.MacroByName('usl').AsString:='SERIA.SERIA='+''''+S_SERIA+'''';
-   dm1.Seria.Active:=true;
-   vSeria_id:=dm1.SeriaSeria_id.AsInteger;
-  end;
-  s_seria_p:=s_seria;
-  S_KSM:=S_KODP;
-  DM1.Seria.Edit;
-  DM1.SeriaDate_ZAG.AsDateTime:=DateEdit1.Date;
-  if edit9.Text<>'' then DM1.SeriaKol_seria.AsFloat:=strtofloat(Edit9.Text) else DM1.SeriaKol_seria.AsFloat:=0;
-  DM1.Seria.Post;
-  DM1.Seria.ApplyUpdates;
-  if dm1.Ostatki.Active  then
-  begin
-   if DM1.Ostatki.UpdatesPending then
-    DM1.Ostatki.ApplyUpdates;
-   dm1.Ostatki.Active:=false;
-  end;
-  usl_ser:=' and OST.KSM_ID='+INTTOSTR(s_kodp)+' and ost.seria_id='+inttostr(vSeria_id);
-  DM1.Ostatki.ParamByName('struk_ID').AsInteger:=vstruk_id;
-  DM1.Ostatki.MacroByName('usl').AsString:=usl_ser;
-  DM1.Ostatki.Open;
-  if not dm1.Ostatki.Eof then
-   s_kart_id:=DM1.OstatkiKart_id.AsInteger
-  else
-  begin
-   v_razdel:=0;
-   DM1.Ostatki.Insert;
-   DM1.Ostatki.Post;
-   dm1.Ostatki.ApplyUpdates;
-   s_kart_id:=vKart_id;
-  end;
+    s_seria := edit2.Text;
+    dm1.Kart.BeforePost:=dm1.KartBeforePost;
+    if (not dm1.seria.Active) then
+    begin
+      Dm1.Seria.ParamByName('Ksm_id').AsInteger := S_KODP;
+      DM1.Seria.MacroByName('usl').AsString := 'SERIA.SERIA=' + '''' + S_SERIA + '''';
+      dm1.Seria.Active := true;
+      vSeria_id := dm1.SeriaSeria_id.AsInteger;
+    end;
+    s_seria_p := s_seria;
+    S_KSM := S_KODP;
+    DM1.Seria.Edit;
+    DM1.SeriaDate_ZAG.AsDateTime := DateEdit1.Date;
+    if (edit9.Text <> '') then
+      DM1.SeriaKol_seria.AsFloat := strtofloat(Edit9.Text)
+    else
+      DM1.SeriaKol_seria.AsFloat := 0;
+    DM1.Seria.Post;
+    DM1.Seria.ApplyUpdates;
+    if (dm1.Ostatki.Active) then
+    begin
+      if (DM1.Ostatki.UpdatesPending) then
+        DM1.Ostatki.ApplyUpdates;
+      dm1.Ostatki.Active := false;
+    end;
+    usl_ser := ' and OST.KSM_ID=' + INTTOSTR(s_kodp) + ' and ost.seria_id=' + inttostr(vSeria_id);
+    DM1.Ostatki.ParamByName('struk_ID').AsInteger := vstruk_id;
+    DM1.Ostatki.MacroByName('usl').AsString := usl_ser;
+    DM1.Ostatki.Open;
+    if (not dm1.Ostatki.Eof) then
+      s_kart_id := DM1.OstatkiKart_id.AsInteger
+    else
+    begin
+      v_razdel := 0;
+      DM1.Ostatki.Insert;
+      DM1.Ostatki.Post;
+      dm1.Ostatki.ApplyUpdates;
+      s_kart_id := vKart_id;
+    end;
 
-  if (fsPRfORMUL.Ceh_Normz.Modified) or (fsPRfORMUL.Ceh_Normz.State =dsEdit)
-    or (fsPRfORMUL.Ceh_Normz.State =dsInsert) then
-     fsPRfORMUL.Ceh_Normz.Post;
+    if (fsPRfORMUL.Ceh_Normz.Modified) or (fsPRfORMUL.Ceh_Normz.State = dsEdit)
+       or (fsPRfORMUL.Ceh_Normz.State = dsInsert) then
+      fsPRfORMUL.Ceh_Normz.Post;
 
-  if (DM1.Seria.Modified) or (DM1.Seria.State =dsEdit)
-    or (DM1.Seria.State =dsInsert) then
-     DM1.Seria.Post;
+    if (DM1.Seria.Modified) or (DM1.Seria.State = dsEdit)
+       or (DM1.Seria.State = dsInsert) then
+      DM1.Seria.Post;
 
-  if (Seria_s.Modified) or (Seria_s.State =dsEdit)
-    or (Seria_s.State =dsInsert) then
-     Seria_s.Post;
+    if (Seria_s.Modified) or (Seria_s.State = dsEdit)
+       or (Seria_s.State = dsInsert) then
+      Seria_s.Post;
 
-  if (DM1.Ostatki.Modified) or (DM1.Ostatki.State =dsEdit)
-    or (DM1.Ostatki.State =dsInsert) then
-     DM1.Ostatki.Post;
+    if (DM1.Ostatki.Modified) or (DM1.Ostatki.State = dsEdit)
+       or (DM1.Ostatki.State = dsInsert) then
+      DM1.Ostatki.Post;
 
-  try
-   IF FSprFormul.Ceh_Normz.UpdatesPending THEN
-      fsPRfORMUL.Ceh_Normz.ApplyUpdates;
-   if DM1.Seria.UpdatesPending then
-      DM1.Seria.ApplyUpdates;
-   if Seria_s.UpdatesPending then
-      Seria_s.ApplyUpdates;
-   if DM1.Ostatki.UpdatesPending then
-      DM1.Ostatki.ApplyUpdates;
-   if DM1.Kart.UpdatesPending then
-      DM1.Kart.ApplyUpdates;
+    try
+      IF (FSprFormul.Ceh_Normz.UpdatesPending) THEN
+        fsPRfORMUL.Ceh_Normz.ApplyUpdates;
+      if (DM1.Seria.UpdatesPending) then
+        DM1.Seria.ApplyUpdates;
+      if (Seria_s.UpdatesPending) then
+        Seria_s.ApplyUpdates;
+      if (DM1.Ostatki.UpdatesPending) then
+        DM1.Ostatki.ApplyUpdates;
+      if (DM1.Kart.UpdatesPending) then
+        DM1.Kart.ApplyUpdates;
 
-   dm1.commitWriteTrans(true);
-   dm1.commitReadTrans(true);
-//   DM1.IBT_WRITE.Commit;
-//   DM1.IBT_READ.CommitRetaining;
-
-//   dm1.Seria.Close;
-//   dm1.Kart.Close;
-//   Seria_s.Close;
-//   dm1.IBT_WRITE.Active:=FALSE;
-//   dm1.IBT_READ.Active:=FALSE;
-//   TexGurSost;
+      dm1.commitWriteTrans(true);
+      dm1.commitReadTrans(true);
+    except
+      MessageDlg('Произошла ошибка при записи!', mtWarning, [mbOK], 0);
+      DM1.IBT_Read.RollbackRetaining;
+    end;
 // добавление в приход
-   TexGur.First;
-   while not TexGur.Eof do
-   begin
-    s_ksm:=TexGurKsm_id.AsInteger;
-    v_kein:=TexGurKein.AsInteger;
-    vklient_id:=s_kodp;
-    v_razdel:=TexGurRazdel_id.AsInteger;
-    if FSprFormul.Ceh_Normz.Active=true then FSprFormul.CEH_NormZ.Close;
-    FSprFormul.CEH_NormZ.MacroByName('SORT').AsString:='';
-    FSprFormul.CEH_NormZ.MacroByName('USL').AsString:=' Where CEH_NORMZ.KSM_ID_PR='+INTTOSTR(S_KODP)+' and CEH_NORMZ.KSM_ID_MAt='+INTTOSTR(S_Ksm);
-    FSprFormul.CEH_NormZ.Open;
-    if not FSprFormul.CEH_NORMZ.eof then
-     if FSprFormul.CEH_NORMZDecznak.AsVariant<>null  then
-       tochn:=-FSprFormul.CEH_NORMZDecznak.asinteger
-     else tochn:=-3
-    else tochn:=-3;
-    pr_kor:=0;
-    DM1.DobPrixPrep;
-    TexGur.Next;
-   end;
-   FSprFormul.CEH_NormZ.Close;
-   dm1.commitWriteTrans(true);
-   dm1.commitReadTrans(true);
-  except
-   MessageDlg('Произошла ошибка при записи!', mtWarning, [mbOK], 0);
-   DM1.IBT_Read.RollbackRetaining;
+    TexGur.First;
+    while not TexGur.Eof do
+    begin
+      s_ksm := TexGurKsm_id.AsInteger;
+      v_kein := TexGurKein.AsInteger;
+      vklient_id := s_kodp;
+      v_razdel := TexGurRazdel_id.AsInteger;
+      if (FSprFormul.Ceh_Normz.Active = true) then
+        FSprFormul.CEH_NormZ.Close;
+      FSprFormul.CEH_NormZ.MacroByName('SORT').AsString := '';
+      FSprFormul.CEH_NormZ.MacroByName('USL').AsString := ' Where CEH_NORMZ.KSM_ID_PR='
+                                                          + INTTOSTR(S_KODP)
+                                                          + ' and CEH_NORMZ.KSM_ID_MAt='
+                                                          + INTTOSTR(S_Ksm);
+      FSprFormul.CEH_NormZ.Open;
+      if (not FSprFormul.CEH_NORMZ.eof) then
+        if (FSprFormul.CEH_NORMZDecznak.AsVariant <> null) then
+          tochn := -FSprFormul.CEH_NORMZDecznak.asinteger
+        else
+          tochn := -3
+      else
+        tochn := -3;
+      pr_kor := 0;
+      try
+        DM1.DobPrixPrep;
+      except
+        on e : exception do
+        begin
+          MessageDlg('Произошла ошибка при записи прихода на код: ' + TexGurKsm_id.AsString
+                     + '! ' + e.Message,
+                     mtWarning, [mbOK], 0);
+          DM1.IBT_Read.RollbackRetaining;
+        end;
+      end;
+      TexGur.Next;
+    end;
+    FSprFormul.CEH_NormZ.Close;
+    dm1.commitWriteTrans(true);
+    dm1.commitReadTrans(true);
+    TexGurSost;
+    Splash.Free;
   end;
-  TexGurSost;
-  Splash.Free;
- end;
 end;
 
 procedure TFTexGur.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -1599,7 +1611,9 @@ var
   usl_dat_s : string;
 begin
   usl_dat_s := usl_dat;
-  usl_dat := ' seria.date_vipusk between ''' + s_dat1 + ''' and ''' + s_dat2 + ''' ';
+  usl_dat := ' (seria.date_vipusk between ''' + s_dat1 + ''' and ''' + s_dat2 + ''' '
+             + ' or seria.date_pasport between ''' + s_dat1 + ''' and ''' + s_dat2 + ''' '
+             + ' or seria.date_zag between ''' + s_dat1 + ''' and ''' + s_dat2 + ''') ';
   DM1.Seria.Active := False;
   DM1.Seria.ParamByName('ksm_id').AsInteger := s_kodp;
   DM1.Seria.MacroByName('usl').AsString := usl_dat;
