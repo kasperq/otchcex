@@ -1263,6 +1263,7 @@ begin
   prov := false;
   Edit1.SetFocus;
 
+  drLoad := TDrugLoad.Create(DM1.BELMED);
 //  drLoad := TDrugLoad.Create(dm1.BELMED.DatabaseName,
 //                             dm1.BELMED.Params.Values['user_name'],
 //                             dm1.BELMED.Params.Values['password'],

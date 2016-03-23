@@ -17,7 +17,8 @@ type
     procedure startReadTrans;
 
   public
-    procedure setDB(serverAddr, login, password, role : string);
+    procedure setDB(serverAddr, login, password, role : string); overload;
+    procedure setDB(db : TIBDatabase); overload;
     function connectToDB() : boolean;
     function disconnectFromDB() : boolean;
 
@@ -41,6 +42,11 @@ begin
   self.password := password;
   self.serverAddr := serverAddr;
   self.role := role;
+end;
+
+procedure TFDMDrugLoad.setDB(db : TIBDatabase);
+begin
+  self.db := db;
 end;
 
 function TFDMDrugLoad.connectToDB() : boolean;
