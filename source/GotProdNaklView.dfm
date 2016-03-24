@@ -1939,7 +1939,7 @@ object FGotProdNaklView: TFGotProdNaklView
     PrintOptions.Printer = #1055#1086' '#1091#1084#1086#1083#1095#1072#1085#1080#1102
     PrintOptions.PrintOnSheet = 0
     ReportOptions.CreateDate = 40323.521267361100000000
-    ReportOptions.LastChange = 41754.407686990700000000
+    ReportOptions.LastChange = 42453.492779143520000000
     ScriptLanguage = 'PascalScript'
     StoreInDFM = False
     OnGetValue = frxReport1GetValue
@@ -2488,6 +2488,10 @@ object FGotProdNaklView: TFGotProdNaklView
     object N22: TMenuItem
       Caption = '2 '#1082#1086#1076#1072' '#1089' '#1086#1076#1085#1086#1081' '#1089#1077#1088#1080#1077#1081
       OnClick = printFor2Koda1SeriaTisUpak
+    end
+    object N221: TMenuItem
+      Caption = '2 '#1082#1086#1076#1072' '#1089' '#1086#1076#1085#1086#1081' '#1089#1077#1088#1080#1077#1081' (2-'#1081' '#1074#1072#1088#1080#1072#1085#1090')'
+      OnClick = N221Click
     end
     object N5: TMenuItem
       Caption = #1055#1077#1095#1072#1090#1072#1090#1100' '#1076#1083#1103' "'#1052#1051#1053' '#1064#1058'"'
@@ -4033,5 +4037,142 @@ object FGotProdNaklView: TFGotProdNaklView
     object IbTaraMemVOL_TRANS: TFloatField
       FieldName = 'VOL_TRANS'
     end
+  end
+  object mem_seria: TRxMemoryData
+    Active = True
+    FieldDefs = <
+      item
+        Name = 'SERIA'
+        DataType = ftString
+        Size = 20
+      end
+      item
+        Name = 'NMAT'
+        DataType = ftString
+        Size = 60
+      end
+      item
+        Name = 'KOD_PROD'
+        DataType = ftString
+        Size = 20
+      end
+      item
+        Name = 'NEIS'
+        DataType = ftString
+        Size = 10
+      end
+      item
+        Name = 'KOL_RASH'
+        DataType = ftFloat
+      end
+      item
+        Name = 'KOL_PROPIS'
+        DataType = ftString
+        Size = 100
+      end
+      item
+        Name = 'NAM'
+        DataType = ftString
+        Size = 20
+      end
+      item
+        Name = 'KOL_TRANS'
+        DataType = ftFloat
+      end
+      item
+        Name = 'KOL_GRP'
+        DataType = ftFloat
+      end
+      item
+        Name = 'VES_TRANS'
+        DataType = ftFloat
+      end
+      item
+        Name = 'VES_TARA'
+        DataType = ftFloat
+      end
+      item
+        Name = 'VES_UPAK'
+        DataType = ftFloat
+      end
+      item
+        Name = 'VES_GRP'
+        DataType = ftFloat
+      end
+      item
+        Name = 'UPAK_TRANS'
+        DataType = ftString
+        Size = 20
+      end>
+    Left = 1008
+    Top = 368
+    object mem_seriaSERIA: TStringField
+      FieldName = 'SERIA'
+    end
+    object mem_seriaNMAT: TStringField
+      FieldName = 'NMAT'
+      Size = 60
+    end
+    object mem_seriaKOD_PROD: TStringField
+      FieldName = 'KOD_PROD'
+    end
+    object mem_seriaNEIS: TStringField
+      FieldName = 'NEIS'
+      Size = 10
+    end
+    object mem_seriaKOL_RASH: TFloatField
+      FieldName = 'KOL_RASH'
+    end
+    object mem_seriaKOL_PROPIS: TStringField
+      FieldName = 'KOL_PROPIS'
+      Size = 100
+    end
+    object mem_seriaNAM: TStringField
+      FieldName = 'NAM'
+    end
+    object mem_seriaKOL_TRANS: TFloatField
+      FieldName = 'KOL_TRANS'
+    end
+    object mem_seriaKOL_GRP: TFloatField
+      FieldName = 'KOL_GRP'
+    end
+    object mem_seriaVES_TRANS: TFloatField
+      FieldName = 'VES_TRANS'
+    end
+    object mem_seriaVES_TARA: TFloatField
+      FieldName = 'VES_TARA'
+    end
+    object mem_seriaVES_UPAK: TFloatField
+      FieldName = 'VES_UPAK'
+    end
+    object mem_seriaVES_GRP: TFloatField
+      FieldName = 'VES_GRP'
+    end
+    object mem_seriaUPAK_TRANS: TStringField
+      FieldName = 'UPAK_TRANS'
+    end
+  end
+  object frxDBDataset8: TfrxDBDataset
+    UserName = 'seriaSet'
+    CloseDataSource = False
+    FieldAliases.Strings = (
+      'SERIA=SERIA'
+      'NMAT=NMAT'
+      'KOD_PROD=KOD_PROD'
+      'NEIS=NEIS'
+      'KOL_RASH=KOL_RASH'
+      'KOL_PROPIS=KOL_PROPIS'
+      'NAM=NAM'
+      'KOL_TRANS=KOL_TRANS'
+      'KOL_GRP=KOL_GRP'
+      'VES_TRANS=VES_TRANS'
+      'VES_TARA=VES_TARA'
+      'VES_UPAK=VES_UPAK'
+      'VES_GRP=VES_GRP'
+      'UPAK_TRANS=UPAK_TRANS')
+    DataSet = mem_seria
+    BCDToCurrency = False
+    Left = 1048
+    Top = 368
   end
 end

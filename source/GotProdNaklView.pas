@@ -370,6 +370,23 @@ type
     printForMlnP: TMenuItem;
     newPrintBtn: TSpeedButton;
     btn_savePrih: TSpeedButton;
+    N221: TMenuItem;
+    mem_seria: TRxMemoryData;
+    mem_seriaSERIA: TStringField;
+    mem_seriaNMAT: TStringField;
+    mem_seriaKOD_PROD: TStringField;
+    mem_seriaNEIS: TStringField;
+    mem_seriaKOL_RASH: TFloatField;
+    mem_seriaKOL_PROPIS: TStringField;
+    mem_seriaNAM: TStringField;
+    mem_seriaKOL_TRANS: TFloatField;
+    mem_seriaKOL_GRP: TFloatField;
+    mem_seriaVES_TRANS: TFloatField;
+    mem_seriaVES_TARA: TFloatField;
+    mem_seriaVES_UPAK: TFloatField;
+    mem_seriaVES_GRP: TFloatField;
+    mem_seriaUPAK_TRANS: TStringField;
+    frxDBDataset8: TfrxDBDataset;
 
     procedure setDokDate(value : string);
     function isDateValid(value : string) : boolean;
@@ -507,6 +524,7 @@ type
     procedure btn_underSignClick(Sender: TObject);
     procedure printForMlnPClick(Sender: TObject);
     procedure btn_savePrihClick(Sender: TObject);
+    procedure N221Click(Sender: TObject);
 
   private
     lookUnderS : TFLookupUnderSign;
@@ -516,6 +534,7 @@ type
 
     function is1Seria2Codes() : boolean;
     procedure createSeriaArrFor3Koda;
+    procedure createSeriaRecordFor2Koda;
     procedure createUpakArrFor3Koda;
 
   public
@@ -965,6 +984,45 @@ begin
   end;
 end;
 
+procedure TFGotProdNaklView.createSeriaRecordFor2Koda;
+var
+  sum : double;
+  seria, upak : string;
+begin
+  sum := 0;
+  seria := '';
+  mem_seria.EmptyTable;
+  mem_seria.Open;
+  GotKartQuery.First;
+  mem_seria.Append;
+  while (not GotKartQuery.Eof) do
+  begin
+    seria := GotKartQuerySERIA.AsString;
+    sum := sum + GotKartQueryKOL_RASH_EDIZ.AsFloat;
+    mem_seria.Edit;
+    mem_seriaSERIA.AsString := GotKartQuerySERIA.AsString;
+    mem_seriaNMAT.AsString := GotKartQueryNMAT.AsString;
+    mem_seriaNEIS.AsString := GotKartQueryNEIS.AsString;
+    mem_seriaKOD_PROD.AsString := GotKartQueryKOD_PROD.AsString;
+    mem_seriaKOL_RASH.AsFloat := mem_seriaKOL_RASH.AsFloat + GotKartQueryKOL_RASH_EDIZ.AsFloat;
+    mem_seriaKOL_PROPIS.AsString := FloatToText(sum * 1000, 2);
+    mem_seriaNAM.AsString := GotKartQueryNAM.AsString;
+    if (GotKartQuery.RecNo = 1) or (GotKartQueryUPAK_TRANS.AsString <> upak) then
+    begin
+      mem_seriaKOL_TRANS.AsFloat := GotKartQueryKOL_TRANS.AsFloat;
+      mem_seriaKOL_GRP.AsFloat := GotKartQueryKOL_GRP.AsFloat;
+      mem_seriaVES_TRANS.AsFloat := GotKartQueryVES_TRANS.AsFloat;
+      mem_seriaVES_TARA.AsFloat := GotKartQueryVES_TARA.AsFloat;
+      mem_seriaVES_UPAK.AsFloat := GotKartQueryVES_UPAK.AsFloat;
+      mem_seriaVES_GRP.AsFloat := GotKartQueryVES_GRP.AsFloat;
+      mem_seriaUPAK_TRANS.AsString := GotKartQueryUPAK_TRANS.AsString;
+    end;
+    upak := GotKartQueryUPAK_TRANS.AsString;
+    mem_seria.Post;
+    GotKartQuery.Next;
+  end;
+end;
+
 procedure TFGotProdNaklView.createSeriaArrFor3Koda;
 var
   sum : double;
@@ -1192,6 +1250,22 @@ begin
     GotKartQueryKOL_GRP.AsFloat := GotKartQueryKOL_GRP.AsFloat * 1000;
     GotKartQuery.Post;
     GotKartQuery.Next;
+  end;
+end;
+
+procedure TFGotProdNaklView.N221Click(Sender: TObject);
+begin
+  if (GotKartQuery.RecordCount > 0) then
+  begin
+    printVibor := 1;
+    createSeriaRecordFor2Koda;
+    createSeriaArrFor2Koda;
+    createUpakArrFor3Koda;
+    ibtara.Active := false;
+    ibtara.paramByName('doc').AsInteger := GotDocumentDOC_ID.AsInteger;
+    IbTara.Active := true;
+    FrxReport1.LoadFromFile(reportsPath + 'Got_Prod_2ed_regions3.fr3');
+    FrxReport1.ShowReport(true);
   end;
 end;
 
