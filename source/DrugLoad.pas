@@ -13,6 +13,7 @@ type
     public
       constructor Create; overload;
       constructor Create(serverAddr, login, password, role  : string); overload;
+      constructor Create(db : TIBDatabase); overload;
       destructor Destroy; override;
 
       function getDrugLoad(month, year, ksmIdPrep, seriaId : integer) : TkbmMemTable;
@@ -35,6 +36,14 @@ begin
   dm.connectToDB;
 end;
 
+constructor TDrugLoad.Create(db : TIBDatabase);
+begin
+  inherited Create;
+  dm := TFDMDrugLoad.Create(Application);
+  dm.setDB(db);
+  dm.connectToDB;
+end;
+
 destructor TDrugLoad.Destroy;
 begin
   dm.disconnectFromDB;
@@ -45,7 +54,7 @@ end;
 
 function TDrugLoad.getDrugLoad(month, year, ksmIdPrep, seriaId : integer) : TkbmMemTable;
 begin
-//  getDrugLoadDocument;
+//  getDrugLoadDocuments;
 //  getDrugNorms;
 //  getDrugLoadKart;
 //  getDrugMovement;
