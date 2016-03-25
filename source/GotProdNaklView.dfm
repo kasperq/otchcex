@@ -1939,7 +1939,7 @@ object FGotProdNaklView: TFGotProdNaklView
     PrintOptions.Printer = #1055#1086' '#1091#1084#1086#1083#1095#1072#1085#1080#1102
     PrintOptions.PrintOnSheet = 0
     ReportOptions.CreateDate = 40323.521267361100000000
-    ReportOptions.LastChange = 42453.492779143520000000
+    ReportOptions.LastChange = 42453.492779143500000000
     ScriptLanguage = 'PascalScript'
     StoreInDFM = False
     OnGetValue = frxReport1GetValue
