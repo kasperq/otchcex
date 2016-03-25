@@ -1259,7 +1259,7 @@ begin
   begin
     printVibor := 1;
     createSeriaRecordFor2Koda;
-    createSeriaArrFor2Koda;
+    createSeriaArrFor3Koda;
     createUpakArrFor3Koda;
     ibtara.Active := false;
     ibtara.paramByName('doc').AsInteger := GotDocumentDOC_ID.AsInteger;
