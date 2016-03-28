@@ -469,6 +469,10 @@
       <Form>FDMDrugLoad</Form>
       <DesignClass>TDataModule</DesignClass>
     </DCCReference>
+    <DCCReference Include="Source\DMSelectOstKsm.pas">
+      <Form>dmSelOstKsm</Form>
+      <DesignClass>TDataModule</DesignClass>
+    </DCCReference>
     <DCCReference Include="Source\Dob_peredano.pas">
       <Form>FDob_Peredano</Form>
     </DCCReference>
@@ -600,6 +604,7 @@
     <DCCReference Include="Source\Razdel.pas">
       <Form>frazdel</Form>
     </DCCReference>
+    <DCCReference Include="Source\SelectOstKsm.pas" />
     <DCCReference Include="Source\Ser.pas">
       <Form>FSer</Form>
     </DCCReference>
