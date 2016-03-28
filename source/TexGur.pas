@@ -662,6 +662,7 @@ begin
             dm1.KartKol_prih_ediz.AsFloat := 0;
             dm1.KartKol_rash.AsFloat := 0;
             dm1.KartKol_prih.AsFloat := 0;
+            DM1.Kart.FieldByName('kei_Id').AsInteger := TexGurKein.AsInteger;
             dm1.Kart.Post;
           end
 //     else
@@ -1434,17 +1435,17 @@ end;
 procedure TFTexGur.ToolButton1Click(Sender: TObject);
 
 begin
- s_seria_p:=s_seria;
- TexGur.APPEND;
- TexGurStroka_id.AsInteger:=vStroka_id;
- TexGurKodp.AsInteger:=s_kodp;
- TexGurDate_op.AsDateTime:=strtodate(dateEdit1.Text);
- TexGurDoc_id.AsInteger:=vDocument_id;
+  s_seria_p := s_seria;
+  TexGur.APPEND;
+  TexGurStroka_id.AsInteger := vStroka_id;
+  TexGurKodp.AsInteger := s_kodp;
+  TexGurDate_op.AsDateTime := strtodate(dateEdit1.Text);
+  TexGurDoc_id.AsInteger := vDocument_id;
 // TexGurMes.AsInteger:=mes;
 // TexGurGod.AsInteger:=God;
- TexGurTip_op_id.AsInteger:=33;
- DBGridEh3.SetFocus;
- s_seria:=s_seria_p;
+  TexGurTip_op_id.AsInteger := 33;
+  DBGridEh3.SetFocus;
+  s_seria := s_seria_p;
 end;
 
 procedure TFTexGur.DBGridEh3EditButtonClick(Sender: TObject);
