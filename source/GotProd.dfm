@@ -72,7 +72,7 @@ object FGotProd: TFGotProd
       
         'or struk_id = 540 or struk_id = 541 or struk_id = 649 or struk_i' +
         'd = 106'
-      'or struk_id = 696 )'
+      'or struk_id = 696  or struk_id = 760)'
       'Order by STNAME')
     Left = 776
     Top = 32
