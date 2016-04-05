@@ -451,6 +451,12 @@ object FKorOtchet: TFKorOtchet
             FieldName = 'PLAN_NORM'
             Footers = <>
             Visible = False
+          end
+          item
+            EditButtons = <>
+            FieldName = 'RAZDEL_ID'
+            Footers = <>
+            Visible = False
           end>
       end
     end
@@ -1132,7 +1138,7 @@ object FKorOtchet: TFKorOtchet
     Left = 776
     Top = 212
     Bitmap = {
-      494C010108000900240018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010108000900280018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
