@@ -257,6 +257,7 @@ type
     KartKorrOtchetDOP_RASH_ID: TSmallintField;
     KartKorrOtchetNORM_RASH: TFMTBCDField;
     KartKorrOtchetKOL_RAB: TFMTBCDField;
+    RaspSyrPrepksmArr: TIntegerField;
 
     procedure FormShow(Sender: TObject);
     procedure Edit1KeyDown(Sender: TObject; var Key: Word;
@@ -302,7 +303,10 @@ type
     procedure ComboBox2Change(Sender: TObject);
     procedure ToolButton6Click(Sender: TObject);
   private
-    { Private declarations }
+    ksmArray : array of integer;
+    ksmLength : integer;
+
+    procedure openOstCeh;
   public
     procedure KorSost;
     function getCurZnak(value : double; znak : integer) : integer;
@@ -325,6 +329,59 @@ implementation
  uses dm, Find_Spprod, Dob_peredano, Vipusk,Otchet, ediz, Find_Matrop,
   razdel, Find_Struk, OstSyr, SprFormul, Pech_Vibor, VibSyr, VybPrep, CopyFiles;
 {$R *.dfm}
+
+procedure TFKorOtchet.openOstCeh;
+var
+  ksmArr : string;
+  i : integer;
+  findedKsm : boolean;
+begin
+  if (RaspSyrPrep.Active) then
+  begin
+    for i := 0 to ksmLength - 1 do
+      ksmArray[i] := 0;
+    SetLength(ksmArray, 0);
+    ksmLength := 0;
+    ksmArr := '';
+    RaspSyrPrep.First;
+    while (not RaspSyrPrep.Eof) do
+    begin
+      findedKsm := false;
+      for i := 0 to ksmLength - 1 do
+      begin
+        if (ksmArray[i] = RaspSyrPrepKSM_ID.AsInteger) then
+          findedKsm := true;
+      end;
+      if (not findedKsm) then
+      begin
+        ksmLength := ksmLength + 1;
+        SetLength(ksmArray, ksmLength);
+        ksmArray[ksmLength - 1] := RaspSyrPrepKSM_ID.AsInteger;
+      end;
+      RaspSyrPrep.Next;
+    end;
+    for i := 0 to ksmLength - 1 do
+    begin
+      ksmArr := ksmArr + IntToStr(ksmArray[i]);
+      if (i <> (ksmLength - 1)) then
+        ksmArr := ksmArr + ', '
+      else
+        ksmArr := ksmArr + '  ';
+    end;
+    ostceh.Close;
+    ostceh.ParamByName('dat1').AsDateTime := strtodate(s_dat1);
+    ostceh.ParamByName('dat2').AsDateTime := strtodate(s_dat2);
+    ostceh.ParamByName('struk').AsInteger := vStruk_id;
+    ostceh.ParamByName('kart_idpr').AsInteger := 1;
+    ostceh.ParamByName('ksm_id').AsInteger := 0;
+    if (vStruk_Id = 540) then    
+      ostceh.ParamByName('struk_id_rela').AsInteger := 1
+    else
+      ostceh.ParamByName('struk_id_rela').AsInteger := 0;
+    ostceh.ParamByName('ksm_array').AsString := ksmArr;
+    ostceh.Open;
+  end;
+end;
 
 procedure TFKorOtchet.KorSost;
 var
@@ -442,48 +499,48 @@ begin
 
       if (FSprFormul = nil) then
         FSprFormul := TfSprFormul.Create(Application);
-      RaspSyrPrep.First;
-      while (not RaspSyrPrep.Eof) do
-      begin
-        s_kei := RaspSyrPrep.FieldByName('KEI').AsInteger;
-        v_keiN := RaspSyrPrep.FieldByName('KEI_id').AsInteger;
-        s_ksm := RaspSyrPrep.FieldByName('Ksm_id').AsInteger;
-        if (FSprFormul.Ceh_Normz.Active) then
-          FSprFormul.CEH_NormZ.Close;
-        FSprFormul.CEH_NormZ.MacroByName('SORT').AsString := '';
-        FSprFormul.CEH_NormZ.MacroByName('USL').AsString := ' Where CEH_NORMZ.KSM_ID_PR='
-                                                            + INTTOSTR(S_KODP)
-                                                            + ' and CEH_NORMZ.KSM_ID_MAt='
-                                                            + INTTOSTR(s_ksm);
-        FSprFormul.CEH_NormZ.Open;
-        if (not FSprFormul.CEH_NORMZ.eof) then
-          if (FSprFormul.CEH_NORMZDecznak.AsVariant <> null)  then
-            tochn := -FSprFormul.CEH_NORMZDecznak.asinteger
-          else
-            tochn := -3
-        else
-          tochn := -3;
+//      RaspSyrPrep.First;
+//      while (not RaspSyrPrep.Eof) do
+//      begin
+//        s_kei := RaspSyrPrep.FieldByName('KEI').AsInteger;
+//        v_keiN := RaspSyrPrep.FieldByName('KEI_id').AsInteger;
+//        s_ksm := RaspSyrPrep.FieldByName('Ksm_id').AsInteger;
+//        if (FSprFormul.Ceh_Normz.Active) then
+//          FSprFormul.CEH_NormZ.Close;
+//        FSprFormul.CEH_NormZ.MacroByName('SORT').AsString := '';
+//        FSprFormul.CEH_NormZ.MacroByName('USL').AsString := ' Where CEH_NORMZ.KSM_ID_PR='
+//                                                            + INTTOSTR(S_KODP)
+//                                                            + ' and CEH_NORMZ.KSM_ID_MAt='
+//                                                            + INTTOSTR(s_ksm);
+//        FSprFormul.CEH_NormZ.Open;
+//        if (not FSprFormul.CEH_NORMZ.eof) then
+//          if (FSprFormul.CEH_NORMZDecznak.AsVariant <> null)  then
+//            tochn := -FSprFormul.CEH_NORMZDecznak.asinteger
+//          else
+//            tochn := -3
+//        else
+//          tochn := -3;
 
 //***********************************************//
-        ostceh.Active := False;
-        ostceh.ParamByName('dat1').AsDateTime := strtodate(s_dat1);
-        ostceh.ParamByName('dat2').AsDateTime := strtodate(s_dat2);
-        ostceh.ParamByName('struk').AsInteger := vStruk_id;
-        ostceh.ParamByName('kart_idpr').AsInteger := 1;
-        ostceh.ParamByName('ksm_id').AsInteger := s_KSM;
-        ostceh.Active := True;
-//***********************************************//        
-        ostceh.First;
-        if (ostceh.Locate('ksm_id', s_KSM, [])) THEN
-          s_ost := ostcehOt_c.asfloat
-        else
-          s_ost := 0;
-
-        RaspSyrPrep.Edit;
-        RaspSyrPrepOst_c.ASstring := FloatToStr(RoundTo(s_Ost * dm1.Koef_per(v_kein, s_kei, s_ksm), {tochn}-6));
-        RaspSyrPrep.post;
-        RaspSyrPrep.Next;
-      end;
+//        ostceh.Active := False;
+//        ostceh.ParamByName('dat1').AsDateTime := strtodate(s_dat1);
+//        ostceh.ParamByName('dat2').AsDateTime := strtodate(s_dat2);
+//        ostceh.ParamByName('struk').AsInteger := vStruk_id;
+//        ostceh.ParamByName('kart_idpr').AsInteger := 1;
+//        ostceh.ParamByName('ksm_id').AsInteger := s_KSM;
+//        ostceh.Active := True;
+//***********************************************//
+//        ostceh.First;
+//        if (ostceh.Locate('ksm_id', s_KSM, [])) THEN
+//          s_ost := ostcehOt_c.asfloat
+//        else
+//          s_ost := 0;
+//
+//        RaspSyrPrep.Edit;
+//        RaspSyrPrepOst_c.ASstring := FloatToStr(RoundTo(s_Ost * dm1.Koef_per(v_kein, s_kei, s_ksm), {tochn}-6));
+//        RaspSyrPrep.post;
+//        RaspSyrPrep.Next;
+//      end;
 
       IBQuery1.Active := False;
       IBQuery1.SQL.Clear;
@@ -524,19 +581,19 @@ begin
           tochn := -3;
 
 //*******************************//
-        ostceh.Active := False;
-        ostceh.ParamByName('dat1').AsDateTime := strtodate(s_dat1);
-        ostceh.ParamByName('dat2').AsDateTime := strtodate(s_dat2);
-        ostceh.ParamByName('struk').AsInteger := vStruk_id;
-        ostceh.ParamByName('kart_idpr').AsInteger := 1;
-        ostceh.ParamByName('ksm_id').AsInteger := IBQuery1.FieldByName('KSM_ID').AsInteger;
-        ostceh.Active := True;
+//        ostceh.Active := False;
+//        ostceh.ParamByName('dat1').AsDateTime := strtodate(s_dat1);
+//        ostceh.ParamByName('dat2').AsDateTime := strtodate(s_dat2);
+//        ostceh.ParamByName('struk').AsInteger := vStruk_id;
+//        ostceh.ParamByName('kart_idpr').AsInteger := 1;
+//        ostceh.ParamByName('ksm_id').AsInteger := IBQuery1.FieldByName('KSM_ID').AsInteger;
+//        ostceh.Active := True;
 //******************************//
 
-        ostceh.First;
-        if ostceh.Locate('ksm_id', IBQuery1.FieldByName('KSM_ID').AsInteger, []) THEN
-          s_ost := ostcehOt_c.asfloat
-        else
+//        ostceh.First;
+//        if ostceh.Locate('ksm_id', IBQuery1.FieldByName('KSM_ID').AsInteger, []) THEN
+//          s_ost := ostcehOt_c.asfloat
+//        else
           s_ost := 0;
 
         RaspSyrPrep.First;
@@ -890,21 +947,21 @@ begin
         s_ksm := IBQuery1.FieldByName('Ksm_id').AsInteger;
 
 //*************************************//
-        ostceh.Active := False;
-        ostceh.ParamByName('dat1').AsDateTime := strtodate(s_dat1);
-        ostceh.ParamByName('dat2').AsDateTime := strtodate(s_dat2);
-        ostceh.ParamByName('struk').AsInteger := vStruk_id;
-        ostceh.ParamByName('kart_idpr').AsInteger := 1;
-        ostceh.ParamByName('ksm_id').AsInteger := IBQuery1.FieldByName('KSM_ID').AsInteger;
-        ostceh.Active := True;
+//        ostceh.Active := False;
+//        ostceh.ParamByName('dat1').AsDateTime := strtodate(s_dat1);
+//        ostceh.ParamByName('dat2').AsDateTime := strtodate(s_dat2);
+//        ostceh.ParamByName('struk').AsInteger := vStruk_id;
+//        ostceh.ParamByName('kart_idpr').AsInteger := 1;
+//        ostceh.ParamByName('ksm_id').AsInteger := IBQuery1.FieldByName('KSM_ID').AsInteger;
+//        ostceh.Active := True;
 //****************************************//
 
-        ostceh.First;
-        if ostceh.Locate('ksm_id',
-                         IBQuery1.FieldByName('KSM_ID').AsInteger,
-                         []) THEN
-          s_ost := ostcehOt_c.asfloat
-        else
+//        ostceh.First;
+//        if ostceh.Locate('ksm_id',
+//                         IBQuery1.FieldByName('KSM_ID').AsInteger,
+//                         []) THEN
+//          s_ost := ostcehOt_c.asfloat
+//        else
           s_ost := 0;
 
         RaspSyrPrep.First;
@@ -1169,6 +1226,27 @@ begin
           RaspSyrPrep.Next;
         end;
       end;
+
+      openOstCeh;
+      RaspSyrPrep.First;
+      while (not RaspSyrPrep.Eof) do
+      begin
+        ostceh.First;
+        if (ostceh.Locate('ksm_id', RaspSyrPrep.FieldByName('Ksm_id').AsInteger, [])) THEN
+          s_ost := ostcehOt_c.asfloat
+        else
+          s_ost := 0;
+
+        RaspSyrPrep.Edit;
+        RaspSyrPrepOst_c.ASstring := FloatToStr(RoundTo(s_Ost
+                                                        * dm1.Koef_per(RaspSyrPrep.FieldByName('KEI_id').AsInteger,
+                                                                       RaspSyrPrep.FieldByName('KEI').AsInteger,
+                                                                       RaspSyrPrep.FieldByName('Ksm_id').AsInteger),
+                                                        -6));
+        RaspSyrPrep.post;
+        RaspSyrPrep.Next;
+      end;
+
       RaspSyrPrep.First;
       RaspSyrPrep.EnableControls;
       RaspSyrPrep.BeforePost := RaspSyrPrepBeforePost;
