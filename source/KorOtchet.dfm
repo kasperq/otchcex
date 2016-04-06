@@ -1138,7 +1138,7 @@ object FKorOtchet: TFKorOtchet
     Left = 776
     Top = 212
     Bitmap = {
-      494C010108000900280018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101080009002C0018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2111,7 +2111,9 @@ object FKorOtchet: TFKorOtchet
       'ostatki.nmat,'
       'cast(0 as numeric(15,6)) as ost_c,'
       'cast(0 as numeric(15,6)) as kolvip,'
-      'cast(0 as numeric(15,6)) as plan_norm'
+      'cast(0 as numeric(15,6)) as plan_norm,'
+      'cast(0 as integer) as ksmArr'
+      ''
       'FROM  SELECT_Ost_ksm (%DAT1, %DAT2, :kodp, :struk, 0) ostatki'
       'inner join kart on (ostatki.kart_id = kart.kart_id)'
       'inner join (select doc_id, ndok, tip_op_id, date_dok '
@@ -2328,6 +2330,10 @@ object FKorOtchet: TFKorOtchet
       ProviderFlags = []
       Precision = 18
       Size = 6
+    end
+    object RaspSyrPrepksmArr: TIntegerField
+      FieldName = 'ksmArr'
+      ProviderFlags = []
     end
   end
   object RaspSyrPrepUpdate: TIBUpdateSQLW
@@ -3671,8 +3677,8 @@ object FKorOtchet: TFKorOtchet
     SQL.Strings = (
       'SELECT sum(ostatki.OSTATOK_END_S) ot_c,ksm_id'
       
-        '  FROM  SELECT_OST_KSM (:dat1,:dat2, :kart_idpr,:STRUK,:ksm_id) ' +
-        'ostatki'
+        'FROM  SELECT_OST_KSM_ACC1 (:dat1,:dat2, :kart_idpr,:STRUK,:ksm_i' +
+        'd, '#39#39', :struk_id_rela, :ksm_array) ostatki'
       '  group by ksm_id')
     Left = 175
     Top = 292
@@ -3700,6 +3706,16 @@ object FKorOtchet: TFKorOtchet
       item
         DataType = ftInteger
         Name = 'ksm_id'
+        ParamType = ptInput
+      end
+      item
+        DataType = ftUnknown
+        Name = 'struk_id_rela'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftString
+        Name = 'ksm_array'
         ParamType = ptInput
       end>
     object ostcehOT_C: TFMTBCDField
