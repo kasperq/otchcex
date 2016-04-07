@@ -307,6 +307,7 @@ type
     ksmLength : integer;
 
     procedure openOstCeh;
+    function getTochn(ksm_id : integer) : integer;
   public
     procedure KorSost;
     function getCurZnak(value : double; znak : integer) : integer;
@@ -329,6 +330,27 @@ implementation
  uses dm, Find_Spprod, Dob_peredano, Vipusk,Otchet, ediz, Find_Matrop,
   razdel, Find_Struk, OstSyr, SprFormul, Pech_Vibor, VibSyr, VybPrep, CopyFiles;
 {$R *.dfm}
+
+function TFKorOtchet.getTochn(ksm_id : integer) : integer;
+begin
+  if (FSprFormul = nil) then
+    FSprFormul := TfSprFormul.Create(Application);
+  if (FSprFormul.Ceh_Normz.Active = true) then
+    FSprFormul.CEH_NormZ.Close;
+  FSprFormul.CEH_NormZ.MacroByName('SORT').AsString := '';
+  FSprFormul.CEH_NormZ.MacroByName('USL').AsString := ' Where CEH_NORMZ.KSM_ID_PR = '
+                                                      + INTTOSTR(S_KODP)
+                                                      + ' and CEH_NORMZ.KSM_ID_MAt = '
+                                                      + INTTOSTR(ksm_id);
+  FSprFormul.CEH_NormZ.Open;
+  if (not FSprFormul.CEH_NORMZ.eof) then
+    if (FSprFormul.CEH_NORMZDecznak.AsVariant <> null)  then
+      result := -FSprFormul.CEH_NORMZDecznak.asinteger
+    else
+      result := -3
+  else
+      result := -3;
+end;
 
 procedure TFKorOtchet.openOstCeh;
 var
@@ -489,58 +511,6 @@ begin
                         + '''' + s_dat2 + '''' + ',' + inttostr(s_kodp) + ') ost');
       Prix_korr.Active := true;
 
-{      ostceh.Active := False;
-      ostceh.ParamByName('dat1').AsDateTime := strtodate(s_dat1);
-      ostceh.ParamByName('dat2').AsDateTime := strtodate(s_dat2);
-      ostceh.ParamByName('struk').AsInteger := vStruk_id;
-      ostceh.ParamByName('kart_idpr').AsInteger := 1;
-      ostceh.ParamByName('ksm_id').AsInteger := 0;
-      ostceh.Active := True;       }
-
-      if (FSprFormul = nil) then
-        FSprFormul := TfSprFormul.Create(Application);
-//      RaspSyrPrep.First;
-//      while (not RaspSyrPrep.Eof) do
-//      begin
-//        s_kei := RaspSyrPrep.FieldByName('KEI').AsInteger;
-//        v_keiN := RaspSyrPrep.FieldByName('KEI_id').AsInteger;
-//        s_ksm := RaspSyrPrep.FieldByName('Ksm_id').AsInteger;
-//        if (FSprFormul.Ceh_Normz.Active) then
-//          FSprFormul.CEH_NormZ.Close;
-//        FSprFormul.CEH_NormZ.MacroByName('SORT').AsString := '';
-//        FSprFormul.CEH_NormZ.MacroByName('USL').AsString := ' Where CEH_NORMZ.KSM_ID_PR='
-//                                                            + INTTOSTR(S_KODP)
-//                                                            + ' and CEH_NORMZ.KSM_ID_MAt='
-//                                                            + INTTOSTR(s_ksm);
-//        FSprFormul.CEH_NormZ.Open;
-//        if (not FSprFormul.CEH_NORMZ.eof) then
-//          if (FSprFormul.CEH_NORMZDecznak.AsVariant <> null)  then
-//            tochn := -FSprFormul.CEH_NORMZDecznak.asinteger
-//          else
-//            tochn := -3
-//        else
-//          tochn := -3;
-
-//***********************************************//
-//        ostceh.Active := False;
-//        ostceh.ParamByName('dat1').AsDateTime := strtodate(s_dat1);
-//        ostceh.ParamByName('dat2').AsDateTime := strtodate(s_dat2);
-//        ostceh.ParamByName('struk').AsInteger := vStruk_id;
-//        ostceh.ParamByName('kart_idpr').AsInteger := 1;
-//        ostceh.ParamByName('ksm_id').AsInteger := s_KSM;
-//        ostceh.Active := True;
-//***********************************************//
-//        ostceh.First;
-//        if (ostceh.Locate('ksm_id', s_KSM, [])) THEN
-//          s_ost := ostcehOt_c.asfloat
-//        else
-//          s_ost := 0;
-//
-//        RaspSyrPrep.Edit;
-//        RaspSyrPrepOst_c.ASstring := FloatToStr(RoundTo(s_Ost * dm1.Koef_per(v_kein, s_kei, s_ksm), {tochn}-6));
-//        RaspSyrPrep.post;
-//        RaspSyrPrep.Next;
-//      end;
 
       IBQuery1.Active := False;
       IBQuery1.SQL.Clear;
@@ -564,37 +534,9 @@ begin
         s_kei := IBQuery1.FieldByName('KEI_id').AsInteger;
         v_keiN := IBQuery1.FieldByName('KEIN').AsInteger;
         s_ksm := IBQuery1.FieldByName('Ksm_id').AsInteger;
-        if FSprFormul.Ceh_Normz.Active = true then
-          FSprFormul.CEH_NormZ.Close;
-        FSprFormul.CEH_NormZ.MacroByName('SORT').AsString := '';
-        FSprFormul.CEH_NormZ.MacroByName('USL').AsString := ' Where CEH_NORMZ.KSM_ID_PR = '
-                                                            + INTTOSTR(S_KODP)
-                                                            + ' and CEH_NORMZ.KSM_ID_MAt = '
-                                                            + INTTOSTR(IBQuery1.FieldByName('KSM_ID').AsInteger);
-        FSprFormul.CEH_NormZ.Open;
-        if not FSprFormul.CEH_NORMZ.eof then
-          if FSprFormul.CEH_NORMZDecznak.AsVariant <> null  then
-            tochn := -FSprFormul.CEH_NORMZDecznak.asinteger
-          else
-            tochn := -3
-        else
-          tochn := -3;
+        tochn := getTochn(IBQuery1.FieldByName('KSM_ID').AsInteger);
 
-//*******************************//
-//        ostceh.Active := False;
-//        ostceh.ParamByName('dat1').AsDateTime := strtodate(s_dat1);
-//        ostceh.ParamByName('dat2').AsDateTime := strtodate(s_dat2);
-//        ostceh.ParamByName('struk').AsInteger := vStruk_id;
-//        ostceh.ParamByName('kart_idpr').AsInteger := 1;
-//        ostceh.ParamByName('ksm_id').AsInteger := IBQuery1.FieldByName('KSM_ID').AsInteger;
-//        ostceh.Active := True;
-//******************************//
-
-//        ostceh.First;
-//        if ostceh.Locate('ksm_id', IBQuery1.FieldByName('KSM_ID').AsInteger, []) THEN
-//          s_ost := ostcehOt_c.asfloat
-//        else
-          s_ost := 0;
+        s_ost := 0;
 
         RaspSyrPrep.First;
         if NOT RaspSyrPrep.Locate('ksm_id;kraz',
@@ -602,6 +544,7 @@ begin
                                               IBQuery1.FieldByName('KRAZ').AsInteger]),
                                               []) THEN
         BEGIN
+          tochn := getTochn(IBQuery1.FieldByName('KSM_ID').AsInteger);
           RaspSyrPrep.Insert;
           RaspSyrPrepDoc_id.AsInteger := vDocument_id;
           RaspSyrPrepRazdel_id.AsInteger := IBQuery1.FieldByName('Razdel_id').AsInteger;
@@ -699,6 +642,7 @@ begin
                 and (RaspSyrPrepRazdel_id.AsInteger = IBQuery1.FieldByName('Razdel_id').AsInteger)
                 and ( not RaspSyrPrep.Eof) do
           begin
+            tochn := getTochn(IBQuery1.FieldByName('KSM_ID').AsInteger);
             RaspSyrPrep.Edit;
             if RaspSyrPrepTip_op_id.AsInteger <> 30 then
             begin
@@ -908,7 +852,7 @@ begin
             end;
             RaspSyrPrepKolvip.ASFLOAT := ROUNDTO(IBQuery1.FieldByName('Plnorm').ASFLOAT
                                                  * v_vipusk,
-                                                 {tochn}-6);
+                                                 tochn);
             RaspSyrPrepPLAN_NORM.AsFloat := IBQuery1.FieldByName('Plnorm').AsFloat;
             RaspSyrPrep.Post;
             RaspSyrPrep.Next;
@@ -946,23 +890,7 @@ begin
           v_keiN := IBQuery1.FieldByName('KEIN').AsInteger;
         s_ksm := IBQuery1.FieldByName('Ksm_id').AsInteger;
 
-//*************************************//
-//        ostceh.Active := False;
-//        ostceh.ParamByName('dat1').AsDateTime := strtodate(s_dat1);
-//        ostceh.ParamByName('dat2').AsDateTime := strtodate(s_dat2);
-//        ostceh.ParamByName('struk').AsInteger := vStruk_id;
-//        ostceh.ParamByName('kart_idpr').AsInteger := 1;
-//        ostceh.ParamByName('ksm_id').AsInteger := IBQuery1.FieldByName('KSM_ID').AsInteger;
-//        ostceh.Active := True;
-//****************************************//
-
-//        ostceh.First;
-//        if ostceh.Locate('ksm_id',
-//                         IBQuery1.FieldByName('KSM_ID').AsInteger,
-//                         []) THEN
-//          s_ost := ostcehOt_c.asfloat
-//        else
-          s_ost := 0;
+        s_ost := 0;
 
         RaspSyrPrep.First;
         if NOT RaspSyrPrep.Locate('ksm_id;kraz',
@@ -970,21 +898,8 @@ begin
                                               IBQuery1.FieldByName('KRAZ').AsInteger]),
                                   []) THEN
         BEGIN
-          if FSprFormul.Ceh_Normz.Active = true then
-            FSprFormul.CEH_NormZ.Close;
-          FSprFormul.CEH_NormZ.MacroByName('SORT').AsString := '';
-          FSprFormul.CEH_NormZ.MacroByName('USL').AsString := ' Where CEH_NORMZ.KSM_ID_PR = '
-                                                              + INTTOSTR(S_KODP)
-                                                              + ' and CEH_NORMZ.KSM_ID_MAt = '
-                                                              + INTTOSTR(IBQuery1.FieldByName('KSM_ID').AsInteger);
-          FSprFormul.CEH_NormZ.Open;
-          if not FSprFormul.CEH_NORMZ.eof then
-            if FSprFormul.CEH_NORMZDecznak.AsVariant <> null  then
-              tochn := -FSprFormul.CEH_NORMZDecznak.asinteger
-            else
-              tochn := -3
-          else
-            tochn := -3;
+          tochn := getTochn(IBQuery1.FieldByName('KSM_ID').AsInteger);
+
           RaspSyrPrep.Insert;
           RaspSyrPrepDoc_id.AsInteger := vDocument_id;
           RaspSyrPrepRazdel_id.AsInteger := IBQuery1.FieldByName('Razdel_id').AsInteger;
@@ -1105,20 +1020,7 @@ begin
       begin
         IF RaspSyrPrepTip_op_id.AsInteger = 30 then
         begin
-          FSprFormul.CEH_NormZ.Close;
-          FSprFormul.CEH_NormZ.MacroByName('SORT').AsString := '';
-          FSprFormul.CEH_NormZ.MacroByName('USL').AsString := ' Where CEH_NORMZ.KSM_ID_PR = '
-                                                              + INTTOSTR(S_KODP)
-                                                              + ' and CEH_NORMZ.KSM_ID_MAt = '
-                                                              + INTTOSTR(RaspSyrPrep.FieldByName('KSM_ID').AsInteger);
-          FSprFormul.CEH_NormZ.Open;
-          if not FSprFormul.CEH_NORMZ.eof then
-            if FSprFormul.CEH_NORMZDecznak.AsVariant <> null  then
-              tochn := -FSprFormul.CEH_NORMZDecznak.asinteger
-            else
-              tochn := -3
-          else
-            tochn := -3;
+          tochn := getTochn(RaspSyrPrep.FieldByName('KSM_ID').AsInteger);
           Prix_korr.First;
           if Prix_korr.Locate('ksm_id;razdel_id',
                               VarArrayOf([RaspSyrPrepKsm_id.AsInteger, RaspSyrPrepRazdel_id.AsInteger]),
@@ -1998,21 +1900,6 @@ begin
           v_kein := RaspSyrPrepKei_id.AsInteger;
           vklient_id := s_kodp;
           v_razdel := RaspSyrPrepRazdel_id.AsInteger;
-//          if (FSprFormul.Ceh_Normz.Active = true) then
-//            FSprFormul.CEH_NormZ.Close;
-//          FSprFormul.CEH_NormZ.MacroByName('SORT').AsString := '';
-//          FSprFormul.CEH_NormZ.MacroByName('USL').AsString := ' Where CEH_NORMZ.KSM_ID_PR='
-//                                                              + INTTOSTR(S_KODP)
-//                                                              + ' and CEH_NORMZ.KSM_ID_MAt='
-//                                                              + INTTOSTR(S_Ksm);
-//          FSprFormul.CEH_NormZ.Open;
-//          if (not FSprFormul.CEH_NORMZ.eof) then
-//            if (FSprFormul.CEH_NORMZDecznak.AsVariant <> null)  then
-//              tochn := -FSprFormul.CEH_NORMZDecznak.asinteger
-//            else
-//              tochn := -3
-//          else
-//            tochn := -3;
           pr_kor := 0;
           DM1.DobPrixPrep;
         end;

@@ -10,7 +10,7 @@ uses DrugLoad,
   Menus, ExtCtrls, DBGrids,VCLUtils,DBTables,IB,StrUtils,
   SplshWnd, wwDialog, Wwfltdlg,Fr_pars, FR_DSet, FR_DBSet, FR_Class,
   RXCtrls, RxMemDS, dbcgrids, DBCtrlsEh, Spin, ActnList,UtilRIB,RxStrUtils,
-  Placemnt,FileUtil;
+  Placemnt,FileUtil, kbmMemTable;
 type
   TFTexGur = class(TForm)
     ImageList2: TImageList;
@@ -165,6 +165,10 @@ type
     TexGurGOST: TIBStringField;
     ZagSyrDATE_TIME_UPDATE: TDateField;
     TexGurZAG_PERIOD: TFMTBCDField;
+    q_kart: TRxIBQuery;
+    q_norm: TRxIBQuery;
+    q_ost: TRxIBQuery;
+    kbmMemTable1: TkbmMemTable;
     procedure MyGetValue(const s: String; var v: Variant);
     procedure MyGetValue1(const s: String; var v: Variant);
     procedure Edit1Change(Sender: TObject);
