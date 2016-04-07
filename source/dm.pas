@@ -802,7 +802,7 @@ uses
 
     function MesNameInRodPodezhBig(Mes: integer): string;
     function SumToString(x: integer): string;
-    function Koef_per(kei_spr : integer; kei : integer; ksm : integer) : double;
+    function Koef_per(kei_in : integer; kei_from : integer; ksm : integer) : double;
 
     procedure frReport2GetValue(const ParName: String;
       var ParValue: Variant);
@@ -2527,22 +2527,22 @@ begin
   end;
 end;
 
-function TDM1.Koef_per(kei_spr : integer; kei : integer; ksm : integer) : double;
+function TDM1.Koef_per(kei_in : integer; kei_from : integer; ksm : integer) : double;
 var
   vKoef : variant;
 begin
-  if (kei_spr <> kei) and (kei_spr <> 0) and (kei <> 0) then
+  if (kei_in <> kei_from) and (kei_in <> 0) and (kei_from <> 0) then
   begin
 // Коэффициент перевода  из одной единицы измерения в другую
     vKoef := SelectToVarIB('SELECT KOEFPR.KOEF FROM KOEFPR WHERE KOEFPR.KEIR = '
-                           + IntToStr(Kei_Spr) + ' AND KOEFPR.KEI_ID = '
-                           + IntToStr(Kei) + ' AND KOEFPR.KSM_ID = 0 AND KOEFPR.KOEF <> 0 ',
+                           + IntToStr(kei_in) + ' AND KOEFPR.KEI_ID = '
+                           + IntToStr(kei_from) + ' AND KOEFPR.KSM_ID = 0 AND KOEFPR.KOEF <> 0 ',
                            BELMED, IBT_Read);
     if (vKoef = NULL) then
     begin
       vKoef := SelectToVarIB('SELECT KOEFPR.KOEF FROM KOEFPR WHERE KOEFPR.KEIR = '
-                             + IntToStr(Kei_Spr) + ' AND KOEFPR.KEI_ID = '
-                             + IntToStr(Kei) + ' AND KOEFPR.KSM_ID =' + IntToStr(Ksm)
+                             + IntToStr(kei_in) + ' AND KOEFPR.KEI_ID = '
+                             + IntToStr(kei_from) + ' AND KOEFPR.KSM_ID =' + IntToStr(Ksm)
                              + ' AND KOEFPR.KOEF <> 0 ',
                              BELMED, IBT_Read);
       if (vKoef = NULL) then
