@@ -168,7 +168,71 @@ type
     q_kart: TRxIBQuery;
     q_norm: TRxIBQuery;
     q_ost: TRxIBQuery;
-    kbmMemTable1: TkbmMemTable;
+    mem_texGur: TkbmMemTable;
+    q_normPLNORM: TFMTBCDField;
+    q_normKODP: TIntegerField;
+    q_normKEIN: TSmallintField;
+    q_normKSM_ID: TIntegerField;
+    q_normKRAZ: TSmallintField;
+    q_normMES: TSmallintField;
+    q_normGOD: TSmallintField;
+    q_normNAZPRPF: TIBStringField;
+    q_normNMAT: TIBStringField;
+    q_normXARKT: TIBStringField;
+    q_normGOST: TIBStringField;
+    q_normKEI_ID: TSmallintField;
+    q_normNEIS: TIBStringField;
+    q_normRAZDEL_ID: TSmallintField;
+    mem_texGurKART_ID: TIntegerField;
+    mem_texGurKEI_ID_KART: TIntegerField;
+    mem_texGurKEI_ID_NORM: TIntegerField;
+    mem_texGurRAZDEL_ID: TIntegerField;
+    mem_texGurKSM_ID: TIntegerField;
+    mem_texGurSTROKA_ID: TIntegerField;
+    mem_texGurSERIA_ID: TIntegerField;
+    mem_texGurDOC_ID: TIntegerField;
+    mem_texGurDATE_DOK: TDateField;
+    mem_texGurNEIS: TStringField;
+    mem_texGurNDOK: TStringField;
+    mem_texGurNMAT: TStringField;
+    mem_texGurKOL_RASH_EDIZ: TFloatField;
+    mem_texGurPLNORM: TFloatField;
+    mem_texGurOSTATOK_END_S: TFloatField;
+    mem_texGurOSTATOK_END_NZ: TFloatField;
+    mem_texGurOSTATOK_END_S_CEX: TFloatField;
+    mem_texGurKRAZ: TIntegerField;
+    mem_texGurZAG_ALL: TFloatField;
+    ds_texGur: TDataSource;
+    q_kartDOC_ID: TIntegerField;
+    q_kartSTROKA_ID: TIntegerField;
+    q_kartKART_ID: TIntegerField;
+    q_kartKOL_RASH: TFMTBCDField;
+    q_kartKOL_RASH_EDIZ: TFloatField;
+    q_kartRAZDEL_ID: TSmallintField;
+    q_kartKEI_ID: TSmallintField;
+    q_kartKSM_ID: TIntegerField;
+    q_kartNEIS: TIBStringField;
+    q_kartNMAT: TIBStringField;
+    q_kartKRAZ: TSmallintField;
+    mem_texGurKEI_ID_OST_PREP: TIntegerField;
+    mem_texGurKEI_ID_OST_CEX: TIntegerField;
+    q_ostKART_ID: TIntegerField;
+    q_ostKEI_ID: TSmallintField;
+    q_ostKSM_ID: TIntegerField;
+    q_ostKODP: TIntegerField;
+    q_ostNEIS_OST: TIBStringField;
+    q_ostRAZDEL_ID: TSmallintField;
+    q_ostNMAT: TIBStringField;
+    q_ostOT_S: TFMTBCDField;
+    q_ostOT_NZ: TFMTBCDField;
+    q_ostONM_S: TFMTBCDField;
+    q_ostONM_NZ: TFMTBCDField;
+    q_ostKRAZ: TSmallintField;
+    q_ostZAG_PERIOD: TFMTBCDField;
+    q_ostPRIX_PERIOD: TFMTBCDField;
+    q_ostPEREDANO_RASH_S: TFMTBCDField;
+    q_ostPEREDANO_RASH_NZ: TFMTBCDField;
+    q_ostRASH_VIRAB_PERIOD: TFMTBCDField;
     procedure MyGetValue(const s: String; var v: Variant);
     procedure MyGetValue1(const s: String; var v: Variant);
     procedure Edit1Change(Sender: TObject);
@@ -225,6 +289,18 @@ type
   private
     { Private declarations }
     drLoad : TDrugLoad;
+
+    procedure createTexGur;
+
+    function openNorms(god, mes, kodp, strukId : integer) : boolean;
+    procedure insertNormsToTexGur;
+
+    function openZagrDoc() : boolean;
+    procedure openZagrKart;
+    procedure insertKartToTexGur;
+
+    function openPrepOst() : boolean;
+
   public
     { Public declarations }
   end;
@@ -248,11 +324,134 @@ var
   god_s: integer;
   sSeria_id: integer;
   vFormula:TfrParser;
+
 implementation
  uses dm, ViborPerioda, Ser, SprFormul, Find_Spprod, ediz,
   Find_Matrop, razdel, glmenu, SprSTAD, FSpFormv, Analit_aList, analit,
   Unit21, OstSyr, Analit1, Komp_Tm, VybPrep;
 {$R *.dfm}
+
+procedure TFTexGur.createTexGur;
+begin
+  dm1.Seria.Close;
+  dm1.Kart.Close;
+  Seria_s.Close;
+  dm1.IBT_WRITE.Active := FALSE;
+  dm1.IBT_READ.Active := FALSE;
+  StartWait;
+  if (s_seria <> '') then
+  begin
+    mem_texGur.EmptyTable;
+    mem_texGur.Open;
+    if (openNorms(god, mes, s_kodp, vStruk_Id)) then
+      insertNormsToTexGur;
+    if (openZagrDoc()) then
+    begin
+      openZagrKart;
+      insertKartToTexGur;
+    end;
+    if (openPrepOst()) then
+      insertPrepOstToTexGur;
+  end;
+  StopWait;
+end;
+
+function TFTexGur.openNorms(god, mes, kodp, strukId : integer) : boolean;
+begin
+  result := false;
+  q_norm.Close;
+  q_norm.ParamByName('god').AsInteger := god;
+  q_norm.ParamByName('mes').AsInteger := mes;
+  q_norm.ParamByName('kodp').AsInteger := kodp;
+  q_norm.ParamByName('struk_id').AsInteger := strukId;
+  q_norm.Open;
+  q_norm.First;
+  if (not q_norm.Eof) then
+    result := true;
+end;
+
+function TFTexGur.openZagrDoc() : boolean;
+begin
+  result := false;
+  vNDoc := 'Заг_' + copy(label19.Caption, 1, 5) + '_' + s_seria;
+  vKlient_Id := s_kodp;
+  dm1.Document.Close;
+  DM1.DOcUMENT.MacroByName('USL').AsString := 'WHERE DOcUMENT.STRUK_ID=' + INTTOSTR(VsTRUK_ID)
+                                              + ' AND DOCUMENT.TIP_OP_ID = 33 '
+                                              + ' and document.tip_dok_id = 34 '
+                                              + 'AND DOCUMENT.NDOK = ' + '''' + VnDOC + ''''
+                                              + ' AND Document.Date_dok between '
+                                              + '''' + s_dat1_period + ''''
+                                              + ' and ' + '''' + s_dat2_period + ''''
+                                              + ' AND Document.Klient_id=' + inttostr(vKlient_id);
+  dm1.Document.OPEN;
+  dm1.Document.First;
+  if (not dm1.Document.Eof) then
+    result := true;
+end;
+
+procedure TFTexGur.openZagrKart;
+begin
+  q_kart.Close;
+  q_kart.ParamByName('doc_id').AsInteger := dm1.DocumentDOC_ID.AsInteger;
+  q_kart.Open;
+end;
+
+procedure TFTexGur.insertNormsToTexGur;
+begin
+  q_norm.First;
+  while (not q_norm.Eof) do
+  begin
+    mem_texGur.Append;
+    mem_texGurKSM_ID.AsInteger := q_normKSM_ID.AsInteger;
+    mem_texGurRAZDEL_ID.AsInteger := q_normRAZDEL_ID.AsInteger;
+    mem_texGurKRAZ.AsInteger := q_normKRAZ.AsInteger;
+    mem_texGurNMAT.AsString := q_normNMAT.AsString;
+    mem_texGurKEI_ID_NORM.AsInteger := q_normKEIN.AsInteger;
+    mem_texGurNEIS.AsString := q_normNEIS.AsString;
+    mem_texGurPLNORM.AsFloat := q_normPLNORM.AsFloat;
+    mem_texGur.Post;
+    q_norm.Next;
+  end;
+end;
+
+procedure TFTexGur.insertKartToTexGur;
+begin
+  q_kart.First;
+  while (not q_kart.eof) do
+  begin
+    if (mem_texGur.Locate('ksm_id;razdel_id',
+                          VarArrayOf([q_kartKSM_ID.AsInteger,
+                                      q_kartRAZDEL_ID.AsInteger]),
+                          [])) then
+    begin
+      mem_texGur.Edit;
+      mem_texGurKOL_RASH_EDIZ.AsFloat := q_kartKOL_RASH_EDIZ.AsFloat;
+      mem_texGurKEI_ID_KART.AsInteger := q_kartKEI_ID.AsInteger;
+      mem_texGurDOC_ID.AsInteger := q_kartDOC_ID.AsInteger;
+      mem_texGurKART_ID.AsInteger := q_kartKART_ID.AsInteger;
+      mem_texGurSTROKA_ID.AsInteger := q_kartSTROKA_ID.AsInteger;
+      mem_texGur.Post;
+    end
+    else
+    begin
+      mem_texGur.Append;
+      mem_texGurKSM_ID.AsInteger := q_kartKSM_ID.AsInteger;
+      mem_texGurRAZDEL_ID.AsInteger := q_kartRAZDEL_ID.AsInteger;
+      mem_texGurNEIS.AsString := q_kartNEIS.AsString;
+      mem_texGurKRAZ.AsInteger := q_kartKRAZ.AsInteger;
+      mem_texGurNMAT.AsString := q_kartNMAT.AsString;
+
+      mem_texGurKOL_RASH_EDIZ.AsFloat := q_kartKOL_RASH_EDIZ.AsFloat;
+      mem_texGurKEI_ID_KART.AsInteger := q_kartKEI_ID.AsInteger;
+      mem_texGurDOC_ID.AsInteger := q_kartDOC_ID.AsInteger;
+      mem_texGurKART_ID.AsInteger := q_kartKART_ID.AsInteger;
+      mem_texGurSTROKA_ID.AsInteger := q_kartSTROKA_ID.AsInteger;
+      mem_texGur.Post;
+    end;
+    q_kart.Next;
+  end;
+end;
 
 procedure TFTexGur.TexGurSost;
 begin
@@ -538,7 +737,8 @@ begin
      DateEdit1.Date:=dm1.SeriaDATE_ZAG.AsDateTime;
      DateEdit1.ReadOnly:=false;
      IF MODE<2 THEN
-      TexGurSost
+      createTexGur
+//      TexGurSost
      ELSE
      BEGIN
       TexGur.Close;
@@ -796,6 +996,10 @@ end;
 
 procedure TFTexGur.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
+  q_norm.Close;
+  mem_texGur.EmptyTable;
+  mem_texGur.Close;
+
 //  FreeAndNil(drLoad);
  IF DM1.Seria.Active THEN DM1.Seria.Close;
  IF DM1.Ostatki.Active THEN DM1.Ostatki.Close;
@@ -1068,8 +1272,6 @@ begin
 end;
 
 procedure TFTexGur.FormShow(Sender: TObject);
-var
-  i : integer;
 begin
   if (FSprFormul = nil) then
     FSprFormul := TfSprFormul.Create(Application);
@@ -1388,7 +1590,8 @@ begin
     if (DateEdit1.text <> '' )and (DateEdit1.text <= s_dat2_period)  then
     begin
       IF (MODE < 2) THEN
-        TexGurSost
+        createTexGur
+//        TexGurSost
       ElSE
       BEGIN
         if (edit9.Text <> '') and (edit9.Text <> '0') then
@@ -1634,7 +1837,7 @@ begin
     if (FSer.ModalResult > 50) then
     begin
       edit9.text := '';
-      TexGur.Close;
+//      TexGur.Close;
       vSeria_id := FSer.ModalResult - 50;
       s_seria := DM1.SeriaSeria.AsString;
       s_kol_seria := DM1.SeriaKol_Seria.AsFloat;
@@ -1646,9 +1849,10 @@ begin
       begin
         DateEdit1.Date := dm1.SeriaDATE_ZAG.AsDateTime;
 //     DateEdit1.ReadOnly:=true;
-        TexGur.Close;
-        TexGurSost;
-        TexGur.First;
+//        TexGur.Close;
+        createTexGur;
+//        TexGurSost;
+//        TexGur.First;
       end
       else
       begin
@@ -1683,7 +1887,8 @@ begin
           DateEdit1.Date := dm1.SeriaDATE_ZAG.AsDateTime;
 //     DateEdit1.ReadOnly:=true;
           TexGur.Close;
-          TexGurSost;
+          createTexGur;
+//          TexGurSost;
           TexGur.First;
         end
         else
@@ -1820,7 +2025,8 @@ begin
   if (DateEdit1.text <> '' )and (DateEdit1.text <= s_dat2_period)  then
     begin
       IF (MODE < 2) THEN
-        TexGurSost
+        createTexGur
+//        TexGurSost
       ElSE
       BEGIN
         if (edit9.Text <> '') and (edit9.Text <> '0') then
@@ -2015,7 +2221,8 @@ begin
     if (Edit1.Text <> '') then
     BEGIN
       IF (MODE < 2) THEN
-        TexGurSost
+        createTexGur
+//        TexGurSost
     ELSE
     BEGIN
       if (edit9.Text <> '') and (edit9.Text <> '0') then
@@ -2080,7 +2287,8 @@ IF MES<10 THEN S_MES:='0'+INTTOSTR(MES) ELSE S_MES:=INTTOSTR(MES);
  if Edit1.Text<>'' then
   BEGIN
     IF MODE<2 THEN
-      TexGurSost
+      createTexGur
+//      TexGurSost
      ELSE
      BEGIN
       if (edit9.Text<>'') and (edit9.Text<>'0') then s_vip:=strtofloat(edit9.Text) else s_vip:=0;
