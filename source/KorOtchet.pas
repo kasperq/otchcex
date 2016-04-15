@@ -307,7 +307,7 @@ type
     ksmLength : integer;
 
     procedure openOstCeh;
-    function getTochn(ksm_id : integer) : integer;
+    
   public
     procedure KorSost;
     function getCurZnak(value : double; znak : integer) : integer;
@@ -330,27 +330,6 @@ implementation
  uses dm, Find_Spprod, Dob_peredano, Vipusk,Otchet, ediz, Find_Matrop,
   razdel, Find_Struk, OstSyr, SprFormul, Pech_Vibor, VibSyr, VybPrep, CopyFiles;
 {$R *.dfm}
-
-function TFKorOtchet.getTochn(ksm_id : integer) : integer;
-begin
-  if (FSprFormul = nil) then
-    FSprFormul := TfSprFormul.Create(Application);
-  if (FSprFormul.Ceh_Normz.Active = true) then
-    FSprFormul.CEH_NormZ.Close;
-  FSprFormul.CEH_NormZ.MacroByName('SORT').AsString := '';
-  FSprFormul.CEH_NormZ.MacroByName('USL').AsString := ' Where CEH_NORMZ.KSM_ID_PR = '
-                                                      + INTTOSTR(S_KODP)
-                                                      + ' and CEH_NORMZ.KSM_ID_MAt = '
-                                                      + INTTOSTR(ksm_id);
-  FSprFormul.CEH_NormZ.Open;
-  if (not FSprFormul.CEH_NORMZ.eof) then
-    if (FSprFormul.CEH_NORMZDecznak.AsVariant <> null)  then
-      result := -FSprFormul.CEH_NORMZDecznak.asinteger
-    else
-      result := -3
-  else
-      result := -3;
-end;
 
 procedure TFKorOtchet.openOstCeh;
 var
@@ -534,7 +513,7 @@ begin
         s_kei := IBQuery1.FieldByName('KEI_id').AsInteger;
         v_keiN := IBQuery1.FieldByName('KEIN').AsInteger;
         s_ksm := IBQuery1.FieldByName('Ksm_id').AsInteger;
-        tochn := getTochn(IBQuery1.FieldByName('KSM_ID').AsInteger);
+        tochn := dm1.getTochn(s_kodp, IBQuery1.FieldByName('KSM_ID').AsInteger);
 
         s_ost := 0;
 
@@ -544,7 +523,7 @@ begin
                                               IBQuery1.FieldByName('KRAZ').AsInteger]),
                                               []) THEN
         BEGIN
-          tochn := getTochn(IBQuery1.FieldByName('KSM_ID').AsInteger);
+          tochn := dm1.getTochn(s_kodp, IBQuery1.FieldByName('KSM_ID').AsInteger);
           RaspSyrPrep.Insert;
           RaspSyrPrepDoc_id.AsInteger := vDocument_id;
           RaspSyrPrepRazdel_id.AsInteger := IBQuery1.FieldByName('Razdel_id').AsInteger;
@@ -642,7 +621,7 @@ begin
                 and (RaspSyrPrepRazdel_id.AsInteger = IBQuery1.FieldByName('Razdel_id').AsInteger)
                 and ( not RaspSyrPrep.Eof) do
           begin
-            tochn := getTochn(IBQuery1.FieldByName('KSM_ID').AsInteger);
+            tochn := dm1.getTochn(s_kodp, IBQuery1.FieldByName('KSM_ID').AsInteger);
             RaspSyrPrep.Edit;
             if RaspSyrPrepTip_op_id.AsInteger <> 30 then
             begin
@@ -898,7 +877,7 @@ begin
                                               IBQuery1.FieldByName('KRAZ').AsInteger]),
                                   []) THEN
         BEGIN
-          tochn := getTochn(IBQuery1.FieldByName('KSM_ID').AsInteger);
+          tochn := dm1.getTochn(s_kodp, IBQuery1.FieldByName('KSM_ID').AsInteger);
 
           RaspSyrPrep.Insert;
           RaspSyrPrepDoc_id.AsInteger := vDocument_id;
@@ -1020,7 +999,7 @@ begin
       begin
         IF RaspSyrPrepTip_op_id.AsInteger = 30 then
         begin
-          tochn := getTochn(RaspSyrPrep.FieldByName('KSM_ID').AsInteger);
+          tochn := dm1.getTochn(s_kodp, RaspSyrPrep.FieldByName('KSM_ID').AsInteger);
           Prix_korr.First;
           if Prix_korr.Locate('ksm_id;razdel_id',
                               VarArrayOf([RaspSyrPrepKsm_id.AsInteger, RaspSyrPrepRazdel_id.AsInteger]),

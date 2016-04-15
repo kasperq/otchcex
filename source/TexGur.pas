@@ -59,7 +59,7 @@ type
     Seria_sKOL_TM: TFloatField;
     PageControl1: TPageControl;
     TabSheet1: TTabSheet;
-    DBGridEh3: TDBGridEh;
+    grid_zagr: TDBGridEh;
     TabSheet2: TTabSheet;
     DBGridEh4: TDBGridEh;
     Panel3: TPanel;
@@ -223,16 +223,44 @@ type
     q_ostNEIS_OST: TIBStringField;
     q_ostRAZDEL_ID: TSmallintField;
     q_ostNMAT: TIBStringField;
-    q_ostOT_S: TFMTBCDField;
-    q_ostOT_NZ: TFMTBCDField;
-    q_ostONM_S: TFMTBCDField;
-    q_ostONM_NZ: TFMTBCDField;
+    q_ostOSTATOK_END_S: TFMTBCDField;
+    q_ostOSTATOK_END_NZ: TFMTBCDField;
+    q_ostOSTATOK_BEGIN_S: TFMTBCDField;
+    q_ostOSTATOK_BEGIN_NZ: TFMTBCDField;
     q_ostKRAZ: TSmallintField;
     q_ostZAG_PERIOD: TFMTBCDField;
     q_ostPRIX_PERIOD: TFMTBCDField;
     q_ostPEREDANO_RASH_S: TFMTBCDField;
     q_ostPEREDANO_RASH_NZ: TFMTBCDField;
     q_ostRASH_VIRAB_PERIOD: TFMTBCDField;
+    Label1: TLabel;
+    ostceh: TIBQuery;
+    ostcehOT_C: TFMTBCDField;
+    ostcehKSM_ID: TIntegerField;
+    ostcehKEI_ID: TSmallintField;
+    q_ostCeh: TRxIBQuery;
+    q_ostCehOT_C: TFMTBCDField;
+    q_ostCehKSM_ID: TIntegerField;
+    q_ostCehKEI_ID: TSmallintField;
+    mem_texGurDELETE: TBooleanField;
+    mem_texGurADD: TBooleanField;
+    ZagSyrKLIENT_ID: TIntegerField;
+    ZagSyrKODP: TIntegerField;
+    ZagSyrTIP_DOK_ID: TSmallintField;
+    q_ostZAG: TFMTBCDField;
+    q_ostPRIX: TFMTBCDField;
+    q_ostPEREDANO_PRIH_NZ: TFMTBCDField;
+    mem_texGurOSTATOK_BEGIN_S: TFloatField;
+    mem_texGurOSTATOK_BEGIN_NZ: TFloatField;
+    mem_texGurPRIX: TFloatField;
+    mem_texGurPEREDANO_PRIH_NZ: TFloatField;
+    mem_texGurZAG: TFloatField;
+    mem_texGurZAG_PERIOD: TFloatField;
+    mem_texGurRASH_VIRAB_PERIOD: TFloatField;
+    mem_texGurPEREDANO_RASH_S: TFloatField;
+    mem_texGurPEREDANO_RASH_NZ: TFloatField;
+    mem_texGurPRIX_PERIOD: TFloatField;
+    grid_otchet: TDBGridEh;
     procedure MyGetValue(const s: String; var v: Variant);
     procedure MyGetValue1(const s: String; var v: Variant);
     procedure Edit1Change(Sender: TObject);
@@ -248,7 +276,7 @@ type
     procedure Button1Click(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure DBGridEh3SortMarkingChanged(Sender: TObject);
+    procedure grid_zagrSortMarkingChanged(Sender: TObject);
     procedure DBGridEh4SortMarkingChanged(Sender: TObject);
     procedure TexGurSost;
     procedure DateEdit1KeyDown(Sender: TObject; var Key: Word;
@@ -256,7 +284,7 @@ type
     procedure Edit2Click(Sender: TObject);
     procedure ToolButton2Click(Sender: TObject);
     procedure ToolButton1Click(Sender: TObject);
-    procedure DBGridEh3EditButtonClick(Sender: TObject);
+    procedure grid_zagrEditButtonClick(Sender: TObject);
     procedure TexGurKSM_IDValidate(Sender: TField);
     procedure frReport2GetValue(const ParName: String;
       var ParValue: Variant);
@@ -286,6 +314,10 @@ type
     procedure btn_vipuskListClick(Sender: TObject);
     procedure SpeedButton3Click(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure mem_texGurBeforePost(DataSet: TDataSet);
+    procedure grid_zagrDrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumnEh; State: TGridDrawState);
+    procedure DBGridEh4DblClick(Sender: TObject);
   private
     { Private declarations }
     drLoad : TDrugLoad;
@@ -300,6 +332,17 @@ type
     procedure insertKartToTexGur;
 
     function openPrepOst() : boolean;
+    procedure insertPrepOstToTexGur;
+
+    function openCexOst() : boolean; overload;
+    procedure insertCexOstToTexGur;
+
+    function openCexOst(ksmId : integer) : double; overload;
+    procedure insertCexOstKsmToTexGur;
+
+    procedure convertKeiId;
+    procedure convertRecord(var value : TFloatField; kart, ostPrep, ostCex : boolean;
+                            tochn : integer);
 
   public
     { Public declarations }
@@ -343,6 +386,8 @@ begin
   begin
     mem_texGur.EmptyTable;
     mem_texGur.Open;
+    mem_texGur.DisableControls;
+    mem_texGur.BeforePost := nil;
     if (openNorms(god, mes, s_kodp, vStruk_Id)) then
       insertNormsToTexGur;
     if (openZagrDoc()) then
@@ -352,6 +397,13 @@ begin
     end;
     if (openPrepOst()) then
       insertPrepOstToTexGur;
+    if (openCexOst()) then
+      insertCexOstToTexGur;
+//    insertCexOstKsmToTexGur;
+    convertKeiId;
+    mem_texGur.First;
+    mem_texGur.BeforePost := mem_texGurBeforePost;
+    mem_texGur.EnableControls;
   end;
   StopWait;
 end;
@@ -374,7 +426,6 @@ function TFTexGur.openZagrDoc() : boolean;
 begin
   result := false;
   vNDoc := 'Заг_' + copy(label19.Caption, 1, 5) + '_' + s_seria;
-  vKlient_Id := s_kodp;
   dm1.Document.Close;
   DM1.DOcUMENT.MacroByName('USL').AsString := 'WHERE DOcUMENT.STRUK_ID=' + INTTOSTR(VsTRUK_ID)
                                               + ' AND DOCUMENT.TIP_OP_ID = 33 '
@@ -383,7 +434,7 @@ begin
                                               + ' AND Document.Date_dok between '
                                               + '''' + s_dat1_period + ''''
                                               + ' and ' + '''' + s_dat2_period + ''''
-                                              + ' AND Document.Klient_id=' + inttostr(vKlient_id);
+                                              + ' AND Document.Klient_id=' + inttostr(s_kodp);
   dm1.Document.OPEN;
   dm1.Document.First;
   if (not dm1.Document.Eof) then
@@ -450,6 +501,295 @@ begin
       mem_texGur.Post;
     end;
     q_kart.Next;
+  end;
+end;
+
+function TFTexGur.openPrepOst() : boolean;
+begin
+  result := false;
+  q_ost.Close;
+  q_ost.ParamByName('struk_id').AsInteger := vStruk_Id;
+  q_ost.ParamByName('kodp').AsInteger := s_kodp;
+  q_ost.ParamByName('dat1').AsDate := StrToDate(s_dat1);
+  q_ost.ParamByName('dat2').AsDate := StrToDate(s_dat2);
+  q_ost.Open;
+  q_ost.First;
+  if (not q_ost.Eof) then
+    result := true;
+end;
+
+procedure TFTexGur.insertPrepOstToTexGur;
+begin
+  q_ost.First;
+  while (not q_ost.Eof) do
+  begin
+    if (mem_texGur.Locate('ksm_id;razdel_id',
+                          VarArrayOf([q_ostKSM_ID.AsInteger,
+                                      q_ostRAZDEL_ID.AsInteger]),
+                          [])) then
+    begin
+      mem_texGur.Edit;
+      mem_texGurOSTATOK_END_S.AsFloat := q_ostOSTATOK_END_S.AsFloat;
+      mem_texGurOSTATOK_END_NZ.AsFloat := q_ostOSTATOK_END_NZ.AsFloat;
+      mem_texGurKEI_ID_OST_PREP.AsInteger := q_ostKEI_ID.AsInteger;
+
+      mem_texGurOSTATOK_BEGIN_S.AsFloat := q_ostOSTATOK_BEGIN_S.AsFloat;
+      mem_texGurOSTATOK_BEGIN_NZ.AsFloat := q_ostOSTATOK_BEGIN_NZ.AsFloat;
+      mem_texGurPRIX.AsFloat := q_ostPRIX.AsFloat;
+      mem_texGurPEREDANO_PRIH_NZ.AsFloat := q_ostPEREDANO_PRIH_NZ.AsFloat;
+      mem_texGurPRIX_PERIOD.AsFloat := q_ostPRIX_PERIOD.AsFloat;
+      mem_texGurZAG.AsFloat := q_ostZAG.AsFloat;
+      mem_texGurZAG_PERIOD.AsFloat := q_ostZAG_PERIOD.AsFloat;
+      mem_texGurRASH_VIRAB_PERIOD.AsFloat := q_ostRASH_VIRAB_PERIOD.AsFloat;
+      mem_texGurPEREDANO_RASH_S.AsFloat := q_ostPEREDANO_RASH_S.AsFloat;
+      mem_texGurPEREDANO_RASH_NZ.AsFloat := q_ostPEREDANO_RASH_NZ.AsFloat;
+      mem_texGur.Post;
+    end
+    else
+    begin
+      mem_texGur.Append;
+      mem_texGurKSM_ID.AsInteger := q_ostKSM_ID.AsInteger;
+      mem_texGurRAZDEL_ID.AsInteger := q_ostRAZDEL_ID.AsInteger;
+      mem_texGurNEIS.AsString := q_ostNEIS_OST.AsString;
+      mem_texGurKRAZ.AsInteger := q_ostKRAZ.AsInteger;
+      mem_texGurNMAT.AsString := q_ostNMAT.AsString;
+      mem_texGurKART_ID.AsInteger := q_ostKART_ID.AsInteger;
+
+      mem_texGurOSTATOK_END_S.AsFloat := q_ostOSTATOK_END_S.AsFloat;
+      mem_texGurOSTATOK_END_NZ.AsFloat := q_ostOSTATOK_END_NZ.AsFloat;
+      mem_texGurOSTATOK_BEGIN_S.AsFloat := q_ostOSTATOK_BEGIN_S.AsFloat;
+      mem_texGurOSTATOK_BEGIN_NZ.AsFloat := q_ostOSTATOK_BEGIN_NZ.AsFloat;
+      mem_texGurPRIX.AsFloat := q_ostPRIX.AsFloat;
+      mem_texGurPEREDANO_PRIH_NZ.AsFloat := q_ostPEREDANO_PRIH_NZ.AsFloat;
+      mem_texGurPRIX_PERIOD.AsFloat := q_ostPRIX_PERIOD.AsFloat;
+      mem_texGurZAG.AsFloat := q_ostZAG.AsFloat;
+      mem_texGurZAG_PERIOD.AsFloat := q_ostZAG_PERIOD.AsFloat;
+      mem_texGurRASH_VIRAB_PERIOD.AsFloat := q_ostRASH_VIRAB_PERIOD.AsFloat;
+      mem_texGurPEREDANO_RASH_S.AsFloat := q_ostPEREDANO_RASH_S.AsFloat;
+      mem_texGurPEREDANO_RASH_NZ.AsFloat := q_ostPEREDANO_RASH_NZ.AsFloat;
+      mem_texGurKEI_ID_OST_PREP.AsInteger := q_ostKEI_ID.AsInteger;
+      mem_texGur.Post;
+    end;
+    q_ost.Next;
+  end;
+end;
+
+procedure TFTexGur.mem_texGurBeforePost(DataSet: TDataSet);
+begin
+  If (mem_texGurRazdel_id.AsInteger = 0) then
+  begin
+    MessageDlg('Введите раздел!', mtWarning, [mbOK], 0);
+    Abort;
+  end;
+  If (mem_texGur.FieldByName('ksm_id').AsInteger = 0) then
+  begin
+    MessageDlg('Введите код сырья!', mtWarning, [mbOK], 0);
+    Abort;
+  end;
+  If (mem_texGur.FieldByName('kei_id_norm').AsInteger = 0) then
+  begin
+    MessageDlg('Введите единицу измерения!', mtWarning, [mbOK], 0);
+    Abort;
+  end;
+end;
+
+function TFTexGur.openCexOst() : boolean;
+var
+  ksmArr : string;
+  i, ksmLength : integer;
+  findedKsm : boolean;
+  ksmArray : array of integer;
+begin
+  result := false;
+  ksmLength := 0;
+  if (mem_texGur.RecordCount > 0) then
+  begin
+    for i := 0 to ksmLength - 1 do
+      ksmArray[i] := 0;
+    SetLength(ksmArray, 0);
+    ksmLength := 0;
+    ksmArr := '';
+    mem_texGur.First;
+    while (not mem_texGur.Eof) do
+    begin
+      findedKsm := false;
+      for i := 0 to ksmLength - 1 do
+      begin
+        if (ksmArray[i] = mem_texGurKSM_ID.AsInteger) then
+          findedKsm := true;
+      end;
+      if (not findedKsm) then
+      begin
+        ksmLength := ksmLength + 1;
+        SetLength(ksmArray, ksmLength);
+        ksmArray[ksmLength - 1] := mem_texGurKSM_ID.AsInteger;
+      end;
+      mem_texGur.Next;
+    end;
+    for i := 0 to ksmLength - 1 do
+    begin
+      ksmArr := ksmArr + IntToStr(ksmArray[i]);
+      if (i <> (ksmLength - 1)) then
+        ksmArr := ksmArr + ', '
+      else
+        ksmArr := ksmArr + '  ';
+    end;
+    ostceh.Close;
+    ostceh.ParamByName('dat1').AsDateTime := strtodate(s_dat1);
+    ostceh.ParamByName('dat2').AsDateTime := strtodate(s_dat2);
+    ostceh.ParamByName('struk').AsInteger := vStruk_id;
+    ostceh.ParamByName('kart_idpr').AsInteger := 1;
+    ostceh.ParamByName('ksm_id').AsInteger := 0;
+    if (vStruk_Id = 540) then
+      ostceh.ParamByName('struk_id_rela').AsInteger := 1
+    else
+      ostceh.ParamByName('struk_id_rela').AsInteger := 0;
+    ostceh.ParamByName('ksm_array').AsString := ksmArr;
+    ostceh.Open;
+    ostCeh.First;
+    if (not ostCeh.Eof) then
+      result := true;
+  end;
+end;
+
+function TFTexGur.openCexOst(ksmId : integer) : double;
+begin
+  result := 0;
+  ostceh.Close;
+  ostceh.ParamByName('dat1').AsDateTime := strtodate(s_dat1);
+  ostceh.ParamByName('dat2').AsDateTime := strtodate(s_dat2);
+  ostceh.ParamByName('struk').AsInteger := vStruk_id;
+  ostceh.ParamByName('kart_idpr').AsInteger := 1;
+  ostceh.ParamByName('ksm_id').AsInteger := ksmId;
+  ostceh.Open;
+  if (not ostCeh.Eof) then
+      result := ostcehOT_C.AsFloat;
+end;
+
+procedure TFTexGur.insertCexOstKsmToTexGur;
+begin
+  mem_texGur.First;
+  while (not mem_texGur.Eof) do
+  begin
+    mem_texGur.Edit;
+    mem_texGurOSTATOK_END_S_CEX.AsFloat := openCexOst(mem_texGurKSM_ID.AsInteger);
+    mem_texGurKEI_ID_OST_CEX.AsInteger := q_ostCehKEI_ID.AsInteger;
+    mem_texGur.Post;
+    mem_texGur.Next;
+  end;
+end;
+
+procedure TFTexGur.insertCexOstToTexGur;
+begin
+  mem_texGur.First;
+  while (not mem_texGur.Eof) do
+  begin
+    ostceh.First;
+    if (ostceh.Locate('ksm_id', mem_texGur.FieldByName('Ksm_id').AsInteger, [])) THEN
+    begin
+      mem_texGur.Edit;
+      mem_texGurOSTATOK_END_S_CEX.AsFloat := ostcehOt_c.asfloat;
+      mem_texGurKEI_ID_OST_CEX.AsInteger := ostcehKEI_ID.AsInteger;
+      mem_texGur.Post;
+    end;
+    mem_texGur.Next;
+  end;
+end;
+
+procedure TFTexGur.convertKeiId;
+begin
+  mem_texGur.First;
+  while (not mem_texGur.Eof) do
+  begin
+    tochn := dm1.getTochn(s_kodp, mem_texGurKSM_ID.AsInteger);
+    mem_texGur.Edit;
+    convertRecord(mem_texGurKOL_RASH_EDIZ, true, false, false, tochn);
+    convertRecord(mem_texGurOSTATOK_END_S, false, true, false, tochn);
+    convertRecord(mem_texGurOSTATOK_END_NZ, false, true, false, tochn);
+    convertRecord(mem_texGurOSTATOK_BEGIN_S, false, true, false, tochn);
+    convertRecord(mem_texGurOSTATOK_BEGIN_NZ, false, true, false, tochn);
+    convertRecord(mem_texGurPRIX, false, true, false, tochn);
+    convertRecord(mem_texGurPEREDANO_PRIH_NZ, false, true, false, tochn);
+    convertRecord(mem_texGurPRIX_PERIOD, false, true, false, tochn);
+    convertRecord(mem_texGurZAG, false, true, false, tochn);
+    convertRecord(mem_texGurZAG_PERIOD, false, true, false, tochn);
+    convertRecord(mem_texGurRASH_VIRAB_PERIOD, false, true, false, tochn);
+    convertRecord(mem_texGurPEREDANO_RASH_S, false, true, false, tochn);
+    convertRecord(mem_texGurPEREDANO_RASH_NZ, false, true, false, tochn);
+    convertRecord(mem_texGurOSTATOK_END_S_CEX, false, false, true, tochn);
+{    if (mem_texGurKOL_RASH_EDIZ.AsFloat <> 0) then
+      if (mem_texGurKEI_ID_KART.AsInteger <> mem_texGurKEI_ID_NORM.AsInteger)
+         and (mem_texGurKEI_ID_NORM.AsInteger <> 0) then
+        mem_texGurKOL_RASH_EDIZ.AsFloat := RoundTo(mem_texGurKOL_RASH_EDIZ.AsFloat
+                                                   * dm1.Koef_per(mem_texGurKEI_ID_NORM.AsInteger,
+                                                                  mem_texGurKEI_ID_KART.AsInteger,
+                                                                  mem_texGurKSM_ID.AsInteger),
+                                                   tochn);
+    if (mem_texGurOSTATOK_END_S.AsFloat <> 0) then
+      if (mem_texGurKEI_ID_OST_PREP.AsInteger <> mem_texGurKEI_ID_NORM.AsInteger)
+         and (mem_texGurKEI_ID_NORM.AsInteger <> 0) then
+        mem_texGurOSTATOK_END_S.AsFloat := RoundTo(mem_texGurOSTATOK_END_S.AsFloat
+                                                   * dm1.Koef_per(mem_texGurKEI_ID_NORM.AsInteger,
+                                                                  mem_texGurKEI_ID_OST_PREP.AsInteger,
+                                                                  mem_texGurKSM_ID.AsInteger),
+                                                   tochn);
+    if (mem_texGurOSTATOK_END_NZ.AsFloat <> 0) then
+      if (mem_texGurKEI_ID_OST_PREP.AsInteger <> mem_texGurKEI_ID_NORM.AsInteger)
+         and (mem_texGurKEI_ID_NORM.AsInteger <> 0) then
+        mem_texGurOSTATOK_END_NZ.AsFloat := RoundTo(mem_texGurOSTATOK_END_NZ.AsFloat
+                                                    * dm1.Koef_per(mem_texGurKEI_ID_NORM.AsInteger,
+                                                                   mem_texGurKEI_ID_OST_PREP.AsInteger,
+                                                                   mem_texGurKSM_ID.AsInteger),
+                                                    tochn);
+    if (mem_texGurOSTATOK_END_S_CEX.AsFloat <> 0) then
+      if (mem_texGurKEI_ID_OST_CEX.AsInteger <> mem_texGurKEI_ID_NORM.AsInteger)
+         and (mem_texGurKEI_ID_NORM.AsInteger <> 0) then
+        mem_texGurOSTATOK_END_S_CEX.AsFloat := RoundTo(mem_texGurOSTATOK_END_S_CEX.AsFloat
+                                                       * dm1.Koef_per(mem_texGurKEI_ID_NORM.AsInteger,
+                                                                      mem_texGurKEI_ID_OST_CEX.AsInteger,
+                                                                      mem_texGurKSM_ID.AsInteger),
+                                                       tochn);
+
+
+
+
+     mem_texGurOSTATOK_END_S.AsFloat := q_ostOSTATOK_END_S.AsFloat;
+      mem_texGurOSTATOK_END_NZ.AsFloat := q_ostOSTATOK_END_NZ.AsFloat;
+      mem_texGurOSTATOK_BEGIN_S.AsFloat := q_ostOSTATOK_BEGIN_S.AsFloat;
+      mem_texGurOSTATOK_BEGIN_NZ.AsFloat := q_ostOSTATOK_BEGIN_NZ.AsFloat;
+      mem_texGurPRIX.AsFloat := q_ostPRIX.AsFloat;
+      mem_texGurPEREDANO_PRIH_NZ.AsFloat := q_ostPEREDANO_PRIH_NZ.AsFloat;
+      mem_texGurPRIX_PERIOD.AsFloat := q_ostPRIX_PERIOD.AsFloat;
+      mem_texGurZAG.AsFloat := q_ostZAG.AsFloat;
+      mem_texGurZAG_PERIOD.AsFloat := q_ostZAG_PERIOD.AsFloat;
+      mem_texGurRASH_VIRAB_PERIOD.AsFloat := q_ostRASH_VIRAB_PERIOD.AsFloat;
+      mem_texGurPEREDANO_RASH_S.AsFloat := q_ostPEREDANO_RASH_S.AsFloat;
+      mem_texGurPEREDANO_RASH_NZ.AsFloat := q_ostPEREDANO_RASH_NZ.AsFloat;   }
+    mem_texGur.Post;
+    mem_texGur.Next;
+  end;
+end;
+
+procedure TFTexGur.convertRecord(var value : TFloatField; kart, ostPrep, ostCex : boolean;
+                                 tochn : integer);
+var
+  keiFrom : integer;
+begin
+  keiFrom := 0;
+  if (value.AsFloat <> 0) then
+  begin
+    if (kart) then
+      keiFrom := mem_texGurKEI_ID_KART.AsInteger;
+    if (ostPrep) then
+      keiFrom := mem_texGurKEI_ID_OST_PREP.AsInteger;
+    if (ostCex) then
+      keiFrom := mem_texGurKEI_ID_OST_CEX.AsInteger;
+    if (keiFrom <> mem_texGurKEI_ID_NORM.AsInteger)
+       and (mem_texGurKEI_ID_NORM.AsInteger <> 0) then
+      value.AsFloat := RoundTo(value.AsFloat * dm1.Koef_per(mem_texGurKEI_ID_NORM.AsInteger,
+                                                            keiFrom,
+                                                            mem_texGurKSM_ID.AsInteger),
+                               tochn);
   end;
 end;
 
@@ -560,7 +900,7 @@ begin
 
     TexGur.EnableControls;
     if (PageControl1.ActivePage = tabsheet1) then    
-      DBGridEh3.SetFocus;
+      grid_zagr.SetFocus;
     TexGur.BeforePost := TexGurBeforePost;
     StopWait;
   except
@@ -607,100 +947,103 @@ end;
 procedure TFTexGur.Edit1KeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  if key = vk_return then
+  if (key = vk_return) then
   begin
     StartWait;
-    if (edit1.text<>'') and (not dm1.IBQuery1.Eof)  then
+    if (edit1.text <> '') and (not dm1.IBQuery1.Eof)  then
     begin
-    edit9.text:='';
-    EDIT1.OnChange:=nil;
-    edit1.text:=DM1.IBQuery1.FieldByName('kod_PROD').Asstring;
-    EDIT1.OnChange:=Edit1Change;
-//    edit17.text:=floattostr(DM1.IBQuery1.FieldByName('vol_ov').Asfloat);
-    s_kodp:=DM1.IBQuery1.FieldByName('KSM_ID').value;
-    s_gost:=DM1.IBQuery1.FieldByName('GOST').AsString;
-    s_xarkt:=DM1.IBQuery1.FieldByName('XARKT').AsString;
-    s_nmat:=DM1.IBQuery1.FieldByName('NMAT').AsString;
-    s_kei:=DM1.IBQuery1.FieldByName('KEI_ID').VALUE;
-    s_korg:=DM1.IBQuery1.FieldByName('KORG').VALUE;
-    s_kodProd:=DM1.IBQuery1.FieldByName('KOD_PROD').AsString;
-    s_Lek_id:=DM1.IBQuery1.FieldByName('Lek_Id').VALUE;
-    s_namorg:=DM1.IBQuery1.FieldByName('NAM').AsString;
-    s_neiz:=DM1.IBQuery1.FieldByName('NEIS').AsString;
-    s_Formv:=DM1.IBQuery1.FieldByName('NAMEFV').AsString;
-    s_Sprod_id:=DM1.IBQuery1.FieldByName('Sprod_Id').VALUE;
-    S_NAMREG:=DM1.IBQuery1.FieldByName('NAM_REG').AsString;
-    IF fSprFormul.CEH_NormZ.Active THEN fSprFormul.CEH_NormZ.Active:=false;
-    SORTf:=' ORDER BY CEH_NORMZ.RAZDEL_ID,CEH_NORMZ.KSM_ID_MAT ';
-    USLf:=' Where CEH_NORMZ.KSM_ID_PR='+INTTOSTR(s_kodp);
-    fSprFormul.CEH_NormZ.MacroByName('SORT').AsString:=SORTf;
-    fSprFormul.CEH_NormZ.MacroByName('USL').AsString:=USLf;
-    fSprFormul.CEH_NormZ.Open;
-    DM1.IBQuery1.Active := False;
-    DM1.IBQuery1.SQL.Clear;
-    DM1.IBQuery1.SQL.Add('SELECT *');
-    DM1.IBQuery1.SQL.Add(' FROM UTPLAN');
-    DM1.IBQuery1.SQL.Add(' WHERE UTPLAN.MES='+inttostr(mes)+' AND UTPLAN.GOD='+inttostr(god)+' AND UTPLAN.SPROD_ID='+inttostr(s_sprod_id));
-    DM1.IBQuery1.Active := True;
-    if not dm1.IBQuery1.Eof then
-     begin
-     Label26.Caption:=floattostr(DM1.IBQuery1.FieldByName('PLAN').AsFloat);
-     s_plan:=DM1.IBQuery1.FieldByName('PLAN').AsFloat;
-     end
-    else
-    begin
-     Label26.Caption:='0';
-     s_plan:=0;
-    end;
-    DM1.IBQuery1.Active := False;
-    DM1.IBQuery1.SQL.Clear;
-    DM1.IBQuery1.SQL.Add('SELECT kartv.kol_prih');
-    DM1.IBQuery1.SQL.Add(' FROM KARTV ');
-    DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTV.DOC_ID = DOCUMENT.DOC_ID)');
-    DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(VsTRUK_ID)
-    + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
-    + ' AND KARTV.KSM_ID='+INTTOSTR(s_KODP)
-    + ' AND Document.Date_op between '+''''+s_dat1_period+'''' +' and '+''''+s_dat2_period+'''');
-    DM1.IBQuery1.Active := True;
-    if not dm1.IBQuery1.Eof then
-     begin
-     Label34.Caption:=floattostr(DM1.IBQuery1.FieldByName('kol_prih').AsFloat);
-     s_OPLan:=DM1.IBQuery1.FieldByName('kol_prih').AsFloat;
-     end
-    else
-    begin
-     Label34.Caption:='0';
-     s_Oplan:=0;
-    end;
-    DM1.IBQuery1.Active := False;
-    DM1.IBQuery1.SQL.Clear;
-    DM1.IBQuery1.SQL.Add('SELECT SUM(kart.kol_prih) SDANO');
-    DM1.IBQuery1.SQL.Add(' FROM KART ');
-    DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KART.DOC_ID = DOCUMENT.DOC_ID)');
-    DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.KLIENT_ID='+INTTOSTR(VsTRUK_ID)
-    + ' AND DOCUMENT.TIP_OP_ID=2'+ ' AND KART.KSM_ID='+INTTOSTR(s_KODP)
-    + ' AND Document.Date_op between '+''''+s_dat1_period+'''' +' and '+''''+s_dat2_period+'''');
-    DM1.IBQuery1.Active := True;
-    if not dm1.IBQuery1.Eof then
-     begin
+      edit9.text := '';
+      EDIT1.OnChange := nil;
+      edit1.text := DM1.IBQuery1.FieldByName('kod_PROD').Asstring;
+      EDIT1.OnChange := Edit1Change;
+  //    edit17.text:=floattostr(DM1.IBQuery1.FieldByName('vol_ov').Asfloat);
+      s_kodp := DM1.IBQuery1.FieldByName('KSM_ID').value;
+      s_gost := DM1.IBQuery1.FieldByName('GOST').AsString;
+      s_xarkt := DM1.IBQuery1.FieldByName('XARKT').AsString;
+      s_nmat := DM1.IBQuery1.FieldByName('NMAT').AsString;
+      s_kei := DM1.IBQuery1.FieldByName('KEI_ID').VALUE;
+      s_korg := DM1.IBQuery1.FieldByName('KORG').VALUE;
+      s_kodProd := DM1.IBQuery1.FieldByName('KOD_PROD').AsString;
+      s_Lek_id := DM1.IBQuery1.FieldByName('Lek_Id').VALUE;
+      s_namorg := DM1.IBQuery1.FieldByName('NAM').AsString;
+      s_neiz := DM1.IBQuery1.FieldByName('NEIS').AsString;
+      s_Formv := DM1.IBQuery1.FieldByName('NAMEFV').AsString;
+      s_Sprod_id := DM1.IBQuery1.FieldByName('Sprod_Id').VALUE;
+      S_NAMREG := DM1.IBQuery1.FieldByName('NAM_REG').AsString;
+      fSprFormul.CEH_NormZ.Close;
+      SORTf := ' ORDER BY CEH_NORMZ.RAZDEL_ID,CEH_NORMZ.KSM_ID_MAT ';
+      USLf := ' Where CEH_NORMZ.KSM_ID_PR='+INTTOSTR(s_kodp);
+      fSprFormul.CEH_NormZ.MacroByName('SORT').AsString := SORTf;
+      fSprFormul.CEH_NormZ.MacroByName('USL').AsString := USLf;
+      fSprFormul.CEH_NormZ.Open;
+      DM1.IBQuery1.Active := False;
+      DM1.IBQuery1.SQL.Clear;
+      DM1.IBQuery1.SQL.Add('SELECT *');
+      DM1.IBQuery1.SQL.Add(' FROM UTPLAN');
+      DM1.IBQuery1.SQL.Add(' WHERE UTPLAN.MES=' + inttostr(mes) + ' AND UTPLAN.GOD='
+                           + inttostr(god) + ' AND UTPLAN.SPROD_ID=' + inttostr(s_sprod_id));
+      DM1.IBQuery1.Active := True;
+      if (not dm1.IBQuery1.Eof) then
+      begin
+        Label26.Caption := floattostr(DM1.IBQuery1.FieldByName('PLAN').AsFloat);
+        s_plan := DM1.IBQuery1.FieldByName('PLAN').AsFloat;
+      end
+      else
+      begin
+        Label26.Caption := '0';
+        s_plan := 0;
+      end;
+      DM1.IBQuery1.Active := False;
+      DM1.IBQuery1.SQL.Clear;
+      DM1.IBQuery1.SQL.Add('SELECT kartv.kol_prih');
+      DM1.IBQuery1.SQL.Add(' FROM KARTV ');
+      DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTV.DOC_ID = DOCUMENT.DOC_ID)');
+      DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID=' + INTTOSTR(VsTRUK_ID)
+                           + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
+                           + ' AND KARTV.KSM_ID=' + INTTOSTR(s_KODP)
+                           + ' AND Document.Date_op between ' + '''' + s_dat1_period
+                           + '''' + ' and ' + '''' + s_dat2_period + '''');
+      DM1.IBQuery1.Active := True;
+      if (not dm1.IBQuery1.Eof) then
+      begin
+        Label34.Caption := floattostr(DM1.IBQuery1.FieldByName('kol_prih').AsFloat);
+        s_OPLan := DM1.IBQuery1.FieldByName('kol_prih').AsFloat;
+      end
+      else
+      begin
+        Label34.Caption := '0';
+        s_Oplan := 0;
+      end;
+      DM1.IBQuery1.Active := False;
+      DM1.IBQuery1.SQL.Clear;
+      DM1.IBQuery1.SQL.Add('SELECT SUM(kart.kol_prih) SDANO');
+      DM1.IBQuery1.SQL.Add(' FROM KART ');
+      DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KART.DOC_ID = DOCUMENT.DOC_ID)');
+      DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.KLIENT_ID=' + INTTOSTR(VsTRUK_ID)
+                           + ' AND DOCUMENT.TIP_OP_ID=2'+ ' AND KART.KSM_ID='
+                           + INTTOSTR(s_KODP) + ' AND Document.Date_op between '
+                           + '''' + s_dat1_period + '''' + ' and ' + '''' + s_dat2_period + '''');
+      DM1.IBQuery1.Active := True;
+      if (not dm1.IBQuery1.Eof) then
+      begin
 //     Label36.Caption:=floattostr(DM1.IBQuery1.FieldByName('SDANO').AsFloat);
-     s_SDANO:=DM1.IBQuery1.FieldByName('SDANO').AsFloat;
-     end
-    else
-    begin
+        s_SDANO := DM1.IBQuery1.FieldByName('SDANO').AsFloat;
+      end
+      else
+      begin
 //     Label36.Caption:='0';
-     s_SDANO:=0;
+        s_SDANO := 0;
+      end;
+      label19.caption := s_NMAT;
+      label28.caption := Inttostr(s_KORG);
+      label29.caption := s_namorg;
+      label21.caption := s_Neiz;
+      label22.caption := s_GOST;
+      label11.caption := s_Xarkt;
+      label45.caption := s_Formv;
     end;
-    label19.caption:=s_NMAT;
-    label28.caption:=Inttostr(s_KORG);
-    label29.caption:=s_namorg;
-    label21.caption:=s_Neiz;
-    label22.caption:=s_GOST;
-    label11.caption:=s_Xarkt;
-    label45.caption:=s_Formv;
+    StopWait;
   end;
-  StopWait;
- end;
 end;
 
 procedure TFTexGur.FormCreate(Sender: TObject);
@@ -715,74 +1058,77 @@ begin
 end;
 
 procedure TFTexGur.Edit2KeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+                                Shift: TShiftState);
 begin
- if key=vk_return then
- begin
-  if (edit2.text<>'') then
+  if (key = vk_return) then
   begin
-   if (edit9.Text<>'') and (edit9.Text<>'0') then s_vip:=strtofloat(edit9.Text) else s_vip:=0;
-   s_seria:=edit2.Text;
-   s_ksm:=s_kodp;
-   if dm1.Seria.Active then dm1.Seria.Active:=false;
-   Dm1.Seria.ParamByName('Ksm_id').AsInteger:=S_KODP;
-   dm1.Seria.Active:=true;
-   if dm1.Seria.Locate('seria;ksm_id',VarArrayOf([s_seria,s_kodp]),[]) then
-   begin
-    vseria_id:=dm1.SeriaSeria_id.AsInteger;
-    s_kol_seria:=DM1.SeriaKol_Seria.AsFloat;
-    edit9.Text:=floattostr(s_kol_seria);
-    if dm1.SeriaDATE_ZAG.AsVariant<>null then
+    if (edit2.text <> '') then
     begin
-     DateEdit1.Date:=dm1.SeriaDATE_ZAG.AsDateTime;
-     DateEdit1.ReadOnly:=false;
-     IF MODE<2 THEN
-      createTexGur
+      if (edit9.Text <> '') and (edit9.Text <> '0') then
+        s_vip := strtofloat(edit9.Text)
+      else
+        s_vip := 0;
+      s_seria := edit2.Text;
+      s_ksm := s_kodp;
+      dm1.Seria.Close;
+      Dm1.Seria.ParamByName('Ksm_id').AsInteger := S_KODP;
+      dm1.Seria.Open;
+      if (dm1.Seria.Locate('seria;ksm_id', VarArrayOf([s_seria,s_kodp]), [])) then
+      begin
+        vseria_id := dm1.SeriaSeria_id.AsInteger;
+        s_kol_seria := DM1.SeriaKol_Seria.AsFloat;
+        edit9.Text := floattostr(s_kol_seria);
+        if (dm1.SeriaDATE_ZAG.AsVariant <> null) then
+        begin
+          DateEdit1.Date := dm1.SeriaDATE_ZAG.AsDateTime;
+          DateEdit1.ReadOnly := false;
+          IF (MODE < 2) THEN
+            createTexGur;
 //      TexGurSost
-     ELSE
-     BEGIN
-      TexGur.Close;
-      TexGur.ParamByName('Struk').AsInteger:=vStruk_id;
-      TexGur.ParamByName('mes').AsInteger:=mes;
-      TexGur.ParamByName('god').AsInteger:=god;
-      TexGur.ParamByName('KODP').AsInteger:=S_KODP;
-      TexGur.MacroByName('SORT').AsString:=USL_SORT;
-      TexGur.MacroByName('pl').AsString:=replacestr(floattostrf(s_vip,ffGeneral,6,15),',','.');
-      TexGur.ParamByName('doc').AsInteger:=vDocument_id;
-      TexGur.MacroByName('dat1').AsString:=''''+S_DAT1_Period+'''';
-      TexGur.MacroByName('dat2').AsString:=''''+s_dat2_Period+'''';
-      TexGur.Open;
-     END;
-     TexGur.First;
-     IF fSprFormul.CEH_NormZ.Active THEN
-     begin
-      fSprFormul.CEH_NormZ.Close;
-      SORTf:=' ORDER BY CEH_NORMZ.RAZDEL_ID,CEH_NORMZ.KSM_ID_MAT ';
-      USLf:=' Where CEH_NORMZ.KSM_ID_PR='+INTTOSTR(S_KODP);
-      fSprFormul.CEH_NormZ.MacroByName('SORT').AsString:=SORTf;
-      fSprFormul.CEH_NormZ.MacroByName('USL').AsString:=USLf;
-      fSprFormul.CEH_NormZ.Open
-     end;
-    end
-    else
-    begin
-     DateEdit1.ReadOnly:=false;
-     DateEdit1.SetFocus;
-    end;
-   end
-   else
-   begin
-    dm1.Seria.Insert;
-    dm1.Seria.Post;
-    DateEdit1.ReadOnly:=false;
-    DateEdit1.SetFocus;
-   end;
-   dm1.Seria.Edit;
-   dm1.SeriaFORMA_VIPUSK.AsString:=s_Formv;
+//     ELSE
+//     BEGIN
+//      TexGur.Close;
+//      TexGur.ParamByName('Struk').AsInteger:=vStruk_id;
+//      TexGur.ParamByName('mes').AsInteger:=mes;
+//      TexGur.ParamByName('god').AsInteger:=god;
+//      TexGur.ParamByName('KODP').AsInteger:=S_KODP;
+//      TexGur.MacroByName('SORT').AsString:=USL_SORT;
+//      TexGur.MacroByName('pl').AsString:=replacestr(floattostrf(s_vip,ffGeneral,6,15),',','.');
+//      TexGur.ParamByName('doc').AsInteger:=vDocument_id;
+//      TexGur.MacroByName('dat1').AsString:=''''+S_DAT1_Period+'''';
+//      TexGur.MacroByName('dat2').AsString:=''''+s_dat2_Period+'''';
+//      TexGur.Open;
+//     END;
+//     TexGur.First;
+//     IF fSprFormul.CEH_NormZ.Active THEN
+//     begin
+//      fSprFormul.CEH_NormZ.Close;
+//      SORTf:=' ORDER BY CEH_NORMZ.RAZDEL_ID,CEH_NORMZ.KSM_ID_MAT ';
+//      USLf:=' Where CEH_NORMZ.KSM_ID_PR='+INTTOSTR(S_KODP);
+//      fSprFormul.CEH_NormZ.MacroByName('SORT').AsString:=SORTf;
+//      fSprFormul.CEH_NormZ.MacroByName('USL').AsString:=USLf;
+//      fSprFormul.CEH_NormZ.Open
+//     end;
+        end
+        else
+        begin
+          DateEdit1.ReadOnly := false;
+          DateEdit1.SetFocus;
+        end;
+      end
+      else
+      begin
+        dm1.Seria.Insert;
+        dm1.Seria.Post;
+        DateEdit1.ReadOnly := false;
+        DateEdit1.SetFocus;
+      end;
+      dm1.Seria.Edit;
+      dm1.SeriaFORMA_VIPUSK.AsString := s_Formv;
 //   DM1.SeriaKSM_ID.AsInteger:=S_Kodp;
-   DM1.Seria.Post;
+      DM1.Seria.Post;
+    end;
   end;
- end;
 end;
 
 procedure TFTexGur.Edit9Click(Sender: TObject);
@@ -815,10 +1161,24 @@ procedure TFTexGur.ToolButton3Click(Sender: TObject);
 var
   usl_ser : string;
 begin
-//Сохранение внесенных измененний по т/ж
-  if (TexGur.Modified) then
-    TexGur.Post;
+  if (mem_texGur.Modified)
+     or (mem_texGur.State = dsEdit)
+     or (mem_texGur.State = dsInsert) then
+    mem_texGur.Post;
   s_seria := edit2.Text;
+  if (s_seria <> '') then
+  begin
+    Splash := ShowSplashWindow(AniBmp1,
+                               'Сохранение данных. Подождите, пожалуйста...', True, nil);
+
+    createTexGur;
+    Splash.Free;
+  end;
+
+//Сохранение внесенных измененний по т/ж
+//  if (TexGur.Modified) then
+//    TexGur.Post;
+{  s_seria := edit2.Text;
   if (s_seria <> '') then
   begin
     Splash := ShowSplashWindow(AniBmp1,
@@ -991,7 +1351,7 @@ begin
     dm1.commitReadTrans(true);
     TexGurSost;
     Splash.Free;
-  end;
+  end;    }
 end;
 
 procedure TFTexGur.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -1289,13 +1649,12 @@ begin
   USL_SORT := '7,9';
   usl_dat := ' SERIA.Date_ZAG between ' + '''' + s_dat1_period + '''' + ' and '
              + '''' + s_dat2_period + '''';
-  IF (DM1.ConfigUMC.Active) THEN
-    DM1.ConfigUMC.close;
+  DM1.ConfigUMC.close;
   DM1.ConfigUMC.MacroByName('USL').AsString := 'configumc.STRUK_ID = ' + IntToStr(vSTRUK_ID);
   DM1.ConfigUMC.Open;
   if (MES = DM1.ConfigUMCMES.AsInteger) and (GOD = DM1.ConfigUMCGOD.AsInteger) then
   begin
-//      Label5.Caption:='(Текущий месяц)';
+    Label1.Caption:='(Текущий месяц)';
     MODE := 0;
     ToolButton1.Enabled := True;
     ToolButton2.Enabled := True;
@@ -1306,7 +1665,7 @@ begin
     if ((MES = DM1.ConfigUMCMES.AsInteger - 1) and (GOD = DM1.ConfigUMCGOD.AsInteger))
        or ((GOD = DM1.ConfigUMCGOD.AsInteger - 1) and (MES = 12) and (DM1.ConfigUMCMES.AsInteger = 1))then
     begin
-  //     Label5.Caption:='(Прошлый месяц)';
+      Label1.Caption:='(Прошлый месяц)';
       MODE := 1;
       ToolButton1.Enabled := True;
       ToolButton2.Enabled := True;
@@ -1315,7 +1674,7 @@ begin
     end
     else
     begin
-  //      Label5.Caption:='(Только просмотр)';
+      Label1.Caption:='(Только просмотр)';
       MODE := 2;
       ToolButton1.Enabled := False;
       ToolButton2.Enabled := false;
@@ -1470,21 +1829,21 @@ begin
   prov := false;
   Edit1.SetFocus;
 
-  drLoad := TDrugLoad.Create(DM1.BELMED);
+//  drLoad := TDrugLoad.Create(DM1.BELMED);
 //  drLoad := TDrugLoad.Create(dm1.BELMED.DatabaseName,
 //                             dm1.BELMED.Params.Values['user_name'],
 //                             dm1.BELMED.Params.Values['password'],
 //                             dm1.BELMED.Params.Values['sql_role_name']);
 end;
 
-procedure TFTexGur.DBGridEh3SortMarkingChanged(Sender: TObject);
+procedure TFTexGur.grid_zagrSortMarkingChanged(Sender: TObject);
 var
   i :Integer;
 begin
  Usl_Sort := '';
- for i := 0 to DBGridEh3.SortMarkedColumns.Count-1 do
+ for i := 0 to grid_zagr.SortMarkedColumns.Count-1 do
  BEGIN
-  if DBGridEh3.SortMarkedColumns[i].Title.SortMarker = smUpEh then
+  if grid_zagr.SortMarkedColumns[i].Title.SortMarker = smUpEh then
    Usl_Sort := inttostr(i+1) + '"'+ ' DESC , '
 {  begin
     if (DBGridEh3.SortMarkedColumns[i].FieldName='KSM_ID') then
@@ -1528,6 +1887,40 @@ begin
    TexGur.Open;
   END;
  end;
+end;
+
+procedure TFTexGur.DBGridEh4DblClick(Sender: TObject);
+begin
+  if (ZagSyrTIP_DOK_ID.AsInteger = 34) then
+  begin
+    s_seria := Copy(ZagSyrNDOK.AsString, 11, length(ZagSyrNDOK.AsString));
+    s_kodp := ZagSyrKODP.AsInteger;
+    s_ksm := s_kodp;
+    dm1.Seria.Close;
+    Dm1.Seria.ParamByName('Ksm_id').AsInteger := S_KODP;
+    dm1.Seria.Open;
+    if (dm1.Seria.Locate('seria;ksm_id', VarArrayOf([s_seria, s_kodp]), [])) then
+    begin
+      vseria_id := dm1.SeriaSeria_id.AsInteger;
+      s_kol_seria := DM1.SeriaKol_Seria.AsFloat;
+      edit9.Text := floattostr(s_kol_seria);
+      s_vip := strtofloat(edit9.Text);
+      edit2.Text := s_seria;
+      if (dm1.SeriaDATE_ZAG.AsVariant <> null) then
+      begin
+        DateEdit1.Date := dm1.SeriaDATE_ZAG.AsDateTime;
+        DateEdit1.ReadOnly := false;
+        PageControl1.ActivePage := tabsheet1;
+        IF (MODE < 2) THEN
+          createTexGur;
+      end
+      else
+      begin
+        DateEdit1.ReadOnly := false;
+        DateEdit1.SetFocus;
+      end;
+    end;
+  end;
 end;
 
 procedure TFTexGur.DBGridEh4SortMarkingChanged(Sender: TObject);
@@ -1622,47 +2015,72 @@ end;
 
 procedure TFTexGur.ToolButton2Click(Sender: TObject);
 begin
-if MessageDlg('Удалять запись? ',mtConfirmation, [mbYes,mbNo], 0) = mrYes then
-begin
- try
- begin
-  TexGur.Delete;
- end;
- except
-  On E: Exception do
+  if MessageDlg('Удалять запись? ',mtConfirmation, [mbYes,mbNo], 0) = mrYes then
   begin
-   MessageDlg('Произошла ошибка при удалении записи!'+E.Message, mtWarning, [mbOK], 0);
-   Abort;
+    try
+    begin
+      mem_texGur.Edit;
+      mem_texGurDELETE.AsBoolean := true;
+      mem_texGur.Post;
+//      TexGur.Delete;
+    end;
+    except
+      On E: Exception do
+      begin
+        MessageDlg('Произошла ошибка при удалении записи!'+E.Message, mtWarning, [mbOK], 0);
+        Abort;
+      end;
+    end;
   end;
- end;
-end;
-
 end;
 
 procedure TFTexGur.ToolButton1Click(Sender: TObject);
 
 begin
   s_seria_p := s_seria;
-  TexGur.APPEND;
-  TexGurStroka_id.AsInteger := vStroka_id;
-  TexGurKodp.AsInteger := s_kodp;
-  TexGurDate_op.AsDateTime := strtodate(dateEdit1.Text);
-  TexGurDoc_id.AsInteger := vDocument_id;
-// TexGurMes.AsInteger:=mes;
-// TexGurGod.AsInteger:=God;
-  TexGurTip_op_id.AsInteger := 33;
-  DBGridEh3.SetFocus;
+  mem_texGur.Append;
+  mem_texGurADD.AsBoolean := true;
+  mem_texGur.Post;
+
+//  TexGur.APPEND;
+//  TexGurStroka_id.AsInteger := vStroka_id;
+//  TexGurKodp.AsInteger := s_kodp;
+//  TexGurDate_op.AsDateTime := strtodate(dateEdit1.Text);
+//  TexGurDoc_id.AsInteger := vDocument_id;
+//  TexGurTip_op_id.AsInteger := 33;
+  grid_zagr.SetFocus;
   s_seria := s_seria_p;
 end;
 
-procedure TFTexGur.DBGridEh3EditButtonClick(Sender: TObject);
+procedure TFTexGur.grid_zagrDrawColumnCell(Sender: TObject; const Rect: TRect;
+  DataCol: Integer; Column: TColumnEh; State: TGridDrawState);
+begin
+  if (mem_texGurDELETE.AsBoolean = true) then
+  begin
+    if (mem_texGurADD.AsBoolean = true) then
+      grid_zagr.Canvas.Brush.Color := clYellow
+    else
+      grid_zagr.Canvas.Brush.Color := clRed;
+  end;
+
+  if (mem_texGurADD.AsBoolean = true) then
+  begin
+    if (mem_texGurDELETE.AsBoolean = true) then
+      grid_zagr.Canvas.Brush.Color := clYellow
+    else
+      grid_zagr.Canvas.Brush.Color := clGreen;
+  end;
+  grid_zagr.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+end;
+
+procedure TFTexGur.grid_zagrEditButtonClick(Sender: TObject);
 var
   nm : integer;
 begin
   nm := 0;
-  if dbgrideh3.SelectedField.FieldName='NEIS' then nm:=1;
-  if dbgrideh3.SelectedField.FieldName='KSM_ID' then nm:=2;
-  if dbgrideh3.SelectedField.FieldName='KRAZ' then nm:=3;
+  if grid_zagr.SelectedField.FieldName='NEIS' then nm:=1;
+  if grid_zagr.SelectedField.FieldName='KSM_ID' then nm:=2;
+  if grid_zagr.SelectedField.FieldName='KRAZ' then nm:=3;
   //DM1.Kart.Edit;
   TexGur.Edit;
   case nm of
@@ -1778,16 +2196,17 @@ end;
 
 procedure TFTexGur.ToolButton6Click(Sender: TObject);
 begin
-//FOstSyr.DBText1.DataSource:=FTexGur.DSTexGur;
-//FOstSyr.DBText2.DataSource:=FTexGur.DSTexGur;
-//FOstSyr.DBText3.DataSource:=FTexGur.DSTexGur;
- S_ksm:=TexGurKsm_id.AsInteger;
- FOstSyr.Edit1.text:=inttostr(TexGurKsm_id.AsInteger);
- FOstSyr.Label7.Caption:=TexGurNmat.AsString;
- FOstSyr.label8.Caption:=TexGurNeis.AsString;
- FOstSyr.DateEdit3.Date:=strtodate(s_dat1);
- FOstSyr.DateEdit4.Date:=strtodate(s_dat2);
-if FOstSyr=nil then FOstSyr:=TFOstSyr.Create(Application);
+  S_ksm := mem_texGurKsm_id.AsInteger;
+//  S_ksm := TexGurKsm_id.AsInteger;
+//  FOstSyr.Edit1.text := inttostr(TexGurKsm_id.AsInteger);
+//  FOstSyr.Label7.Caption := TexGurNmat.AsString;
+//  FOstSyr.label8.Caption := TexGurNeis.AsString;
+//  FOstSyr.DateEdit3.Date := strtodate(s_dat1);
+//  FOstSyr.DateEdit4.Date := strtodate(s_dat2);
+  if (FOstSyr = nil) then
+    FOstSyr := TFOstSyr.Create(Application);
+  FOstSyr.DateEdit3.Date := strtodate(s_dat1);
+  FOstSyr.DateEdit4.Date := strtodate(s_dat2);
   FOstSyr.ShowModal;
 end;
 
@@ -1886,10 +2305,10 @@ begin
         begin
           DateEdit1.Date := dm1.SeriaDATE_ZAG.AsDateTime;
 //     DateEdit1.ReadOnly:=true;
-          TexGur.Close;
+//          TexGur.Close;
           createTexGur;
 //          TexGurSost;
-          TexGur.First;
+//          TexGur.First;
         end
         else
         begin
@@ -1909,115 +2328,123 @@ end;
 
 procedure TFTexGur.SpeedButton2Click(Sender: TObject);
 begin
-if FindSpprod=nil then FindSpprod:=TfindSpprod.Create(Application);
- FindSpprod.DataBaseName:=dm1.BELMED;
- FindSpprod.ReadOnly:=true;
- FindSpprod.Usl_Struk :='spprod.struk_id='+inttostr(vStruk_id);
- FindSpprod.ShowModal;
- if FindSpprod.ModalResult > 50 then
- begin
-  StartWait;
-  fSprFormul.CEH_NormZ.Active:=FALSE;
-  DM1.IBQuery1.Active := False;
-  DM1.IBQuery1.SQL.Clear;
-  DM1.IBQuery1.SQL.Add('SELECT SPPROD.STRUK_ID,SPPROD.NMAT, SPPROD.KOD_PROD, SPPROD.KEI_ID,SPPROD.KSM_ID,SPPROD.SPROD_ID,spprod.volumf,spprod.vol_ov,SPPROD.VOLumf,');
-  DM1.IBQuery1.SQL.Add('SPPROD.GOST,EDIZ.NEIS,SPPROD.KORG,SPPROD.XARKT,SPPROD.ACTIVP,SPRORG.NAM,SPPROD.LEK_ID,SPFORMV.NAMEFv,region.nam nam_reg');
-  DM1.IBQuery1.SQL.Add(' FROM SPPROD');
-  DM1.IBQuery1.SQL.Add('  INNER JOIN EDIZ ON (SPPROD.KEI_ID = EDIZ.KEI_ID)');
-  DM1.IBQuery1.SQL.Add('  LEFT JOIN SPRORG ON (SPPROD.KORG = SPRORG.KOD)');
-  DM1.IBQuery1.SQL.Add('  LEFT JOIN SPFORMV ON (SPPROD.SPFV = SPFORMV.SPFV)');
-  DM1.IBQuery1.SQL.Add('  LEFT JOIN region ON (SPPROD.reg = region.reg)');
-  DM1.IBQuery1.SQL.Add(' WHERE SPPROD.KSM_ID='+INTTOSTR(FindSpprod.ModalResult-50));
-  DM1.IBQuery1.Active := True;
-  EDIT1.OnChange:=nil;
-  edit1.text:=DM1.IBQuery1.FieldByName('kod_PROD').Asstring;
-  EDIT1.OnChange:=Edit1Change;
-  edit9.text:='';
-  s_namreg := dm1.IBQuery1.FieldByName('Nam_reg').AsString;
-  label3.Caption:=dm1.IBQuery1.FieldByName('Nam_reg').AsString;
-//  edit17.text:=floattostr(DM1.IBQuery1.FieldByName('vol_ov').Asfloat);
-  s_kodp:=DM1.IBQuery1.FieldByName('KSM_ID').value;
-  s_gost:=DM1.IBQuery1.FieldByName('GOST').AsString;
-  s_xarkt:=DM1.IBQuery1.FieldByName('XARKT').AsString;
-  s_nmat:=DM1.IBQuery1.FieldByName('NMAT').AsString;
-  s_kei:=DM1.IBQuery1.FieldByName('KEI_ID').VALUE;
-  s_korg:=DM1.IBQuery1.FieldByName('KORG').VALUE;
-  s_kodProd:=DM1.IBQuery1.FieldByName('KOD_PROD').AsString;
-  s_Lek_id:=DM1.IBQuery1.FieldByName('Lek_Id').VALUE;
-  s_namorg:=DM1.IBQuery1.FieldByName('NAM').AsString;
-  s_neiz:=DM1.IBQuery1.FieldByName('NEIS').AsString;
-  s_Formv:=DM1.IBQuery1.FieldByName('NAMEFV').AsString;
-  s_Sprod_id:=DM1.IBQuery1.FieldByName('Sprod_Id').VALUE;
-  IF fSprFormul.CEH_NormZ.Active THEN fSprFormul.CEH_NormZ.Active:=false;
-  SORTf:=' ORDER BY CEH_NORMZ.RAZDEL_ID,CEH_NORMZ.KSM_ID_MAT ';
-  USLf:=' Where CEH_NORMZ.KSM_ID_PR='+INTTOSTR(s_kodp);
-  fSprFormul.CEH_NormZ.MacroByName('SORT').AsString:=SORTf;
-  fSprFormul.CEH_NormZ.MacroByName('USL').AsString:=USLf;
-  fSprFormul.CEH_NormZ.Open;
-  DM1.IBQuery1.Active := False;
-  DM1.IBQuery1.SQL.Clear;
-  DM1.IBQuery1.SQL.Add('SELECT *');
-  DM1.IBQuery1.SQL.Add(' FROM UTPLAN');
-  DM1.IBQuery1.SQL.Add(' WHERE UTPLAN.MES='+inttostr(mes)+' AND UTPLAN.GOD='+inttostr(god)+' AND UTPLAN.SPROD_ID='+inttostr(s_sprod_id));
-  DM1.IBQuery1.Active := True;
-  if not dm1.IBQuery1.Eof then
+  if (FindSpprod = nil) then
+    FindSpprod := TfindSpprod.Create(Application);
+  FindSpprod.DataBaseName := dm1.BELMED;
+  FindSpprod.ReadOnly := true;
+  FindSpprod.Usl_Struk := 'spprod.struk_id=' + inttostr(vStruk_id);
+  FindSpprod.ShowModal;
+  if (FindSpprod.ModalResult > 50) then
   begin
-   Label26.Caption:=floattostr(DM1.IBQuery1.FieldByName('PLAN').AsFloat);
-   s_plan:=DM1.IBQuery1.FieldByName('PLAN').AsFloat;
-  end
-  else
-  begin
-   Label26.Caption:='0';
-   s_plan:=0;
-  end;
-  DM1.IBQuery1.Active := False;
+    StartWait;
+    fSprFormul.CEH_NormZ.Active := FALSE;
+    DM1.IBQuery1.Active := False;
+    DM1.IBQuery1.SQL.Clear;
+    DM1.IBQuery1.SQL.Add('SELECT SPPROD.STRUK_ID, SPPROD.NMAT, SPPROD.KOD_PROD, '
+                         + 'SPPROD.KEI_ID, SPPROD.KSM_ID, SPPROD.SPROD_ID, '
+                         + 'spprod.volumf, spprod.vol_ov, SPPROD.VOLumf,');
+    DM1.IBQuery1.SQL.Add('SPPROD.GOST, EDIZ.NEIS, SPPROD.KORG, SPPROD.XARKT, '
+                         + 'SPPROD.ACTIVP, SPRORG.NAM, SPPROD.LEK_ID, SPFORMV.NAMEFv,'
+                         + 'region.nam nam_reg ');
+    DM1.IBQuery1.SQL.Add(' FROM SPPROD');
+    DM1.IBQuery1.SQL.Add('  INNER JOIN EDIZ ON (SPPROD.KEI_ID = EDIZ.KEI_ID)');
+    DM1.IBQuery1.SQL.Add('  LEFT JOIN SPRORG ON (SPPROD.KORG = SPRORG.KOD)');
+    DM1.IBQuery1.SQL.Add('  LEFT JOIN SPFORMV ON (SPPROD.SPFV = SPFORMV.SPFV)');
+    DM1.IBQuery1.SQL.Add('  LEFT JOIN region ON (SPPROD.reg = region.reg)');
+    DM1.IBQuery1.SQL.Add(' WHERE SPPROD.KSM_ID=' + INTTOSTR(FindSpprod.ModalResult - 50));
+    DM1.IBQuery1.Active := True;
+    EDIT1.OnChange := nil;
+    edit1.text := DM1.IBQuery1.FieldByName('kod_PROD').Asstring;
+    EDIT1.OnChange := Edit1Change;
+    edit9.text := '';
+    s_namreg := dm1.IBQuery1.FieldByName('Nam_reg').AsString;
+    label3.Caption := dm1.IBQuery1.FieldByName('Nam_reg').AsString;
+  //  edit17.text:=floattostr(DM1.IBQuery1.FieldByName('vol_ov').Asfloat);
+    s_kodp := DM1.IBQuery1.FieldByName('KSM_ID').value;
+    s_gost := DM1.IBQuery1.FieldByName('GOST').AsString;
+    s_xarkt := DM1.IBQuery1.FieldByName('XARKT').AsString;
+    s_nmat := DM1.IBQuery1.FieldByName('NMAT').AsString;
+    s_kei := DM1.IBQuery1.FieldByName('KEI_ID').VALUE;
+    s_korg := DM1.IBQuery1.FieldByName('KORG').VALUE;
+    s_kodProd := DM1.IBQuery1.FieldByName('KOD_PROD').AsString;
+    s_Lek_id := DM1.IBQuery1.FieldByName('Lek_Id').VALUE;
+    s_namorg := DM1.IBQuery1.FieldByName('NAM').AsString;
+    s_neiz := DM1.IBQuery1.FieldByName('NEIS').AsString;
+    s_Formv := DM1.IBQuery1.FieldByName('NAMEFV').AsString;
+    s_Sprod_id := DM1.IBQuery1.FieldByName('Sprod_Id').VALUE;
+    fSprFormul.CEH_NormZ.Close;
+    SORTf := ' ORDER BY CEH_NORMZ.RAZDEL_ID,CEH_NORMZ.KSM_ID_MAT ';
+    USLf := ' Where CEH_NORMZ.KSM_ID_PR=' + INTTOSTR(s_kodp);
+    fSprFormul.CEH_NormZ.MacroByName('SORT').AsString := SORTf;
+    fSprFormul.CEH_NormZ.MacroByName('USL').AsString := USLf;
+    fSprFormul.CEH_NormZ.Open;
+    DM1.IBQuery1.Active := False;
+    DM1.IBQuery1.SQL.Clear;
+    DM1.IBQuery1.SQL.Add('SELECT *');
+    DM1.IBQuery1.SQL.Add(' FROM UTPLAN');
+    DM1.IBQuery1.SQL.Add(' WHERE UTPLAN.MES=' + inttostr(mes) + ' AND UTPLAN.GOD='
+                         + inttostr(god) + ' AND UTPLAN.SPROD_ID=' + inttostr(s_sprod_id));
+    DM1.IBQuery1.Active := True;
+    if (not dm1.IBQuery1.Eof) then
+    begin
+      Label26.Caption := floattostr(DM1.IBQuery1.FieldByName('PLAN').AsFloat);
+      s_plan := DM1.IBQuery1.FieldByName('PLAN').AsFloat;
+    end
+    else
+    begin
+      Label26.Caption := '0';
+      s_plan := 0;
+    end;
+    DM1.IBQuery1.Active := False;
     DM1.IBQuery1.SQL.Clear;
     DM1.IBQuery1.SQL.Add('SELECT kartv.kol_prih');
     DM1.IBQuery1.SQL.Add(' FROM KARTV ');
     DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTV.DOC_ID = DOCUMENT.DOC_ID)');
-    DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(VsTRUK_ID)
-    + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
-    + ' AND KARTV.KSM_ID='+INTTOSTR(s_KODP)
-    + ' AND Document.Date_op between '+''''+s_dat1_period+'''' +' and '+''''+s_dat2_period+'''');
+    DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID=' + INTTOSTR(VsTRUK_ID)
+                         + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
+                         + ' AND KARTV.KSM_ID=' + INTTOSTR(s_KODP)
+                         + ' AND Document.Date_op between ' + '''' + s_dat1_period
+                         + '''' + ' and ' + '''' + s_dat2_period + '''');
     DM1.IBQuery1.Active := True;
     if not dm1.IBQuery1.Eof then
-     begin
-     Label34.Caption:=floattostr(DM1.IBQuery1.FieldByName('kol_prih').AsFloat);
-     s_OPLan:=DM1.IBQuery1.FieldByName('kol_prih').AsFloat;
-     end
+    begin
+      Label34.Caption := floattostr(DM1.IBQuery1.FieldByName('kol_prih').AsFloat);
+      s_OPLan := DM1.IBQuery1.FieldByName('kol_prih').AsFloat;
+    end
     else
     begin
-     Label34.Caption:='0';
-     s_Oplan:=0;
+      Label34.Caption := '0';
+      s_Oplan := 0;
     end;
     DM1.IBQuery1.Active := False;
     DM1.IBQuery1.SQL.Clear;
     DM1.IBQuery1.SQL.Add('SELECT SUM(kart.kol_prih) SDANO');
     DM1.IBQuery1.SQL.Add(' FROM KART ');
     DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KART.DOC_ID = DOCUMENT.DOC_ID)');
-    DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.KLIENT_ID='+INTTOSTR(VsTRUK_ID)
-    + ' AND DOCUMENT.TIP_OP_ID=2' + ' AND KART.KSM_ID='+INTTOSTR(s_KODP)
-    + ' AND Document.Date_op between '+''''+s_dat1_period+'''' +' and '+''''+s_dat2_period+'''');
+    DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.KLIENT_ID=' + INTTOSTR(VsTRUK_ID)
+                         + ' AND DOCUMENT.TIP_OP_ID=2' + ' AND KART.KSM_ID='
+                         + INTTOSTR(s_KODP) + ' AND Document.Date_op between '
+                         + '''' + s_dat1_period + '''' + ' and ' + '''' + s_dat2_period + '''');
     DM1.IBQuery1.Active := True;
-    if not dm1.IBQuery1.Eof then
-     begin
+    if (not dm1.IBQuery1.Eof) then
+    begin
 //     Label36.Caption:=floattostr(DM1.IBQuery1.FieldByName('SDANO').AsFloat);
-     s_SDANO:=DM1.IBQuery1.FieldByName('SDANO').AsFloat;
-     end
+      s_SDANO := DM1.IBQuery1.FieldByName('SDANO').AsFloat;
+    end
     else
     begin
 //     Label36.Caption:='0';
-     s_SDANO:=0;
+      s_SDANO := 0;
     end;
-  label19.caption:=s_NMAT;
-  Label28.caption:=Inttostr(s_KORG);
-  label29.caption:=s_namorg;
-  label21.caption:=s_Neiz;
-  label22.caption:=s_GOST;
-  label11.caption:=s_Xarkt;
-  label45.caption:=s_Formv;
- end;
- StopWait;
+    label19.caption := s_NMAT;
+    Label28.caption := Inttostr(s_KORG);
+    label29.caption := s_namorg;
+    label21.caption := s_Neiz;
+    label22.caption := s_GOST;
+    label11.caption := s_Xarkt;
+    label45.caption := s_Formv;
+  end;
+  StopWait;
 end;
 
 procedure TFTexGur.SpeedButton3Click(Sender: TObject);
@@ -2189,7 +2616,7 @@ begin
   DM1.ConfigUMC.Open;
   if (MES = DM1.ConfigUMCMES.AsInteger) and (GOD = DM1.ConfigUMCGOD.AsInteger) then
   begin
-//      Label5.Caption:='(Текущий месяц)';
+    Label1.Caption:='(Текущий месяц)';
     MODE := 0;
     ToolButton1.Enabled := True;
     ToolButton2.Enabled := True;
@@ -2202,7 +2629,7 @@ begin
        or ((GOD = DM1.ConfigUMCGOD.AsInteger - 1) and (MES = 12)
            and (DM1.ConfigUMCMES.AsInteger = 1))then
     begin
-  //     Label5.Caption:='(Прошлый месяц)';
+    Label1.Caption:='(Прошлый месяц)';
       MODE := 1;
       ToolButton1.Enabled := True;
       ToolButton2.Enabled := True;
@@ -2211,7 +2638,7 @@ begin
     end
     else
     begin
-  //      Label5.Caption:='(Только просмотр)';
+    Label1.Caption:='(Только просмотр)';
       MODE := 2;
       ToolButton1.Enabled := False;
       ToolButton2.Enabled := false;
@@ -2229,17 +2656,17 @@ begin
         s_vip := strtofloat(edit9.Text)
       else
         s_vip := 0;
-      TexGur.Close;
-      TexGur.ParamByName('Struk').AsInteger := vStruk_id;
-      TexGur.ParamByName('mes').AsInteger := mes;
-      TexGur.ParamByName('god').AsInteger := god;
-      TexGur.ParamByName('KODP').AsInteger := S_KODP;
-      TexGur.MacroByName('SORT').AsString := USL_SORT;
-      TexGur.MacroByName('pl').AsString := replacestr(floattostrf(s_vip, ffGeneral, 6, 15), ',', '.');
-      TexGur.ParamByName('doc').AsInteger := vDocument_id;
-      TexGur.MacroByName('dat1').AsString := '''' + S_DAT1_Period + '''';
-      TexGur.MacroByName('dat2').AsString := '''' + s_dat2_Period + '''';
-      TexGur.Open;
+//      TexGur.Close;
+//      TexGur.ParamByName('Struk').AsInteger := vStruk_id;
+//      TexGur.ParamByName('mes').AsInteger := mes;
+//      TexGur.ParamByName('god').AsInteger := god;
+//      TexGur.ParamByName('KODP').AsInteger := S_KODP;
+//      TexGur.MacroByName('SORT').AsString := USL_SORT;
+//      TexGur.MacroByName('pl').AsString := replacestr(floattostrf(s_vip, ffGeneral, 6, 15), ',', '.');
+//      TexGur.ParamByName('doc').AsInteger := vDocument_id;
+//      TexGur.MacroByName('dat1').AsString := '''' + S_DAT1_Period + '''';
+//      TexGur.MacroByName('dat2').AsString := '''' + s_dat2_Period + '''';
+//      TexGur.Open;
      END;
   END;
   PageControl1Change(sender);
@@ -2247,28 +2674,31 @@ end;
 
 procedure TFTexGur.SpinEdit4Change(Sender: TObject);
 begin
-god:=SpinEdit4.Value;
-IF MES<10 THEN S_MES:='0'+INTTOSTR(MES) ELSE S_MES:=INTTOSTR(MES);
-  S_DAT1_period:='01.'+S_MES+'.'+copy(INTTOSTR(GOD),3,2);
-  S_DAT2_period:=datetostr(IncMonth(strtodate(s_dat1_period),1)-1);
-  S_DAT1:='01.'+S_MES+'.'+copy(INTTOSTR(GOD),3,2);
-  S_DAT2:=datetostr(IncMonth(strtodate(s_dat1_period),1)-1);
-  IF DM1.ConfigUMC.Active THEN DM1.ConfigUMC.close;
- DM1.ConfigUMC.MacroByName('USL').AsString:='configumc.STRUK_ID = '+IntToStr(vSTRUK_ID);
- DM1.ConfigUMC.Open;
- if (MES=DM1.ConfigUMCMES.AsInteger) and (GOD=DM1.ConfigUMCGOD.AsInteger) then
- begin
-//      Label5.Caption:='(Текущий месяц)';
-   MODE:=0;
-   ToolButton1.Enabled:=True;
-   ToolButton2.Enabled:=True;
-   ToolButton3.Enabled:=True;
-   ToolButton9.Enabled:=True;
- end
- else
+  god := SpinEdit4.Value;
+  IF (MES < 10) THEN
+    S_MES := '0' + INTTOSTR(MES)
+  ELSE
+    S_MES := INTTOSTR(MES);
+  S_DAT1_period := '01.' + S_MES + '.' + copy(INTTOSTR(GOD), 3, 2);
+  S_DAT2_period := datetostr(IncMonth(strtodate(s_dat1_period), 1) - 1);
+  S_DAT1 := '01.' + S_MES + '.' + copy(INTTOSTR(GOD), 3, 2);
+  S_DAT2 := datetostr(IncMonth(strtodate(s_dat1_period), 1) -1);
+  DM1.ConfigUMC.close;
+  DM1.ConfigUMC.MacroByName('USL').AsString := 'configumc.STRUK_ID = ' + IntToStr(vSTRUK_ID);
+  DM1.ConfigUMC.Open;
+  if (MES = DM1.ConfigUMCMES.AsInteger) and (GOD = DM1.ConfigUMCGOD.AsInteger) then
+  begin
+    Label1.Caption:='(Текущий месяц)';
+    MODE := 0;
+    ToolButton1.Enabled := True;
+    ToolButton2.Enabled := True;
+    ToolButton3.Enabled := True;
+    ToolButton9.Enabled := True;
+  end
+  else
   if ((MES=DM1.ConfigUMCMES.AsInteger-1) and (GOD=DM1.ConfigUMCGOD.AsInteger)) or ((GOD=DM1.ConfigUMCGOD.AsInteger-1) and (MES=12) and (DM1.ConfigUMCMES.AsInteger=1))then
   begin
-//     Label5.Caption:='(Прошлый месяц)';
+    Label1.Caption:='(Прошлый месяц)';
     MODE:=1;
     ToolButton1.Enabled:=True;
     ToolButton2.Enabled:=True;
@@ -2277,32 +2707,35 @@ IF MES<10 THEN S_MES:='0'+INTTOSTR(MES) ELSE S_MES:=INTTOSTR(MES);
   end
   else
   begin
-//      Label5.Caption:='(Только просмотр)';
+    Label1.Caption:='(Только просмотр)';
     MODE:=2;
     ToolButton1.Enabled:=False;
     ToolButton2.Enabled:=false;
     ToolButton3.Enabled:=false;
     ToolButton9.Enabled:=false;
   end;
- if Edit1.Text<>'' then
+  if (Edit1.Text <> '') then
   BEGIN
-    IF MODE<2 THEN
+    IF (MODE < 2) THEN
       createTexGur
 //      TexGurSost
      ELSE
      BEGIN
-      if (edit9.Text<>'') and (edit9.Text<>'0') then s_vip:=strtofloat(edit9.Text) else s_vip:=0;
-      TexGur.Close;
-      TexGur.ParamByName('Struk').AsInteger:=vStruk_id;
-      TexGur.ParamByName('mes').AsInteger:=mes;
-      TexGur.ParamByName('god').AsInteger:=god;
-      TexGur.ParamByName('KODP').AsInteger:=S_KODP;
-      TexGur.MacroByName('SORT').AsString:=USL_SORT;
-      TexGur.MacroByName('pl').AsString:=replacestr(floattostrf(s_vip,ffGeneral,6,15),',','.');
-      TexGur.ParamByName('doc').AsInteger:=vDocument_id;
-      TexGur.MacroByName('dat1').AsString:=''''+S_DAT1_Period+'''';
-      TexGur.MacroByName('dat2').AsString:=''''+s_dat2_Period+'''';
-      TexGur.Open;
+        if (edit9.Text <> '') and (edit9.Text <> '0') then
+          s_vip := strtofloat(edit9.Text)
+        else
+          s_vip := 0;
+//      TexGur.Close;
+//      TexGur.ParamByName('Struk').AsInteger:=vStruk_id;
+//      TexGur.ParamByName('mes').AsInteger:=mes;
+//      TexGur.ParamByName('god').AsInteger:=god;
+//      TexGur.ParamByName('KODP').AsInteger:=S_KODP;
+//      TexGur.MacroByName('SORT').AsString:=USL_SORT;
+//      TexGur.MacroByName('pl').AsString:=replacestr(floattostrf(s_vip,ffGeneral,6,15),',','.');
+//      TexGur.ParamByName('doc').AsInteger:=vDocument_id;
+//      TexGur.MacroByName('dat1').AsString:=''''+S_DAT1_Period+'''';
+//      TexGur.MacroByName('dat2').AsString:=''''+s_dat2_Period+'''';
+//      TexGur.Open;
      END;
   END;
 end;
