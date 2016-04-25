@@ -415,6 +415,7 @@
         
       
       
+      
       <Excluded_Packages Name="$(BDS)\bin\xhStd110.bpl">HierCube Library Runtime package</Excluded_Packages>
       <Excluded_Packages Name="C:\Documents and Settings\All Users\Документы\RAD Studio\5.0\Bpl\xhCntrls100.bpl">HierCube Library Controls</Excluded_Packages>
       <Excluded_Packages Name="C:\Delphi11\Projects\BPL\dclfs11.bpl">FastScript 1.9 Components</Excluded_Packages>
@@ -587,6 +588,7 @@
     <DCCReference Include="Source\Poteri.pas">
       <Form>FPoteri</Form>
     </DCCReference>
+    <DCCReference Include="Source\Prihod.pas" />
     <DCCReference Include="Source\prixcex.pas">
       <Form>Fprixcex</Form>
     </DCCReference>

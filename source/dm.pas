@@ -2856,7 +2856,6 @@ begin
 end;
 
 procedure TDM1.KartBeforePost(DataSet: TDataSet);
-
 begin
   s_ksm := dm1.KartKSM_ID.AsInteger;
   s_kei := dm1.KartKei_ID.AsInteger;

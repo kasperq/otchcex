@@ -126,7 +126,7 @@ object FKorOtchet: TFKorOtchet
       Height = 21
       Ctl3D = False
       DropDownCount = 12
-      ItemHeight = 0
+      ItemHeight = 13
       ParentCtl3D = False
       TabOrder = 0
       OnChange = ComboBox1Change
@@ -148,9 +148,9 @@ object FKorOtchet: TFKorOtchet
       Left = 580
       Top = 0
       Width = 69
-      Height = 30
+      Height = 21
       Ctl3D = False
-      ItemHeight = 0
+      ItemHeight = 13
       ParentCtl3D = False
       TabOrder = 1
       OnChange = ComboBox2Change
@@ -1059,6 +1059,30 @@ object FKorOtchet: TFKorOtchet
       VertScrollBar.VisibleMode = sbNeverShowEh
       Columns = <
         item
+          EditButtons = <>
+          FieldName = 'KRAZ'
+          Footers = <>
+          Title.Caption = #1056#1072#1079#1076#1077#1083
+        end
+        item
+          EditButtons = <>
+          FieldName = 'KSM_ID'
+          Footers = <>
+          Title.Caption = #1050#1086#1076
+        end
+        item
+          EditButtons = <>
+          FieldName = 'NMAT'
+          Footers = <>
+          Title.Caption = #1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077' '#1089#1099#1088#1100#1103
+        end
+        item
+          EditButtons = <>
+          FieldName = 'NEIS'
+          Footers = <>
+          Title.Caption = #1045#1076'.'#1080#1079#1084'.'
+        end
+        item
           DisplayFormat = '########0.000000'
           EditButtons = <>
           FieldName = 'ONM_S'
@@ -1137,7 +1161,7 @@ object FKorOtchet: TFKorOtchet
     Left = 776
     Top = 212
     Bitmap = {
-      494C010108000900340018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010108000900480018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -3674,11 +3698,14 @@ object FKorOtchet: TFKorOtchet
     Database = DM1.BELMED
     Transaction = DM1.IBT_Read
     SQL.Strings = (
-      'SELECT sum(ostatki.OSTATOK_END_S) ot_c,ksm_id'
       
-        'FROM  SELECT_OST_KSM_ACC1 (:dat1,:dat2, :kart_idpr,:STRUK,:ksm_i' +
-        'd, '#39#39', :struk_id_rela, :ksm_array) ostatki'
-      '  group by ksm_id')
+        'select ost.ksm_id, sum(ost.ostatok_end_s) ostatok_end_s, ost.kei' +
+        '_id,'
+      'ost.nmat, ost.neis'
+      
+        'from ost_end_cex(:dat1, :dat2, :struk_id, :ksm_id, '#39#39', :struk_id' +
+        '_rela, :ksm_array) ost'
+      'group by ost.ksm_id, ost.kei_id, ost.nmat, ost.neis')
     Left = 175
     Top = 292
     ParamData = <
@@ -3693,13 +3720,8 @@ object FKorOtchet: TFKorOtchet
         ParamType = ptUnknown
       end
       item
-        DataType = ftInteger
-        Name = 'kart_idpr'
-        ParamType = ptInput
-      end
-      item
         DataType = ftUnknown
-        Name = 'STRUK'
+        Name = 'struk_id'
         ParamType = ptUnknown
       end
       item
@@ -3717,15 +3739,30 @@ object FKorOtchet: TFKorOtchet
         Name = 'ksm_array'
         ParamType = ptInput
       end>
-    object ostcehOT_C: TFMTBCDField
-      FieldName = 'OT_C'
+    object ostcehKSM_ID: TIntegerField
+      FieldName = 'KSM_ID'
+      Origin = '"OST_END_CEX"."KSM_ID"'
+    end
+    object ostcehOSTATOK_END_S: TFMTBCDField
+      FieldName = 'OSTATOK_END_S'
       ProviderFlags = []
       Precision = 18
       Size = 6
     end
-    object ostcehKSM_ID: TIntegerField
-      FieldName = 'KSM_ID'
-      Origin = '"SELECT_OST_KSM"."KSM_ID"'
+    object ostcehKEI_ID: TSmallintField
+      FieldName = 'KEI_ID'
+      Origin = '"OST_END_CEX"."KEI_ID"'
+    end
+    object ostcehNMAT: TIBStringField
+      FieldName = 'NMAT'
+      Origin = '"OST_END_CEX"."NMAT"'
+      Size = 60
+    end
+    object ostcehNEIS: TIBStringField
+      FieldName = 'NEIS'
+      Origin = '"OST_END_CEX"."NEIS"'
+      FixedChar = True
+      Size = 10
     end
   end
   object PopupMenu2: TPopupMenu
