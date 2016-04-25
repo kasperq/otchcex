@@ -833,6 +833,7 @@ uses
     stkod : string;
     
     function LastDayOfMonth(month, year: integer): TDate;
+    function getTochn(ksmIdPrep, ksm_id : integer) : integer;
 
   end;
 
@@ -971,6 +972,27 @@ uses NormCex,glmenu,Ostatki,SprStad, VibPrep, Start, rascex, TexGurOld,Got_Prod,
 
   
 {$R *.dfm}
+
+function TDM1.getTochn(ksmIdPrep, ksm_id : integer) : integer;
+begin
+  if (FSprFormul = nil) then
+    FSprFormul := TfSprFormul.Create(Application);
+  if (FSprFormul.Ceh_Normz.Active = true) then
+    FSprFormul.CEH_NormZ.Close;
+  FSprFormul.CEH_NormZ.MacroByName('SORT').AsString := '';
+  FSprFormul.CEH_NormZ.MacroByName('USL').AsString := ' Where CEH_NORMZ.KSM_ID_PR = '
+                                                      + INTTOSTR(ksmIdPrep)
+                                                      + ' and CEH_NORMZ.KSM_ID_MAt = '
+                                                      + INTTOSTR(ksm_id);
+  FSprFormul.CEH_NormZ.Open;
+  if (not FSprFormul.CEH_NORMZ.eof) then
+    if (FSprFormul.CEH_NORMZDecznak.AsVariant <> null)  then
+      result := -FSprFormul.CEH_NORMZDecznak.asinteger
+    else
+      result := -3
+  else
+      result := -3;
+end;
 
 procedure TDM1.startWriteTrans;
 begin
@@ -2834,7 +2856,6 @@ begin
 end;
 
 procedure TDM1.KartBeforePost(DataSet: TDataSet);
-
 begin
   s_ksm := dm1.KartKSM_ID.AsInteger;
   s_kei := dm1.KartKei_ID.AsInteger;

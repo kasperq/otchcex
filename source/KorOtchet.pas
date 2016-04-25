@@ -162,8 +162,6 @@ type
     KartKorrOtchet: TRxIBQuery;
     IBKartKorrOtchet: TIBUpdateSQLW;
     ostceh: TIBQuery;
-    ostcehOT_C: TFMTBCDField;
-    ostcehKSM_ID: TIntegerField;
     ToolButton5: TToolButton;
     PopupMenu2: TPopupMenu;
     MenuItem2: TMenuItem;
@@ -258,6 +256,11 @@ type
     KartKorrOtchetNORM_RASH: TFMTBCDField;
     KartKorrOtchetKOL_RAB: TFMTBCDField;
     RaspSyrPrepksmArr: TIntegerField;
+    ostcehKSM_ID: TIntegerField;
+    ostcehOSTATOK_END_S: TFMTBCDField;
+    ostcehKEI_ID: TSmallintField;
+    ostcehNMAT: TIBStringField;
+    ostcehNEIS: TIBStringField;
 
     procedure FormShow(Sender: TObject);
     procedure Edit1KeyDown(Sender: TObject; var Key: Word;
@@ -305,9 +308,10 @@ type
   private
     ksmArray : array of integer;
     ksmLength : integer;
+    curRazdelId, curKraz : integer;
 
     procedure openOstCeh;
-    function getTochn(ksm_id : integer) : integer;
+    
   public
     procedure KorSost;
     function getCurZnak(value : double; znak : integer) : integer;
@@ -330,27 +334,6 @@ implementation
  uses dm, Find_Spprod, Dob_peredano, Vipusk,Otchet, ediz, Find_Matrop,
   razdel, Find_Struk, OstSyr, SprFormul, Pech_Vibor, VibSyr, VybPrep, CopyFiles;
 {$R *.dfm}
-
-function TFKorOtchet.getTochn(ksm_id : integer) : integer;
-begin
-  if (FSprFormul = nil) then
-    FSprFormul := TfSprFormul.Create(Application);
-  if (FSprFormul.Ceh_Normz.Active = true) then
-    FSprFormul.CEH_NormZ.Close;
-  FSprFormul.CEH_NormZ.MacroByName('SORT').AsString := '';
-  FSprFormul.CEH_NormZ.MacroByName('USL').AsString := ' Where CEH_NORMZ.KSM_ID_PR = '
-                                                      + INTTOSTR(S_KODP)
-                                                      + ' and CEH_NORMZ.KSM_ID_MAt = '
-                                                      + INTTOSTR(ksm_id);
-  FSprFormul.CEH_NormZ.Open;
-  if (not FSprFormul.CEH_NORMZ.eof) then
-    if (FSprFormul.CEH_NORMZDecznak.AsVariant <> null)  then
-      result := -FSprFormul.CEH_NORMZDecznak.asinteger
-    else
-      result := -3
-  else
-      result := -3;
-end;
 
 procedure TFKorOtchet.openOstCeh;
 var
@@ -393,8 +376,7 @@ begin
     ostceh.Close;
     ostceh.ParamByName('dat1').AsDateTime := strtodate(s_dat1);
     ostceh.ParamByName('dat2').AsDateTime := strtodate(s_dat2);
-    ostceh.ParamByName('struk').AsInteger := vStruk_id;
-    ostceh.ParamByName('kart_idpr').AsInteger := 1;
+    ostceh.ParamByName('struk_id').AsInteger := vStruk_id;
     ostceh.ParamByName('ksm_id').AsInteger := 0;
     if (vStruk_Id = 540) then    
       ostceh.ParamByName('struk_id_rela').AsInteger := 1
@@ -534,7 +516,7 @@ begin
         s_kei := IBQuery1.FieldByName('KEI_id').AsInteger;
         v_keiN := IBQuery1.FieldByName('KEIN').AsInteger;
         s_ksm := IBQuery1.FieldByName('Ksm_id').AsInteger;
-        tochn := getTochn(IBQuery1.FieldByName('KSM_ID').AsInteger);
+        tochn := dm1.getTochn(s_kodp, IBQuery1.FieldByName('KSM_ID').AsInteger);
 
         s_ost := 0;
 
@@ -544,7 +526,7 @@ begin
                                               IBQuery1.FieldByName('KRAZ').AsInteger]),
                                               []) THEN
         BEGIN
-          tochn := getTochn(IBQuery1.FieldByName('KSM_ID').AsInteger);
+          tochn := dm1.getTochn(s_kodp, IBQuery1.FieldByName('KSM_ID').AsInteger);
           RaspSyrPrep.Insert;
           RaspSyrPrepDoc_id.AsInteger := vDocument_id;
           RaspSyrPrepRazdel_id.AsInteger := IBQuery1.FieldByName('Razdel_id').AsInteger;
@@ -642,7 +624,7 @@ begin
                 and (RaspSyrPrepRazdel_id.AsInteger = IBQuery1.FieldByName('Razdel_id').AsInteger)
                 and ( not RaspSyrPrep.Eof) do
           begin
-            tochn := getTochn(IBQuery1.FieldByName('KSM_ID').AsInteger);
+            tochn := dm1.getTochn(s_kodp, IBQuery1.FieldByName('KSM_ID').AsInteger);
             RaspSyrPrep.Edit;
             if RaspSyrPrepTip_op_id.AsInteger <> 30 then
             begin
@@ -898,7 +880,7 @@ begin
                                               IBQuery1.FieldByName('KRAZ').AsInteger]),
                                   []) THEN
         BEGIN
-          tochn := getTochn(IBQuery1.FieldByName('KSM_ID').AsInteger);
+          tochn := dm1.getTochn(s_kodp, IBQuery1.FieldByName('KSM_ID').AsInteger);
 
           RaspSyrPrep.Insert;
           RaspSyrPrepDoc_id.AsInteger := vDocument_id;
@@ -1020,7 +1002,7 @@ begin
       begin
         IF RaspSyrPrepTip_op_id.AsInteger = 30 then
         begin
-          tochn := getTochn(RaspSyrPrep.FieldByName('KSM_ID').AsInteger);
+          tochn := dm1.getTochn(s_kodp, RaspSyrPrep.FieldByName('KSM_ID').AsInteger);
           Prix_korr.First;
           if Prix_korr.Locate('ksm_id;razdel_id',
                               VarArrayOf([RaspSyrPrepKsm_id.AsInteger, RaspSyrPrepRazdel_id.AsInteger]),
@@ -1135,7 +1117,7 @@ begin
       begin
         ostceh.First;
         if (ostceh.Locate('ksm_id', RaspSyrPrep.FieldByName('Ksm_id').AsInteger, [])) THEN
-          s_ost := ostcehOt_c.asfloat
+          s_ost := ostcehOSTATOK_END_S.asfloat
         else
           s_ost := 0;
 
@@ -1825,12 +1807,16 @@ end;
 
 procedure TFKorOtchet.ToolButton1Click(Sender: TObject);
 begin
- if PageControl1.ActivePage=tabsheet4 then
- BEGIN
-  PeredanoSyr.Insert;
- end
- else
-  RaspSyrPrep.Insert;
+  if (PageControl1.ActivePage = tabsheet4) then
+  BEGIN
+    PeredanoSyr.Insert;
+  end
+  else
+  begin
+    curRazdelId := RaspSyrPrepRAZDEL_ID.AsInteger;
+    curKraz := RaspSyrPrepKRAZ.AsInteger;
+    RaspSyrPrep.Insert;
+  end;
 end;
 
 procedure TFKorOtchet.ToolButton2Click(Sender: TObject);
@@ -2029,16 +2015,19 @@ end;
 
 procedure TFKorOtchet.RaspSyrPrepKSM_IDValidate(Sender: TField);
 begin
- dM1.Matrop.Active:=false;
- dM1.Matrop.ParamByName('ksm').AsInteger:=RaspSyrPrep.FieldByName('ksm_id').AsInteger;
- dM1.Matrop.Active:=TRUE;
- if not dm1.Matrop.eof then
- begin
-  RaspSyrPrep.FieldByName('Nmat').AsString:=dm1.Matrop.FieldByName('Nmat').AsString;
-
- end
- else
-  showMessage('Нет такого кода! Воспользуйтесь справочником!');
+  dM1.Matrop.Active:=false;
+  dM1.Matrop.ParamByName('ksm').AsInteger := RaspSyrPrep.FieldByName('ksm_id').AsInteger;
+  dM1.Matrop.Active := TRUE;
+  if not dm1.Matrop.eof then
+  begin
+    RaspSyrPrep.FieldByName('Nmat').AsString := dm1.Matrop.FieldByName('Nmat').AsString;
+    RaspSyrPrepKei_ID.AsInteger := dm1.Matrop.FieldByName('kei_id').AsInteger;
+    RaspSyrPrepNeis.AsString := dm1.Matrop.FieldByName('neis').AsString;
+    RaspSyrPrepRAZDEL_ID.AsInteger := curRazdelId;
+    RaspSyrPrepKRAZ.AsInteger := curKraz;
+  end
+  else
+    showMessage('Нет такого кода! Воспользуйтесь справочником!');
 end;
 
 procedure TFKorOtchet.RaspSyrPrepKRAZValidate(Sender: TField);
@@ -2090,6 +2079,8 @@ begin
             begin
               RaspSyrPrep.FieldByName('Ksm_Id').AsInteger := dm1.Matrop.FieldByName('Ksm_id').AsInteger;
               RaspSyrPrep.FieldByName('Nmat').AsString := dm1.Matrop.FieldByName('Nmat').AsString;
+              RaspSyrPrepKei_ID.AsInteger := dm1.Matrop.FieldByName('kei_id').AsInteger;
+              RaspSyrPrepNeis.AsString := dm1.Matrop.FieldByName('neis').AsString;;
             end;
           end;
         end;

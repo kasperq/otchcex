@@ -102,7 +102,8 @@ uses
   DMDrugLoad in 'Source\DMDrugLoad.pas' {FDMDrugLoad: TDataModule},
   TexGurOld in 'Source\TexGurOld.pas' {FTexGurOld},
   SelectOstKsm in 'Source\SelectOstKsm.pas',
-  DMSelectOstKsm in 'Source\DMSelectOstKsm.pas' {dmSelOstKsm: TDataModule};
+  DMSelectOstKsm in 'Source\DMSelectOstKsm.pas' {dmSelOstKsm: TDataModule},
+  Prihod in 'Source\Prihod.pas';
 
 {$R *.res}
 
