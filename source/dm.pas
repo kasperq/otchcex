@@ -1363,6 +1363,11 @@ begin
       vKlient_Id := S_KODP;
       vDate_op := strtodate(s_dat1);
       vDate_dok := strtodate(s_dat1);
+      dm1.Document.MacroByName('usl').AsString := ' WHERE DOcUMENT.STRUK_ID = ' + INTTOSTR(VsTRUK_ID)
+                                + ' AND DOCUMENT.TIP_OP_ID = 30'
+                                + ' AND Document.Date_op between ' + ''''
+                                + s_dat1 + '''' + ' and ' + '''' + s_dat2 + ''''
+                                + ' AND DOCUMENT.KLIENT_ID = ' + INTTOSTR(S_KODP);
       dm1.Document.open;
       dm1.Document.Insert;
       dm1.Document.Post;
