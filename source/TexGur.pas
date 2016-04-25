@@ -412,6 +412,7 @@ type
     Panel5: TPanel;
     btn_syrInfoAll: TSpeedButton;
     SpeedButton4: TSpeedButton;
+    ToolButton2: TToolButton;
     procedure MyGetValue(const s: String; var v: Variant);
     procedure MyGetValue1(const s: String; var v: Variant);
     procedure Edit1Change(Sender: TObject);
@@ -1641,7 +1642,6 @@ begin
 //  FreeAndNil(drLoad);
   DM1.Seria.Close;
   DM1.Ostatki.Close;
-  DM1.Document.Close;
   vseria_id := 0;
 end;
 
