@@ -411,6 +411,7 @@ type
     btn_delAllRecs: TSpeedButton;
     Panel5: TPanel;
     btn_syrInfoAll: TSpeedButton;
+    SpeedButton4: TSpeedButton;
     procedure MyGetValue(const s: String; var v: Variant);
     procedure MyGetValue1(const s: String; var v: Variant);
     procedure Edit1Change(Sender: TObject);
@@ -473,6 +474,7 @@ type
     procedure q_kartBeforeInsert(DataSet: TDataSet);
     procedure q_kartNewRecord(DataSet: TDataSet);
     procedure btn_delAllClick(Sender: TObject);
+    procedure acceptSeria(Sender: TObject);
   private
     { Private declarations }
     drLoad : TDrugLoad;
@@ -520,6 +522,7 @@ type
     procedure openPrepSeries(dateBegin, dateEnd : TDate; strukId : integer);
     procedure loadPrepInfo(kodProd : string);
     function loadSeriaInfo(ksmIdPrep : integer; seria : string) : boolean;
+
     procedure setSeriaDateZag(ksmIdPrep : integer; seria, dateZag : string);
     procedure openViborSeriesAndLoadTexGur;
     procedure openZagrSeriaTab(kodProd, seria : string; ksmIdPrep, month, year, strukId : integer);
@@ -1510,7 +1513,13 @@ procedure TFTexGur.Edit2KeyDown(Sender: TObject; var Key: Word;
 begin
   if (key = vk_return) then
   begin
-    if (edit2.text <> '') then
+    acceptSeria(sender);
+  end;
+end;
+
+procedure TFTexGur.acceptSeria(Sender: TObject);
+begin
+  if (edit2.text <> '') then
     begin
       if (edit9.Text <> '') and (edit9.Text <> '0') then
         s_vip := strtofloat(edit9.Text)
@@ -1549,7 +1558,6 @@ begin
       dm1.SeriaFORMA_VIPUSK.AsString := s_Formv;
       DM1.Seria.Post;
     end;
-  end;
 end;
 
 procedure TFTexGur.Edit9Click(Sender: TObject);
@@ -2141,7 +2149,10 @@ procedure TFTexGur.DateEdit1KeyDown(Sender: TObject; var Key: Word;
 begin
   if (key = vk_return) then
     if (DateEdit1.text <> '' )and (DateEdit1.text <= s_dat2_period)  then
+    begin
+      acceptSeria(sender);
       createTexGur(s_seria, god, mes, s_kodp, vStruk_id);
+    end;
 end;
 
 procedure TFTexGur.Edit2Click(Sender: TObject);
@@ -2468,7 +2479,10 @@ end;
 procedure TFTexGur.SpeedButton3Click(Sender: TObject);
 begin
   if (DateEdit1.text <> '' )and (DateEdit1.text <= s_dat2_period)  then
+  begin
+    acceptSeria(sender);
     createTexGur(s_seria, god, mes, s_kodp, vStruk_id);
+  end;
 end;
 
 procedure TFTexGur.Edit16KeyDown(Sender: TObject; var Key: Word;
