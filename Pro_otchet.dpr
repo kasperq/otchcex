@@ -103,7 +103,8 @@ uses
   TexGurOld in 'Source\TexGurOld.pas' {FTexGurOld},
   SelectOstKsm in 'Source\SelectOstKsm.pas',
   DMSelectOstKsm in 'Source\DMSelectOstKsm.pas' {dmSelOstKsm: TDataModule},
-  Prihod in 'Source\Prihod.pas';
+  Prihod in 'Source\Prihod.pas',
+  PrihodDM in 'Source\PrihodDM.pas' {PrihDM: TDataModule};
 
 {$R *.res}
 
