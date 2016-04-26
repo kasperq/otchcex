@@ -48,8 +48,6 @@ type
     FindDlgEh1: TFindDlgEh;
     FindDlgEh2: TFindDlgEh;
     Label5: TLabel;
-    SpinEdit3: TSpinEdit;
-    SpinEdit4: TSpinEdit;
     ToolButton4: TToolButton;
     Seria_sVLAG_TM: TFloatField;
     Seria_sKOD_TM: TIntegerField;
@@ -413,6 +411,9 @@ type
     btn_syrInfoAll: TSpeedButton;
     SpeedButton4: TSpeedButton;
     ToolButton2: TToolButton;
+    Panel6: TPanel;
+    SpinEdit3: TSpinEdit;
+    SpinEdit4: TSpinEdit;
     procedure MyGetValue(const s: String; var v: Variant);
     procedure MyGetValue1(const s: String; var v: Variant);
     procedure Edit1Change(Sender: TObject);

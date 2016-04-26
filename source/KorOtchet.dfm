@@ -180,7 +180,7 @@ object FKorOtchet: TFKorOtchet
     Top = 97
     Width = 1159
     Height = 577
-    ActivePage = TabSheet3
+    ActivePage = TabSheet4
     Align = alClient
     TabOrder = 1
     OnChange = PageControl1Change
@@ -1161,7 +1161,7 @@ object FKorOtchet: TFKorOtchet
     Left = 776
     Top = 212
     Bitmap = {
-      494C010108000900480018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101080009004C0018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2925,13 +2925,13 @@ object FKorOtchet: TFKorOtchet
         'nd    document.klient_id=ostkyda.ksm_idpr  AND  KART.RAZDEL_ID=O' +
         'STKyda.RAZDEL_ID)'
       '   inner JOIN OSTATKI ON (KART.KART_ID = OSTatki.KART_ID)'
-      '   INNER JOIN SPPROD ON (DOCUMENT.KLIENT_ID = SPPROD.KSM_ID)'
-      '   INNER JOIN MATROP ON (KART.KSM_ID =MATROP.KSM_ID)'
+      '   left JOIN SPPROD ON (DOCUMENT.KLIENT_ID = SPPROD.KSM_ID)'
+      '   left JOIN MATROP ON (KART.KSM_ID =MATROP.KSM_ID)'
       '   left JOIN RAZDEL ON (kart.RAZDEL_ID = RAZDEL.RAZDEL_ID)'
       
         '   left join RAZDEL razkyda ON (ostkyda.RAZDEL_ID =    RAZkyda.R' +
         'AZDEL_ID)'
-      '    inner JOIN EDIZ ON (kart.KEI_ID =EDIZ.KEI_ID)'
+      '    left JOIN EDIZ ON (kart.KEI_ID =EDIZ.KEI_ID)'
       '  '
       '  WHERE '
       '      (DOCUMENT.DATE_Op  between :dat1 and :dat2)'
@@ -2941,8 +2941,6 @@ object FKorOtchet: TFKorOtchet
       '      (DOCUMENT.TIP_OP_ID = 34 or DOCUMENT.TIP_OP_ID = 37) '
       '   and'
       '      (DOCUMENT.struk_ID = :cex)'
-      '   and'
-      '      (kart.parent is null)'
       ''
       'UNION'
       ''
@@ -2969,13 +2967,13 @@ object FKorOtchet: TFKorOtchet
         'nd    document.klient_id=ostkyda.ksm_idpr  AND  KART.RAZDEL_ID=o' +
         'stkyda.RAZDEL_ID)'
       '   inner JOIN OSTATKI ON (KART.KART_ID = OSTATKI.KART_ID)'
-      '   INNER JOIN MATROP ON (KART.KSM_ID =MATROP.KSM_ID)'
+      '   left JOIN MATROP ON (KART.KSM_ID =MATROP.KSM_ID)'
       '   left JOIN RAZDEL ON (kart.RAZDEL_ID = RAZDEL.RAZDEL_ID)'
       
         '   left join RAZDEL razkyda ON (ostkyda.RAZDEL_ID =    RAZkyda.R' +
         'AZDEL_ID)'
-      '    inner JOIN EDIZ ON (kart.KEI_ID =EDIZ.KEI_ID)'
-      '    INNER JOIN struk ON (document.Klient_ID =struk.struk_ID)'
+      '    left JOIN EDIZ ON (kart.KEI_ID =EDIZ.KEI_ID)'
+      '    left JOIN struk ON (document.Klient_ID =struk.struk_ID)'
       '  WHERE '
       '      (DOCUMENT.DATE_Op  between :dat1 and :dat2)'
       '   and '
@@ -2984,8 +2982,6 @@ object FKorOtchet: TFKorOtchet
       '      (DOCUMENT.TIP_OP_ID = 8   ) '
       '   and'
       '      (DOCUMENT.struk_ID = :cex)'
-      '   and'
-      '      (kart.parent is null)'
       ''
       'UNION'
       ''
@@ -3012,12 +3008,12 @@ object FKorOtchet: TFKorOtchet
         'ostkyda.RAZDEL_ID)'
       '   inner JOIN OSTATKI ON (KART.KART_ID = OSTATKI.KART_ID)'
       '  '
-      ' INNER JOIN MATROP ON (KART.KSM_ID =MATROP.KSM_ID)'
+      ' left JOIN MATROP ON (KART.KSM_ID =MATROP.KSM_ID)'
       '   left JOIN RAZDEL ON (kart.RAZDEL_ID = RAZDEL.RAZDEL_ID)'
       
         '   left join RAZDEL razkyda ON (ostkyda.RAZDEL_ID =    RAZkyda.R' +
         'AZDEL_ID)'
-      '    inner JOIN EDIZ ON (kart.KEI_ID =EDIZ.KEI_ID)'
+      '    left JOIN EDIZ ON (kart.KEI_ID =EDIZ.KEI_ID)'
       ''
       ' WHERE '
       '      (DOCUMENT.DATE_Op  between :dat1 and :dat2)'
@@ -3027,9 +3023,9 @@ object FKorOtchet: TFKorOtchet
       '      (DOCUMENT.TIP_OP_ID = 32 or document.tip_op_id=85 )'
       '   and'
       '      (DOCUMENT.struk_ID = :cex)'
-      '   and'
-      '      (kart.parent is null)'
+      ''
       'union'
+      ''
       'SELECT'
       
         ' DOCUMENT.TIP_OP_ID, DOCUMENT.KLIENT_ID, SPPROD.KOD_PROD, SPPROD' +
@@ -3051,14 +3047,14 @@ object FKorOtchet: TFKorOtchet
         'nd    document.klient_id=ostkyda.ksm_idpr  AND  KART.RAZDEL_ID=O' +
         'STKyda.RAZDEL_ID)'
       '   inner JOIN OSTATKI ON (KART.KART_ID = OSTatki.KART_ID)'
-      '   INNER JOIN SPPROD ON (DOCUMENT.KLIENT_ID = SPPROD.KSM_ID)'
-      '   INNER JOIN MATROP ON (KART.KSM_ID =MATROP.KSM_ID)'
-      '  INNER JOIN struk ON ( ostkyda.struk_ID =struk.struk_ID)'
+      '   left JOIN SPPROD ON (DOCUMENT.KLIENT_ID = SPPROD.KSM_ID)'
+      '   left JOIN MATROP ON (KART.KSM_ID =MATROP.KSM_ID)'
+      '  left JOIN struk ON ( ostkyda.struk_ID =struk.struk_ID)'
       '   left JOIN RAZDEL ON (kart.RAZDEL_ID = RAZDEL.RAZDEL_ID)'
       
         '   left join RAZDEL razkyda ON (ostkyda.RAZDEL_ID =    RAZkyda.R' +
         'AZDEL_ID)'
-      '    inner JOIN EDIZ ON (kart.KEI_ID =EDIZ.KEI_ID)'
+      '    left JOIN EDIZ ON (kart.KEI_ID =EDIZ.KEI_ID)'
       '  '
       '  WHERE '
       '      (DOCUMENT.DATE_Op  between :dat1 and :dat2)'
@@ -3067,9 +3063,7 @@ object FKorOtchet: TFKorOtchet
       '   and '
       '      (DOCUMENT.TIP_OP_ID =139 ) '
       '   and'
-      '      (DOCUMENT.struk_ID = :cex)'
-      '   and'
-      '      (kart.parent is null)')
+      '      (DOCUMENT.struk_ID = :cex)')
     UpdateObject = IBPerdanoSyr
     Macros = <>
     Left = 320
