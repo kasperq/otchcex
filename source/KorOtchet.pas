@@ -2366,10 +2366,11 @@ end;
 
 procedure TFKorOtchet.PeredanoSyrNewRecord(DataSet: TDataSet);
 begin
- PeredanoSyrStroka_id.AsInteger:=vStroka_id;
+ PeredanoSyrStroka_id.AsInteger := vStroka_id;
 // PeredanoSyrDoc_id.AsInteger:=vDocument_id;
 // PeredanoSyr.FieldByName('tip_op_id').AsInteger :=vTip_op_id;
- IF PeredanoSyr.FieldByName('KOL_PRIH_EDIZ').AsVariant=NULL THEN PeredanoSyr.FieldByName('KOL_PRIH_EDIZ').AsFloat :=0;
+  IF (PeredanoSyr.FieldByName('KOL_PRIH_EDIZ').AsVariant = NULL) THEN
+    PeredanoSyr.FieldByName('KOL_PRIH_EDIZ').AsFloat := 0;
 end;
 
 procedure TFKorOtchet.DBGridEh4EditButtonClick(Sender: TObject);
