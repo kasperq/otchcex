@@ -2474,6 +2474,7 @@ begin
     StartWait;
     loadPrepInfo(FindSpprod.IBSpprodKOD_PROD.AsString);
   end;
+  FreeAndNil(FindSpprod);
   StopWait;
 end;
 
