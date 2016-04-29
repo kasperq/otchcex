@@ -104,7 +104,8 @@ uses
   SelectOstKsm in 'Source\SelectOstKsm.pas',
   DMSelectOstKsm in 'Source\DMSelectOstKsm.pas' {dmSelOstKsm: TDataModule},
   Prihod in 'Source\Prihod.pas',
-  PrihodDM in 'Source\PrihodDM.pas' {PrihDM: TDataModule};
+  PrihodDM in 'Source\PrihodDM.pas' {PrihDM: TDataModule},
+  OtdelDropDown in 'Source\OtdelDropDown.pas' {FOtdelDropDown};
 
 {$R *.res}
 

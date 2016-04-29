@@ -2,11 +2,11 @@ unit Vipusk;
 
 interface
 
-uses
+uses OtdelDropDown,
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, IBCustomDataSet, IBUpdateSQL, IBUpdSQLW, RxIBQuery, DB, IBQuery,
   Buttons, Grids, DBGridEh, ImgList, StdCtrls, ComCtrls, ToolWin, Spin,
-  RxMemDS, FR_DSet, FR_DBSet, FR_Class, ExtCtrls;
+  RxMemDS, FR_DSet, FR_DBSet, FR_Class, ExtCtrls, kbmMemTable;
 
 type
   TFVipusk = class(TForm)
@@ -47,6 +47,46 @@ type
     Panel2: TPanel;
     Panel3: TPanel;
     Panel4: TPanel;
+    mem_factVipusk: TkbmMemTable;
+    ds_mem_factVipusk: TDataSource;
+    mem_factVipuskDOC_ID: TIntegerField;
+    mem_factVipuskSTROKA_ID: TIntegerField;
+    mem_factVipuskKSM_ID: TIntegerField;
+    mem_factVipuskKLIENT_ID: TIntegerField;
+    mem_factVipuskSPPRN: TSmallintField;
+    mem_factVipuskSPVIS: TSmallintField;
+    mem_factVipuskKEI_ID: TIntegerField;
+    mem_factVipuskKOL_PRIH: TFloatField;
+    mem_factVipuskKOD_PROD: TStringField;
+    mem_factVipuskNEIS: TStringField;
+    mem_factVipuskNMAT: TStringField;
+    mem_factVipuskXARKT: TStringField;
+    mem_factVipuskNAM_REG: TStringField;
+    mem_factVipuskVIPNG: TFloatField;
+    mem_factVipuskVIPKV: TFloatField;
+    mem_factVipuskOTDELID: TIntegerField;
+    mem_factVipuskGOST: TStringField;
+    mem_factVipuskOTDEL: TStringField;
+    mem_factVipuskOTDEL_DOC_ID: TIntegerField;
+    q_document: TRxIBQuery;
+    q_documentTIP_DOK_ID: TSmallintField;
+    q_documentNDOK: TIBStringField;
+    q_documentDOC_ID: TIntegerField;
+    q_documentDATE_OP: TDateField;
+    q_documentDATE_DOK: TDateField;
+    q_documentKLIENT_ID: TIntegerField;
+    q_documentTIP_OP_ID: TSmallintField;
+    q_documentDATE_VVOD: TDateTimeField;
+    q_documentSTRUK_ID: TSmallintField;
+    q_documentZADACHA_ID: TIBStringField;
+    q_documentKLIENT_STNAME: TIBStringField;
+    upd_document: TIBUpdateSQLW;
+    q_kartv: TRxIBQuery;
+    upd_kartv: TIBUpdateSQLW;
+    q_kartvDOC_ID: TIntegerField;
+    q_kartvSTROKA_ID: TIntegerField;
+    q_kartvKSM_ID: TIntegerField;
+    q_kartvKOL_PRIH: TFMTBCDField;
     procedure FormShow(Sender: TObject);
     procedure SpinEdit3Change(Sender: TObject);
     procedure SpinEdit4Change(Sender: TObject);
@@ -64,8 +104,19 @@ type
     procedure ToolButton5Click(Sender: TObject);
     procedure frReport1GetValue(const ParName: string; var ParValue: Variant);
     procedure RadioGroup1Click(Sender: TObject);
+    procedure DBGridEh2Columns6EditButtonClick(Sender: TObject;
+      var Handled: Boolean);
   private
-    { Private declarations }
+    otdelViborForm : TFOtdelDropDown;
+    procedure openDocument(strukId, otdelId : integer; dat1, dat2 : TDate);
+    procedure openKartv(docId, ksmId : integer);
+    procedure insertDocument(tipOpId, strukId, tipDocId, klientId : integer;
+                             nDoc : string; dateDok : TDate);
+    procedure insertKartv;
+    procedure deleteKartv(docId, ksmId : integer);
+    procedure saveOtdel;
+    procedure loadKartvRecord;
+    procedure loadVipuskKartv;
   public
     { Public declarations }
   end;
@@ -174,24 +225,28 @@ begin
     DM1.KARTV.Post;
     DM1.KARTV.Next;
   end;
+  loadVipuskKartv;
 end;
 
 
 procedure TFVipusk.FormShow(Sender: TObject);
 
 begin
-  First_vxod:=false;
-  SpinEdit3.OnChange:=nil;
-  SpinEdit4.OnChange:=nil;
-  SpinEdit3.Value:=mes;
-  SpinEdit4.Value:=god;
-  SpinEdit3.OnChange:=SpinEdit3Change;
-  SpinEdit4.OnChange:=SpinEdit4Change;
-  mes_vib:=mes;
-  god_vib:=god;
-  IF MES_vib<10 THEN S_MES:='0'+INTTOSTR(MES) ELSE S_MES:=INTTOSTR(MES);
-  S_DAT1:='01.'+S_MES+'.'+INTTOSTR(GOD);
-  S_DAT2:=datetostr(IncMonth(strtodate(s_dat1),1)-1);
+  First_vxod := false;
+  SpinEdit3.OnChange := nil;
+  SpinEdit4.OnChange := nil;
+  SpinEdit3.Value := mes;
+  SpinEdit4.Value := god;
+  SpinEdit3.OnChange := SpinEdit3Change;
+  SpinEdit4.OnChange := SpinEdit4Change;
+  mes_vib := mes;
+  god_vib := god;
+  IF (MES_vib < 10) THEN
+    S_MES := '0' + INTTOSTR(MES)
+  ELSE
+    S_MES := INTTOSTR(MES);
+  S_DAT1 := '01.' + S_MES + '.' + INTTOSTR(GOD);
+  S_DAT2 := datetostr(IncMonth(strtodate(s_dat1), 1) - 1);
   SostVipusk;
  end;
 
@@ -340,11 +395,13 @@ end;
 
 procedure TFVipusk.FormCreate(Sender: TObject);
 begin
-First_vxod:=true;
+  First_vxod := true;
 end;
 
 procedure TFVipusk.ToolButton3Click(Sender: TObject);
 begin
+  if (vStruk_Id = 540) then
+    saveOtdel;
   dm1.ApplyUpdatesDoc;
   DM1.KARTV.Close;
   DM1.IBT_WRITE.Active := FALSE;
@@ -357,6 +414,7 @@ begin
   DM1.KARTV.First;
   while (not DM1.KARTV.Eof) do
   begin
+    loadVipuskKartv;
     S_DATN := '01.01.' + INTTOSTR(GOD);
     DM1.IBQuery1.Active := False;
     DM1.IBQuery1.SQL.Clear;
@@ -441,6 +499,203 @@ begin
   PlVipusk.First;
   PlVipusk.EnableControls;
  end;
+end;
+
+procedure TFVipusk.DBGridEh2Columns6EditButtonClick(Sender: TObject;
+  var Handled: Boolean);
+begin
+  if (otdelViborForm = nil) then
+    otdelViborForm := TFOtdelDropDown.Create(self);
+  otdelViborForm.strukId := vStruk_Id;
+  otdelViborForm.Left := Mouse.CursorPos.X - otdelViborForm.Width;
+  otdelViborForm.Top := Mouse.CursorPos.Y;
+  otdelViborForm.ShowModal;
+  if (otdelViborForm.ModalResult <> mrCancel) then
+    if (otdelViborForm.otdelId = vStruk_Id) then
+    begin
+      dm1.KartV.Edit;
+      dm1.KartVOTDEL.AsString := '';
+      dm1.KartVOTDELID.AsInteger := 0;
+      dm1.KartV.Post;
+    end
+    else
+    begin
+      dm1.KartV.Edit;
+      dm1.KartVOTDEL.AsString := otdelViborForm.otdelName;
+      dm1.KartVOTDELID.AsInteger := otdelViborForm.otdelId;
+      dm1.KartV.Post;
+    end;
+end;
+
+procedure TFVipusk.insertKartv;
+begin
+  DM1.Add_KartDok.StoredProcName := 'ADD_KARTV';
+  DM1.Add_KartDok.ExecProc;
+  q_kartv.Insert;
+  q_kartv.Edit;
+  q_kartvDOC_ID.AsInteger := q_documentDOC_ID.AsInteger;
+  q_kartvSTROKA_ID.AsInteger := DM1.Add_KartDok.Params.Items[0].AsInteger;
+  q_kartvKSM_ID.AsInteger := dm1.KartVKSM_ID.AsInteger;
+  q_kartvKOL_PRIH.AsFloat := dm1.KartVKOL_PRIH.AsFloat;
+  q_kartv.Post;
+  q_kartv.ApplyUpdates;
+  dm1.commitWriteTrans(true);
+end;
+
+procedure TFVipusk.insertDocument(tipOpId, strukId, tipDocId, klientId : integer;
+                                  nDoc : string; dateDok : TDate);
+begin
+  DM1.Add_KartDok.StoredProcName := 'ADD_DOCUMENT';
+  DM1.Add_KartDok.ExecProc;
+  q_document.Insert;
+  q_document.Edit;
+  q_document.FieldByName('Doc_Id').AsInteger := DM1.Add_KartDok.Params.Items[0].AsInteger;;
+  q_document.FieldByName('Tip_Op_Id').AsInteger := tipOpId;
+  q_document.FieldByName('Struk_Id').AsInteger := strukId;
+  q_document.FieldByName('Zadacha_Id').AsString := 'otchcex';
+  q_document.FieldByName('Tip_Dok_Id').AsInteger := tipDocId;
+  q_document.FieldByName('NDok').AsString := nDoc;
+  q_document.FieldByName('Klient_Id').AsInteger := klientId;
+  q_document.FieldByName('Date_Dok').AsDateTime := dateDok;
+  q_document.FieldByName('Date_Op').AsDateTime := dateDok;
+  q_document.Post;
+  q_document.ApplyUpdates;
+  dm1.commitWriteTrans(true);
+end;
+
+procedure TFVipusk.openKartv(docId, ksmId : integer);
+begin
+  q_kartv.Close;
+  q_kartv.ParamByName('doc_id').AsInteger := docId;
+  q_kartv.ParamByName('ksm_id').AsInteger := ksmId;
+  q_kartv.Open;
+end;
+
+procedure TFVipusk.openDocument(strukId, otdelId : integer; dat1, dat2 : TDate);
+begin
+  q_document.Close;
+  q_document.ParamByName('struk_id').AsInteger := strukId;
+  if (otdelId = 0) then
+    q_document.MacroByName('usl').AsString := 'document.struk_id <> document.klient_id '
+  else
+    q_document.MacroByName('usl').AsString := 'document.klient_id = ' + IntToStr(otdelId);
+  q_document.ParamByName('dat1').AsDate := dat1;
+  q_document.ParamByName('dat2').AsDate := dat2;
+  q_document.Open;
+end;
+
+procedure TFVipusk.deleteKartv(docId, ksmId : integer);
+begin
+  openKartv(docId, ksmId);
+  if (q_kartv.RecordCount > 0) then
+  begin
+    q_kartv.Delete;
+    q_kartv.ApplyUpdates;
+    dm1.commitWriteTrans(true);
+  end;
+end;
+
+procedure TFVipusk.saveOtdel;
+begin
+  dm1.KartV.DisableControls;
+  dm1.KartV.First;
+  while (not dm1.KartV.Eof) do
+  begin
+    if (dm1.KartVOTDELID.AsInteger = 0) or (dm1.KartVOTDELID.AsInteger  = dm1.strukIdRela) then
+    begin
+      if (mem_factVipusk.Locate('ksm_id', dm1.KartVKSM_ID.AsString, [])) then
+      begin
+        deleteKartv(mem_factVipuskOTDEL_DOC_ID.AsInteger, mem_factVipuskKSM_ID.AsInteger);
+        mem_factVipusk.Delete;
+      end;
+    end;
+    if (dm1.KartVOTDELID.AsInteger <> 0) and (dm1.KartVOTDELID.AsInteger <> dm1.strukIdRela) then
+    begin
+      if (mem_factVipusk.Locate('ksm_id', dm1.KartVKSM_ID.AsString, [])) then
+      begin
+        deleteKartv(mem_factVipuskOTDEL_DOC_ID.AsInteger, mem_factVipuskKSM_ID.AsInteger);
+        mem_factVipusk.Delete;
+      end;
+      openDocument(vStruk_id, dm1.KartVOTDELID.AsInteger, StrToDate(s_dat1), StrToDate(s_dat2));
+      if (q_document.RecordCount = 0) then
+        insertDocument(dm1.DocumentTIP_OP_ID.AsInteger, dm1.strukIdRela, dm1.DocumentTIP_DOK_ID.AsInteger,
+                       dm1.KartVOTDELID.AsInteger, vNDoc, dm1.DocumentDATE_OP.AsDateTime);
+      openKartv(q_documentDOC_ID.AsInteger, dm1.KartVKSM_ID.AsInteger);
+      if (q_kartv.RecordCount = 0) then
+        insertKartv;
+    end;
+    dm1.KartV.Next;
+  end;
+  dm1.KartV.EnableControls;
+end;
+
+procedure TFVipusk.loadKartvRecord;
+begin
+  openDocument(vStruk_Id, 0, StrToDate(s_dat1), StrToDate(s_dat2));
+  if (q_document.RecordCount > 0) then
+  begin
+    q_document.First;
+    while (not q_document.Eof) do
+    begin
+      openKartv(q_documentDOC_ID.AsInteger, dm1.KartVKSM_ID.AsInteger);
+      if (q_kartv.RecordCount > 0) then
+      begin
+        dm1.KartV.Edit;
+        dm1.KartVOTDELID.AsInteger := q_documentKLIENT_ID.AsInteger;
+        dm1.KartVOTDEL.AsString := q_documentKLIENT_STNAME.AsString;
+        dm1.KartVOTDEL_DOC_ID.AsInteger := q_documentDOC_ID.AsInteger;
+        dm1.KartV.Post;
+        mem_factVipusk.Append;
+        mem_factVipusk.Edit;
+        mem_factVipuskOTDELID.AsInteger := q_documentKLIENT_ID.AsInteger;
+        mem_factVipuskOTDEL_DOC_ID.AsInteger := q_documentDOC_ID.AsInteger;
+        mem_factVipuskKSM_ID.AsInteger := dm1.KartVKSM_ID.AsInteger;
+        mem_factVipusk.Post;
+        break;
+      end;
+      q_document.Next;
+    end;
+  end;
+end;
+
+procedure TFVipusk.loadVipuskKartv;
+begin
+  dm1.startReadTrans;
+  DM1.KARTV.Close;
+  DM1.KartV.MacroByName('USL').AsString := 'WHERE KARTV.DOC_ID=' + INTTOSTR(VDOCUMENT_id);
+  DM1.KartV.MacroByName('SORT').AsString := 'ORDER BY SPPROD.NMAT';
+  DM1.KARTV.OPEN;
+  mem_factVipusk.EmptyTable;
+  mem_factVipusk.Open;
+  dm1.KartV.DisableControls;
+  DM1.KARTV.First;
+  while (not DM1.KARTV.Eof) do
+  begin
+    S_DATN := '01.01.' + INTTOSTR(GOD);
+    DM1.IBQuery1.Close;
+    DM1.IBQuery1.SQL.Clear;
+    DM1.IBQuery1.SQL.Add('SELECT  sum(KARTv.KOL_PRIH) vipusk_ng, KARTv.KSM_ID');
+    DM1.IBQuery1.SQL.Add(' FROM KARTv');
+    DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
+    DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID=' + INTTOSTR(dm1.strukIdRela)
+                         + ' and document.klient_id = ' + IntToStr(dm1.strukIdRela)
+                         + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
+                         + ' AND KARTv.KSM_ID=' + INTTOSTR(DM1.KARTVKsm_id.AsInteger)
+                         + ' AND Document.Date_op between ' + '''' + s_datn + ''''
+                         + ' and ' + '''' + s_dat2 +'''');
+    DM1.IBQuery1.SQL.Add(' GROUP BY KARTv.KSM_ID');
+    DM1.IBQuery1.Open;
+    DM1.KARTV.Edit;
+    if (not dm1.IBQuery1.Eof) then
+      DM1.KARTVVipNg.AsFloat := DM1.IBQuery1.FieldByName('VIPUSK_NG').AsFloat
+    ELSE
+      DM1.KARTVVipNg.AsFloat := 0;
+    DM1.KARTV.Post;
+    if (vStruk_Id = 540) then
+      loadKartvRecord;
+    DM1.KARTV.Next;
+  end;
+  dm1.KartV.EnableControls;
 end;
 
 procedure TFVipusk.DBGridEh2EditButtonClick(Sender: TObject);

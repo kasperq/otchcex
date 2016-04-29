@@ -162,10 +162,6 @@ object FVipusk: TFVipusk
     Margins.Bottom = 0
     Align = alClient
     TabOrder = 1
-    ExplicitLeft = 840
-    ExplicitTop = 39
-    ExplicitWidth = 185
-    ExplicitHeight = 41
     object DBGridEh1: TDBGridEh
       Left = 1
       Top = 1
@@ -265,8 +261,6 @@ object FVipusk: TFVipusk
       Height = 24
       Align = alTop
       TabOrder = 0
-      ExplicitLeft = 8
-      ExplicitTop = 16
       object Label2: TLabel
         Left = 191
         Top = 5
@@ -360,6 +354,18 @@ object FVipusk: TFVipusk
           Footers = <>
           ReadOnly = True
           Title.Caption = #1042#1099#1087#1091#1089#1082' '#1089' '#1085#1072#1095#1072#1083#1072' '#1075#1086#1076#1072
+        end
+        item
+          AlwaysShowEditButton = True
+          EditButtons = <>
+          FieldName = 'OTDEL'
+          Footers = <>
+          OnEditButtonClick = DBGridEh2Columns6EditButtonClick
+        end
+        item
+          EditButtons = <>
+          FieldName = 'OTDELID'
+          Footers = <>
         end>
     end
   end
@@ -405,7 +411,7 @@ object FVipusk: TFVipusk
     Left = 552
     Top = 4
     Bitmap = {
-      494C0101070009000C0018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010107000900100018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1121,5 +1127,333 @@ object FVipusk: TFVipusk
     DataSet = DM1.KartV
     Left = 336
     Top = 136
+  end
+  object mem_factVipusk: TkbmMemTable
+    DesignActivation = True
+    AttachedAutoRefresh = True
+    AttachMaxCount = 1
+    FieldDefs = <>
+    IndexDefs = <>
+    SortOptions = []
+    AllDataOptions = [mtfSaveData, mtfSaveNonVisible, mtfSaveBlobs, mtfSaveFiltered, mtfSaveIgnoreRange, mtfSaveIgnoreMasterDetail, mtfSaveDeltas]
+    CommaTextOptions = [mtfSaveData]
+    CSVQuote = '"'
+    CSVFieldDelimiter = ','
+    CSVRecordDelimiter = ','
+    CSVTrueString = 'True'
+    CSVFalseString = 'False'
+    PersistentSaveOptions = [mtfSaveData, mtfSaveNonVisible, mtfSaveIgnoreRange, mtfSaveIgnoreMasterDetail]
+    PersistentBackup = False
+    ProgressFlags = [mtpcLoad, mtpcSave, mtpcCopy]
+    FilterOptions = []
+    Version = '2.53g'
+    LanguageID = 0
+    SortID = 0
+    SubLanguageID = 1
+    LocaleID = 1024
+    Left = 288
+    Top = 456
+    object mem_factVipuskDOC_ID: TIntegerField
+      FieldName = 'DOC_ID'
+    end
+    object mem_factVipuskSTROKA_ID: TIntegerField
+      FieldName = 'STROKA_ID'
+    end
+    object mem_factVipuskKSM_ID: TIntegerField
+      FieldName = 'KSM_ID'
+    end
+    object mem_factVipuskKLIENT_ID: TIntegerField
+      FieldName = 'KLIENT_ID'
+    end
+    object mem_factVipuskSPPRN: TSmallintField
+      FieldName = 'SPPRN'
+    end
+    object mem_factVipuskSPVIS: TSmallintField
+      FieldName = 'SPVIS'
+    end
+    object mem_factVipuskKEI_ID: TIntegerField
+      FieldName = 'KEI_ID'
+    end
+    object mem_factVipuskKOL_PRIH: TFloatField
+      FieldName = 'KOL_PRIH'
+    end
+    object mem_factVipuskKOD_PROD: TStringField
+      FieldName = 'KOD_PROD'
+      Size = 18
+    end
+    object mem_factVipuskNEIS: TStringField
+      FieldName = 'NEIS'
+      Size = 10
+    end
+    object mem_factVipuskNMAT: TStringField
+      FieldName = 'NMAT'
+      Size = 60
+    end
+    object mem_factVipuskXARKT: TStringField
+      FieldName = 'XARKT'
+      Size = 30
+    end
+    object mem_factVipuskNAM_REG: TStringField
+      FieldName = 'NAM_REG'
+    end
+    object mem_factVipuskVIPNG: TFloatField
+      FieldName = 'VIPNG'
+    end
+    object mem_factVipuskVIPKV: TFloatField
+      FieldName = 'VIPKV'
+    end
+    object mem_factVipuskOTDELID: TIntegerField
+      FieldName = 'OTDELID'
+    end
+    object mem_factVipuskGOST: TStringField
+      FieldName = 'GOST'
+      Size = 30
+    end
+    object mem_factVipuskOTDEL: TStringField
+      FieldName = 'OTDEL'
+    end
+    object mem_factVipuskOTDEL_DOC_ID: TIntegerField
+      FieldName = 'OTDEL_DOC_ID'
+    end
+  end
+  object ds_mem_factVipusk: TDataSource
+    DataSet = mem_factVipusk
+    Left = 328
+    Top = 456
+  end
+  object q_document: TRxIBQuery
+    Database = DM1.BELMED
+    Transaction = DM1.IBT_Read
+    CachedUpdates = True
+    SQL.Strings = (
+      
+        'SELECT DOCUMENT.TIP_DOK_ID, DOCUMENT.NDOK, DOCUMENT.DOC_ID, DOCU' +
+        'MENT. DATE_OP,'
+      
+        'DOCUMENT.DATE_DOK, DOCUMENT.KLIENT_ID, DOCUMENT.TIP_OP_ID, DOCUM' +
+        'ENT. DATE_VVOD,'
+      
+        'DOCUMENT.STRUK_ID, DOCUMENT.ZADACHA_ID, configumc.stname klient_' +
+        'stname'
+      'FROM DOCUMENT'
+      'inner join configumc on document.klient_id = configumc.struk_id'
+      'WHERE DOcUMENT.STRUK_ID = :struk_id'
+      'and %usl'
+      'AND DOCUMENT.TIP_OP_ID = 36 and document.tip_dok_id = 74'
+      'AND Document.Date_op between :dat1 and :dat2'
+      'ORDER BY DOCUMENT.DATE_DOK')
+    UpdateObject = upd_document
+    Macros = <
+      item
+        DataType = ftString
+        Name = 'usl'
+        ParamType = ptInput
+        Value = '0=0'
+      end>
+    Left = 296
+    Top = 512
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'struk_id'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'dat1'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'dat2'
+        ParamType = ptUnknown
+      end>
+    object q_documentTIP_DOK_ID: TSmallintField
+      FieldName = 'TIP_DOK_ID'
+      Origin = '"DOCUMENT"."TIP_DOK_ID"'
+      Required = True
+    end
+    object q_documentNDOK: TIBStringField
+      FieldName = 'NDOK'
+      Origin = '"DOCUMENT"."NDOK"'
+    end
+    object q_documentDOC_ID: TIntegerField
+      FieldName = 'DOC_ID'
+      Origin = '"DOCUMENT"."DOC_ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object q_documentDATE_OP: TDateField
+      FieldName = 'DATE_OP'
+      Origin = '"DOCUMENT"."DATE_OP"'
+    end
+    object q_documentDATE_DOK: TDateField
+      FieldName = 'DATE_DOK'
+      Origin = '"DOCUMENT"."DATE_DOK"'
+    end
+    object q_documentKLIENT_ID: TIntegerField
+      FieldName = 'KLIENT_ID'
+      Origin = '"DOCUMENT"."KLIENT_ID"'
+      Required = True
+    end
+    object q_documentTIP_OP_ID: TSmallintField
+      FieldName = 'TIP_OP_ID'
+      Origin = '"DOCUMENT"."TIP_OP_ID"'
+      Required = True
+    end
+    object q_documentDATE_VVOD: TDateTimeField
+      FieldName = 'DATE_VVOD'
+      Origin = '"DOCUMENT"."DATE_VVOD"'
+    end
+    object q_documentSTRUK_ID: TSmallintField
+      FieldName = 'STRUK_ID'
+      Origin = '"DOCUMENT"."STRUK_ID"'
+      Required = True
+    end
+    object q_documentZADACHA_ID: TIBStringField
+      FieldName = 'ZADACHA_ID'
+      Origin = '"DOCUMENT"."ZADACHA_ID"'
+      FixedChar = True
+      Size = 10
+    end
+    object q_documentKLIENT_STNAME: TIBStringField
+      FieldName = 'KLIENT_STNAME'
+      Origin = '"CONFIGUMC"."STNAME"'
+      FixedChar = True
+    end
+  end
+  object upd_document: TIBUpdateSQLW
+    RefreshSQL.Strings = (
+      'Select '
+      '  TIP_DOK_ID,'
+      '  NDOK,'
+      '  DOC_ID,'
+      '  DATE_OP,'
+      '  DATE_DOK,'
+      '  KLIENT_ID,'
+      '  TIP_OP_ID,'
+      '  DATE_VVOD,'
+      '  STRUK_ID,'
+      '  ZADACHA_ID,'
+      '  KLIENT_STNAME'
+      'from DOCUMENT '
+      'where'
+      '  DOC_ID = :DOC_ID')
+    ModifySQL.Strings = (
+      'update DOCUMENT'
+      'set'
+      '  DATE_DOK = :DATE_DOK,'
+      '  DATE_OP = :DATE_OP,'
+      '  DATE_VVOD = :DATE_VVOD,'
+      '  DOC_ID = :DOC_ID,'
+      '  KLIENT_ID = :KLIENT_ID,'
+      '  NDOK = :NDOK,'
+      '  STRUK_ID = :STRUK_ID,'
+      '  TIP_DOK_ID = :TIP_DOK_ID,'
+      '  TIP_OP_ID = :TIP_OP_ID,'
+      '  ZADACHA_ID = :ZADACHA_ID'
+      'where'
+      '  DOC_ID = :OLD_DOC_ID')
+    InsertSQL.Strings = (
+      'insert into DOCUMENT'
+      
+        '  (DATE_DOK, DATE_OP, DATE_VVOD, DOC_ID, KLIENT_ID, NDOK, STRUK_' +
+        'ID, TIP_DOK_ID, '
+      '   TIP_OP_ID, ZADACHA_ID)'
+      'values'
+      
+        '  (:DATE_DOK, :DATE_OP, :DATE_VVOD, :DOC_ID, :KLIENT_ID, :NDOK, ' +
+        ':STRUK_ID, '
+      '   :TIP_DOK_ID, :TIP_OP_ID, :ZADACHA_ID)')
+    DeleteSQL.Strings = (
+      'delete from DOCUMENT'
+      'where'
+      '  DOC_ID = :OLD_DOC_ID')
+    AutoCommit = False
+    UpdateTransaction = DM1.IBT_Write
+    Left = 328
+    Top = 512
+  end
+  object q_kartv: TRxIBQuery
+    Database = DM1.BELMED
+    Transaction = DM1.IBT_Read
+    CachedUpdates = True
+    SQL.Strings = (
+      
+        'SELECT KARTV.DOC_ID, KARTV.STROKA_ID, KARTV.KSM_ID,  KARTV. KOL_' +
+        'PRIH'
+      'FROM KARTV'
+      'where kartv.doc_id = :doc_id'
+      'and kartv.ksm_id = :ksm_id')
+    UpdateObject = upd_kartv
+    Macros = <>
+    Left = 296
+    Top = 552
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'doc_id'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'ksm_id'
+        ParamType = ptUnknown
+      end>
+    object q_kartvDOC_ID: TIntegerField
+      FieldName = 'DOC_ID'
+      Origin = '"KARTV"."DOC_ID"'
+      Required = True
+    end
+    object q_kartvSTROKA_ID: TIntegerField
+      FieldName = 'STROKA_ID'
+      Origin = '"KARTV"."STROKA_ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object q_kartvKSM_ID: TIntegerField
+      FieldName = 'KSM_ID'
+      Origin = '"KARTV"."KSM_ID"'
+      Required = True
+    end
+    object q_kartvKOL_PRIH: TFMTBCDField
+      FieldName = 'KOL_PRIH'
+      Origin = '"KARTV"."KOL_PRIH"'
+      Precision = 18
+      Size = 6
+    end
+  end
+  object upd_kartv: TIBUpdateSQLW
+    RefreshSQL.Strings = (
+      'Select '
+      '  DOC_ID,'
+      '  STROKA_ID,'
+      '  KSM_ID,'
+      '  KOL_PRIH'
+      'from KARTV '
+      'where'
+      '  STROKA_ID = :STROKA_ID')
+    ModifySQL.Strings = (
+      'update KARTV'
+      'set'
+      '  DOC_ID = :DOC_ID,'
+      '  KOL_PRIH = :KOL_PRIH,'
+      '  KSM_ID = :KSM_ID,'
+      '  STROKA_ID = :STROKA_ID'
+      'where'
+      '  STROKA_ID = :OLD_STROKA_ID')
+    InsertSQL.Strings = (
+      'insert into KARTV'
+      '  (DOC_ID, KOL_PRIH, KSM_ID, STROKA_ID)'
+      'values'
+      '  (:DOC_ID, :KOL_PRIH, :KSM_ID, :STROKA_ID)')
+    DeleteSQL.Strings = (
+      'delete from KARTV'
+      'where'
+      '  STROKA_ID = :OLD_STROKA_ID')
+    AutoCommit = False
+    UpdateTransaction = DM1.IBT_Write
+    Left = 328
+    Top = 552
   end
 end

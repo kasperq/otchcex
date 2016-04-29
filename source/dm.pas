@@ -744,6 +744,9 @@ uses
     FactVipuskQuerySPROD_ID: TIntegerField;
     KartCENA_UCH: TFloatField;
     DocumentDOK_OSN_ID: TIntegerField;
+    KartVOTDEL: TIBStringField;
+    KartVOTDELID: TIntegerField;
+    KartVOTDEL_DOC_ID: TIntegerField;
     procedure DataModuleCreate(Sender: TObject);
     procedure FormToObject(PopupForm : TForm; ControlObject : TControl; HTop:Integer=0; YesWidth:Integer=1);
     procedure VoprosWriteDoc;
@@ -831,7 +834,9 @@ uses
     { Private declarations }
   public
     stkod : string;
-    
+    klientId : integer;
+    strukIdRela : integer;
+
     function LastDayOfMonth(month, year: integer): TDate;
     function getTochn(ksmIdPrep, ksm_id : integer) : integer;
 
