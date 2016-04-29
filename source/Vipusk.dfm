@@ -3,7 +3,7 @@ object FVipusk: TFVipusk
   Top = 159
   Caption = #1060#1072#1082#1090#1080#1095#1077#1089#1082#1080#1081' '#1074#1099#1087#1091#1089#1082' '#1087#1088#1086#1076#1091#1082#1094#1080#1080
   ClientHeight = 663
-  ClientWidth = 905
+  ClientWidth = 1120
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -17,21 +17,38 @@ object FVipusk: TFVipusk
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
+  object Label4: TLabel
+    Left = 374
+    Top = 0
+    Width = 155
+    Height = 13
+    Margins.Bottom = 0
+    Alignment = taCenter
+    BiDiMode = bdLeftToRight
+    Caption = #1047#1072#1076#1072#1081#1090#1077' '#1084'-'#1094' '#1080' '#1075#1086#1076' '#1087#1088#1086#1089#1084#1086#1090#1088#1072' :'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentBiDiMode = False
+    ParentFont = False
+    Layout = tlCenter
+  end
   object Splitter1: TSplitter
     Left = 0
-    Top = 333
-    Width = 905
+    Top = 307
+    Width = 1120
     Height = 3
     Cursor = crVSplit
-    Align = alBottom
+    Align = alTop
     ResizeStyle = rsUpdate
-    ExplicitLeft = 8
-    ExplicitTop = 619
+    ExplicitWidth = 356
   end
   object ToolBar1: TToolBar
     Left = 0
     Top = 0
-    Width = 905
+    Width = 1120
     Height = 33
     ButtonHeight = 30
     ButtonWidth = 32
@@ -151,248 +168,206 @@ object FVipusk: TFVipusk
       OnChange = SpinEdit4Change
     end
   end
+  object DBGridEh1: TDBGridEh
+    Left = 0
+    Top = 66
+    Width = 1120
+    Height = 241
+    Align = alTop
+    AutoFitColWidths = True
+    DataSource = DSPlvipusk
+    Flat = True
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    FooterColor = clWindow
+    FooterFont.Charset = DEFAULT_CHARSET
+    FooterFont.Color = clNavy
+    FooterFont.Height = -11
+    FooterFont.Name = 'MS Sans Serif'
+    FooterFont.Style = [fsBold]
+    Options = [dgEditing, dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
+    OptionsEh = [dghFixed3D, dghHighlightFocus, dghClearSelection, dghAutoSortMarking, dghMultiSortMarking, dghEnterAsTab]
+    ParentFont = False
+    TabOrder = 1
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clBlack
+    TitleFont.Height = -11
+    TitleFont.Name = 'MS Sans Serif'
+    TitleFont.Style = []
+    TitleHeight = 25
+    UseMultiTitle = True
+    VertScrollBar.Tracking = True
+    OnSortMarkingChanged = DBGridEh1SortMarkingChanged
+    Columns = <
+      item
+        Checkboxes = True
+        EditButtons = <>
+        FieldName = 'vib'
+        Footers = <>
+        Title.Caption = #1042#1099#1073#1086#1088
+        Width = 49
+      end
+      item
+        EditButtons = <>
+        FieldName = 'KOD_PROD'
+        Footers = <>
+        Title.Caption = #1050#1086#1076' '#1087#1088#1077#1087#1072#1088#1072#1090#1072
+        Title.TitleButton = True
+      end
+      item
+        EditButtons = <>
+        FieldName = 'NMAT'
+        Footers = <>
+        Title.Caption = #1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077
+        Title.SortIndex = 1
+        Title.SortMarker = smDownEh
+        Title.TitleButton = True
+        Width = 256
+      end
+      item
+        EditButtons = <>
+        FieldName = 'XARKT'
+        Footers = <>
+        Title.Caption = #1061#1072#1088#1072#1082#1090#1077#1088#1080#1089#1090#1080#1082#1072
+        Width = 117
+      end
+      item
+        EditButtons = <>
+        FieldName = 'Nam_Reg'
+        Footers = <>
+        Title.Caption = #1056#1077#1075#1080#1086#1085
+        Width = 169
+      end
+      item
+        EditButtons = <>
+        FieldName = 'kol'
+        Footers = <>
+        Title.Caption = #1055#1083#1072#1085
+      end>
+  end
+  object DBGridEh2: TDBGridEh
+    Left = 0
+    Top = 337
+    Width = 1120
+    Height = 326
+    Align = alClient
+    AutoFitColWidths = True
+    DataSource = DM1.DSKartV
+    Flat = True
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    FooterColor = clWindow
+    FooterFont.Charset = DEFAULT_CHARSET
+    FooterFont.Color = clNavy
+    FooterFont.Height = -11
+    FooterFont.Name = 'MS Sans Serif'
+    FooterFont.Style = [fsBold]
+    OptionsEh = [dghFixed3D, dghHighlightFocus, dghClearSelection, dghAutoSortMarking, dghMultiSortMarking, dghEnterAsTab]
+    ParentFont = False
+    TabOrder = 2
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clBlack
+    TitleFont.Height = -11
+    TitleFont.Name = 'MS Sans Serif'
+    TitleFont.Style = []
+    TitleHeight = 25
+    UseMultiTitle = True
+    VertScrollBar.Tracking = True
+    OnSortMarkingChanged = DBGridEh2SortMarkingChanged
+    Columns = <
+      item
+        ButtonStyle = cbsEllipsis
+        EditButtons = <>
+        FieldName = 'KOD_PROD'
+        Footers = <>
+        ReadOnly = False
+        Title.Caption = #1050#1086#1076' '#1087#1088#1077#1087#1072#1088#1072#1090#1072
+        Title.TitleButton = True
+        Width = 148
+        OnEditButtonClick = DBGridEh2Columns0EditButtonClick
+      end
+      item
+        EditButtons = <>
+        FieldName = 'NMAT'
+        Footers = <>
+        ReadOnly = True
+        Title.Caption = #1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077
+        Title.SortIndex = 1
+        Title.SortMarker = smDownEh
+        Title.TitleButton = True
+        Width = 231
+      end
+      item
+        EditButtons = <>
+        FieldName = 'XARKT'
+        Footers = <>
+        ReadOnly = True
+        Title.Caption = #1061#1072#1088#1072#1082#1090#1077#1088#1080#1089#1090#1080#1082#1072
+        Width = 126
+      end
+      item
+        EditButtons = <>
+        FieldName = 'NAM_REG'
+        Footers = <>
+        ReadOnly = True
+        Title.Caption = #1056#1077#1075#1080#1086#1085
+        Width = 137
+      end
+      item
+        EditButtons = <>
+        FieldName = 'KOL_PRIH'
+        Footers = <>
+        Title.Caption = #1060#1072#1082#1090
+        Width = 96
+      end
+      item
+        EditButtons = <>
+        FieldName = 'VIPNG'
+        Footers = <>
+        ReadOnly = True
+        Title.Caption = #1042#1099#1087#1091#1089#1082' '#1089' '#1085#1072#1095#1072#1083#1072' '#1075#1086#1076#1072
+      end
+      item
+        AlwaysShowEditButton = True
+        ButtonStyle = cbsDropDown
+        EditButtons = <>
+        FieldName = 'OTDEL'
+        Footers = <>
+        ReadOnly = True
+        Title.Caption = #1054#1090#1076#1077#1083#1077#1085#1080#1077
+        OnEditButtonClick = DBGridEh2Columns6EditButtonClick
+      end
+      item
+        EditButtons = <>
+        FieldName = 'OTDELID'
+        Footers = <>
+        Visible = False
+      end>
+  end
   object Panel1: TPanel
     Left = 0
-    Top = 74
-    Width = 905
-    Height = 259
-    Margins.Left = 0
-    Margins.Top = 0
-    Margins.Right = 0
-    Margins.Bottom = 0
-    Align = alClient
-    TabOrder = 1
-    object DBGridEh1: TDBGridEh
-      Left = 1
-      Top = 1
-      Width = 903
-      Height = 257
-      Margins.Left = 0
-      Margins.Top = 0
-      Margins.Right = 0
-      Margins.Bottom = 0
-      Align = alClient
-      AutoFitColWidths = True
-      DataSource = DSPlvipusk
-      Flat = True
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      FooterColor = clWindow
-      FooterFont.Charset = DEFAULT_CHARSET
-      FooterFont.Color = clNavy
-      FooterFont.Height = -11
-      FooterFont.Name = 'MS Sans Serif'
-      FooterFont.Style = [fsBold]
-      Options = [dgEditing, dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
-      OptionsEh = [dghFixed3D, dghHighlightFocus, dghClearSelection, dghAutoSortMarking, dghMultiSortMarking, dghEnterAsTab]
-      ParentFont = False
-      TabOrder = 0
-      TitleFont.Charset = DEFAULT_CHARSET
-      TitleFont.Color = clBlack
-      TitleFont.Height = -11
-      TitleFont.Name = 'MS Sans Serif'
-      TitleFont.Style = []
-      TitleHeight = 25
-      UseMultiTitle = True
-      VertScrollBar.Tracking = True
-      OnSortMarkingChanged = DBGridEh1SortMarkingChanged
-      Columns = <
-        item
-          Checkboxes = True
-          EditButtons = <>
-          FieldName = 'vib'
-          Footers = <>
-          Title.Caption = #1042#1099#1073#1086#1088
-          Width = 49
-        end
-        item
-          EditButtons = <>
-          FieldName = 'KOD_PROD'
-          Footers = <>
-          Title.Caption = #1050#1086#1076' '#1087#1088#1077#1087#1072#1088#1072#1090#1072
-          Title.TitleButton = True
-        end
-        item
-          EditButtons = <>
-          FieldName = 'NMAT'
-          Footers = <>
-          Title.Caption = #1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077
-          Title.SortIndex = 1
-          Title.SortMarker = smDownEh
-          Title.TitleButton = True
-          Width = 256
-        end
-        item
-          EditButtons = <>
-          FieldName = 'XARKT'
-          Footers = <>
-          Title.Caption = #1061#1072#1088#1072#1082#1090#1077#1088#1080#1089#1090#1080#1082#1072
-          Width = 117
-        end
-        item
-          EditButtons = <>
-          FieldName = 'Nam_Reg'
-          Footers = <>
-          Title.Caption = #1056#1077#1075#1080#1086#1085
-          Width = 169
-        end
-        item
-          EditButtons = <>
-          FieldName = 'kol'
-          Footers = <>
-          Title.Caption = #1055#1083#1072#1085
-        end>
-    end
-  end
-  object Panel2: TPanel
-    Left = 0
-    Top = 336
-    Width = 905
-    Height = 327
-    Align = alBottom
-    TabOrder = 2
-    object Panel4: TPanel
-      Left = 1
-      Top = 1
-      Width = 903
-      Height = 24
-      Align = alTop
-      TabOrder = 0
-      object Label2: TLabel
-        Left = 191
-        Top = 5
-        Width = 112
-        Height = 13
-        Margins.Bottom = 0
-        Caption = #1060#1072#1082#1090#1080#1095#1077#1089#1082#1080#1081' '#1074#1099#1087#1091#1089#1082':'
-      end
-    end
-    object DBGridEh2: TDBGridEh
-      Left = 1
-      Top = 25
-      Width = 903
-      Height = 301
-      Align = alClient
-      AutoFitColWidths = True
-      DataSource = DM1.DSKartV
-      Flat = True
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      FooterColor = clWindow
-      FooterFont.Charset = DEFAULT_CHARSET
-      FooterFont.Color = clNavy
-      FooterFont.Height = -11
-      FooterFont.Name = 'MS Sans Serif'
-      FooterFont.Style = [fsBold]
-      OptionsEh = [dghFixed3D, dghHighlightFocus, dghClearSelection, dghAutoSortMarking, dghMultiSortMarking, dghEnterAsTab]
-      ParentFont = False
-      TabOrder = 1
-      TitleFont.Charset = DEFAULT_CHARSET
-      TitleFont.Color = clBlack
-      TitleFont.Height = -11
-      TitleFont.Name = 'MS Sans Serif'
-      TitleFont.Style = []
-      TitleHeight = 25
-      UseMultiTitle = True
-      VertScrollBar.Tracking = True
-      OnEditButtonClick = DBGridEh2EditButtonClick
-      OnSortMarkingChanged = DBGridEh2SortMarkingChanged
-      Columns = <
-        item
-          ButtonStyle = cbsEllipsis
-          EditButtons = <>
-          FieldName = 'KOD_PROD'
-          Footers = <>
-          ReadOnly = False
-          Title.Caption = #1050#1086#1076' '#1087#1088#1077#1087#1072#1088#1072#1090#1072
-          Title.TitleButton = True
-          Width = 148
-        end
-        item
-          EditButtons = <>
-          FieldName = 'NMAT'
-          Footers = <>
-          ReadOnly = True
-          Title.Caption = #1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077
-          Title.SortIndex = 1
-          Title.SortMarker = smDownEh
-          Title.TitleButton = True
-          Width = 231
-        end
-        item
-          EditButtons = <>
-          FieldName = 'XARKT'
-          Footers = <>
-          ReadOnly = True
-          Title.Caption = #1061#1072#1088#1072#1082#1090#1077#1088#1080#1089#1090#1080#1082#1072
-          Width = 126
-        end
-        item
-          EditButtons = <>
-          FieldName = 'NAM_REG'
-          Footers = <>
-          ReadOnly = True
-          Title.Caption = #1056#1077#1075#1080#1086#1085
-          Width = 137
-        end
-        item
-          EditButtons = <>
-          FieldName = 'KOL_PRIH'
-          Footers = <>
-          Title.Caption = #1060#1072#1082#1090
-          Width = 96
-        end
-        item
-          EditButtons = <>
-          FieldName = 'VIPNG'
-          Footers = <>
-          ReadOnly = True
-          Title.Caption = #1042#1099#1087#1091#1089#1082' '#1089' '#1085#1072#1095#1072#1083#1072' '#1075#1086#1076#1072
-        end
-        item
-          AlwaysShowEditButton = True
-          EditButtons = <>
-          FieldName = 'OTDEL'
-          Footers = <>
-          OnEditButtonClick = DBGridEh2Columns6EditButtonClick
-        end
-        item
-          EditButtons = <>
-          FieldName = 'OTDELID'
-          Footers = <>
-        end>
-    end
-  end
-  object Panel3: TPanel
-    Left = 0
     Top = 33
-    Width = 905
-    Height = 41
-    Margins.Left = 0
-    Margins.Top = 0
-    Margins.Right = 0
-    Margins.Bottom = 0
+    Width = 1120
+    Height = 33
     Align = alTop
-    Ctl3D = True
-    ParentCtl3D = False
     TabOrder = 3
     object Label1: TLabel
       Left = 192
-      Top = 16
+      Top = 12
       Width = 103
       Height = 13
       Margins.Bottom = 0
       Caption = #1042#1099#1087#1091#1089#1082' '#1087#1088#1077#1087#1072#1088#1072#1090#1086#1074':'
     end
     object RadioGroup1: TRadioGroup
-      Left = 301
-      Top = 3
+      Left = 300
+      Top = 0
       Width = 528
       Height = 32
       Columns = 3
@@ -405,13 +380,29 @@ object FVipusk: TFVipusk
       OnClick = RadioGroup1Click
     end
   end
+  object Panel2: TPanel
+    Left = 0
+    Top = 310
+    Width = 1120
+    Height = 27
+    Align = alTop
+    TabOrder = 4
+    object Label2: TLabel
+      Left = 192
+      Top = 10
+      Width = 112
+      Height = 13
+      Margins.Bottom = 0
+      Caption = #1060#1072#1082#1090#1080#1095#1077#1089#1082#1080#1081' '#1074#1099#1087#1091#1089#1082':'
+    end
+  end
   object ImageList1: TImageList
     Height = 24
     Width = 24
     Left = 552
     Top = 4
     Bitmap = {
-      494C010107000900100018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010107000900200018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1151,28 +1142,40 @@ object FVipusk: TFVipusk
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
-    Left = 288
-    Top = 456
+    Left = 640
+    Top = 440
     object mem_factVipuskDOC_ID: TIntegerField
       FieldName = 'DOC_ID'
+      Origin = '"KARTV"."DOC_ID"'
+      Required = True
     end
     object mem_factVipuskSTROKA_ID: TIntegerField
       FieldName = 'STROKA_ID'
+      Origin = '"KARTV"."STROKA_ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
     end
     object mem_factVipuskKSM_ID: TIntegerField
       FieldName = 'KSM_ID'
+      Origin = '"KARTV"."KSM_ID"'
+      Required = True
     end
     object mem_factVipuskKLIENT_ID: TIntegerField
       FieldName = 'KLIENT_ID'
+      Origin = '"DOCUMENT"."KLIENT_ID"'
+      Required = True
     end
     object mem_factVipuskSPPRN: TSmallintField
       FieldName = 'SPPRN'
+      Origin = '"SPPROD"."SPPRN"'
     end
     object mem_factVipuskSPVIS: TSmallintField
       FieldName = 'SPVIS'
+      Origin = '"SPPROD"."SPVIS"'
     end
-    object mem_factVipuskKEI_ID: TIntegerField
+    object mem_factVipuskKEI_ID: TSmallintField
       FieldName = 'KEI_ID'
+      Origin = '"SPPROD"."KEI_ID"'
     end
     object mem_factVipuskKOL_PRIH: TFloatField
       FieldName = 'KOL_PRIH'
@@ -1204,6 +1207,7 @@ object FVipusk: TFVipusk
     end
     object mem_factVipuskOTDELID: TIntegerField
       FieldName = 'OTDELID'
+      ProviderFlags = []
     end
     object mem_factVipuskGOST: TStringField
       FieldName = 'GOST'
@@ -1218,242 +1222,7 @@ object FVipusk: TFVipusk
   end
   object ds_mem_factVipusk: TDataSource
     DataSet = mem_factVipusk
-    Left = 328
-    Top = 456
-  end
-  object q_document: TRxIBQuery
-    Database = DM1.BELMED
-    Transaction = DM1.IBT_Read
-    CachedUpdates = True
-    SQL.Strings = (
-      
-        'SELECT DOCUMENT.TIP_DOK_ID, DOCUMENT.NDOK, DOCUMENT.DOC_ID, DOCU' +
-        'MENT. DATE_OP,'
-      
-        'DOCUMENT.DATE_DOK, DOCUMENT.KLIENT_ID, DOCUMENT.TIP_OP_ID, DOCUM' +
-        'ENT. DATE_VVOD,'
-      
-        'DOCUMENT.STRUK_ID, DOCUMENT.ZADACHA_ID, configumc.stname klient_' +
-        'stname'
-      'FROM DOCUMENT'
-      'inner join configumc on document.klient_id = configumc.struk_id'
-      'WHERE DOcUMENT.STRUK_ID = :struk_id'
-      'and %usl'
-      'AND DOCUMENT.TIP_OP_ID = 36 and document.tip_dok_id = 74'
-      'AND Document.Date_op between :dat1 and :dat2'
-      'ORDER BY DOCUMENT.DATE_DOK')
-    UpdateObject = upd_document
-    Macros = <
-      item
-        DataType = ftString
-        Name = 'usl'
-        ParamType = ptInput
-        Value = '0=0'
-      end>
-    Left = 296
-    Top = 512
-    ParamData = <
-      item
-        DataType = ftUnknown
-        Name = 'struk_id'
-        ParamType = ptUnknown
-      end
-      item
-        DataType = ftUnknown
-        Name = 'dat1'
-        ParamType = ptUnknown
-      end
-      item
-        DataType = ftUnknown
-        Name = 'dat2'
-        ParamType = ptUnknown
-      end>
-    object q_documentTIP_DOK_ID: TSmallintField
-      FieldName = 'TIP_DOK_ID'
-      Origin = '"DOCUMENT"."TIP_DOK_ID"'
-      Required = True
-    end
-    object q_documentNDOK: TIBStringField
-      FieldName = 'NDOK'
-      Origin = '"DOCUMENT"."NDOK"'
-    end
-    object q_documentDOC_ID: TIntegerField
-      FieldName = 'DOC_ID'
-      Origin = '"DOCUMENT"."DOC_ID"'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-    end
-    object q_documentDATE_OP: TDateField
-      FieldName = 'DATE_OP'
-      Origin = '"DOCUMENT"."DATE_OP"'
-    end
-    object q_documentDATE_DOK: TDateField
-      FieldName = 'DATE_DOK'
-      Origin = '"DOCUMENT"."DATE_DOK"'
-    end
-    object q_documentKLIENT_ID: TIntegerField
-      FieldName = 'KLIENT_ID'
-      Origin = '"DOCUMENT"."KLIENT_ID"'
-      Required = True
-    end
-    object q_documentTIP_OP_ID: TSmallintField
-      FieldName = 'TIP_OP_ID'
-      Origin = '"DOCUMENT"."TIP_OP_ID"'
-      Required = True
-    end
-    object q_documentDATE_VVOD: TDateTimeField
-      FieldName = 'DATE_VVOD'
-      Origin = '"DOCUMENT"."DATE_VVOD"'
-    end
-    object q_documentSTRUK_ID: TSmallintField
-      FieldName = 'STRUK_ID'
-      Origin = '"DOCUMENT"."STRUK_ID"'
-      Required = True
-    end
-    object q_documentZADACHA_ID: TIBStringField
-      FieldName = 'ZADACHA_ID'
-      Origin = '"DOCUMENT"."ZADACHA_ID"'
-      FixedChar = True
-      Size = 10
-    end
-    object q_documentKLIENT_STNAME: TIBStringField
-      FieldName = 'KLIENT_STNAME'
-      Origin = '"CONFIGUMC"."STNAME"'
-      FixedChar = True
-    end
-  end
-  object upd_document: TIBUpdateSQLW
-    RefreshSQL.Strings = (
-      'Select '
-      '  TIP_DOK_ID,'
-      '  NDOK,'
-      '  DOC_ID,'
-      '  DATE_OP,'
-      '  DATE_DOK,'
-      '  KLIENT_ID,'
-      '  TIP_OP_ID,'
-      '  DATE_VVOD,'
-      '  STRUK_ID,'
-      '  ZADACHA_ID,'
-      '  KLIENT_STNAME'
-      'from DOCUMENT '
-      'where'
-      '  DOC_ID = :DOC_ID')
-    ModifySQL.Strings = (
-      'update DOCUMENT'
-      'set'
-      '  DATE_DOK = :DATE_DOK,'
-      '  DATE_OP = :DATE_OP,'
-      '  DATE_VVOD = :DATE_VVOD,'
-      '  DOC_ID = :DOC_ID,'
-      '  KLIENT_ID = :KLIENT_ID,'
-      '  NDOK = :NDOK,'
-      '  STRUK_ID = :STRUK_ID,'
-      '  TIP_DOK_ID = :TIP_DOK_ID,'
-      '  TIP_OP_ID = :TIP_OP_ID,'
-      '  ZADACHA_ID = :ZADACHA_ID'
-      'where'
-      '  DOC_ID = :OLD_DOC_ID')
-    InsertSQL.Strings = (
-      'insert into DOCUMENT'
-      
-        '  (DATE_DOK, DATE_OP, DATE_VVOD, DOC_ID, KLIENT_ID, NDOK, STRUK_' +
-        'ID, TIP_DOK_ID, '
-      '   TIP_OP_ID, ZADACHA_ID)'
-      'values'
-      
-        '  (:DATE_DOK, :DATE_OP, :DATE_VVOD, :DOC_ID, :KLIENT_ID, :NDOK, ' +
-        ':STRUK_ID, '
-      '   :TIP_DOK_ID, :TIP_OP_ID, :ZADACHA_ID)')
-    DeleteSQL.Strings = (
-      'delete from DOCUMENT'
-      'where'
-      '  DOC_ID = :OLD_DOC_ID')
-    AutoCommit = False
-    UpdateTransaction = DM1.IBT_Write
-    Left = 328
-    Top = 512
-  end
-  object q_kartv: TRxIBQuery
-    Database = DM1.BELMED
-    Transaction = DM1.IBT_Read
-    CachedUpdates = True
-    SQL.Strings = (
-      
-        'SELECT KARTV.DOC_ID, KARTV.STROKA_ID, KARTV.KSM_ID,  KARTV. KOL_' +
-        'PRIH'
-      'FROM KARTV'
-      'where kartv.doc_id = :doc_id'
-      'and kartv.ksm_id = :ksm_id')
-    UpdateObject = upd_kartv
-    Macros = <>
-    Left = 296
-    Top = 552
-    ParamData = <
-      item
-        DataType = ftUnknown
-        Name = 'doc_id'
-        ParamType = ptUnknown
-      end
-      item
-        DataType = ftUnknown
-        Name = 'ksm_id'
-        ParamType = ptUnknown
-      end>
-    object q_kartvDOC_ID: TIntegerField
-      FieldName = 'DOC_ID'
-      Origin = '"KARTV"."DOC_ID"'
-      Required = True
-    end
-    object q_kartvSTROKA_ID: TIntegerField
-      FieldName = 'STROKA_ID'
-      Origin = '"KARTV"."STROKA_ID"'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-    end
-    object q_kartvKSM_ID: TIntegerField
-      FieldName = 'KSM_ID'
-      Origin = '"KARTV"."KSM_ID"'
-      Required = True
-    end
-    object q_kartvKOL_PRIH: TFMTBCDField
-      FieldName = 'KOL_PRIH'
-      Origin = '"KARTV"."KOL_PRIH"'
-      Precision = 18
-      Size = 6
-    end
-  end
-  object upd_kartv: TIBUpdateSQLW
-    RefreshSQL.Strings = (
-      'Select '
-      '  DOC_ID,'
-      '  STROKA_ID,'
-      '  KSM_ID,'
-      '  KOL_PRIH'
-      'from KARTV '
-      'where'
-      '  STROKA_ID = :STROKA_ID')
-    ModifySQL.Strings = (
-      'update KARTV'
-      'set'
-      '  DOC_ID = :DOC_ID,'
-      '  KOL_PRIH = :KOL_PRIH,'
-      '  KSM_ID = :KSM_ID,'
-      '  STROKA_ID = :STROKA_ID'
-      'where'
-      '  STROKA_ID = :OLD_STROKA_ID')
-    InsertSQL.Strings = (
-      'insert into KARTV'
-      '  (DOC_ID, KOL_PRIH, KSM_ID, STROKA_ID)'
-      'values'
-      '  (:DOC_ID, :KOL_PRIH, :KSM_ID, :STROKA_ID)')
-    DeleteSQL.Strings = (
-      'delete from KARTV'
-      'where'
-      '  STROKA_ID = :OLD_STROKA_ID')
-    AutoCommit = False
-    UpdateTransaction = DM1.IBT_Write
-    Left = 328
-    Top = 552
+    Left = 640
+    Top = 480
   end
 end

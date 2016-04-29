@@ -747,6 +747,25 @@ uses
     KartVOTDEL: TIBStringField;
     KartVOTDELID: TIntegerField;
     KartVOTDEL_DOC_ID: TIntegerField;
+    q_vipuskDoc: TRxIBQuery;
+    q_vipuskDocTIP_DOK_ID: TSmallintField;
+    q_vipuskDocNDOK: TIBStringField;
+    q_vipuskDocDOC_ID: TIntegerField;
+    q_vipuskDocDATE_OP: TDateField;
+    q_vipuskDocDATE_DOK: TDateField;
+    q_vipuskDocKLIENT_ID: TIntegerField;
+    q_vipuskDocTIP_OP_ID: TSmallintField;
+    q_vipuskDocDATE_VVOD: TDateTimeField;
+    q_vipuskDocSTRUK_ID: TSmallintField;
+    q_vipuskDocZADACHA_ID: TIBStringField;
+    q_vipuskDocKLIENT_STNAME: TIBStringField;
+    q_kartv: TRxIBQuery;
+    q_kartvDOC_ID: TIntegerField;
+    q_kartvSTROKA_ID: TIntegerField;
+    q_kartvKSM_ID: TIntegerField;
+    q_kartvKOL_PRIH: TFMTBCDField;
+    upd_q_kartv: TIBUpdateSQLW;
+    upd_q_document: TIBUpdateSQLW;
     procedure DataModuleCreate(Sender: TObject);
     procedure FormToObject(PopupForm : TForm; ControlObject : TControl; HTop:Integer=0; YesWidth:Integer=1);
     procedure VoprosWriteDoc;
@@ -839,6 +858,13 @@ uses
 
     function LastDayOfMonth(month, year: integer): TDate;
     function getTochn(ksmIdPrep, ksm_id : integer) : integer;
+    procedure openDocument(strukId, otdelId : integer; dat1, dat2 : TDate);
+    procedure openKartv(docId, ksmId : integer);
+    procedure insertDocument(tipOpId, strukId, tipDocId, klientId : integer;
+                             nDoc : string; dateDok : TDate);
+    procedure insertKartv;
+    procedure deleteKartv(docId, ksmId : integer);
+    function getFactVipuskKlientId(prodKsmId : integer) : integer;
 
   end;
 
@@ -1143,6 +1169,8 @@ begin
                                                               DM1.ConfigUMCMES.AsInteger,
                                                               1)) + 'ã.';
   vSTRUK_ID := DM1.ConfigUMCSTRUK_ID.AsInteger;
+  klientId := vStruk_id;
+  strukIdRela := vStruk_id;
   dm1.stkod := dm1.ConfigUMCSTKOD.AsString;
   DM1.ConfigUMC.Close;
   DM1.IBQuery1.Close;
@@ -3330,6 +3358,94 @@ function TDM1.LastDayOfMonth(month, year: integer): TDate;
     m := 1;
   end;
    Result := EncodeDate(y, m, 1) - 1;
- end;
+end;
+
+function TDM1.getFactVipuskKlientId(prodKsmId : integer) : integer;
+begin
+  result := 0;
+  openDocument(dm1.strukIdRela, 0, StrToDate(s_dat1), StrToDate(s_dat2));
+  if (q_vipuskDoc.RecordCount > 0) then
+  begin
+    q_vipuskDoc.First;
+    while (not q_vipuskDoc.Eof) do
+    begin
+      openKartv(q_vipuskDocDOC_ID.AsInteger, prodKsmId);
+      if (q_kartv.RecordCount > 0) then
+      begin
+        result := q_vipuskDocKLIENT_ID.AsInteger;
+        break;
+      end;
+      q_vipuskDoc.Next;
+    end;
+  end;
+end;
+
+procedure TDM1.openDocument(strukId, otdelId : integer; dat1, dat2 : TDate);
+begin
+  q_vipuskDoc.Close;
+  q_vipuskDoc.ParamByName('struk_id').AsInteger := strukId;
+  if (otdelId = 0) then
+    q_vipuskDoc.MacroByName('usl').AsString := 'document.struk_id <> document.klient_id '
+  else
+    q_vipuskDoc.MacroByName('usl').AsString := 'document.klient_id = ' + IntToStr(otdelId);
+  q_vipuskDoc.ParamByName('dat1').AsDate := dat1;
+  q_vipuskDoc.ParamByName('dat2').AsDate := dat2;
+  q_vipuskDoc.Open;
+end;
+
+procedure TDM1.insertDocument(tipOpId, strukId, tipDocId, klientId : integer;
+                              nDoc : string; dateDok : TDate);
+begin
+  DM1.Add_KartDok.StoredProcName := 'ADD_DOCUMENT';
+  DM1.Add_KartDok.ExecProc;
+  q_vipuskDoc.Insert;
+  q_vipuskDoc.Edit;
+  q_vipuskDoc.FieldByName('Doc_Id').AsInteger := DM1.Add_KartDok.Params.Items[0].AsInteger;;
+  q_vipuskDoc.FieldByName('Tip_Op_Id').AsInteger := tipOpId;
+  q_vipuskDoc.FieldByName('Struk_Id').AsInteger := strukId;
+  q_vipuskDoc.FieldByName('Zadacha_Id').AsString := 'otchcex';
+  q_vipuskDoc.FieldByName('Tip_Dok_Id').AsInteger := tipDocId;
+  q_vipuskDoc.FieldByName('NDok').AsString := nDoc;
+  q_vipuskDoc.FieldByName('Klient_Id').AsInteger := klientId;
+  q_vipuskDoc.FieldByName('Date_Dok').AsDateTime := dateDok;
+  q_vipuskDoc.FieldByName('Date_Op').AsDateTime := dateDok;
+  q_vipuskDoc.Post;
+  q_vipuskDoc.ApplyUpdates;
+  dm1.commitWriteTrans(true);
+end;
+
+procedure TDM1.openKartv(docId, ksmId : integer);
+begin
+  q_kartv.Close;
+  q_kartv.ParamByName('doc_id').AsInteger := docId;
+  q_kartv.ParamByName('ksm_id').AsInteger := ksmId;
+  q_kartv.Open;
+end;
+
+procedure TDM1.insertKartv;
+begin
+  DM1.Add_KartDok.StoredProcName := 'ADD_KARTV';
+  DM1.Add_KartDok.ExecProc;
+  q_kartv.Insert;
+  q_kartv.Edit;
+  q_kartvDOC_ID.AsInteger := q_vipuskDocDOC_ID.AsInteger;
+  q_kartvSTROKA_ID.AsInteger := DM1.Add_KartDok.Params.Items[0].AsInteger;
+  q_kartvKSM_ID.AsInteger := dm1.KartVKSM_ID.AsInteger;
+  q_kartvKOL_PRIH.AsFloat := dm1.KartVKOL_PRIH.AsFloat;
+  q_kartv.Post;
+  q_kartv.ApplyUpdates;
+  dm1.commitWriteTrans(true);
+end;
+
+procedure TDM1.deleteKartv(docId, ksmId : integer);
+begin
+  openKartv(docId, ksmId);
+  if (q_kartv.RecordCount > 0) then
+  begin
+    q_kartv.Delete;
+    q_kartv.ApplyUpdates;
+    dm1.commitWriteTrans(true);
+  end;
+end;
 
 end.
