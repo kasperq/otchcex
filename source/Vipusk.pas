@@ -444,6 +444,8 @@ end;
 
 procedure TFVipusk.saveOtdel;
 begin
+  if (dm1.KartV.Modified) or (dm1.kartv.State = dsEdit) or (dm1.KartV.state = dsInsert) then
+    dm1.kartv.Post;
   dm1.KartV.DisableControls;
   dm1.KartV.First;
   while (not dm1.KartV.Eof) do
@@ -579,8 +581,14 @@ begin
   if (otdelViborForm = nil) then
     otdelViborForm := TFOtdelDropDown.Create(self);
   otdelViborForm.strukId := vStruk_Id;
+
+  if ((Mouse.CursorPos.Y + otdelViborForm.Height) > (Screen.WorkAreaTop + Screen.WorkAreaHeight)) then
+    otdelViborForm.Top := Mouse.CursorPos.Y - otdelViborForm.Height
+  else
+    otdelViborForm.Top := Mouse.CursorPos.Y;
   otdelViborForm.Left := Mouse.CursorPos.X - otdelViborForm.Width;
-  otdelViborForm.Top := Mouse.CursorPos.Y;
+
+
   otdelViborForm.ShowModal;
   if (otdelViborForm.ModalResult <> mrCancel) then
   begin
