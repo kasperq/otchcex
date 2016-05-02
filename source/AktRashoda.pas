@@ -2204,6 +2204,16 @@ begin
       findCurDoc(vStruk_Id, curMonth, curYear, 145, 'м');
       vTip_Doc_Id := 145;
     end;
+//    if (s_nmat = 'Спецодежда и средства индивидуальной защиты') then
+//    begin
+//      findCurDoc(vStruk_Id, curMonth, curYear, 144, '');
+//      vTip_Doc_Id := 144;
+//    end;
+//    if (s_nmat = 'Инвентарь и хозпринадлежности') then
+//    begin
+//      findCurDoc(vStruk_Id, curMonth, curYear, 144, '');
+//      vTip_Doc_Id := 144;
+//    end;
     vklient_id := s_kodp;
     activateNormQuery();
     loadKart(vStruk_Id, DM1.DocumentDOC_ID.AsInteger);
