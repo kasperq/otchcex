@@ -447,24 +447,32 @@ begin
   if (dm1.KartV.Modified) or (dm1.kartv.State = dsEdit) or (dm1.KartV.state = dsInsert) then
     dm1.kartv.Post;
   dm1.KartV.DisableControls;
+  // удаляем выпуск с отделений
+  dm1.openDocument(vStruk_Id, 0, StrToDate(s_dat1), StrToDate(s_dat2));
+  if (dm1.q_vipuskDoc.RecordCount > 0) then
+  begin
+    dm1.q_vipuskDoc.First;
+    while (not dm1.q_vipuskDoc.Eof) do
+    begin
+      dm1.openKartv(dm1.q_vipuskDocDOC_ID.AsInteger, 0);
+      if (dm1.q_kartv.RecordCount > 0) then
+      begin
+        dm1.q_kartv.first;
+        while (not dm1.q_kartv.Eof) do
+          dm1.q_kartv.Delete;
+      end;
+      dm1.q_kartv.ApplyUpdates;
+      dm1.commitWriteTrans(true);
+      dm1.q_vipuskDoc.Next;
+    end;
+  end;
+
   dm1.KartV.First;
   while (not dm1.KartV.Eof) do
   begin
-    if (dm1.KartVOTDELID.AsInteger = 0) or (dm1.KartVOTDELID.AsInteger  = dm1.strukIdRela) then
+    if (dm1.KartVOTDELID.AsInteger <> 0)    // если препарат выпускается в отделении
+       and (dm1.KartVOTDELID.AsInteger <> dm1.strukIdRela) then
     begin
-      if (mem_factVipusk.Locate('ksm_id', dm1.KartVKSM_ID.AsString, [])) then
-      begin
-        dm1.deleteKartv(mem_factVipuskOTDEL_DOC_ID.AsInteger, mem_factVipuskKSM_ID.AsInteger);
-        mem_factVipusk.Delete;
-      end;
-    end;
-    if (dm1.KartVOTDELID.AsInteger <> 0) and (dm1.KartVOTDELID.AsInteger <> dm1.strukIdRela) then
-    begin
-      if (mem_factVipusk.Locate('ksm_id', dm1.KartVKSM_ID.AsString, [])) then
-      begin
-        dm1.deleteKartv(mem_factVipuskOTDEL_DOC_ID.AsInteger, mem_factVipuskKSM_ID.AsInteger);
-        mem_factVipusk.Delete;
-      end;
       dm1.openDocument(vStruk_id, dm1.KartVOTDELID.AsInteger, StrToDate(s_dat1), StrToDate(s_dat2));
       if (dm1.q_vipuskDoc.RecordCount = 0) then
         dm1.insertDocument(dm1.DocumentTIP_OP_ID.AsInteger, dm1.strukIdRela, dm1.DocumentTIP_DOK_ID.AsInteger,
