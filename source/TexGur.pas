@@ -506,6 +506,7 @@ type
     procedure delAllTexGurRecords;
     // ^^^ Загрузка загрузки :))
 
+    // Сохранение загрузки
     function saveZagrDocument() : boolean;
     procedure deletePrih(ksmIdPrep, ksmId, strukId, razdelId : integer);
     procedure saveExistingRecord(keiId : integer);
@@ -519,7 +520,7 @@ type
     procedure deletePrixKart(ksmId, ksmIdPr, strukId, razdelId : integer);
     procedure openPrixKart(ksmIdPr, strukId, ksmId, razdelId : integer);
     procedure openPrihSum(ksmIdPr, strukId, ksmId, razdelId : integer);
-    
+    // ^^^ Сохранение загрузки :))
 
     procedure openPrepSeries(dateBegin, dateEnd : TDate; strukId : integer);
     procedure loadPrepInfo(kodProd : string);
@@ -1556,9 +1557,12 @@ begin
         DateEdit1.ReadOnly := false;
         DateEdit1.SetFocus;
       end;
-      dm1.Seria.Edit;
-      dm1.SeriaFORMA_VIPUSK.AsString := s_Formv;
-      DM1.Seria.Post;
+      if (dm1.Seria.Active) then
+      begin
+        dm1.Seria.Edit;
+        dm1.SeriaFORMA_VIPUSK.AsString := s_Formv;
+        DM1.Seria.Post;
+      end;
     end;
 end;
 
