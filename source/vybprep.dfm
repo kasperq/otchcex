@@ -115,6 +115,7 @@ object FVybPrep: TFVybPrep
       '  LEFT JOIN region ON (SPPROD.reg = region.reg)'
       '  INNER JOIN ediz ON (spprod.Kei_ID = ediz.Kei_ID)'
       ' where DOcUMENT.STRUK_ID=:struk'
+      ' and document.struk_id = document.klient_id '
       '  AND DOCUMENT.TIP_OP_ID=36'
       ' and document.tip_dok_id=74'
       '  AND Document.Date_op between :dat1 and :dat2'
