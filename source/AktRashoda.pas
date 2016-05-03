@@ -355,6 +355,7 @@ type
     q_specKartNMAT: TIBStringField;
     NormiMemDatACCOUNT: TStringField;
     cb_saveNoSpec: TCheckBox;
+    N1: TMenuItem;
     function GetCehNum(cehName : string) : integer;
     function SetMonthCombo(month : integer) : boolean;
     function activateNormQuery() : boolean;
@@ -413,7 +414,7 @@ type
     procedure Edit1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure SpeedButton2Click(Sender: TObject);
     procedure N2Click(Sender: TObject);
-    procedure N1Click(Sender: TObject);
+    procedure N3Click(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -439,6 +440,7 @@ type
     procedure ToolButton8Click(Sender: TObject);
     procedure btn_notAddedClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure N1Click(Sender: TObject);
 
   private
     realMonth, realYear : integer;
@@ -1120,10 +1122,21 @@ begin
       label19.caption := nmat;
     end
     else
+    begin
+      if findCurDoc(vStruk_Id, MES_conf, GOD_conf, 143, '') then
+      begin
+        nmat := 'Инвентарь и хозпринадлежности';
+        s_kodp := findKodInFindSpprod(nmat);
+        vTip_Doc_Id := 143;
+        reloadNorms(0);
+        label19.caption := nmat;
+      end
+      else
       if showViborPrep() then
       begin
         reloadNorms(0);
       end;
+    end;
   end;
 end;
 
@@ -1417,11 +1430,18 @@ end;
 //  end;
 //end;
 
-procedure TFAktRashoda.N1Click(Sender: TObject);
+procedure TFAktRashoda.N3Click(Sender: TObject);
 begin
   askToSaveModified(Sender);
 
   frxReport1.LoadFromFile(reportsPath + 'AktRashoda#2.fr3');
+  loadNormiReport();
+end;
+
+procedure TFAktRashoda.N1Click(Sender: TObject);
+begin
+  askToSaveModified(Sender);
+  frxReport1.LoadFromFile(reportsPath + 'AktRashoda#3inv.fr3');
   loadNormiReport();
 end;
 
@@ -2209,11 +2229,11 @@ begin
 //      findCurDoc(vStruk_Id, curMonth, curYear, 144, '');
 //      vTip_Doc_Id := 144;
 //    end;
-//    if (s_nmat = 'Инвентарь и хозпринадлежности') then
-//    begin
-//      findCurDoc(vStruk_Id, curMonth, curYear, 144, '');
-//      vTip_Doc_Id := 144;
-//    end;
+    if (s_nmat = 'Инвентарь и хозпринадлежности') then
+    begin
+      findCurDoc(vStruk_Id, curMonth, curYear, 143, '');
+      vTip_Doc_Id := 143;
+    end;
     vklient_id := s_kodp;
     activateNormQuery();
     loadKart(vStruk_Id, DM1.DocumentDOC_ID.AsInteger);

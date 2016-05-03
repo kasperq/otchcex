@@ -51,6 +51,7 @@ type
       Shift: TShiftState);
 
   private
+    curDateBeginStr, curDateEndStr : string; 
     procedure setDateEdits;
 
   public
@@ -121,11 +122,11 @@ var
 begin
   if (s_ksm <> 0) then
   begin
-    s_DAT1 := datetostr(DateEdit3.Date);
-    s_DAT2 := datetostr(DateEdit4.Date);
+    curDateBeginStr := datetostr(DateEdit3.Date);
+    curDateEndStr := datetostr(DateEdit4.Date);
     dm1.OstSyr.Close;
-    dm1.OstSyr.MacroByName('DAT1').AsString := '''' + S_DAT1 + '''';
-    dm1.OstSyr.MacroByName('DAT2').AsString := '''' + S_DAT2 + '''';
+    dm1.OstSyr.MacroByName('DAT1').AsString := '''' + curDateBeginStr + '''';
+    dm1.OstSyr.MacroByName('DAT2').AsString := '''' + curDateEndStr + '''';
     dm1.OstSyr.ParamByName('STRUK_ID').AsInteger := vStruk_Id;
     dm1.OstSyr.ParamByName('KSM').AsInteger := S_Ksm;
     dm1.OstSyr.Open;
@@ -133,7 +134,7 @@ begin
     label8.Caption := dm1.OstSyrNeis.AsString;
     edit1.text := inttostr(s_ksm);
        
-    DecodeDate(StrToDate(s_dat1), year, month, day);
+    DecodeDate(StrToDate(curDateBeginStr), year, month, day);
     curMonthCombo.ItemIndex := month - 1;
     YearEdit.OnChange := nil;
     yearEdit.Value := year;
@@ -153,40 +154,44 @@ begin
   end;
 end;
 
-procedure TFOstSyr.frReport1GetValue(const ParName: string;
-  var ParValue: Variant);
-
- var
-  s_nm: integer;
-  s_gd: integer;
+procedure TFOstSyr.frReport1GetValue(const ParName: string; var ParValue: Variant);
+var
+  s_nm : integer;
+  s_gd : integer;
+begin
+  s_gd := god;
+  if (mes = 12) then
   begin
-  s_gd:=god;
-if mes=12 then
- begin
-   s_nm:=1;
-   s_gd:=god+1
+    s_nm := 1;
+    s_gd := god + 1
   end
-  else s_nm:=mes+1;
+  else
+    s_nm := mes + 1;
   nammes := dm1.MesNameInRodPodezhSmall(s_nm);
-if ParName='nammes' then ParValue:=nammes;
-if ParName='god' then
-ParValue:=s_gd;
-if ParName='namceh' then ParValue:=FGlmenu.RxLabel1.Caption;
-if ParName='ksm' then ParValue:=Edit1.Text;
-if ParName='nmat' then ParValue:=Label7.Caption;
-if ParName='dat1' then ParValue:=s_dat1;
-if ParName='dat2' then ParValue:=s_dat2;
+  if (ParName = 'nammes') then ParValue:=nammes;
+  if (ParName = 'god') then
+  ParValue:=s_gd;
+  if (ParName = 'namceh') then
+    ParValue := FGlmenu.RxLabel1.Caption;
+  if (ParName = 'ksm') then
+    ParValue := Edit1.Text;
+  if (ParName = 'nmat') then
+    ParValue := Label7.Caption;
+  if (ParName = 'dat1') then
+    ParValue := curDateBeginStr;
+  if (ParName = 'dat2') then
+    ParValue := curDateEndStr;
 end;
 
 procedure TFOstSyr.SpeedButton1Click(Sender: TObject);
 begin
   if (s_ksm <> 0) then
   begin
-    s_DAT1 := datetostr(DateEdit3.Date);
-    s_DAT2 := datetostr(DateEdit4.Date);
+    curDateBeginStr := datetostr(DateEdit3.Date);
+    curDateEndStr := datetostr(DateEdit4.Date);
     dm1.OstSyr.Close;
-    dm1.OstSyr.MacroByName('DAT1').AsString := '''' + S_DAT1 + '''';
-    dm1.OstSyr.MacroByName('DAT2').AsString := '''' + S_DAT2 + '''';
+    dm1.OstSyr.MacroByName('DAT1').AsString := '''' + curDateBeginStr + '''';
+    dm1.OstSyr.MacroByName('DAT2').AsString := '''' + curDateEndStr + '''';
     dm1.OstSyr.ParamByName('STRUK_ID').AsInteger := vStruk_Id;
     dm1.OstSyr.ParamByName('KSM').AsInteger := S_Ksm;
     dm1.OstSyr.Open;
@@ -253,11 +258,11 @@ procedure TFOstSyr.ToolButton2Click(Sender: TObject);
 begin
   if s_ksm <> 0 then
   begin
-    s_DAT1 := datetostr(DateEdit3.Date);
-    s_DAT2 := datetostr(DateEdit4.Date);
+    curDateBeginStr := datetostr(DateEdit3.Date);
+    curDateEndStr := datetostr(DateEdit4.Date);
     dm1.OstSyr.Close;
-    dm1.OstSyr.MacroByName('DAT1').AsString := '''' + S_DAT1 + '''';
-    dm1.OstSyr.MacroByName('DAT2').AsString := '''' + S_DAT2 + '''';
+    dm1.OstSyr.MacroByName('DAT1').AsString := '''' + curDateBeginStr + '''';
+    dm1.OstSyr.MacroByName('DAT2').AsString := '''' + curDateEndStr + '''';
     dm1.OstSyr.ParamByName('STRUK_ID').AsInteger := vStruk_Id;
     dm1.OstSyr.ParamByName('KSM').AsInteger := S_Ksm;
     dm1.OstSyr.Open;
