@@ -1288,6 +1288,7 @@ begin
     DM1.IBQuery1.SQL.Add(' FROM KARTv');
     DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
     DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID=' + INTTOSTR(VsTRUK_ID)
+                        + ' and document.struk_id = document.klient_id '
                          + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
                          + ' AND KARTv.KSM_ID=' + INTTOSTR(s_KODP)
                          + ' AND Document.Date_op between ' + '''' + s_dat1
@@ -1357,6 +1358,7 @@ begin
       DM1.IBQuery1.SQL.Add(' FROM KARTv');
       DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
       DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(VsTRUK_ID)
+      + ' and document.struk_id = document.klient_id '
       + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
       + ' AND KARTv.KSM_ID='+INTTOSTR(s_KODP)
       + ' AND Document.Date_op between '+''''+s_dat1+'''' +' and '+''''+s_dat2+'''');
@@ -1759,6 +1761,7 @@ begin
   DM1.IBQuery1.SQL.Add(' FROM KARTv');
   DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
   DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(VsTRUK_ID)
+  + ' and document.struk_id = document.klient_id '
   + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
   + ' AND KARTv.KSM_ID='+INTTOSTR(s_KODP)
   + ' AND Document.Date_op between '+''''+s_dat1+'''' +' and '+''''+s_dat2+'''');
@@ -1992,6 +1995,7 @@ begin
     DM1.IBQuery1.SQL.Add(' FROM KARTv');
     DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
     DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID='+INTTOSTR(VsTRUK_ID)
+    + ' and document.struk_id = document.klient_id '
     + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
     + ' AND KARTv.KSM_ID='+INTTOSTR(s_KODP)
     + ' AND Document.Date_op between '+''''+s_dat1+'''' +' and '+''''+s_dat2+'''');

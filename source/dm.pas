@@ -3391,6 +3391,7 @@ begin
   q_vipuskDoc.ParamByName('dat1').AsDate := dat1;
   q_vipuskDoc.ParamByName('dat2').AsDate := dat2;
   q_vipuskDoc.Open;
+  q_vipuskDoc.FetchAll;
 end;
 
 procedure TDM1.insertDocument(tipOpId, strukId, tipDocId, klientId : integer;
@@ -3418,7 +3419,10 @@ procedure TDM1.openKartv(docId, ksmId : integer);
 begin
   q_kartv.Close;
   q_kartv.ParamByName('doc_id').AsInteger := docId;
-  q_kartv.ParamByName('ksm_id').AsInteger := ksmId;
+  if (ksmId = 0) then
+    q_kartv.MacroByName('ksm_id').AsString := '0=0'
+  else
+    q_kartv.MacroByName('ksm_id').AsString := ' kartv.ksm_id = ' + IntToStr(ksmId);
   q_kartv.Open;
 end;
 
