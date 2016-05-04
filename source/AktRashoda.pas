@@ -2214,25 +2214,33 @@ begin
 
   try
     NormiMemDat.EmptyTable;
+    ToolButton2.Enabled := true;
     if (s_nmat = 'Обеспечение требований по микробиологической чистоте') then
     begin
       findCurDoc(vStruk_Id, curMonth, curYear, 144, '');
       vTip_Doc_Id := 144;
+      ToolButton2.Enabled := true;
     end;
     if (s_nmat = 'Содержание и эксплуатация оборудования') then
     begin
       findCurDoc(vStruk_Id, curMonth, curYear, 145, 'м');
       vTip_Doc_Id := 145;
+      ToolButton2.Enabled := true;
     end;
-//    if (s_nmat = 'Спецодежда и средства индивидуальной защиты') then
-//    begin
+    if (s_nmat = 'Спецодежда и средства индивидуальной защиты') then
+    begin
+      MessageDlg('Нельзя вводить данный тип акта в данном режиме!', mtWarning, [mbOK], 0);
+      NormiMemDat.EnableControls;
+      ToolButton2.Enabled := false;
+      Abort;
 //      findCurDoc(vStruk_Id, curMonth, curYear, 144, '');
 //      vTip_Doc_Id := 144;
-//    end;
+    end;
     if (s_nmat = 'Инвентарь и хозпринадлежности') then
     begin
       findCurDoc(vStruk_Id, curMonth, curYear, 143, '');
       vTip_Doc_Id := 143;
+      ToolButton2.Enabled := true;
     end;
     vklient_id := s_kodp;
     activateNormQuery();
