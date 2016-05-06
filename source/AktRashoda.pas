@@ -1343,34 +1343,34 @@ begin
     end;
     while (not NormiMemDat.Eof) do
     begin
-      if (NormiMemDatFACTRASHOD.AsFloat <> 0) then
-      begin
-        if (yearEdit.Text >= '2015') then
+        if (NormiMemDatFACTRASHOD.AsFloat <> 0) then
         begin
-          if (not cb_saveNoSpec.Checked)
-             and (findSpecOstAllOr11(NormiMemDatKSM_ID.AsInteger, true))
-             and ((vTip_Doc_Id = 144) or (vTip_Doc_Id = 209)) then
+          if (yearEdit.Text >= '2015') then
           begin
-            if (findSpecOstAllOr11(NormiMemDatKSM_ID.AsInteger, false))
-               and (getCurOst11() >= NormiMemDatFACTRASHOD.AsFloat) then
+            if (not cb_saveNoSpec.Checked)
+               and (findSpecOstAllOr11(NormiMemDatKSM_ID.AsInteger, true))
+               and ((vTip_Doc_Id = 144) or (vTip_Doc_Id = 209)) then
             begin
-              if (addSpecRec2Prixod()) then
-                insertRecToSpecKart;
-            end
-            else
-              addRecToNotAdded;
+              if (findSpecOstAllOr11(NormiMemDatKSM_ID.AsInteger, false))
+                 and (getCurOst11() >= NormiMemDatFACTRASHOD.AsFloat) then
+              begin
+                if (addSpecRec2Prixod()) then
+                  insertRecToSpecKart;
+              end
+              else
+                addRecToNotAdded;
+            end;
+          end
+          else
+          begin
+            NormiMemDat.Edit;
+            NormiMemDatSPEC.AsInteger := 0;
+            NormiMemDat.Post;
           end;
-        end
-        else
-        begin
-          NormiMemDat.Edit;
-          NormiMemDatSPEC.AsInteger := 0;
-          NormiMemDat.Post;
+          if (NormiMemDatSPEC.AsInteger = 0) then
+            saveMemRec2Kart();
         end;
-        if (NormiMemDatSPEC.AsInteger = 0) then
-          saveMemRec2Kart();
-      end;
-      NormiMemDat.Next;
+        NormiMemDat.Next;
     end;
     saveKart2DB();
     if (vTip_Doc_Id = 144) or (vTip_Doc_Id = 209) then
@@ -1790,11 +1790,14 @@ begin
                                               IntToStr(strukId) + ' and ' +
                                               'document.tip_dok_id = ' +
                                               IntToStr(tipDokId) +
-                                              ' and document.date_dok = ''01.' +
-                                              IntToStr(month) +
-                                              '.' +
-                                              IntToStr(year) +
-                                              '''';
+                                              ' and document.date_dok between '''
+                                              + s_dat1 + ''' and '''
+                                              + s_dat2 + ''' ';
+//                                              ' and document.date_dok = ''01.' +
+//                                              IntToStr(month) +
+//                                              '.' +
+//                                              IntToStr(year) +
+//                                              '''';
   DM1.Document.Active := true;
 
   if (DM1.Document.Eof) then
@@ -2863,33 +2866,54 @@ begin
           if (dateEndSrok > StrToDate(s_dat2)) then
             isSrokEnded := false;
         end;
-        if (isSrokEnded) then
-        begin
-        if (IBQuery1.eof) then
-          v_raspred_dob := v_ost_razn
-        else
-        begin
-          if (v_ost <> 0) and (not IBQuery1.eof) then
+//        if (isSrokEnded) then
+//        begin
+          if (IBQuery1.eof) then
           begin
-            IBQuery1.Prior;
-            if (v_ost_razn - v_ost >= 0){ and (v_ost >= 0)} then
+            if (isSrokEnded) then            
+              v_raspred_dob := v_ost_razn
+          end
+          else
+          begin
+            if (v_ost <> 0) and (not IBQuery1.eof) then
             begin
-              v_raspred_dob := v_ost;
-              v_ost_razn := v_ost_razn - v_ost;
-            end
-            else
-            begin
-              v_raspred_dob := v_ost_razn;
-              v_ost_razn := v_ost_razn - v_ost;
+              IBQuery1.Prior;
+
+              isSrokEnded := true;
+              if (spec) then
+              begin
+                dateEndSrok := IncMonth(ibquery1.fieldbyname('date_vid').AsDateTime,
+                                        ibquery1.FieldByName('srok').AsInteger);
+                if (dateEndSrok > StrToDate(s_dat2)) then
+                  isSrokEnded := false;
+              end;
+
+              if (v_ost_razn - v_ost >= 0){ and (v_ost >= 0)} then
+              begin
+                if (isSrokEnded) then
+                begin
+                  v_raspred_dob := v_ost;
+                  v_ost_razn := v_ost_razn - v_ost;
+                end;
+              end
+              else
+              begin
+                if (isSrokEnded) then
+                begin
+                  v_raspred_dob := v_ost_razn;
+                  v_ost_razn := v_ost_razn - v_ost;
+                end;
+              end;
             end;
           end;
-        end;
-        dm1.Kart.Insert;
-        dm1.setValues2Kart(s_ksm, vklient_id, v_razdel, v_kein, vdocument_id,
-                           IBQuery1.FieldByName('Kart_id').AsInteger,
-                           30, 37, v_raspred_dob, 0, 0, 0);
-        dm1.Kart.Post;
-        end;
+          if (isSrokEnded) then
+          begin
+            dm1.Kart.Insert;
+            dm1.setValues2Kart(s_ksm, vklient_id, v_razdel, v_kein, vdocument_id,
+                               IBQuery1.FieldByName('Kart_id').AsInteger,
+                               30, 37, v_raspred_dob, 0, 0, 0);
+            dm1.Kart.Post;
+          end;
       end;
       IBQuery1.Next;
     end;
