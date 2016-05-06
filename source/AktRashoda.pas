@@ -8,7 +8,7 @@ uses
   Grids, DBGridEh, StdCtrls, RxMemDS, Buttons, RxStrUtils, VCLUtils, Menus,
   RxMenus, IBDataBase, ToolWin, ComCtrls, ImgList, ExtCtrls, SplshWnd,
   IBUpdateSQL, IBUpdSQLW, RXCtrls, Math, kbmMemTable, ActnList,
-  XPStyleActnCtrls, ActnMan, UtilRIb;
+  XPStyleActnCtrls, ActnMan, UtilRIb, Mask, ToolEdit;
 
 type                                                      
   TIFPair = class(TObject)
@@ -357,6 +357,9 @@ type
     cb_saveNoSpec: TCheckBox;
     N1: TMenuItem;
     DocTipParamORDER_PARAM: TSmallintField;
+    N2: TMenuItem;
+    Label4: TLabel;
+    edit_dokDate: TDateEdit;
     function GetCehNum(cehName : string) : integer;
     function SetMonthCombo(month : integer) : boolean;
     function activateNormQuery() : boolean;
@@ -414,7 +417,7 @@ type
     procedure Edit1Click(Sender: TObject);
     procedure Edit1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure SpeedButton2Click(Sender: TObject);
-    procedure N2Click(Sender: TObject);
+    procedure N4Click(Sender: TObject);
     procedure N3Click(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
@@ -442,6 +445,7 @@ type
     procedure btn_notAddedClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure N1Click(Sender: TObject);
+    procedure N2Click(Sender: TObject);
 
   private
     realMonth, realYear : integer;
@@ -474,7 +478,7 @@ type
     procedure createPrixodDocumOnPrep;
     procedure removeKartByDocidKsmidRazdelid(docId, ksmId, razdelId: Integer);
     procedure findOstatkiSyrInCex(spec : boolean);
-    procedure createKartInPrixodDocumOnPrep;
+    procedure createKartInPrixodDocumOnPrep(spec : boolean);
 
     procedure openConfigumc;
     procedure setAktOrCurMonth2Conf(setAktMonth : boolean);
@@ -731,13 +735,13 @@ begin
       ostKol := ostKol - q_specKartKOL_RASH.AsFloat;
       q_specKart.Post;
 
-      if (q_ostatkiACCOUNT.AsString <> '10/11') then
-      begin
-        q_ostatki.Edit;
-        q_ostatkiACCOUNT.AsString := '10/11';
-        q_ostatki.Post;
-        q_ostatki.ApplyUpdates;
-      end;
+//      if (q_ostatkiACCOUNT.AsString <> '10/11') then
+//      begin
+//        q_ostatki.Edit;
+//        q_ostatkiACCOUNT.AsString := '10/11';
+//        q_ostatki.Post;
+//        q_ostatki.ApplyUpdates;
+//      end;
 
       q_ostatki.Next;
     end;
@@ -812,19 +816,19 @@ begin
   DM1.Add_KartDok.ExecProc;
 
   q_specDoc.Insert;
-  q_specDocNDOK.AsString := 'мик.' + IntToStr(monthCombo.ItemIndex + 1)
-                            + '.' + yearEdit.Text;
+  if (vTip_Doc_Id = 144) then
+    q_specDocNDOK.AsString := 'мик.' + IntToStr(monthCombo.ItemIndex + 1)
+                              + '.' + yearEdit.Text;
+  if (vTip_Doc_Id = 209) then
+    q_specDocNDOK.AsString := 'сиз.' + IntToStr(monthCombo.ItemIndex + 1)
+                              + '.' + yearEdit.Text;
   q_specDocSTRUK_ID.AsInteger := vStruk_Id;
   q_specDocKLIENT_ID.AsInteger := vStruk_Id;
   q_specDocTIP_OP_ID.AsInteger := 32;
   q_specDocTIP_DOK_ID.AsInteger := 198;
   q_specDocDOC_ID.AsInteger := DM1.Add_KartDok.Params.Items[0].AsInteger;
-  q_specDocDATE_DOK.AsDateTime := StrToDate('01.'
-                                            + IntToStr(monthCombo.ItemIndex + 1)
-                                            + '.' + yearEdit.Text);
-  q_specDocDATE_OP.AsDateTime := StrToDate('01.'
-                                           + IntToStr(monthCombo.ItemIndex + 1)
-                                           + '.' + yearEdit.Text);
+  q_specDocDATE_DOK.AsDateTime := edit_dokDate.Date;
+  q_specDocDATE_OP.AsDateTime := edit_dokDate.Date;
   q_specDocDOK_OSN_ID.AsInteger := curDocId;
   q_specDoc.Post;
   q_specDoc.ApplyUpdates;
@@ -835,9 +839,14 @@ function TFAktRashoda.openSpecDoc() : boolean;
 begin
   result := false;
   q_specDoc.Close;
-  q_specDoc.MacroByName('usl').AsString := ' document.ndok = ''мик.'
-                                              + IntToStr(monthCombo.ItemIndex + 1)
-                                              + '.' + yearEdit.Text + ''' ';
+  if (vTip_Doc_Id = 144) then
+    q_specDoc.MacroByName('usl').AsString := ' document.ndok = ''мик.'
+                                                + IntToStr(monthCombo.ItemIndex + 1)
+                                                + '.' + yearEdit.Text + ''' ';
+  if (vTip_Doc_Id = 209) then
+    q_specDoc.MacroByName('usl').AsString := ' document.ndok = ''сиз.'
+                                                + IntToStr(monthCombo.ItemIndex + 1)
+                                                + '.' + yearEdit.Text + ''' ';
   q_specDoc.ParamByName('struk_id').AsInteger := vStruk_Id;
   q_specDoc.ParamByName('dat1').AsDate := StrToDate(s_dat1);
   q_specDoc.ParamByName('dat2').AsDate := StrToDate(s_dat2);
@@ -888,9 +897,14 @@ function TFAktRashoda.findSpecKart(strukId, ksmId : integer; date1, date2 : TDat
 begin
   result := false;
   q_specKart.Close;
-  q_specKart.MacroByName('usl').AsString := ' document.ndok = ''мик.'
-                                              + IntToStr(monthCombo.ItemIndex + 1)
-                                              + '.' + yearEdit.Text + ''' ';
+  if (vTip_Doc_Id = 144) then  
+    q_specKart.MacroByName('usl').AsString := ' document.ndok = ''мик.'
+                                                + IntToStr(monthCombo.ItemIndex + 1)
+                                                + '.' + yearEdit.Text + ''' ';
+  if (vTip_Doc_Id = 209) then
+    q_specKart.MacroByName('usl').AsString := ' document.ndok = ''сиз.'
+                                                + IntToStr(monthCombo.ItemIndex + 1)
+                                                + '.' + yearEdit.Text + ''' ';
   if (ksmId <> 0) then
     q_specKart.MacroByName('usl').AsString := q_specKart.MacroByName('usl').AsString
                                               + ' and kart.ksm_id = ' + IntToStr(ksmId) + ' ';
@@ -1077,6 +1091,7 @@ end;
 procedure TFAktRashoda.FormShow(Sender: TObject);
 var
   nmat : string;
+  curYear, curMonth, curDay : word;
 begin
   DM1.Document.Close;
   dm1.Document.MacroByName('usl').AsString := '0=0';
@@ -1098,6 +1113,18 @@ begin
   descend := false;
   initTIFPairArr;
 
+  DecodeDate(now, curYear, curMonth, curDay);
+  if (curMonth <> mes_conf) then
+  begin
+    IF (MES < 10) THEN
+      S_MES := '0' + INTTOSTR(MES)
+    ELSE
+      S_MES := INTTOSTR(MES);
+    S_DAT1 := '01.' + S_MES + '.' + INTTOSTR(GOD);
+    edit_dokDate.Text := datetostr(IncMonth(strtodate(s_dat1), 1) - 1);
+  end
+  else
+    edit_dokDate.Date := now;
   yearEdit.Text := IntToStr(GOD_conf);
   setMonthCombo(MES_conf);
 
@@ -1133,9 +1160,20 @@ begin
         label19.caption := nmat;
       end
       else
-      if showViborPrep() then
       begin
-        reloadNorms(0);
+        if findCurDoc(vStruk_Id, MES_conf, GOD_conf, 209, '') then
+        begin
+          nmat := 'Спецодежда и средства индивидуальной защиты';
+          s_kodp := findKodInFindSpprod(nmat);
+          vTip_Doc_Id := 209;
+          reloadNorms(0);
+          label19.caption := nmat;
+        end
+        else
+          if showViborPrep() then
+          begin
+            reloadNorms(0);
+          end;
       end;
     end;
   end;
@@ -1200,7 +1238,7 @@ begin
     if (DM1.Kart.RecordCount > 0) then
       // Сначала удаляем из Карта все, чего нету в мемори таблице
       deleteKart();
-    if (vTip_Doc_Id = 144) and (yearEdit.Text >= '2015') then
+    if ((vTip_Doc_Id = 144) or (vTip_Doc_Id = 209)) and (yearEdit.Text >= '2015') then
       deleteSpecKart;
     deletePrixKart;
       // Затем переносим все изменения из мемори таблицы в Карт и сохраняем
@@ -1311,7 +1349,7 @@ begin
         begin
           if (not cb_saveNoSpec.Checked)
              and (findSpecOstAllOr11(NormiMemDatKSM_ID.AsInteger, true))
-             and (vTip_Doc_Id = 144) then
+             and ((vTip_Doc_Id = 144) or (vTip_Doc_Id = 209)) then
           begin
             if (findSpecOstAllOr11(NormiMemDatKSM_ID.AsInteger, false))
                and (getCurOst11() >= NormiMemDatFACTRASHOD.AsFloat) then
@@ -1335,7 +1373,7 @@ begin
       NormiMemDat.Next;
     end;
     saveKart2DB();
-    if (vTip_Doc_Id = 144) then
+    if (vTip_Doc_Id = 144) or (vTip_Doc_Id = 209) then
       deleteSpecDoc;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     add2Prixod();//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1442,11 +1480,18 @@ end;
 procedure TFAktRashoda.N1Click(Sender: TObject);
 begin
   askToSaveModified(Sender);
-  frxReport1.LoadFromFile(reportsPath + 'AktRashoda#3inv.fr3');
+  frxReport1.LoadFromFile(reportsPath + 'AktRashoda#2inv.fr3');
   loadNormiReport();
 end;
 
 procedure TFAktRashoda.N2Click(Sender: TObject);
+begin
+  askToSaveModified(Sender);
+  frxReport1.LoadFromFile(reportsPath + 'AktRashoda#2spec.fr3');
+  loadNormiReport();
+end;
+
+procedure TFAktRashoda.N4Click(Sender: TObject);
 begin
   askToSaveModified(Sender);
   frxReport1.LoadFromFile(reportsPath + 'AktRashoda#2materials.fr3');
@@ -1734,7 +1779,7 @@ end;
 
 procedure TFAktRashoda.yearEditKeyPress(Sender: TObject; var Key: Char);
 begin
-  if Key = #13 then
+  if (Key = #13) then
     reloadNorms(0);
 end;
 
@@ -1757,6 +1802,7 @@ begin
   else
   begin
     curDocId := dm1.DocumentDOC_ID.AsInteger;
+    edit_dokDate.Date := dm1.DocumentDATE_DOK.AsDateTime;
     result := true;
   end;
 end;
@@ -1810,7 +1856,7 @@ begin
 //  if materChar = 'м' then
 //    vTip_Doc_Id := 145;
   vNdoc := nDocEdit.Text;
-  vDate_dok := StrToDate('01.' + IntToStr(month) + '.' + IntToStr(year));
+  vDate_dok := edit_dokDate.Date;
   vDate_op := vDate_dok;
   DM1.Document.Edit;
   result := true;
@@ -1984,6 +2030,8 @@ begin
     DM1.Document.Edit;
     DM1.DocumentNDOK.AsString := nDocEdit.Text;
     dm1.DocumentKLIENT_ID.AsInteger := s_kodp;
+    dm1.DocumentDATE_OP.AsDateTime := edit_dokDate.Date;
+    dm1.DocumentDATE_DOK.AsDateTime := edit_dokDate.Date;
     DM1.Document.Post;
     DM1.Document.ApplyUpdates;
     dm1.startReadTrans;
@@ -2207,6 +2255,7 @@ begin
   curYear := StrToInt(yearEdit.Text);  
   s_nmat := Label19.Caption;
   s_dat1 := DateToStr(encodeDate(curYear, curMonth, 1));
+  edit_dokDate.Text := datetostr(IncMonth(strtodate(s_dat1), 1) - 1);
   if (curMonth = 12) then
     s_dat2 := DateToStr(encodeDate(curYear + 1, 1, 1) - 1)
   else
@@ -2230,12 +2279,8 @@ begin
     end;
     if (s_nmat = 'Спецодежда и средства индивидуальной защиты') then
     begin
-      MessageDlg('Нельзя вводить данный тип акта в данном режиме!', mtWarning, [mbOK], 0);
-      NormiMemDat.EnableControls;
-      ToolButton2.Enabled := false;
-      Abort;
-//      findCurDoc(vStruk_Id, curMonth, curYear, 144, '');
-//      vTip_Doc_Id := 144;
+      findCurDoc(vStruk_Id, curMonth, curYear, 209, '');
+      vTip_Doc_Id := 209;
     end;
     if (s_nmat = 'Инвентарь и хозпринадлежности') then
     begin
@@ -2249,7 +2294,7 @@ begin
     addKart2Mem();
 //    findAndSet10Account;
     addNormi2Mem();
-    if (vTip_Doc_id = 144) then    
+    if (vTip_Doc_id = 144) or (vTip_Doc_Id = 209) then
       findAndSet10Account;
 //    NormiMemDat.SortOnFields('factrashod', true, true);
     NormiMemDat.SortOnFields('Razdel_Id', true, false);
@@ -2462,7 +2507,7 @@ end;
 function TFAktRashoda.saveDocTipParam() : boolean;
 begin
   try
-    if DocTipParam.UpdatesPending then
+    if (DocTipParam.UpdatesPending) then
     begin
       DocTipParam.ApplyUpdates;
       dm1.startWriteTrans;
@@ -2637,7 +2682,7 @@ begin
     dm1.Kart.BeforePost := nil;
 // цикл по сериям сырья (OSTATKI)- QUERY
     findOstatkiSyrInCex(spec);
-    createKartInPrixodDocumOnPrep;    // запись необходимого прихода на препарат в Kart
+    createKartInPrixodDocumOnPrep(spec);    // запись необходимого прихода на препарат в Kart
   end;
   vdocument_id := v_docSt;
   vTip_Op_Id := v_tipSt;
@@ -2739,8 +2784,8 @@ begin
       vTip_Doc_Id := 37;
       vNDoc := 'Рп-' + inttostr(S_Kodp) + '-' + inttostr(mes) + '.' + inttostr(god);
       vKlient_Id := S_KODP;
-      vDate_op := strtodate(s_dat1);
-      vDate_dok := strtodate(s_dat1);
+      vDate_op := edit_dokDate.Date;
+      vDate_dok := edit_dokDate.Date;
       dm1.Document.open;
       dm1.Document.Insert;
       dm1.Document.Post;
@@ -2772,9 +2817,11 @@ begin
                         + inttostr(v_kein) + ', ostatki.OSTATOK_END_S)) Kot_S');
   if (spec) then
   begin
+    IBQuery1.SQL.Add(', os.date_vid, coalesce(os.srok, 0) srok ');
     IBQuery1.SQL.Add(' FROM  SELECT_OST_KSM_ACC (' + '''' + s_dat1 + '''' + ','
                             + '''' + s_dat2 + '''' + ',1,' + inttostr(vSTRUK_ID)
                         + ',' + inttostr(s_KSM) + ', ''10/11'') ostatki ');
+    IBQuery1.SQL.Add(' left join ostatki os on os.kart_id = ostatki.kart_id ');
   end
   else
   begin
@@ -2787,11 +2834,13 @@ begin
   IBQuery1.First;
 end;
 
-procedure TFAktRashoda.createKartInPrixodDocumOnPrep;   // добавление необходимого прихода сырья на препарат в Kart
+procedure TFAktRashoda.createKartInPrixodDocumOnPrep(spec : boolean);   // добавление необходимого прихода сырья на препарат в Kart
 var
   v_ost : double;
   v_ost_razn : double;
   pr_vxod : integer;
+  isSrokEnded : boolean;
+  dateEndSrok : TDate;
 begin
   pr_vxod := 1;
   if (IBQuery1.RecordCount > 0) then
@@ -2806,6 +2855,16 @@ begin
         IBQuery1.Prior
       else
       begin
+        isSrokEnded := true;
+        if (spec) then
+        begin
+          dateEndSrok := IncMonth(ibquery1.fieldbyname('date_vid').AsDateTime,
+                                  ibquery1.FieldByName('srok').AsInteger);
+          if (dateEndSrok > StrToDate(s_dat2)) then
+            isSrokEnded := false;
+        end;
+        if (isSrokEnded) then
+        begin
         if (IBQuery1.eof) then
           v_raspred_dob := v_ost_razn
         else
@@ -2827,9 +2886,10 @@ begin
         end;
         dm1.Kart.Insert;
         dm1.setValues2Kart(s_ksm, vklient_id, v_razdel, v_kein, vdocument_id,
-                       IBQuery1.FieldByName('Kart_id').AsInteger,
-                       30, 37, v_raspred_dob, 0, 0, 0);
+                           IBQuery1.FieldByName('Kart_id').AsInteger,
+                           30, 37, v_raspred_dob, 0, 0, 0);
         dm1.Kart.Post;
+        end;
       end;
       IBQuery1.Next;
     end;
