@@ -2134,7 +2134,11 @@ begin
   NormVQuery.First;
   while (not NormVQuery.Eof) do
   begin
-    if (NormiMemDat.RecordCount = 0) or (not NormiMemDat.Locate('ksm_id', NormVQueryKSM_ID.AsInteger, [])) then
+    if (NormiMemDat.RecordCount = 0)
+       or (not NormiMemDat.Locate('ksm_id; razdel_id',
+                                  VarArrayOf([NormVQueryKSM_ID.AsInteger,
+                                              NormVQueryRAZDEL_ID.AsInteger]),
+                                  [])) then
       insertRec2MemDat(NormVQueryKSM_ID.AsInteger, NormVQueryStruk_ID.AsInteger,
                        NormVQueryRAZDEL_ID.AsInteger, NormVQueryMEDEND.AsInteger,
                        NormVQueryKEI_ID.AsInteger, NormVQueryKRAZ.AsInteger,
@@ -2280,16 +2284,16 @@ begin
       vTip_Doc_Id := 145;
       ToolButton2.Enabled := true;
     end;
-    if (s_nmat = 'Спецодежда и средства индивидуальной защиты') then
-    begin
-      findCurDoc(vStruk_Id, curMonth, curYear, 209, '');
-      vTip_Doc_Id := 209;
-    end;
     if (s_nmat = 'Инвентарь и хозпринадлежности') then
     begin
       findCurDoc(vStruk_Id, curMonth, curYear, 143, '');
       vTip_Doc_Id := 143;
       ToolButton2.Enabled := true;
+    end;
+    if (s_nmat = 'Спецодежда и средства индивидуальной защиты') then
+    begin
+      findCurDoc(vStruk_Id, curMonth, curYear, 209, '');
+      vTip_Doc_Id := 209;
     end;
     vklient_id := s_kodp;
     activateNormQuery();
