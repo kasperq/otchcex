@@ -274,6 +274,12 @@ object FAktRashoda: TFAktRashoda
       Columns = <
         item
           EditButtons = <>
+          FieldName = 'ORDER_PARAM'
+          Footers = <>
+          Title.Caption = #1055#1086#1088#1103#1076#1086#1082
+        end
+        item
+          EditButtons = <>
           FieldName = 'PARAM_NAME'
           Footers = <>
           Title.Alignment = taCenter
@@ -2099,7 +2105,7 @@ object FAktRashoda: TFAktRashoda
     Width = 24
     Left = 808
     Bitmap = {
-      494C01010B001C00640018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B001C00680018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       000000000000000000000000000000000000000000000000000000000000A87D
       7800B7818300B7818300B7818300B7818300B7818300B7818300B7818300B781
@@ -3006,7 +3012,7 @@ object FAktRashoda: TFAktRashoda
       'from doc_tip_param'
       'where doc_tip_param.struk_id = :struk_id '
       'and doc_tip_param.tip_dok_id = :tip_dok_id'
-      'order by doc_tip_param.tip_param_id')
+      'order by doc_tip_param.order_param, doc_tip_param.tip_param_id')
     UpdateObject = DocTipParamUpdate
     Macros = <>
     Left = 944
@@ -3084,6 +3090,10 @@ object FAktRashoda: TFAktRashoda
       Origin = '"DOC_TIP_PARAM"."TIP_PARAM_ID"'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
     end
+    object DocTipParamORDER_PARAM: TSmallintField
+      FieldName = 'ORDER_PARAM'
+      Origin = '"DOC_TIP_PARAM"."ORDER_PARAM"'
+    end
   end
   object DSDocTipParam: TDataSource
     DataSet = DocTipParam
@@ -3104,7 +3114,8 @@ object FAktRashoda: TFAktRashoda
       '  KOL_PARAM,'
       '  CENA_PARAM,'
       '  STAVKA_NDS,'
-      '  STRUK_ID'
+      '  STRUK_ID,'
+      '  ORDER_PARAM'
       'from doc_tip_param '
       'where'
       '  TIP_PARAM_ID = :TIP_PARAM_ID'
@@ -3117,21 +3128,24 @@ object FAktRashoda: TFAktRashoda
       '  PARAM_NAME = :PARAM_NAME,'
       '  PARAM_TYPE = :PARAM_TYPE,'
       '  STRUK_ID = :STRUK_ID,'
-      '  TIP_DOK_ID = :TIP_DOK_ID'
+      '  TIP_DOK_ID = :TIP_DOK_ID,'
+      '  ORDER_PARAM = :ORDER_PARAM'
       'where'
       '  TIP_PARAM_ID = :OLD_TIP_PARAM_ID')
     InsertSQL.Strings = (
       'insert into doc_tip_param'
-      '  (DEFAULT_VALUE, PARAM_NAME, PARAM_TYPE, STRUK_ID, TIP_DOK_ID)'
+      
+        '  (DEFAULT_VALUE, PARAM_NAME, PARAM_TYPE, STRUK_ID, TIP_DOK_ID, ' +
+        'ORDER_PARAM)'
       'values'
       
         '  (:DEFAULT_VALUE, :PARAM_NAME, :PARAM_TYPE, :STRUK_ID, :TIP_DOK' +
-        '_ID)')
+        '_ID, :ORDER_PARAM)')
     DeleteSQL.Strings = (
       'delete from doc_tip_param'
       'where'
       '  TIP_PARAM_ID = :OLD_TIP_PARAM_ID')
-    AutoCommit = True
+    AutoCommit = False
     UpdateTransaction = DM1.IBT_Write
     Left = 976
     Top = 16
