@@ -539,7 +539,7 @@ begin
   end
   else
   begin
-    if (dm1.stkod = '1600') then
+    if (dm1.stkod = '1600') or (dm1.stkod = '1800') then
     begin
       tochn := getCurZnak(Spirt_OtchetOSTATOK_BEGIN_S.AsFloat, 3);
       if (getCurZnak(Spirt_OtchetPRIX_PERIOD.AsFloat, 3) > tochn) then
@@ -552,6 +552,8 @@ begin
         tochn := getCurZnak(Spirt_OtchetPEREDANO_RASH_S.AsFloat, 3);
       if (getCurZnak(Spirt_OtchetPEREDANO_RASH_NZ.AsFloat, 3) > tochn) then
         tochn := getCurZnak(Spirt_OtchetPEREDANO_RASH_NZ.AsFloat, 3);
+      if (getCurZnak(Spirt_OtchetOSTATOK_END_S.AsFloat, 3) > tochn) then
+        tochn := getCurZnak(Spirt_OtchetOSTATOK_END_S.AsFloat, 3);
     end
     else
       tochn := 3;
