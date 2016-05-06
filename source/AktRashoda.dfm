@@ -455,6 +455,14 @@ object FAktRashoda: TFAktRashoda
       Margins.Bottom = 0
       Caption = #8470' '#1076#1086#1082#1091#1084#1077#1085#1090#1072':'
     end
+    object Label4: TLabel
+      Left = 608
+      Top = 6
+      Width = 88
+      Height = 13
+      Margins.Bottom = 0
+      Caption = #1044#1072#1090#1072' '#1076#1086#1082#1091#1084#1077#1085#1090#1072':'
+    end
     object Edit1: TEdit
       Left = 62
       Top = 28
@@ -511,7 +519,7 @@ object FAktRashoda: TFAktRashoda
     object nDocEdit: TEdit
       Left = 482
       Top = 1
-      Width = 328
+      Width = 95
       Height = 21
       TabOrder = 3
     end
@@ -523,6 +531,14 @@ object FAktRashoda: TFAktRashoda
       Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1073#1077#1079' '#1089#1087#1077#1094#1086#1076#1077#1078#1076#1099
       TabOrder = 4
       Visible = False
+    end
+    object edit_dokDate: TDateEdit
+      Left = 702
+      Top = 3
+      Width = 121
+      Height = 21
+      NumGlyphs = 2
+      TabOrder = 5
     end
   end
   object NormVQuery: TRxIBQuery
@@ -663,7 +679,7 @@ object FAktRashoda: TFAktRashoda
     PrintOptions.Printer = #1055#1086' '#1091#1084#1086#1083#1095#1072#1085#1080#1102
     PrintOptions.PrintOnSheet = 0
     ReportOptions.CreateDate = 40739.434456192100000000
-    ReportOptions.LastChange = 42493.584714675930000000
+    ReportOptions.LastChange = 42496.476005208340000000
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
       'procedure Memo58OnBeforePrint(Sender: TfrxComponent);'
@@ -916,7 +932,9 @@ object FAktRashoda: TFAktRashoda
           Font.Style = [fsBold]
           HAlign = haCenter
           Memo.UTF8 = (
-            #1056#1105#1056#1029#1056#1030#1056#181#1056#1029#1057#8218#1056#176#1057#1026#1057#1034' '#1056#1105' '#1057#8230#1056#1109#1056#183#1056#1111#1057#1026#1056#1105#1056#1029#1056#176#1056#1169#1056#187#1056#181#1056#182#1056#1029#1056#1109#1057#1027#1057#8218#1056#1105)
+            
+              #1057#1027#1056#1111#1056#181#1057#8224#1056#1109#1056#1169#1056#181#1056#182#1056#1169#1056#176' '#1056#1105' '#1057#1027#1057#1026#1056#181#1056#1169#1057#1027#1057#8218#1056#1030#1056#176' '#1056#1105#1056#1029#1056#1169#1056#1105#1056#1030#1056#1105#1056#1169#1057#1107#1056#176#1056#187#1057#1034#1056 +
+              #1029#1056#1109#1056#8470' '#1056#183#1056#176#1057#8240#1056#1105#1057#8218#1057#8249)
           ParentFont = False
         end
         object Memo13: TfrxMemoView
@@ -2093,11 +2111,15 @@ object FAktRashoda: TFAktRashoda
     end
     object N4: TMenuItem
       Caption = '...'#1076#1083#1103' '#1089#1086#1076#1077#1088#1078#1072#1085#1080#1103' '#1080' '#1101#1082#1089#1087#1083#1091#1072#1090#1072#1094#1080#1080' '#1086#1073#1086#1088#1091#1076#1086#1074#1072#1085#1080#1103
-      OnClick = N2Click
+      OnClick = N4Click
     end
     object N1: TMenuItem
       Caption = '...'#1076#1083#1103' '#1080#1085#1074#1077#1085#1090#1072#1088#1103' '#1080' '#1093#1086#1079#1087#1088#1080#1085#1072#1076#1083#1077#1078#1085#1086#1089#1090#1077#1081
       OnClick = N1Click
+    end
+    object N2: TMenuItem
+      Caption = '...'#1076#1083#1103' '#1089#1087#1077#1094#1086#1076#1077#1078#1076#1099' '#1080' '#1089#1088#1077#1076#1089#1090#1074' '#1080#1085#1076#1080#1074#1080#1076#1091#1072#1083#1100#1085#1086#1081' '#1079#1072#1097#1080#1090#1099
+      OnClick = N2Click
     end
   end
   object ImageList1: TImageList
@@ -2105,7 +2127,7 @@ object FAktRashoda: TFAktRashoda
     Width = 24
     Left = 808
     Bitmap = {
-      494C01010B001C00680018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B001C006C0018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       000000000000000000000000000000000000000000000000000000000000A87D
       7800B7818300B7818300B7818300B7818300B7818300B7818300B7818300B781

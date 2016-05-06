@@ -1303,8 +1303,8 @@ begin
     mem_texGur.FieldByName('Nmat').AsString := dm1.Matrop.FieldByName('Nmat').AsString;
     mem_texGur.FieldByName('Kei_Id_kart').AsInteger := dm1.Matrop.FieldByName('Kei_id').AsInteger;
     mem_texGurNEIS.AsString := dm1.Matrop.FieldByName('Neis').AsString;
-    mem_texGurRAZDEL_ID.AsInteger := curRazdelId;
-    mem_texGurKRAZ.AsInteger := curKraz;
+//    mem_texGurRAZDEL_ID.AsInteger := curRazdelId;
+//    mem_texGurKRAZ.AsInteger := curKraz;
   end
   else
     showMessage('Нет такого кода! Воспользуйтесь справочником!');   
@@ -2179,15 +2179,15 @@ end;
 procedure TFTexGur.ToolButton1Click(Sender: TObject);
 begin
   s_seria_p := s_seria;
-  curRazdelId := mem_texGurRAZDEL_ID.AsInteger;
-  curKraz := mem_texGurKRAZ.AsInteger;
+//  curRazdelId := mem_texGurRAZDEL_ID.AsInteger;
+//  curKraz := mem_texGurKRAZ.AsInteger;
   curKsmIdPrep := mem_texGurKSM_ID_PREP.AsInteger;
 
   mem_texGur.BeforePost := nil;
   mem_texGur.Insert;
   mem_texGurADD.AsBoolean := true;
-  mem_texGurRAZDEL_ID.AsInteger := curRazdelId;
-  mem_texGurKRAZ.AsInteger := curKraz;
+//  mem_texGurRAZDEL_ID.AsInteger := curRazdelId;
+//  mem_texGurKRAZ.AsInteger := curKraz;
   mem_texGurKSM_ID_PREP.AsInteger := curKsmIdPrep;
   mem_texGur.BeforePost := mem_texGurBeforePost;
   s_seria := s_seria_p;

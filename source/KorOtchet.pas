@@ -308,7 +308,7 @@ type
   private
     ksmArray : array of integer;
     ksmLength : integer;
-    curRazdelId, curKraz : integer;
+//    curRazdelId, curKraz : integer;
 
     procedure openOstCeh;
     
@@ -1816,8 +1816,8 @@ begin
   end
   else
   begin
-    curRazdelId := RaspSyrPrepRAZDEL_ID.AsInteger;
-    curKraz := RaspSyrPrepKRAZ.AsInteger;
+//    curRazdelId := RaspSyrPrepRAZDEL_ID.AsInteger;
+//    curKraz := RaspSyrPrepKRAZ.AsInteger;
     RaspSyrPrep.Insert;
   end;
 end;
@@ -2027,8 +2027,8 @@ begin
     RaspSyrPrep.FieldByName('Nmat').AsString := dm1.Matrop.FieldByName('Nmat').AsString;
     RaspSyrPrepKei_ID.AsInteger := dm1.Matrop.FieldByName('kei_id').AsInteger;
     RaspSyrPrepNeis.AsString := dm1.Matrop.FieldByName('neis').AsString;
-    RaspSyrPrepRAZDEL_ID.AsInteger := curRazdelId;
-    RaspSyrPrepKRAZ.AsInteger := curKraz;
+//    RaspSyrPrepRAZDEL_ID.AsInteger := curRazdelId;
+//    RaspSyrPrepKRAZ.AsInteger := curKraz;
   end
   else
     showMessage('Нет такого кода! Воспользуйтесь справочником!');
