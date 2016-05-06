@@ -356,6 +356,7 @@ type
     NormiMemDatACCOUNT: TStringField;
     cb_saveNoSpec: TCheckBox;
     N1: TMenuItem;
+    DocTipParamORDER_PARAM: TSmallintField;
     function GetCehNum(cehName : string) : integer;
     function SetMonthCombo(month : integer) : boolean;
     function activateNormQuery() : boolean;
