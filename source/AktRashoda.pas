@@ -8,7 +8,7 @@ uses
   Grids, DBGridEh, StdCtrls, RxMemDS, Buttons, RxStrUtils, VCLUtils, Menus,
   RxMenus, IBDataBase, ToolWin, ComCtrls, ImgList, ExtCtrls, SplshWnd,
   IBUpdateSQL, IBUpdSQLW, RXCtrls, Math, kbmMemTable, ActnList,
-  XPStyleActnCtrls, ActnMan, UtilRIb, Mask, ToolEdit;
+  XPStyleActnCtrls, ActnMan, UtilRIb, Mask, ToolEdit, DateUtils;
 
 type                                                      
   TIFPair = class(TObject)
@@ -2848,6 +2848,7 @@ var
   pr_vxod : integer;
   isSrokEnded : boolean;
   dateEndSrok : TDate;
+  srokRaznica : integer;
 begin
   pr_vxod := 1;
   if (IBQuery1.RecordCount > 0) then
@@ -2867,7 +2868,8 @@ begin
         begin
           dateEndSrok := IncMonth(ibquery1.fieldbyname('date_vid').AsDateTime,
                                   ibquery1.FieldByName('srok').AsInteger);
-          if (dateEndSrok > StrToDate(s_dat2)) then
+          srokRaznica := MonthsBetween(dateEndSrok , StrToDate(s_dat2));
+          if (dateEndSrok > StrToDate(s_dat2)) and (srokRaznica > 1) then
             isSrokEnded := false;
         end;
 //        if (isSrokEnded) then
