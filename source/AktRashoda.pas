@@ -498,7 +498,7 @@ type
     function findSpecOstAllOr11(ksmId : integer; allAccs : boolean) : boolean;
     function getCurOst11() : double;
     procedure insertRecToSpecKart;
-    function findPrepOst(ksmId : integer) : boolean;
+    function findPrepOst(ksmId, razdelId : integer) : boolean;
     procedure addRecToNotAdded;
 
     function findPrixDoc() : boolean;
@@ -749,7 +749,7 @@ var
   ostKol : double;
 begin
   ostKol := NormiMemDatFACTRASHOD.AsFloat;
-  if (findPrepOst(NormiMemDatKSM_ID.AsInteger)) then
+  if (findPrepOst(NormiMemDatKSM_ID.AsInteger, NormiMemDatRAZDEL_ID.AsInteger)) then
   begin
     q_ostatki.First;
     while (not q_ostatki.Eof) and (ostKol <> 0) do
@@ -802,13 +802,14 @@ begin
   NormiMemDat.Post;
 end;
 
-function TFAktRashoda.findPrepOst(ksmId : integer) : boolean;
+function TFAktRashoda.findPrepOst(ksmId, razdelId : integer) : boolean;
 begin
   result := false;
   q_ostatki.close;
   q_ostatki.ParamByName('struk_id').AsInteger := vStruk_Id;
   q_ostatki.ParamByName('ksm_id').AsInteger := ksmId;
   q_ostatki.ParamByName('ksm_idpr').AsInteger := s_kodp;
+  q_ostatki.ParamByName('razdel_id').AsInteger := razdelId;
   q_ostatki.Open;
   q_ostatki.FetchAll;
   if (q_ostatki.RecordCount > 0) then
@@ -907,7 +908,10 @@ begin
   q_specKart.First;
   while (not q_specKart.Eof) do
   begin
-    if (NormiMemDat.Locate('ksm_id', q_specKartKSM_ID.AsInteger, []))  then
+    if (NormiMemDat.Locate('ksm_id;razdel_id',
+                           VarArrayOf([q_specKartKSM_ID.AsInteger,
+                                       q_specKartRAZDEL_ID.AsInteger]),
+                           []))  then
     begin
       NormiMemDat.Edit;
       NormiMemDatFACTRASHOD.AsFloat := q_specKartKOL_RASH.AsFloat;
