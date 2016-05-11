@@ -2127,7 +2127,7 @@ object FAktRashoda: TFAktRashoda
     Width = 24
     Left = 808
     Bitmap = {
-      494C01010B001C00800018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B001C00840018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       000000000000000000000000000000000000000000000000000000000000A87D
       7800B7818300B7818300B7818300B7818300B7818300B7818300B7818300B781
@@ -4406,7 +4406,8 @@ object FAktRashoda: TFAktRashoda
       'from ostatki'
       'where ostatki.struk_id = :struk_id'
       'and ostatki.ksm_id = :ksm_id'
-      'and coalesce(ostatki.ksm_idpr, 0) = :ksm_idpr')
+      'and coalesce(ostatki.ksm_idpr, 0) = :ksm_idpr'
+      'and ostatki.razdel_id = :razdel_id')
     UpdateObject = upd_ostatki
     Macros = <>
     Left = 920
@@ -4425,6 +4426,11 @@ object FAktRashoda: TFAktRashoda
       item
         DataType = ftUnknown
         Name = 'ksm_idpr'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'razdel_id'
         ParamType = ptUnknown
       end>
     object q_ostatkiKART_ID: TIntegerField
