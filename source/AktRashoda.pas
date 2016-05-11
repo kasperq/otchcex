@@ -360,6 +360,41 @@ type
     N2: TMenuItem;
     Label4: TLabel;
     edit_dokDate: TDateEdit;
+    IBSpprod: TRxIBQuery;
+    IBSpprodNEIS: TIBStringField;
+    IBSpprodNMAT: TIBStringField;
+    IBSpprodKSM_ID: TIntegerField;
+    IBSpprodKEI_ID: TSmallintField;
+    IBSpprodGOST: TIBStringField;
+    IBSpprodSPPRN: TSmallintField;
+    IBSpprodSPSR: TSmallintField;
+    IBSpprodSTRUK_ID: TSmallintField;
+    IBSpprodKOD_PROD: TIBStringField;
+    IBSpprodREG: TSmallintField;
+    IBSpprodKORG: TSmallintField;
+    IBSpprodNAMEVIS: TIBStringField;
+    IBSpprodNAMSPSR: TIBStringField;
+    IBSpprodSPVIS: TSmallintField;
+    IBSpprodSTNAME: TIBStringField;
+    IBSpprodNAME_REG: TIBStringField;
+    IBSpprodLEK_ID: TSmallintField;
+    IBSpprodSPROD_ID: TIntegerField;
+    IBSpprodXARKT: TIBStringField;
+    IBSpprodREGISTR_ID: TIntegerField;
+    IBSpprodNAME_ORG: TIBStringField;
+    IBSpprodND1: TDateField;
+    IBSpprodND2: TDateField;
+    IBSpprodACTIVP: TSmallintField;
+    IBSpprodDATE1: TDateField;
+    IBSpprodDATE2: TDateField;
+    IBSpprodEAN13: TSmallintField;
+    IBSpprodSPKSM: TIBStringField;
+    IBSpprodVES_UP: TIBBCDField;
+    IBSpprodEANNAM: TIBStringField;
+    IBSpprodEANREGISTR_ID: TIntegerField;
+    IBSpprodINOV: TSmallintField;
+    IBSpprodDATEI_1: TDateField;
+    IBSpprodDATEI_2: TDateField;
     function GetCehNum(cehName : string) : integer;
     function SetMonthCombo(month : integer) : boolean;
     function activateNormQuery() : boolean;
@@ -474,7 +509,7 @@ type
     procedure DobPrixPrep(spec : boolean);
     function getNeededPrixInMatropEdiz() : double;
     function getNeededPrixInNormnEdiz() : double;
-    procedure createKartIdInOstatki;
+    procedure createKartIdInOstatki(spec : boolean);
     procedure createPrixodDocumOnPrep;
     procedure removeKartByDocidKsmidRazdelid(docId, ksmId, razdelId: Integer);
     procedure findOstatkiSyrInCex(spec : boolean);
@@ -1090,7 +1125,7 @@ end;
 
 procedure TFAktRashoda.FormShow(Sender: TObject);
 var
-  nmat : string;
+//  nmat : string;
   curYear, curMonth, curDay : word;
 begin
   DM1.Document.Close;
@@ -1131,43 +1166,43 @@ begin
   Label11.Caption := '';
   Label19.Caption := '';
 
-  if findCurDoc(vStruk_Id, MES_conf, GOD_conf, 144, '') then
+  if (findCurDoc(vStruk_Id, MES_conf, GOD_conf, 144, '')) then
   begin
-    nmat := 'Обеспечение требований по микробиологической чистоте';
-    s_kodp := findKodInFindSpprod(nmat);
+    s_nmat := 'Обеспечение требований по микробиологической чистоте';
+    s_kodp := findKodInFindSpprod(s_nmat);
     vTip_Doc_Id := 144;
     reloadNorms(0);
-    label19.caption := nmat; 
+    label19.caption := s_nmat;
   end
   else
   begin
-    if findCurDoc(vStruk_Id, MES_conf, GOD_conf, 145, '') then
+    if (findCurDoc(vStruk_Id, MES_conf, GOD_conf, 145, '')) then
     begin
-      nmat := 'Содержание и эксплуатация оборудования';
-      s_kodp := findKodInFindSpprod(nmat);
+      s_nmat := 'Содержание и эксплуатация оборудования';
+      s_kodp := findKodInFindSpprod(s_nmat);
       vTip_Doc_Id := 145;
       reloadNorms(0);
-      label19.caption := nmat;
+      label19.caption := s_nmat;
     end
     else
     begin
-      if findCurDoc(vStruk_Id, MES_conf, GOD_conf, 143, '') then
+      if (findCurDoc(vStruk_Id, MES_conf, GOD_conf, 143, '')) then
       begin
-        nmat := 'Инвентарь и хозпринадлежности';
-        s_kodp := findKodInFindSpprod(nmat);
+        s_nmat := 'Инвентарь и хозпринадлежности';
+        s_kodp := findKodInFindSpprod(s_nmat);
         vTip_Doc_Id := 143;
         reloadNorms(0);
-        label19.caption := nmat;
+        label19.caption := s_nmat;
       end
       else
       begin
-        if findCurDoc(vStruk_Id, MES_conf, GOD_conf, 209, '') then
+        if (findCurDoc(vStruk_Id, MES_conf, GOD_conf, 209, '')) then
         begin
-          nmat := 'Спецодежда и средства индивидуальной защиты';
-          s_kodp := findKodInFindSpprod(nmat);
+          s_nmat := 'Спецодежда и средства индивидуальной защиты';
+          s_kodp := findKodInFindSpprod(s_nmat);
           vTip_Doc_Id := 209;
           reloadNorms(0);
-          label19.caption := nmat;
+          label19.caption := s_nmat;
         end
         else
           if showViborPrep() then
@@ -1187,12 +1222,15 @@ end;
 function TFAktRashoda.activateNormQuery() : boolean;
 begin
   try
-    NormVQuery.Active := False;
-    NormVQuery.ParamByName('GOD').AsInteger := StrToInt(yearEdit.Text);
-    NormVQuery.ParamByName('MES').AsInteger := monthCombo.ItemIndex + 1;
-    NormVQuery.ParamByName('STRUK_ID').AsInteger := vStruk_Id;
-    NormVQuery.ParamByName('KSM_ID').AsInteger := s_kodp;
-    NormVQuery.Active := True;
+    if (s_kodp <> 0) then
+    begin
+      NormVQuery.Active := False;
+      NormVQuery.ParamByName('GOD').AsInteger := StrToInt(yearEdit.Text);
+      NormVQuery.ParamByName('MES').AsInteger := monthCombo.ItemIndex + 1;
+      NormVQuery.ParamByName('STRUK_ID').AsInteger := vStruk_Id;
+      NormVQuery.ParamByName('KSM_ID').AsInteger := s_kodp;
+      NormVQuery.Active := True;
+    end;
 
     result := true;
   except
@@ -2054,16 +2092,16 @@ end;
 
 function TFAktRashoda.findKodInFindSpprod(nmat : string) : integer;
 begin
-  FindSpprod.IBSpprod.Database := dm1.BELMED;
-  FindSpprod.IBSpprod.Active := False;
-  FindSpprod.IBSpprod.MacroByName('Usl_Spvis').AsString := ' spprod.nmat '
+//  FindSpprod.IBSpprod.Database := dm1.BELMED;
+  {FindSpprod.}IBSpprod.Active := False;
+  {FindSpprod.}IBSpprod.MacroByName('Usl_Spvis').AsString := ' spprod.nmat '
                                                         + '= ''' + nmat + ''' ';
-  FindSpprod.IBSpprod.MacroByName('Usl_Struk').AsString := ' spprod.struk_id ' +
+  {FindSpprod.}IBSpprod.MacroByName('Usl_Struk').AsString := ' spprod.struk_id ' +
                                                             ' = ' +
                                                             IntToStr(vStruk_Id) + ' ';
-  FindSpprod.IBSpprod.Active := True;
-  Edit1.Text := FindSpprod.IBSpprodKOD_PROD.AsString;
-  if FindSpprod.IBSpprod.FieldByName('ACTIVP').Asinteger = 1 then
+  {FindSpprod.}IBSpprod.Active := True;
+  Edit1.Text := {FindSpprod.}IBSpprodKOD_PROD.AsString;
+  if {FindSpprod.}IBSpprod.FieldByName('ACTIVP').Asinteger = 1 then
   begin
     Label11.Caption := 'Действующие';
     label11.Font.Color := clNavy;
@@ -2073,7 +2111,7 @@ begin
     Label11.Caption := 'Недействующие';
     label11.Font.Color := clRed;
   end;
-  result := FindSpprod.IBSpprodKSM_ID.AsInteger;
+  result := {FindSpprod.}IBSpprodKSM_ID.AsInteger;
 end;
 
 function TFAktRashoda.saveKart2DB() : boolean;
@@ -2131,23 +2169,26 @@ end;
 
 function TFAktRashoda.addNormi2Mem() : boolean;
 begin
-  NormVQuery.First;
-  while (not NormVQuery.Eof) do
+  if (NormVQuery.Active) then
   begin
-    if (NormiMemDat.RecordCount = 0)
-       or (not NormiMemDat.Locate('ksm_id; razdel_id',
-                                  VarArrayOf([NormVQueryKSM_ID.AsInteger,
-                                              NormVQueryRAZDEL_ID.AsInteger]),
-                                  [])) then
-      insertRec2MemDat(NormVQueryKSM_ID.AsInteger, NormVQueryStruk_ID.AsInteger,
-                       NormVQueryRAZDEL_ID.AsInteger, NormVQueryMEDEND.AsInteger,
-                       NormVQueryKEI_ID.AsInteger, NormVQueryKRAZ.AsInteger,
-                       NormVQueryNMAT_KSM.AsString, NormVQueryNEIS.AsString,
-                       NormVQuerySTNAME.AsString, NormVQueryNMAT.AsString,
-                       NormVQueryNAMRAZ.AsString, '', NormVQueryPLNORM.AsFloat, 0, vStruk_Id, 0)
-    else
-      insertPlnorm2MemDat(NormVQueryPLNORM.AsFloat, NormVQueryKSM_ID.AsInteger);
-    NormVQuery.Next;
+    NormVQuery.First;
+    while (not NormVQuery.Eof) do
+    begin
+      if (NormiMemDat.RecordCount = 0)
+         or (not NormiMemDat.Locate('ksm_id; razdel_id',
+                                    VarArrayOf([NormVQueryKSM_ID.AsInteger,
+                                                NormVQueryRAZDEL_ID.AsInteger]),
+                                    [])) then
+        insertRec2MemDat(NormVQueryKSM_ID.AsInteger, NormVQueryStruk_ID.AsInteger,
+                         NormVQueryRAZDEL_ID.AsInteger, NormVQueryMEDEND.AsInteger,
+                         NormVQueryKEI_ID.AsInteger, NormVQueryKRAZ.AsInteger,
+                         NormVQueryNMAT_KSM.AsString, NormVQueryNEIS.AsString,
+                         NormVQuerySTNAME.AsString, NormVQueryNMAT.AsString,
+                         NormVQueryNAMRAZ.AsString, '', NormVQueryPLNORM.AsFloat, 0, vStruk_Id, 0)
+      else
+        insertPlnorm2MemDat(NormVQueryPLNORM.AsFloat, NormVQueryKSM_ID.AsInteger);
+      NormVQuery.Next;
+    end;
   end;
   result := true;
 end;
@@ -2671,7 +2712,7 @@ begin
                                 dm1.belmed, dm1.ibt_read);
 
   If (v_dok_kart = Null) then
-    createKartIdInOstatki   //  карточки нету, создаем ее
+    createKartIdInOstatki(spec)   //  карточки нету, создаем ее
   else
     st_kart := v_dok_kart;  // карточка сырья цеха есть, получаем сумму остатка в сырье
   createPrixodDocumOnPrep;  //                 создаем документ прихода сырья  на препарат
@@ -2741,13 +2782,13 @@ begin
     result := v_raspred;
 end;
 
-procedure TFAktRashoda.createKartIdInOstatki;   // создание карточки сырья в остатках
+procedure TFAktRashoda.createKartIdInOstatki(spec : boolean);   // создание карточки сырья в остатках
 begin
   IF (not DM1.Ostatki.Active) THEN
   begin
     dm1.Ostatki.MacroByName('usl').AsString := '0=0';
     dm1.Ostatki.ParamByName('struk_id').AsInteger := vStruk_Id;
-    DM1.Ostatki.Active := TRUE
+    DM1.Ostatki.Active := TRUE;
   end
   else
     DM1.Ostatki.First;

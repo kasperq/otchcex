@@ -430,6 +430,7 @@ object FKorOtchet: TFKorOtchet
             Footers = <>
             ReadOnly = True
             Title.Caption = #1044#1086#1082#1091#1084#1077#1085#1090
+            Visible = False
             Width = 75
           end
           item
@@ -462,6 +463,7 @@ object FKorOtchet: TFKorOtchet
             EditButtons = <>
             FieldName = 'KART_ID'
             Footers = <>
+            Visible = False
           end>
       end
     end
@@ -1166,7 +1168,7 @@ object FKorOtchet: TFKorOtchet
     Left = 776
     Top = 212
     Bitmap = {
-      494C010108000900540018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010108000900580018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

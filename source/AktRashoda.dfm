@@ -2127,7 +2127,7 @@ object FAktRashoda: TFAktRashoda
     Width = 24
     Left = 808
     Bitmap = {
-      494C01010B001C00780018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B001C00800018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       000000000000000000000000000000000000000000000000000000000000A87D
       7800B7818300B7818300B7818300B7818300B7818300B7818300B7818300B781
@@ -4889,5 +4889,256 @@ object FAktRashoda: TFAktRashoda
         Name = 'doc_id'
         ParamType = ptUnknown
       end>
+  end
+  object IBSpprod: TRxIBQuery
+    Database = DM1.BELMED
+    Transaction = DM1.IBT_Read
+    SQL.Strings = (
+      
+        'SELECT EDIZ.NEIS, SPPROD.NMAT, SPPROD.KSM_ID, SPPROD.KEI_ID,SPPR' +
+        'OD.GOST,SPPROD.EAN13,'
+      
+        'SPPROD.SPVIS, SPPROD.SPPRN, SPPROD.SPSR, SPPROD.STRUK_ID, SPPROD' +
+        '.KOD_PROD,spprod.spksm,'
+      'SPPROD.REG, SPPROD.KORG, SPVIS.NAMEVIS, PRSYR.NAMSPSR,'
+      
+        'STRUK.STNAME, REGION.NAM NAME_REG, SPPROD.LEK_ID, SPPROD.SPROD_I' +
+        'D,SPPROD.XARKT, SPPROD.REGISTR_ID, SPPROD.ACTIVP,'
+      
+        'SPRORG.NAM NAME_ORG, LEKND.NDDATE1 ND1 , LEKND.NDDATE2 ND2, LEKN' +
+        'D.DATE1, LEKND.DATE2,'
+      
+        'SPPROD.VES_UP,trim(coalesce(SPEAN.lsNam,'#39#39'))||'#39' '#39'||trim(coalesce' +
+        '(SPEAN.lsForm,'#39#39'))||'#39' '#39'||trim(coalesce(SPEAN.lsDoz,'#39#39'))||'#39' '#39'||ii' +
+        'f(coalesce(SPEAN.umn,0)>1, '#39'N'#39'||cast(SPEAN.umn as char(4)),'#39#39') e' +
+        'annam,'
+      'SPEAN.LEK_ID EANREGISTR_ID, INOV, DATEI_1, DATEI_2'
+      'FROM SPPROD'
+      '   INNER JOIN EDIZ ON (SPPROD.KEI_ID = EDIZ.KEI_ID)'
+      '   INNER JOIN SPVIS ON (SPPROD.SPVIS = SPVIS.SPVIS)'
+      '   INNER JOIN PRSYR ON (SPPROD.SPSR = PRSYR.SPSR)'
+      '   INNER JOIN STRUK ON (SPPROD.STRUK_ID = STRUK.STRUK_ID)'
+      
+        '   LEFT OUTER JOIN LEKND ON (SPPROD.REGISTR_ID = LEKND.REGISTR_I' +
+        'D)'
+      '   LEFT OUTER JOIN REGION ON (REGION.REG = SPPROD.REG)'
+      '   LEFT OUTER JOIN SPRORG ON (SPRORG.KOD = SPPROD.KORG)'
+      
+        '   LEFT OUTER JOIN SPEAN ON (SPPROD.EAN13 = SPEAN.EAN13 AND SPPR' +
+        'OD.REG = SPEAN.REG)'
+      'WHERE %USL_SPVIS'
+      '       AND %USL_SPSR'
+      '       AND %USL_REG'
+      '       AND %USL_STRUK'
+      '       AND %USL_ORG'
+      '       AND %USL'
+      'ORDER BY %USL_ORD')
+    Macros = <
+      item
+        DataType = ftString
+        Name = 'USL_SPVIS'
+        ParamType = ptInput
+        Value = '0=0'
+      end
+      item
+        DataType = ftString
+        Name = 'USL_SPSR'
+        ParamType = ptInput
+        Value = '0=0'
+      end
+      item
+        DataType = ftString
+        Name = 'USL_REG'
+        ParamType = ptInput
+        Value = '0=0'
+      end
+      item
+        DataType = ftString
+        Name = 'USL_STRUK'
+        ParamType = ptInput
+        Value = '0=0'
+      end
+      item
+        DataType = ftString
+        Name = 'USL_ORG'
+        ParamType = ptInput
+        Value = '0=0'
+      end
+      item
+        DataType = ftString
+        Name = 'USL'
+        ParamType = ptInput
+        Value = '0=0'
+      end
+      item
+        DataType = ftString
+        Name = 'USL_ORD'
+        ParamType = ptInput
+        Value = 'Spprod.Nmat'
+      end>
+    Left = 848
+    Top = 48
+    object IBSpprodNEIS: TIBStringField
+      FieldName = 'NEIS'
+      Origin = '"EDIZ"."NEIS"'
+      FixedChar = True
+      Size = 10
+    end
+    object IBSpprodNMAT: TIBStringField
+      FieldName = 'NMAT'
+      Origin = '"SPPROD"."NMAT"'
+      Size = 60
+    end
+    object IBSpprodKSM_ID: TIntegerField
+      FieldName = 'KSM_ID'
+      Origin = '"SPPROD"."KSM_ID"'
+      Required = True
+    end
+    object IBSpprodKEI_ID: TSmallintField
+      FieldName = 'KEI_ID'
+      Origin = '"SPPROD"."KEI_ID"'
+    end
+    object IBSpprodGOST: TIBStringField
+      FieldName = 'GOST'
+      Origin = '"SPPROD"."GOST"'
+      FixedChar = True
+      Size = 30
+    end
+    object IBSpprodSPPRN: TSmallintField
+      FieldName = 'SPPRN'
+      Origin = '"SPPROD"."SPPRN"'
+    end
+    object IBSpprodSPSR: TSmallintField
+      FieldName = 'SPSR'
+      Origin = '"SPPROD"."SPSR"'
+    end
+    object IBSpprodSTRUK_ID: TSmallintField
+      FieldName = 'STRUK_ID'
+      Origin = '"SPPROD"."STRUK_ID"'
+    end
+    object IBSpprodKOD_PROD: TIBStringField
+      FieldKind = fkInternalCalc
+      FieldName = 'KOD_PROD'
+      Origin = '"SPPROD"."KOD_PROD"'
+      ProviderFlags = []
+      ReadOnly = True
+      FixedChar = True
+      Size = 18
+    end
+    object IBSpprodREG: TSmallintField
+      FieldName = 'REG'
+      Origin = '"SPPROD"."REG"'
+    end
+    object IBSpprodKORG: TSmallintField
+      FieldName = 'KORG'
+      Origin = '"SPPROD"."KORG"'
+    end
+    object IBSpprodNAMEVIS: TIBStringField
+      FieldName = 'NAMEVIS'
+      Origin = '"SPVIS"."NAMEVIS"'
+      FixedChar = True
+    end
+    object IBSpprodNAMSPSR: TIBStringField
+      FieldName = 'NAMSPSR'
+      Origin = '"PRSYR"."NAMSPSR"'
+      FixedChar = True
+      Size = 30
+    end
+    object IBSpprodSPVIS: TSmallintField
+      FieldName = 'SPVIS'
+      Origin = '"SPPROD"."SPVIS"'
+    end
+    object IBSpprodSTNAME: TIBStringField
+      FieldName = 'STNAME'
+      Origin = '"STRUK"."STNAME"'
+      FixedChar = True
+    end
+    object IBSpprodNAME_REG: TIBStringField
+      FieldName = 'NAME_REG'
+      Origin = '"REGION"."NAM"'
+      FixedChar = True
+    end
+    object IBSpprodLEK_ID: TSmallintField
+      FieldName = 'LEK_ID'
+      Origin = '"SPPROD"."LEK_ID"'
+    end
+    object IBSpprodSPROD_ID: TIntegerField
+      FieldName = 'SPROD_ID'
+      Origin = '"SPPROD"."SPROD_ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object IBSpprodXARKT: TIBStringField
+      FieldName = 'XARKT'
+      Origin = '"SPPROD"."XARKT"'
+      Size = 30
+    end
+    object IBSpprodREGISTR_ID: TIntegerField
+      FieldName = 'REGISTR_ID'
+      Origin = '"SPPROD"."REGISTR_ID"'
+    end
+    object IBSpprodNAME_ORG: TIBStringField
+      FieldName = 'NAME_ORG'
+      Origin = '"SPRORG"."NAM"'
+      Size = 50
+    end
+    object IBSpprodND1: TDateField
+      FieldName = 'ND1'
+      Origin = '"LEKND"."NDDATE1"'
+    end
+    object IBSpprodND2: TDateField
+      FieldName = 'ND2'
+      Origin = '"LEKND"."NDDATE2"'
+    end
+    object IBSpprodACTIVP: TSmallintField
+      FieldName = 'ACTIVP'
+      Origin = '"SPPROD"."ACTIVP"'
+    end
+    object IBSpprodDATE1: TDateField
+      FieldName = 'DATE1'
+      Origin = '"LEKND"."DATE1"'
+    end
+    object IBSpprodDATE2: TDateField
+      FieldName = 'DATE2'
+      Origin = '"LEKND"."DATE2"'
+    end
+    object IBSpprodEAN13: TSmallintField
+      FieldName = 'EAN13'
+      Origin = '"SPPROD"."EAN13"'
+      DisplayFormat = '#;;'
+    end
+    object IBSpprodSPKSM: TIBStringField
+      FieldName = 'SPKSM'
+      Origin = '"SPPROD"."SPKSM"'
+      FixedChar = True
+      Size = 6
+    end
+    object IBSpprodVES_UP: TIBBCDField
+      FieldName = 'VES_UP'
+      Origin = '"SPPROD"."VES_UP"'
+      Precision = 9
+      Size = 3
+    end
+    object IBSpprodEANNAM: TIBStringField
+      FieldName = 'EANNAM'
+      ProviderFlags = []
+      Size = 178
+    end
+    object IBSpprodEANREGISTR_ID: TIntegerField
+      FieldName = 'EANREGISTR_ID'
+      Origin = '"SPEAN"."REGISTR_ID"'
+    end
+    object IBSpprodINOV: TSmallintField
+      FieldName = 'INOV'
+      Origin = '"SPPROD"."INOV"'
+    end
+    object IBSpprodDATEI_1: TDateField
+      FieldName = 'DATEI_1'
+      Origin = '"SPPROD"."DATEI_1"'
+    end
+    object IBSpprodDATEI_2: TDateField
+      FieldName = 'DATEI_2'
+      Origin = '"SPPROD"."DATEI_2"'
+    end
   end
 end
