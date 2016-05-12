@@ -395,6 +395,39 @@ type
     IBSpprodINOV: TSmallintField;
     IBSpprodDATEI_1: TDateField;
     IBSpprodDATEI_2: TDateField;
+    q_matrop: TRxIBQuery;
+    q_matropKSM_ID: TIntegerField;
+    q_matropNMAT: TIBStringField;
+    q_matropPRMAT: TIBStringField;
+    q_matropGR: TIBStringField;
+    q_matropPGR: TIBStringField;
+    q_matropKEI_ID: TSmallintField;
+    q_matropACCOUNT: TIBStringField;
+    q_matropSPSR: TSmallintField;
+    q_matropNMATS: TIBStringField;
+    q_matropGOST: TIBStringField;
+    q_matropXARKT: TIBStringField;
+    q_matropPROCS: TIBBCDField;
+    q_matropCENA: TIBBCDField;
+    q_matropRENOM: TIBStringField;
+    q_matropPROTK: TSmallintField;
+    q_matropTNVED: TIBStringField;
+    q_matropKSM: TIBStringField;
+    q_matropPROC: TIBBCDField;
+    q_matropKEI: TIBStringField;
+    q_matropDM: TSmallintField;
+    q_matropKORG: TIntegerField;
+    q_matropCENANDS: TIBBCDField;
+    q_matropDATCEN: TDateField;
+    q_matropPRIZCEN: TSmallintField;
+    q_matropREG: TSmallintField;
+    q_matropKSM_BS: TIntegerField;
+    q_matropSPIS_A: TSmallintField;
+    q_matropMEDEND: TSmallintField;
+    q_matropPRMAT_ID: TSmallintField;
+    q_matropGR_ID: TSmallintField;
+    q_matropPGR_ID: TSmallintField;
+    q_matropSPEC: TSmallintField;
     function GetCehNum(cehName : string) : integer;
     function SetMonthCombo(month : integer) : boolean;
     function activateNormQuery() : boolean;
@@ -514,6 +547,8 @@ type
     procedure removeKartByDocidKsmidRazdelid(docId, ksmId, razdelId: Integer);
     procedure findOstatkiSyrInCex(spec : boolean);
     procedure createKartInPrixodDocumOnPrep(spec : boolean);
+    function getIsSrokEnded(spec : boolean) : boolean;
+    function isRecIsSpec(ksmId : integer) : boolean;
 
     procedure openConfigumc;
     procedure setAktOrCurMonth2Conf(setAktMonth : boolean);
@@ -973,11 +1008,11 @@ begin
     MessageDlg('Перед сохранением введите номер документа! ', mtWarning, [mbOK], 0)
   else
   begin
-    try
+//    try
       Splash := ShowSplashWindow(AniBmp1,
                 'Сохранение данных. Подождите, пожалуйста...', True, nil);
       NormiMemDat.DisableControls;
-      setAktOrCurMonth2Conf(true);
+//      setAktOrCurMonth2Conf(true);
       curMonth := monthCombo.ItemIndex + 1;
       curYear := StrToInt(yearEdit.Text);
       if (not findCurDoc(vStruk_Id, curMonth, curYear, vTip_Doc_Id, '')) then
@@ -995,15 +1030,16 @@ begin
       begin
         btn_notAdded.Visible := true;
         ShowMessage('Не все материалы были сохранены, т.к. не хватает количества или '
-                    + #10#13 + 'не были введены в эксплуатацию!'
+                    + #10#13 + 'не были введены в эксплуатацию или'
+                    + #10#13 + 'не истек срок использования!'
                     + #10#13 + 'Увидеть их можно нажав на кнопку с перечеркнутой дискетой на панели');
       end;
-      setAktOrCurMonth2Conf(false);
+//      setAktOrCurMonth2Conf(false);
       reloadNorms(0);
-    except
-      on e : exception do
-        setAktOrCurMonth2Conf(false);
-    end;
+//    except
+//      on e : exception do
+//        setAktOrCurMonth2Conf(false);
+//    end;
   end;
 end;
 
@@ -1245,22 +1281,16 @@ end;
 
 function TFAktRashoda.loadNormMemDat() : boolean;
 begin
-  try
     NormiMemDat.EmptyTable;
     NormiMemDat.LoadFromDataSet(NormVQuery,0,lmAppend);
     NormiMemDat.Active := True;
     NormiMemDat.First;
     result := true;
-  except
-  on e : exception do
-    result := false;
-  end;
 end;
 
 function TFAktRashoda.loadKart(strukId, docId : integer) : boolean;
 begin
-  try
-    DM1.Kart.Active := false;
+    DM1.Kart.Close;
     DM1.Kart.MacroByName('USL').AsString := ' where kart.doc_id = '
                                             + IntToStr(docId);
   //                                          + ' and kart.struk_id = '
@@ -1268,15 +1298,10 @@ begin
     DM1.Kart.Active := true;
 
     result := true;
-  except
-  on e : exception do
-    result := false;
-  end;
 end;
 
 function TFAktRashoda.saveMemToKart() : boolean;
 begin
-  try
     if (DM1.Kart.RecordCount > 0) then
       // Сначала удаляем из Карта все, чего нету в мемори таблице
       deleteKart();
@@ -1286,10 +1311,6 @@ begin
       // Затем переносим все изменения из мемори таблицы в Карт и сохраняем
     saveAllMem2Kart();
     result := true;
-  except
-  on e : exception do
-    result := false;
-  end;
 end;
 
 procedure TFAktRashoda.deleteSpecKart;
@@ -1336,7 +1357,7 @@ end;
 
 function TFAktRashoda.saveMemRec2Kart() : boolean;
 begin
-  try
+  loadKart(vStruk_Id, DM1.DocumentDOC_ID.AsInteger);
     DM1.Kart.Insert;
     vKart_Id := 0;
     DM1.KartStroka_Id.AsInteger := vStroka_Id;
@@ -1358,20 +1379,27 @@ begin
 //    dm1.KartCENA_VP.AsFloat := NormiMemDatCENA.AsFloat;
     VDOCUMENT_ID := DM1.DocumentDOC_ID.AsInteger;
     DM1.Kart.Post;
-
+    if (DM1.Kart.UpdatesPending) then
+    begin
+      DM1.Kart.ApplyUpdates;
+      dm1.commitWriteTrans(true);
+    end;
     result := true;
-  except
-  on e: exception do
-  begin
-    result := false;
-    MessageDlg('Произошла ошибка при записи данных! '+ #13 + E.Message, mtWarning, [mbOK], 0);
-  end;
-  end;
+
+end;
+
+function TFAktRashoda.isRecIsSpec(ksmId : integer) : boolean;
+begin
+  result := false;
+  q_matrop.Close;
+  q_matrop.ParamByName('ksm_id').AsInteger := ksmId;
+  q_matrop.Open;
+  if (q_matropACCOUNT.AsString = '10/10') or (q_matropACCOUNT.AsString = '10/11') then
+    result := true;
 end;
 
 function TFAktRashoda.saveAllMem2Kart() : boolean;
 begin
-  try
     NormiMemDat.First;
     if (not DM1.Kart.Active) then
       dm1.Kart.Open;
@@ -1385,13 +1413,15 @@ begin
     end;
     while (not NormiMemDat.Eof) do
     begin
+      try
         if (NormiMemDatFACTRASHOD.AsFloat <> 0) then
         begin
           if (yearEdit.Text >= '2015') then
           begin
             if (not cb_saveNoSpec.Checked)
-               and (findSpecOstAllOr11(NormiMemDatKSM_ID.AsInteger, true))
-               and ((vTip_Doc_Id = 144) or (vTip_Doc_Id = 209)) then
+               and ((findSpecOstAllOr11(NormiMemDatKSM_ID.AsInteger, true)
+                    or (isRecIsSpec(NormiMemDatKSM_ID.AsInteger)))
+                   and ((vTip_Doc_Id = 144) or (vTip_Doc_Id = 209))) then
             begin
               if (findSpecOstAllOr11(NormiMemDatKSM_ID.AsInteger, false))
                  and (getCurOst11() >= NormiMemDatFACTRASHOD.AsFloat) then
@@ -1412,9 +1442,17 @@ begin
           if (NormiMemDatSPEC.AsInteger = 0) then
             saveMemRec2Kart();
         end;
+      except
+        on e : exception do
+        begin
+          dm1.IBT_Write.RollbackRetaining;
+          dm1.IBT_Read.RollbackRetaining;
+          MessageDlg('Произошла ошибка при сохранении! ' + #13 + E.Message, mtWarning, [mbOK], 0);
+          result := false;
+        end;
+      end;
         NormiMemDat.Next;
     end;
-    saveKart2DB();
     if (vTip_Doc_Id = 144) or (vTip_Doc_Id = 209) then
       deleteSpecDoc;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1430,13 +1468,6 @@ begin
     end;
 
     result := true;
-  except
-    on e: exception do
-    begin
-      MessageDlg('Произошла ошибка! ' + #13 + E.Message, mtWarning, [mbOK], 0);
-      result := false;
-    end;
-  end;
 end;
 
 procedure TFAktRashoda.deleteSpecDoc;
@@ -1542,7 +1573,7 @@ end;
 
 function TFAktRashoda.loadNormiReport() : boolean;
 begin
-  try
+//  try
     frxReport1.Script.Variables['year'] := yearEdit.Text;
     frxReport1.Script.Variables['month'] := dm1.GetStrMes(monthCombo.ItemIndex + 1);
     if NormVQuerySTNAME.AsString <> 'Экспер-произв.цех' then
@@ -1632,10 +1663,10 @@ begin
     end;
     frxReport1.ShowReport(true);
     result := true;
-  except
-    On e : exception do
-    result := false;
-  end;
+//  except
+//    On e : exception do
+//    result := false;
+//  end;
 end;
 
 procedure TFAktRashoda.NormiMemDatFACTRASHODChange(Sender: TField);
@@ -1675,13 +1706,13 @@ end;
 
 function TFAktRashoda.SetMonthCombo(month : integer) : boolean;
 begin
-  try
+//  try
     monthCombo.ItemIndex := month - 1;
     result := true;
-  except
-    on e : exception do
-    result := false;
-  end;
+//  except
+//    on e : exception do
+//    result := false;
+//  end;
 end;
 
 procedure TFAktRashoda.SpeedButton1Click(Sender: TObject);
@@ -2089,7 +2120,7 @@ begin
   on e: exception do
   begin
     result := false;
-    MessageDlg('Произошла ошибка при записи данных! '+ #13 + E.Message, mtWarning, [mbOK], 0);
+    MessageDlg('Произошла ошибка при записи документа акта! '+ #13 + E.Message, mtWarning, [mbOK], 0);
   end;
   end;
 end;
@@ -2120,7 +2151,6 @@ end;
 
 function TFAktRashoda.saveKart2DB() : boolean;
 begin
-  try
     VDOCUMENT_ID := DM1.DocumentDOC_ID.AsInteger;
     if (DM1.Kart.UpdatesPending) then
     begin
@@ -2128,18 +2158,11 @@ begin
       dm1.commitWriteTrans(true);
     end;
     result := true;
-  except
-  on e: exception do
-  begin
-    result := false;
-    MessageDlg('Произошла ошибка при записи данных! ' + #13 + E.Message, mtWarning, [mbOK], 0);
-  end;
-  end;
 end;
 
 function TFAktRashoda.closeQueries() : boolean;
 begin
-  try
+//  try
     DM1.Document.Close;
     dm1.Document.MacroByName('usl').AsString := '0=0';
     DM1.Kart.Close;
@@ -2165,10 +2188,10 @@ begin
     deactivateDocTipParam();
     cenaQ.Close;
     result := true;
-  except
-  on e : exception do
-    result := false;
-  end;
+//  except
+//  on e : exception do
+//    result := false;
+//  end;
 end;
 
 function TFAktRashoda.addNormi2Mem() : boolean;
@@ -2213,7 +2236,6 @@ function TFAktRashoda.changeRecInMem(ksmId, strukId, razdelId, medEnd, keiId, kR
                                      nMatKsm, nEIs, stName, nMat, namRaz, account : string;
                                      plNorm, factRashod : double; ostStrukId : integer; cena : double) : boolean;
 begin
-  try
     NormiMemDat.Edit;
     NormiMemDatKSM_ID.AsInteger := ksmId;
     NormiMemDatNMAT_KSM.AsString := nMatKsm;
@@ -2237,17 +2259,12 @@ begin
 
     NormiMemDat.Post;
     result := true;
-  except
-    on e : exception do
-      result := false;
-  end;
 end;
 
 function TFAktRashoda.addKart2Mem(): boolean;
 var
   neis : string;
 begin
-  try
     DM1.Kart.First;
     while (not DM1.Kart.Eof) do
     begin
@@ -2268,10 +2285,6 @@ begin
       DM1.Kart.Next;
     end;
     result := true;
-  except
-  on e : exception do
-    result := false;
-  end;
 end;
 
 function TFAktRashoda.insertPlnorm2MemDat(plNorm : double; ksmId : integer) : boolean;
@@ -2305,7 +2318,7 @@ begin
   NormiMemDat.DisableControls;
   curMonth := monthCombo.ItemIndex + 1;
   curYear := StrToInt(yearEdit.Text);  
-  s_nmat := Label19.Caption;
+//  s_nmat := Label19.Caption;
   s_dat1 := DateToStr(encodeDate(curYear, curMonth, 1));
   edit_dokDate.Text := datetostr(IncMonth(strtodate(s_dat1), 1) - 1);
   if (curMonth = 12) then
@@ -2369,55 +2382,54 @@ end;
 
 function TFAktRashoda.addSpecRec2Prixod() : boolean;
 begin
-  try
   // добавление в приход
-    v_raspred := NormiMemDatFACTRASHOD.AsFloat;
-    v_raspred_dob := NormiMemDatFACTRASHOD.AsFloat;
-    s_ksm := NormiMemDatKsm_id.AsInteger;
-    v_kein := NormiMemDatKei_id.AsInteger;
-    vklient_id := s_kodp;
-    v_razdel := NormiMemDatRazdel_id.AsInteger;
-    tochn := -6;
-    pr_kor := 0;
-    self.DobPrixPrep(true);
+  v_raspred := NormiMemDatFACTRASHOD.AsFloat;
+  v_raspred_dob := NormiMemDatFACTRASHOD.AsFloat;
+  s_ksm := NormiMemDatKsm_id.AsInteger;
+  v_kein := NormiMemDatKei_id.AsInteger;
+  vklient_id := s_kodp;
+  v_razdel := NormiMemDatRazdel_id.AsInteger;
+  tochn := -6;
+  pr_kor := 0;
+  self.DobPrixPrep(true);
 
-    dm1.startReadTrans;
-    dm1.startWriteTrans;
-    DM1.IBT_WRITE.CommitRetaining;
-    DM1.IBT_READ.CommitRetaining;
-    result := true;
-  except
-  on e: exception do
-  begin
-    result := false;
-    MessageDlg('Произошла ошибка при добавлении в приход! '+ #13 + E.Message, mtWarning, [mbOK], 0);
-  end;
-  end;
+  dm1.startReadTrans;
+  dm1.startWriteTrans;
+  DM1.IBT_WRITE.CommitRetaining;
+  DM1.IBT_READ.CommitRetaining;
+  result := true;
 end;
 
 function TFAktRashoda.add2Prixod() : boolean;
 //var
 //  curIndex : integer;
 begin
-  try
 //    curIndex := 0;
   // добавление в приход
     NormiMemDat.First;
     while (not NormiMemDat.Eof) do
     begin
+      try
 //      if memState[curIndex].GetValue <> NormiMemDatFACTRASHOD.AsFloat then
 //      begin
-      v_raspred_dob := NormiMemDatFACTRASHOD.AsFloat;
-      s_ksm := NormiMemDatKsm_id.AsInteger;
-      v_kein := NormiMemDatKei_id.AsInteger;
-      vklient_id := s_kodp;
-      v_razdel := NormiMemDatRazdel_id.AsInteger;
-      tochn := -6;
-      pr_kor := 0;
-      if (NormiMemDatSPEC.AsInteger <> 2) and (NormiMemDatSPEC.AsInteger <> 1) then
-        self.DobPrixPrep(false);
+        v_raspred_dob := NormiMemDatFACTRASHOD.AsFloat;
+        s_ksm := NormiMemDatKsm_id.AsInteger;
+        v_kein := NormiMemDatKei_id.AsInteger;
+        vklient_id := s_kodp;
+        v_razdel := NormiMemDatRazdel_id.AsInteger;
+        tochn := -6;
+        pr_kor := 0;
+        if (NormiMemDatSPEC.AsInteger <> 2) and (NormiMemDatSPEC.AsInteger <> 1) then
+          self.DobPrixPrep(false);
 //      end;
 //      curIndex := curIndex + 1;
+      except
+        on e: exception do
+        begin
+          result := false;
+          MessageDlg('Произошла ошибка при добавлении в приход! '+ #13 + E.Message, mtWarning, [mbOK], 0);
+        end;
+      end;
       NormiMemDat.Next;
     end;
     dm1.startReadTrans;
@@ -2425,13 +2437,6 @@ begin
     DM1.IBT_WRITE.CommitRetaining;
     DM1.IBT_READ.CommitRetaining;
     result := true;
-  except
-  on e: exception do
-  begin
-    result := false;
-    MessageDlg('Произошла ошибка при добавлении в приход! '+ #13 + E.Message, mtWarning, [mbOK], 0);
-  end;
-  end;
 end;
 
 procedure TFAktRashoda.AddBtnClick(Sender: TObject);
@@ -2441,21 +2446,21 @@ end;
 
 function TFAktRashoda.saveCurState() : boolean;
 begin
-  try
+//  try
     stateIndex := 0;
     NormiMemDat.First;
     while not NormiMemDat.Eof do
-    begin  
+    begin
       memState[stateIndex].SetKey(NormiMemDatKSM_ID.AsInteger);
       memState[stateIndex].SetValue(NormiMemDatFACTRASHOD.AsFloat);
       stateIndex := stateIndex + 1;
       NormiMemDat.Next;
     end;
     result := true;
-  except
-  on e : exception do
-    result := false;
-  end;
+//  except
+//  on e : exception do
+//    result := false;
+//  end;
 end;
 
 procedure TFAktRashoda.initTIFPairArr;
@@ -2483,7 +2488,7 @@ end;
 { Загружаем подписи }
 function TFAktRashoda.loadDocTipParam(tipDokId, strukId : integer) : boolean;
 begin
-  try
+//  try
     DocTipParam.Active := false;
     DocTipParam.ParamByName('struk_id').AsInteger := strukId;
     DocTipParam.ParamByName('tip_dok_id').AsInteger := tipDokId;
@@ -2533,22 +2538,22 @@ begin
     end;
 
     result := true;
-  except
-  on e : exception do
-    result := false;
-  end;
+//  except
+//  on e : exception do
+//    result := false;
+//  end;
 end;
 
 function TFAktRashoda.deactivateDocTipParam() : boolean;
 begin
-  try
-    if DocTipParam.Active then    
+//  try
+    if DocTipParam.Active then
       DocTipParam.Active := false;
     result := true;
-  except
-  on e : exception do
-    result := false;
-  end;
+//  except
+//  on e : exception do
+//    result := false;
+//  end;
 end;
 
 procedure TFAktRashoda.DelBtnClick(Sender: TObject);
@@ -2886,14 +2891,28 @@ begin
   IBQuery1.First;
 end;
 
+function TFAktRashoda.getIsSrokEnded(spec : boolean) : boolean;
+var
+  dateEndSrok : TDate;
+  srokRaznica : integer;
+begin
+  result := true;
+  if (spec) then
+  begin
+    dateEndSrok := IncMonth(ibquery1.fieldbyname('date_vid').AsDateTime,
+                            ibquery1.FieldByName('srok').AsInteger);
+    srokRaznica := MonthsBetween(dateEndSrok , StrToDate(s_dat2));
+    if (dateEndSrok > StrToDate(s_dat2)) and (srokRaznica > 1) then
+      result := false;
+  end;
+end;
+
 procedure TFAktRashoda.createKartInPrixodDocumOnPrep(spec : boolean);   // добавление необходимого прихода сырья на препарат в Kart
 var
   v_ost : double;
   v_ost_razn : double;
   pr_vxod : integer;
   isSrokEnded : boolean;
-  dateEndSrok : TDate;
-  srokRaznica : integer;
 begin
   pr_vxod := 1;
   if (IBQuery1.RecordCount > 0) then
@@ -2908,15 +2927,8 @@ begin
         IBQuery1.Prior
       else
       begin
-        isSrokEnded := true;
-        if (spec) then
-        begin
-          dateEndSrok := IncMonth(ibquery1.fieldbyname('date_vid').AsDateTime,
-                                  ibquery1.FieldByName('srok').AsInteger);
-          srokRaznica := MonthsBetween(dateEndSrok , StrToDate(s_dat2));
-          if (dateEndSrok > StrToDate(s_dat2)) and (srokRaznica > 1) then
-            isSrokEnded := false;
-        end;
+        isSrokEnded := getIsSrokEnded(spec);
+
 //        if (isSrokEnded) then
 //        begin
           if (IBQuery1.eof) then
@@ -2930,14 +2942,7 @@ begin
             begin
               IBQuery1.Prior;
 
-              isSrokEnded := true;
-              if (spec) then
-              begin
-                dateEndSrok := IncMonth(ibquery1.fieldbyname('date_vid').AsDateTime,
-                                        ibquery1.FieldByName('srok').AsInteger);
-                if (dateEndSrok > StrToDate(s_dat2)) then
-                  isSrokEnded := false;
-              end;
+              isSrokEnded := getIsSrokEnded(spec);
 
               if (v_ost_razn - v_ost >= 0){ and (v_ost >= 0)} then
               begin
