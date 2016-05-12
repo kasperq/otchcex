@@ -284,7 +284,7 @@ begin
       kolStr[i] := '.';
 
   dm1.Ostatki.Close;
-  dm1.Ostatki.MacroByName('USL').AsString := 'and ost.ksm_id = ' + IntToStr(ksmId)
+  dm1.Ostatki.MacroByName('USL').AsString := ' ost.ksm_id = ' + IntToStr(ksmId)
                                              + ' and (ost.ksm_idpr is null'
                                              + ' or ost.ksm_idpr = 0) '
                                              + ' and ost.ot_s >= ' + kolStr + ' ';
@@ -297,7 +297,7 @@ begin
   else
   begin
     dm1.Ostatki.Close;
-    dm1.Ostatki.MacroByName('USL').AsString := 'and ost.ksm_id = ' + IntToStr(ksmId)
+    dm1.Ostatki.MacroByName('USL').AsString := ' ost.ksm_id = ' + IntToStr(ksmId)
                                                + ' and (ost.ksm_idpr is null'
                                                + ' or ost.ksm_idpr = 0) ';
     dm1.Ostatki.ParamByName('STRUK_ID').AsInteger := strukId;

@@ -533,7 +533,7 @@ begin
    BEGIN
     if dm1.Ostatki.Active then dm1.Ostatki.Active:=false;
     DM1.Ostatki.ParamByName('struk_ID').AsInteger:=vstruk_id;
-    DM1.Ostatki.MacroByName('usl').AsString:=' and ost.razdel_id='+inttostr(StartPrepRazdel_id.AsInteger)
+    DM1.Ostatki.MacroByName('usl').AsString:='  ost.razdel_id='+inttostr(StartPrepRazdel_id.AsInteger)
     +' and ost.ksm_idpr='+inttostr(s_kodp)
     +' AND OST.KSM_ID='+INTTOSTR(S_KSM);
     dm1.Ostatki.Open;
