@@ -2127,7 +2127,7 @@ object FAktRashoda: TFAktRashoda
     Width = 24
     Left = 808
     Bitmap = {
-      494C01010B001C00840018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B001C00880018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       000000000000000000000000000000000000000000000000000000000000A87D
       7800B7818300B7818300B7818300B7818300B7818300B7818300B7818300B781
@@ -5145,6 +5145,182 @@ object FAktRashoda: TFAktRashoda
     object IBSpprodDATEI_2: TDateField
       FieldName = 'DATEI_2'
       Origin = '"SPPROD"."DATEI_2"'
+    end
+  end
+  object q_matrop: TRxIBQuery
+    Database = DM1.BELMED
+    Transaction = DM1.IBT_Read
+    SQL.Strings = (
+      'select *'
+      'from matrop'
+      'where matrop.ksm_id = :ksm_id')
+    Macros = <>
+    Left = 848
+    Top = 80
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'ksm_id'
+        ParamType = ptUnknown
+      end>
+    object q_matropKSM_ID: TIntegerField
+      FieldName = 'KSM_ID'
+      Origin = '"MATROP"."KSM_ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object q_matropNMAT: TIBStringField
+      FieldName = 'NMAT'
+      Origin = '"MATROP"."NMAT"'
+      Size = 60
+    end
+    object q_matropPRMAT: TIBStringField
+      FieldName = 'PRMAT'
+      Origin = '"MATROP"."PRMAT"'
+      FixedChar = True
+      Size = 2
+    end
+    object q_matropGR: TIBStringField
+      FieldName = 'GR'
+      Origin = '"MATROP"."GR"'
+      FixedChar = True
+      Size = 2
+    end
+    object q_matropPGR: TIBStringField
+      FieldName = 'PGR'
+      Origin = '"MATROP"."PGR"'
+      FixedChar = True
+      Size = 2
+    end
+    object q_matropKEI_ID: TSmallintField
+      FieldName = 'KEI_ID'
+      Origin = '"MATROP"."KEI_ID"'
+    end
+    object q_matropACCOUNT: TIBStringField
+      FieldName = 'ACCOUNT'
+      Origin = '"MATROP"."ACCOUNT"'
+      FixedChar = True
+      Size = 5
+    end
+    object q_matropSPSR: TSmallintField
+      FieldName = 'SPSR'
+      Origin = '"MATROP"."SPSR"'
+    end
+    object q_matropNMATS: TIBStringField
+      FieldName = 'NMATS'
+      Origin = '"MATROP"."NMATS"'
+      FixedChar = True
+      Size = 25
+    end
+    object q_matropGOST: TIBStringField
+      FieldName = 'GOST'
+      Origin = '"MATROP"."GOST"'
+      Size = 60
+    end
+    object q_matropXARKT: TIBStringField
+      FieldName = 'XARKT'
+      Origin = '"MATROP"."XARKT"'
+      Size = 30
+    end
+    object q_matropPROCS: TIBBCDField
+      FieldName = 'PROCS'
+      Origin = '"MATROP"."PROCS"'
+      Precision = 9
+      Size = 2
+    end
+    object q_matropCENA: TIBBCDField
+      FieldName = 'CENA'
+      Origin = '"MATROP"."CENA"'
+      Precision = 18
+      Size = 3
+    end
+    object q_matropRENOM: TIBStringField
+      FieldName = 'RENOM'
+      Origin = '"MATROP"."RENOM"'
+      FixedChar = True
+      Size = 6
+    end
+    object q_matropPROTK: TSmallintField
+      FieldName = 'PROTK'
+      Origin = '"MATROP"."PROTK"'
+    end
+    object q_matropTNVED: TIBStringField
+      FieldName = 'TNVED'
+      Origin = '"MATROP"."TNVED"'
+      FixedChar = True
+      Size = 11
+    end
+    object q_matropKSM: TIBStringField
+      FieldName = 'KSM'
+      Origin = '"MATROP"."KSM"'
+      FixedChar = True
+      Size = 5
+    end
+    object q_matropPROC: TIBBCDField
+      FieldName = 'PROC'
+      Origin = '"MATROP"."PROC"'
+      Precision = 9
+      Size = 2
+    end
+    object q_matropKEI: TIBStringField
+      FieldName = 'KEI'
+      Origin = '"MATROP"."KEI"'
+      FixedChar = True
+      Size = 4
+    end
+    object q_matropDM: TSmallintField
+      FieldName = 'DM'
+      Origin = '"MATROP"."DM"'
+    end
+    object q_matropKORG: TIntegerField
+      FieldName = 'KORG'
+      Origin = '"MATROP"."KORG"'
+    end
+    object q_matropCENANDS: TIBBCDField
+      FieldName = 'CENANDS'
+      Origin = '"MATROP"."CENANDS"'
+      Precision = 18
+      Size = 3
+    end
+    object q_matropDATCEN: TDateField
+      FieldName = 'DATCEN'
+      Origin = '"MATROP"."DATCEN"'
+    end
+    object q_matropPRIZCEN: TSmallintField
+      FieldName = 'PRIZCEN'
+      Origin = '"MATROP"."PRIZCEN"'
+    end
+    object q_matropREG: TSmallintField
+      FieldName = 'REG'
+      Origin = '"MATROP"."REG"'
+    end
+    object q_matropKSM_BS: TIntegerField
+      FieldName = 'KSM_BS'
+      Origin = '"MATROP"."KSM_BS"'
+    end
+    object q_matropSPIS_A: TSmallintField
+      FieldName = 'SPIS_A'
+      Origin = '"MATROP"."SPIS_A"'
+    end
+    object q_matropMEDEND: TSmallintField
+      FieldName = 'MEDEND'
+      Origin = '"MATROP"."MEDEND"'
+    end
+    object q_matropPRMAT_ID: TSmallintField
+      FieldName = 'PRMAT_ID'
+      Origin = '"MATROP"."PRMAT_ID"'
+    end
+    object q_matropGR_ID: TSmallintField
+      FieldName = 'GR_ID'
+      Origin = '"MATROP"."GR_ID"'
+    end
+    object q_matropPGR_ID: TSmallintField
+      FieldName = 'PGR_ID'
+      Origin = '"MATROP"."PGR_ID"'
+    end
+    object q_matropSPEC: TSmallintField
+      FieldName = 'SPEC'
+      Origin = '"MATROP"."SPEC"'
     end
   end
 end
