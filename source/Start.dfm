@@ -70,7 +70,7 @@ object FStarT: TFStarT
       Left = 224
       Top = 0
       Width = 206
-      Height = 13
+      Height = 30
       Margins.Bottom = 0
       Alignment = taCenter
       BiDiMode = bdLeftToRight
@@ -97,7 +97,7 @@ object FStarT: TFStarT
       Left = 551
       Top = 0
       Width = 15
-      Height = 13
+      Height = 30
       Margins.Bottom = 0
       Caption = #1087#1086':'
       Font.Charset = DEFAULT_CHARSET
@@ -345,10 +345,6 @@ object FStarT: TFStarT
     object TabSheet2: TTabSheet
       Caption = #1054#1089#1090#1072#1090#1082#1080' '#1074' '#1089#1099#1088#1100#1077' '#1080' '#1085'/'#1079' '#1087#1086' '#1087#1088#1077#1087#1072#1088#1072#1090#1091
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel2: TPanel
         Left = 0
         Top = 499
@@ -654,7 +650,7 @@ object FStarT: TFStarT
           Left = 62
           Top = 1
           Width = 131
-          Height = 19
+          Height = 22
           Color = clWhite
           Ctl3D = False
           Font.Charset = DEFAULT_CHARSET
@@ -782,7 +778,7 @@ object FStarT: TFStarT
     Left = 832
     Top = 4
     Bitmap = {
-      494C010105000700040018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010105000700080018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000004F0000004F

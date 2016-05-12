@@ -591,7 +591,7 @@ begin
       DM1.Ostatki.ApplyUpdates;
     dm1.Ostatki.Active := false;
   end;
-  usl_ser := ' and OST.KSM_ID=' + INTTOSTR(s_kodp) + ' and ost.seria_id=' + inttostr(vSeria_id);
+  usl_ser := '  OST.KSM_ID=' + INTTOSTR(s_kodp) + ' and ost.seria_id=' + inttostr(vSeria_id);
   DM1.Ostatki.ParamByName('struk_ID').AsInteger := vstruk_id;
   DM1.Ostatki.MacroByName('usl').AsString := usl_ser;
   DM1.Ostatki.Open;
