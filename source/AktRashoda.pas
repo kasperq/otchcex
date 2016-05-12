@@ -1335,6 +1335,7 @@ begin
     DM1.Kart.ApplyUpdates;
     DM1.IBT_Write.CommitRetaining;
   end;
+  dm1.kart.Close;
   result := true;
 end;
 
@@ -1445,6 +1446,7 @@ begin
       except
         on e : exception do
         begin
+          dm1.Kart.CancelUpdates;
           dm1.IBT_Write.RollbackRetaining;
           dm1.IBT_Read.RollbackRetaining;
           MessageDlg('Произошла ошибка при сохранении! ' + #13 + E.Message, mtWarning, [mbOK], 0);
@@ -2744,6 +2746,7 @@ begin
   vdocument_id := v_docSt;
   vTip_Op_Id := v_tipSt;
   vKart_id := v_kartSt;
+  dm1.Kart.Close;
 end;
 
 function TFAktRashoda.getNeededPrixInMatropEdiz() : double;   // расчет необходимого кол-ва прихода на препарат с учетом остатков
@@ -2899,11 +2902,14 @@ begin
   result := true;
   if (spec) then
   begin
-    dateEndSrok := IncMonth(ibquery1.fieldbyname('date_vid').AsDateTime,
-                            ibquery1.FieldByName('srok').AsInteger);
-    srokRaznica := MonthsBetween(dateEndSrok , StrToDate(s_dat2));
-    if (dateEndSrok > StrToDate(s_dat2)) and (srokRaznica > 1) then
-      result := false;
+    if (ibquery1.FieldByName('srok').AsInteger <> 9999) then
+    begin
+      dateEndSrok := IncMonth(ibquery1.fieldbyname('date_vid').AsDateTime,
+                              ibquery1.FieldByName('srok').AsInteger);
+      srokRaznica := MonthsBetween(dateEndSrok , StrToDate(s_dat2));
+      if (dateEndSrok > StrToDate(s_dat2)) and (srokRaznica > 1) then
+        result := false;
+    end;
   end;
 end;
 
