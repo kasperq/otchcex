@@ -461,7 +461,7 @@ object FPererasZag: TFPererasZag
       Left = 271
       Top = 6
       Width = 130
-      Height = 19
+      Height = 22
       Color = clWhite
       Ctl3D = False
       Font.Charset = DEFAULT_CHARSET
@@ -480,7 +480,7 @@ object FPererasZag: TFPererasZag
       Left = 271
       Top = 27
       Width = 130
-      Height = 19
+      Height = 22
       Color = clWhite
       Ctl3D = False
       Font.Charset = DEFAULT_CHARSET
@@ -788,7 +788,7 @@ object FPererasZag: TFPererasZag
     Left = 271
     Top = 81
     Width = 130
-    Height = 19
+    Height = 22
     Color = clWhite
     Ctl3D = False
     Font.Charset = DEFAULT_CHARSET
@@ -918,7 +918,7 @@ object FPererasZag: TFPererasZag
     Left = 664
     Top = 36
     Bitmap = {
-      494C01010A000C00040018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010A000C00080018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

@@ -146,7 +146,7 @@ begin
 
   dm1.Ostatki.Active := false;
   dm1.Ostatki.ParamByName('struk_ID').AsInteger := vstruk_id;
-  dm1.Ostatki.MacroByName('usl').AsString := '  AND OST.KSM_ID=' + INTTOSTR(s_kodp);
+  dm1.Ostatki.MacroByName('usl').AsString := '   OST.KSM_ID=' + INTTOSTR(s_kodp);
   dm1.Ostatki.Active := true;
   StopWait;
 end;
