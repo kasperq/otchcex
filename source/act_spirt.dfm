@@ -442,7 +442,7 @@ object Fact_spirt: TFact_spirt
     Left = 520
     Top = 4
     Bitmap = {
-      494C01010A000C001C0018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010A000C00200018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -4140,8 +4140,7 @@ object Fact_spirt: TFact_spirt
       'sum(ostatki.PEREDANO_RASH_s) as PEREDANO_RASH_s,'
       'sum(ostatki.PEREDANO_RASH_NZ) as PEREDANO_RASH_NZ,'
       '(cast(0 as numeric(15,6))) as factnorm,'
-      '(cast(0 as numeric(15,6))) as vip,'
-      'ostatki.struk_id'
+      '(cast(0 as numeric(15,6))) as vip, ostatki.struk_id'
       ''
       ' FROM select_ost_ksm (:DAT1,:DAT2,1,:strk,:ksm) OSTATKI'
       ' inner join kart on (ostatki.kart_id=kart.kart_id)'
@@ -4161,8 +4160,7 @@ object Fact_spirt: TFact_spirt
       ' nam,'
       'ostatki.razdel_id,ostatki.NEIS,OSTATKI.KSM_IDPR ,'
       ' factnorm,'
-      ' vip,'
-      'ostatki.struk_id'
+      ' vip, ostatki.struk_id'
       ''
       ' union'
       ' SELECT distinct'
@@ -5077,6 +5075,205 @@ object Fact_spirt: TFact_spirt
     object dob_normRAZDEL_ID: TSmallintField
       FieldName = 'RAZDEL_ID'
       Origin = '"NORM_VIEW"."RAZDEL_ID"'
+    end
+  end
+  object mem_spirt: TRxMemoryData
+    FieldDefs = <
+      item
+        Name = 'KSM_ID'
+        DataType = ftInteger
+      end
+      item
+        Name = 'NEIS_PROD'
+        DataType = ftString
+        Size = 10
+      end
+      item
+        Name = 'PLNORM'
+        DataType = ftFloat
+      end
+      item
+        Name = 'KEIN'
+        DataType = ftInteger
+      end
+      item
+        Name = 'KRAZ'
+        DataType = ftInteger
+      end
+      item
+        Name = 'NMAT_PROD'
+        DataType = ftString
+        Size = 60
+      end
+      item
+        Name = 'KOD_PROD'
+        DataType = ftString
+        Size = 18
+      end
+      item
+        Name = 'NAM'
+        DataType = ftString
+        Size = 20
+      end
+      item
+        Name = 'RAZDEL_ID'
+        DataType = ftInteger
+      end
+      item
+        Name = 'NEIS_SYR'
+        DataType = ftString
+        Size = 10
+      end
+      item
+        Name = 'KODP'
+        DataType = ftInteger
+      end
+      item
+        Name = 'OST_NN'
+        DataType = ftFloat
+      end
+      item
+        Name = 'OST_NK'
+        DataType = ftFloat
+      end
+      item
+        Name = 'OSTATOK_BEGIN_NZ'
+        DataType = ftFloat
+      end
+      item
+        Name = 'OSTATOK_BEGIN_S'
+        DataType = ftFloat
+      end
+      item
+        Name = 'OSTATOK_END_NZ'
+        DataType = ftFloat
+      end
+      item
+        Name = 'OSTATOK_END_S'
+        DataType = ftFloat
+      end
+      item
+        Name = 'ZAG_PERIOD'
+        DataType = ftFloat
+      end
+      item
+        Name = 'RASH_VIRAB_PERIOD'
+        DataType = ftFloat
+      end
+      item
+        Name = 'PRIX_PERIOD'
+        DataType = ftFloat
+      end
+      item
+        Name = 'RASX_PERIOD'
+        DataType = ftFloat
+      end
+      item
+        Name = 'PEREDANO_RASH_S'
+        DataType = ftFloat
+      end
+      item
+        Name = 'PEREDANO_RASH_NZ'
+        DataType = ftFloat
+      end
+      item
+        Name = 'FACTNORM'
+        DataType = ftFloat
+      end
+      item
+        Name = 'VIP'
+        DataType = ftFloat
+      end
+      item
+        Name = 'STRUK_ID'
+        DataType = ftInteger
+      end>
+    Left = 472
+    Top = 192
+    object mem_spirtKSM_ID: TIntegerField
+      FieldName = 'KSM_ID'
+    end
+    object mem_spirtNEIS_PROD: TStringField
+      FieldName = 'NEIS_PROD'
+      Size = 10
+    end
+    object mem_spirtPLNORM: TFloatField
+      FieldName = 'PLNORM'
+    end
+    object mem_spirtKEIN: TIntegerField
+      FieldName = 'KEIN'
+    end
+    object mem_spirtKRAZ: TIntegerField
+      FieldName = 'KRAZ'
+    end
+    object mem_spirtNMAT_PROD: TStringField
+      FieldName = 'NMAT_PROD'
+      Size = 60
+    end
+    object mem_spirtKOD_PROD: TStringField
+      FieldName = 'KOD_PROD'
+      Size = 18
+    end
+    object mem_spirtNAM: TStringField
+      FieldName = 'NAM'
+    end
+    object mem_spirtRAZDEL_ID: TIntegerField
+      FieldName = 'RAZDEL_ID'
+    end
+    object mem_spirtNEIS_SYR: TStringField
+      FieldName = 'NEIS_SYR'
+      Size = 10
+    end
+    object mem_spirtKODP: TIntegerField
+      FieldName = 'KODP'
+    end
+    object mem_spirtOST_NN: TFloatField
+      FieldName = 'OST_NN'
+    end
+    object mem_spirtOST_NK: TFloatField
+      FieldName = 'OST_NK'
+    end
+    object mem_spirtOSTATOK_BEGIN_NZ: TFloatField
+      FieldName = 'OSTATOK_BEGIN_NZ'
+    end
+    object mem_spirtOSTATOK_BEGIN_S: TFloatField
+      FieldName = 'OSTATOK_BEGIN_S'
+    end
+    object mem_spirtOSTATOK_END_NZ: TFloatField
+      FieldName = 'OSTATOK_END_NZ'
+    end
+    object mem_spirtOSTATOK_END_S: TFloatField
+      FieldName = 'OSTATOK_END_S'
+    end
+    object mem_spirtZAG_PERIOD: TFloatField
+      FieldName = 'ZAG_PERIOD'
+    end
+    object mem_spirtRASH_VIRAB_PERIOD: TFloatField
+      FieldName = 'RASH_VIRAB_PERIOD'
+    end
+    object mem_spirtPRIX_PERIOD: TFloatField
+      FieldName = 'PRIX_PERIOD'
+    end
+    object mem_spirtRASX_PERIOD: TFloatField
+      FieldName = 'RASX_PERIOD'
+    end
+    object mem_spirtPEREDANO_RASH_S: TFloatField
+      FieldName = 'PEREDANO_RASH_S'
+    end
+    object mem_spirtPEREDANO_RASH_NZ: TFloatField
+      FieldName = 'PEREDANO_RASH_NZ'
+    end
+    object mem_spirtFACTNORM: TFloatField
+      FieldName = 'FACTNORM'
+    end
+    object mem_spirtVIP: TFloatField
+      FieldName = 'VIP'
+    end
+    object mem_spirtSTRUK_ID: TIntegerField
+      FieldName = 'STRUK_ID'
+    end
+    object mem_spirtZNAK: TIntegerField
+      FieldName = 'ZNAK'
     end
   end
 end
