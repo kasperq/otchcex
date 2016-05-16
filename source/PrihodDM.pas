@@ -334,11 +334,11 @@ begin
         Ostatki.Active := false;
       Ostatki.ParamByName('struk_ID').AsInteger := vstruk_id;
       if v_Razdel = 0 then
-        Ostatki.MacroByName('usl').AsString := ' and ((ost.razdel_id is null) OR (ost.razdel_id = 0))'
+        Ostatki.MacroByName('usl').AsString := ' ((ost.razdel_id is null) OR (ost.razdel_id = 0))'
                                                + ' AND OST.KSM_ID = ' + INTTOSTR(KartKSM_ID.AsInteger)
       else
       begin
-        Ostatki.MacroByName('usl').AsString := ' and ost.razdel_id = ' + inttostr(v_Razdel)
+        Ostatki.MacroByName('usl').AsString := ' ost.razdel_id = ' + inttostr(v_Razdel)
                                                    + ' and ost.ksm_idpr = ' + inttostr(s_kodp)
                                                    + ' AND OST.KSM_ID = ' + INTTOSTR(KartKSM_ID.AsInteger);
       end;

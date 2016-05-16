@@ -110,7 +110,7 @@ begin
   pr_ost := 0;
   dm1.Ostatki.Active := false;
   dm1.Ostatki.ParamByName('struk_ID').AsInteger := strukId;
-  dm1.Ostatki.MacroByName('usl').AsString := '  AND OST.KSM_ID=' + IntToStr(ksmId)
+  dm1.Ostatki.MacroByName('usl').AsString := '   OST.KSM_ID=' + IntToStr(ksmId)
                                              + ' and ost.seria_id = ' + IntToStr(seriaId);
   dm1.Ostatki.Active := true;
   dm1.Ostatki.First;
