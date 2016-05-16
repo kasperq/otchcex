@@ -1131,7 +1131,7 @@ begin
   if not dm1.Ostatki.Active then
   begin
     DM1.Ostatki.ParamByName('struk_ID').AsInteger := vstruk_id;
-    DM1.Ostatki.MacroByName('usl').AsString := '  AND ost.ksm_id = ' + inttostr(s_kodp);
+    DM1.Ostatki.MacroByName('usl').AsString := ' ost.ksm_id = ' + inttostr(s_kodp);
     dm1.Ostatki.Open;
   end
   else
@@ -1141,7 +1141,7 @@ begin
     begin
       dm1.Ostatki.Active := false;
       DM1.Ostatki.ParamByName('struk_ID').AsInteger := vstruk_id;
-      DM1.Ostatki.MacroByName('usl').AsString := '  AND ost.ksm_id=' + inttostr(s_kodp);
+      DM1.Ostatki.MacroByName('usl').AsString := ' ost.ksm_id=' + inttostr(s_kodp);
       dm1.Ostatki.Open;
     end;
   end;

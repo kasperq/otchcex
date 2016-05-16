@@ -650,7 +650,7 @@ object FGot_Prod: TFGot_Prod
     Left = 200
     Top = 268
     Bitmap = {
-      494C010106000800040018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010106000800080018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       000000000000000000000000000000000000000000000000000000000000AF7F
       7F00B0808000B0808000B0808000B0808000B0808000B0808000B0808000B080
@@ -1630,7 +1630,7 @@ object FGot_Prod: TFGot_Prod
     Top = 200
   end
   object frxReport1: TfrxReport
-    Version = '4.7.109'
+    Version = '4.9.32'
     DotMatrixReport = False
     IniFile = '\Software\Fast Reports'
     PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator, pbExportQuick]
@@ -3468,6 +3468,8 @@ object FGot_Prod: TFGot_Prod
             9DEDAEFF0003722A215A24A5D22042E695705ABA3F51001653906BF0DC40CDEE
             EA9342CAB011E0FBC7FFD9}
           HightQuality = False
+          Transparent = False
+          TransparentColor = clWhite
         end
         object Memo20: TfrxMemoView
           Top = 26.000000000000000000
@@ -5281,6 +5283,8 @@ object FGot_Prod: TFGot_Prod
             9DEDAEFF0003722A215A24A5D22042E695705ABA3F51001653906BF0DC40CDEE
             EA9342CAB011E0FBC7FFD9}
           HightQuality = False
+          Transparent = False
+          TransparentColor = clWhite
         end
         object Memo29: TfrxMemoView
           Left = 561.000000000000000000
@@ -7286,6 +7290,19 @@ object FGot_Prod: TFGot_Prod
     UseFileCache = True
     ShowProgress = True
     OverwritePrompt = False
+    PrintOptimized = False
+    Outline = False
+    Background = False
+    HTMLTags = True
+    Author = 'FastReport'
+    Subject = 'FastReport PDF export'
+    ProtectionFlags = [ePrint, eModify, eCopy, eAnnot]
+    HideToolbar = False
+    HideMenubar = False
+    HideWindowUI = False
+    FitWindow = False
+    CenterWindow = False
+    PrintScaling = False
     Left = 552
     Top = 288
   end
@@ -7304,6 +7321,13 @@ object FGot_Prod: TFGot_Prod
     UseFileCache = True
     ShowProgress = True
     OverwritePrompt = False
+    ExportEMF = True
+    AsText = False
+    Background = True
+    FastExport = True
+    PageBreaks = True
+    EmptyLines = True
+    SuppressPageHeadersFooters = False
     Left = 648
     Top = 336
   end

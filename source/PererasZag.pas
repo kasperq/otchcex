@@ -803,7 +803,7 @@ BEGIN
   BEGIN
    if dm1.Ostatki.Active then dm1.Ostatki.Active:=false;
    DM1.Ostatki.ParamByName('struk_ID').AsInteger:=vstruk_id;
-   DM1.Ostatki.MacroByName('usl').AsString:=' and (ost.ksm_idpr is null or OST.KSM_IDPR=0) AND OST.KSM_ID='+INTTOSTR(SyrieZag.FieldByName('Ksm_Id').AsInteger);
+   DM1.Ostatki.MacroByName('usl').AsString:=' (ost.ksm_idpr is null or OST.KSM_IDPR=0) AND OST.KSM_ID='+INTTOSTR(SyrieZag.FieldByName('Ksm_Id').AsInteger);
    dm1.Ostatki.Open;
    st_kart:=dm1.OstatkiKart_id.AsInteger;
    DM1.Document.first;
