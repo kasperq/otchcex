@@ -164,6 +164,34 @@ type
     Spirt_OtchetPLNORM: TFMTBCDField;
     Spirt_OtchetZNAK: TIntegerField;
     SpirtZNAK: TIntegerField;
+    mem_spirt: TRxMemoryData;
+    mem_spirtKSM_ID: TIntegerField;
+    mem_spirtNEIS_PROD: TStringField;
+    mem_spirtPLNORM: TFloatField;
+    mem_spirtKEIN: TIntegerField;
+    mem_spirtKRAZ: TIntegerField;
+    mem_spirtNMAT_PROD: TStringField;
+    mem_spirtKOD_PROD: TStringField;
+    mem_spirtNAM: TStringField;
+    mem_spirtRAZDEL_ID: TIntegerField;
+    mem_spirtNEIS_SYR: TStringField;
+    mem_spirtKODP: TIntegerField;
+    mem_spirtOST_NN: TFloatField;
+    mem_spirtOST_NK: TFloatField;
+    mem_spirtOSTATOK_BEGIN_NZ: TFloatField;
+    mem_spirtOSTATOK_BEGIN_S: TFloatField;
+    mem_spirtOSTATOK_END_NZ: TFloatField;
+    mem_spirtOSTATOK_END_S: TFloatField;
+    mem_spirtZAG_PERIOD: TFloatField;
+    mem_spirtRASH_VIRAB_PERIOD: TFloatField;
+    mem_spirtPRIX_PERIOD: TFloatField;
+    mem_spirtRASX_PERIOD: TFloatField;
+    mem_spirtPEREDANO_RASH_S: TFloatField;
+    mem_spirtPEREDANO_RASH_NZ: TFloatField;
+    mem_spirtFACTNORM: TFloatField;
+    mem_spirtVIP: TFloatField;
+    mem_spirtSTRUK_ID: TIntegerField;
+    mem_spirtZNAK: TIntegerField;
     procedure ProsmSpirt;
     procedure SpeedButton2Click(Sender: TObject);
     procedure Edit1Click(Sender: TObject);
@@ -176,7 +204,8 @@ type
     procedure SpeedButton1Click(Sender: TObject);
     procedure Spirt_OtchetCalcFields(DataSet: TDataSet);
   private
-    { Private declarations }
+    procedure uniteDepartments;
+
   public
     { Public declarations }
   end;
@@ -429,9 +458,100 @@ begin
     end;
     if (not Spirt_Otchet.Eof) then
       Spirt.LoadFromDataSet(Spirt_Otchet, 0, lmAppend);
+    if (vStruk_Id = 760) then
+      uniteDepartments;
     Splash.Free;
     Spirt_Otchet.EnableControls;
   END;
+end;
+
+procedure TFact_spirt.uniteDepartments;
+begin
+  mem_spirt.EmptyTable;
+  mem_spirt.Open;
+  Spirt.First;
+  while (not Spirt.Eof) do
+  begin
+    if (SpirtNMAT_PROD.AsString = '  Приход со склада') then
+    begin
+      if (mem_spirt.RecordCount = 0) then
+      begin
+        mem_spirt.Append;
+        mem_spirtKSM_ID.AsInteger := SpirtKSM_ID.AsInteger;
+        mem_spirtNEIS_PROD.AsString := spirtNEIS_PROD.AsString;
+        mem_spirtPLNORM.AsFloat := spirtPLNORM.AsFloat;
+        mem_spirtKEIN.AsInteger := spirtKEIN.AsInteger;
+        mem_spirtKRAZ.AsInteger := spirtKRAZ.AsInteger;
+        mem_spirtNMAT_PROD.AsString := spirtNMAT_PROD.AsString;
+        mem_spirtKOD_PROD.AsString := spirtKOD_PROD.AsString;
+        mem_spirtNAM.AsString := spirtNAM.AsString;
+        mem_spirtRAZDEL_ID.AsInteger := spirtRAZDEL_ID.AsInteger;
+        mem_spirtNEIS_SYR.AsString := spirtNEIS_SYR.AsString;
+        mem_spirtKODP.AsInteger := spirtKODP.AsInteger;
+        mem_spirtOST_NN.AsFloat := spirtOST_NN.AsFloat;
+        mem_spirtOST_NK.AsFloat := spirtOST_NK.AsFloat;
+        mem_spirtOSTATOK_BEGIN_NZ.AsFloat := spirtOSTATOK_BEGIN_NZ.AsFloat;
+        mem_spirtOSTATOK_BEGIN_S.AsFloat := spirtOSTATOK_BEGIN_S.AsFloat;
+        mem_spirtOSTATOK_END_NZ.AsFloat := spirtOSTATOK_END_NZ.AsFloat;
+        mem_spirtOSTATOK_END_S.AsFloat := spirtOSTATOK_END_S.AsFloat;
+        mem_spirtZAG_PERIOD.AsFloat := spirtZAG_PERIOD.AsFloat;
+        mem_spirtRASH_VIRAB_PERIOD.AsFloat := spirtRASH_VIRAB_PERIOD.AsFloat;
+        mem_spirtPRIX_PERIOD.AsFloat := spirtPRIX_PERIOD.AsFloat;
+        mem_spirtRASX_PERIOD.AsFloat := spirtRASX_PERIOD.AsFloat;
+        mem_spirtPEREDANO_RASH_S.AsFloat := spirtPEREDANO_RASH_S.AsFloat;
+        mem_spirtPEREDANO_RASH_NZ.AsFloat := spirtPEREDANO_RASH_NZ.AsFloat;
+        mem_spirtFACTNORM.AsFloat := spirtFACTNORM.AsFloat;
+        mem_spirtVIP.AsFloat := spirtVIP.AsFloat;
+        mem_spirtSTRUK_ID.AsInteger := spirtSTRUK_ID.AsInteger;
+        mem_spirtZNAK.AsInteger := spirtZNAK.AsInteger;
+        mem_spirt.Post;
+      end
+      else
+      begin
+        mem_spirt.Edit;
+        mem_spirtZAG_PERIOD.AsFloat := mem_spirtZAG_PERIOD.AsFloat + spirtZAG_PERIOD.AsFloat;
+        mem_spirtRASH_VIRAB_PERIOD.AsFloat := mem_spirtRASH_VIRAB_PERIOD.AsFloat + spirtRASH_VIRAB_PERIOD.AsFloat;
+        mem_spirtPRIX_PERIOD.AsFloat := mem_spirtPRIX_PERIOD.AsFloat + spirtPRIX_PERIOD.AsFloat;
+        mem_spirtRASX_PERIOD.AsFloat := mem_spirtRASX_PERIOD.AsFloat + spirtRASX_PERIOD.AsFloat;
+        mem_spirtPEREDANO_RASH_S.AsFloat := mem_spirtPEREDANO_RASH_S.AsFloat + spirtPEREDANO_RASH_S.AsFloat;
+        mem_spirtPEREDANO_RASH_NZ.AsFloat := mem_spirtPEREDANO_RASH_NZ.AsFloat + spirtPEREDANO_RASH_NZ.AsFloat;
+      end;
+      Spirt.Delete;
+    end
+    else
+      Spirt.Next;
+  end;
+  Spirt.First;
+  mem_spirt.First;
+  Spirt.Insert;
+  spirtKSM_ID.AsInteger := mem_SpirtKSM_ID.AsInteger;
+  spirtNEIS_PROD.AsString := mem_spirtNEIS_PROD.AsString;
+  spirtPLNORM.AsFloat := mem_spirtPLNORM.AsFloat;
+  spirtKEIN.AsInteger := mem_spirtKEIN.AsInteger;
+  spirtKRAZ.AsInteger := mem_spirtKRAZ.AsInteger;
+  spirtNMAT_PROD.AsString := mem_spirtNMAT_PROD.AsString;
+  spirtKOD_PROD.AsString := mem_spirtKOD_PROD.AsString;
+  spirtNAM.AsString := mem_spirtNAM.AsString;
+  spirtRAZDEL_ID.AsInteger := mem_spirtRAZDEL_ID.AsInteger;
+  spirtNEIS_SYR.AsString := mem_spirtNEIS_SYR.AsString;
+  spirtKODP.AsInteger := mem_spirtKODP.AsInteger;
+  spirtOST_NN.AsFloat := mem_spirtOST_NN.AsFloat;
+  spirtOST_NK.AsFloat := mem_spirtOST_NK.AsFloat;
+  spirtOSTATOK_BEGIN_NZ.AsFloat := mem_spirtOSTATOK_BEGIN_NZ.AsFloat;
+  spirtOSTATOK_BEGIN_S.AsFloat := mem_spirtOSTATOK_BEGIN_S.AsFloat;
+  spirtOSTATOK_END_NZ.AsFloat := mem_spirtOSTATOK_END_NZ.AsFloat;
+  spirtOSTATOK_END_S.AsFloat := mem_spirtOSTATOK_END_S.AsFloat;
+  spirtZAG_PERIOD.AsFloat := mem_spirtZAG_PERIOD.AsFloat;
+  spirtRASH_VIRAB_PERIOD.AsFloat := mem_spirtRASH_VIRAB_PERIOD.AsFloat;
+  spirtPRIX_PERIOD.AsFloat := mem_spirtPRIX_PERIOD.AsFloat;
+  spirtRASX_PERIOD.AsFloat := mem_spirtRASX_PERIOD.AsFloat;
+  spirtPEREDANO_RASH_S.AsFloat := mem_spirtPEREDANO_RASH_S.AsFloat;
+  spirtPEREDANO_RASH_NZ.AsFloat := mem_spirtPEREDANO_RASH_NZ.AsFloat;
+  spirtFACTNORM.AsFloat := mem_spirtFACTNORM.AsFloat;
+  spirtVIP.AsFloat := mem_spirtVIP.AsFloat;
+  spirtSTRUK_ID.AsInteger := mem_spirtSTRUK_ID.AsInteger;
+  spirtZNAK.AsInteger := mem_spirtZNAK.AsInteger;
+  spirt.Post;
 end;
 
 procedure TFact_spirt.SpeedButton1Click(Sender: TObject);
