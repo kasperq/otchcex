@@ -555,6 +555,7 @@ begin
   if (Spirt.Locate('nmat_prod', ' Приход из др.подразделений', [])) then
   begin
     prix_cex := prix_cex - SpirtPRIX_PERIOD.AsFloat;
+    spisano := spisano - SpirtPEREDANO_RASH_S.AsFloat;
     spirt.Delete;
   end;
 end;
