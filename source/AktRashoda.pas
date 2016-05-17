@@ -538,6 +538,7 @@ type
     procedure openPrixKart;
     procedure deletePrixKart;
     function addSpecRec2Prixod() : boolean;
+    procedure loadAndAddKart;
 
     procedure DobPrixPrep(spec : boolean);
     function getNeededPrixInMatropEdiz() : double;
@@ -1874,6 +1875,7 @@ begin
 //                                              IntToStr(year) +
 //                                              '''';
   DM1.Document.Active := true;
+  dm1.Document.FetchAll;
 
   if (DM1.Document.Eof) then
     result := false
@@ -2203,19 +2205,30 @@ begin
     NormVQuery.First;
     while (not NormVQuery.Eof) do
     begin
-      if (NormiMemDat.RecordCount = 0)
-         or (not NormiMemDat.Locate('ksm_id; razdel_id',
-                                    VarArrayOf([NormVQueryKSM_ID.AsInteger,
-                                                NormVQueryRAZDEL_ID.AsInteger]),
-                                    [])) then
+      if (NormiMemDat.Active) and (NormiMemDat.Locate('ksm_id; razdel_id',
+                                                      VarArrayOf([NormVQueryKSM_ID.AsInteger,
+                                                                  NormVQueryRAZDEL_ID.AsInteger]),
+                                                      [])) then
+        insertPlnorm2MemDat(NormVQueryPLNORM.AsFloat, NormVQueryKSM_ID.AsInteger)
+      else
         insertRec2MemDat(NormVQueryKSM_ID.AsInteger, NormVQueryStruk_ID.AsInteger,
                          NormVQueryRAZDEL_ID.AsInteger, NormVQueryMEDEND.AsInteger,
                          NormVQueryKEI_ID.AsInteger, NormVQueryKRAZ.AsInteger,
                          NormVQueryNMAT_KSM.AsString, NormVQueryNEIS.AsString,
                          NormVQuerySTNAME.AsString, NormVQueryNMAT.AsString,
-                         NormVQueryNAMRAZ.AsString, '', NormVQueryPLNORM.AsFloat, 0, vStruk_Id, 0)
-      else
-        insertPlnorm2MemDat(NormVQueryPLNORM.AsFloat, NormVQueryKSM_ID.AsInteger);
+                         NormVQueryNAMRAZ.AsString, '', NormVQueryPLNORM.AsFloat, 0, vStruk_Id, 0);
+//      if (not NormiMemDat.Locate('ksm_id; razdel_id',
+//                                    VarArrayOf([NormVQueryKSM_ID.AsInteger,
+//                                                NormVQueryRAZDEL_ID.AsInteger]),
+//                                    [])) then
+//        insertRec2MemDat(NormVQueryKSM_ID.AsInteger, NormVQueryStruk_ID.AsInteger,
+//                         NormVQueryRAZDEL_ID.AsInteger, NormVQueryMEDEND.AsInteger,
+//                         NormVQueryKEI_ID.AsInteger, NormVQueryKRAZ.AsInteger,
+//                         NormVQueryNMAT_KSM.AsString, NormVQueryNEIS.AsString,
+//                         NormVQuerySTNAME.AsString, NormVQueryNMAT.AsString,
+//                         NormVQueryNAMRAZ.AsString, '', NormVQueryPLNORM.AsFloat, 0, vStruk_Id, 0)
+//      else
+//        insertPlnorm2MemDat(NormVQueryPLNORM.AsFloat, NormVQueryKSM_ID.AsInteger);
       NormVQuery.Next;
     end;
   end;
@@ -2291,26 +2304,26 @@ end;
 
 function TFAktRashoda.insertPlnorm2MemDat(plNorm : double; ksmId : integer) : boolean;
 begin
-  if not NormiMemDat.Active then
+  if (not NormiMemDat.Active) then
     NormiMemDat.Active := True;
-  result := false;
-  NormiMemDat.First;
-  while not NormiMemDat.Eof do
-  begin
-    if NormiMemDatKSM_ID.AsInteger = ksmId then
-    begin
+//  result := false;
+//  NormiMemDat.First;
+//  while not NormiMemDat.Eof do
+//  begin
+//    if NormiMemDatKSM_ID.AsInteger = ksmId then
+//    begin
       NormiMemDat.Edit;
       NormiMemDatPLNORM.AsFloat := plNorm;
       NormiMemDat.Post;
       result := true;
-      break;
-    end
-    else
-    begin
-      NormiMemDat.Next;
-      result := false;
-    end;
-  end;
+//      break;
+//    end
+//    else
+//    begin
+//      NormiMemDat.Next;
+//      result := false;
+//    end;
+//  end;
 end;
 
 function TFAktRashoda.reloadNorms(nMat : integer) : boolean;
@@ -2357,8 +2370,11 @@ begin
     end;
     vklient_id := s_kodp;
     activateNormQuery();
-    loadKart(vStruk_Id, DM1.DocumentDOC_ID.AsInteger);
-    addKart2Mem();
+
+    loadAndAddKart;
+    {loadKart(vStruk_Id, DM1.DocumentDOC_ID.AsInteger);
+    addKart2Mem();}
+
 //    findAndSet10Account;
     addNormi2Mem();
     if (vTip_Doc_id = 144) or (vTip_Doc_Id = 209) then
@@ -2380,6 +2396,18 @@ begin
   on e : exception do
     result := false;
   end;
+end;
+
+procedure TFAktRashoda.loadAndAddKart;
+begin
+  dm1.Document.First;
+  while (not dm1.Document.Eof) do
+  begin
+    loadKart(vStruk_Id, DM1.DocumentDOC_ID.AsInteger);
+    addKart2Mem();
+    dm1.Document.Next;
+  end;
+  
 end;
 
 function TFAktRashoda.addSpecRec2Prixod() : boolean;
