@@ -6,7 +6,8 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, DBGridEh, Buttons, Grids, Mask, StdCtrls, DBCtrlsEh, DBLookupEh,
   ExtCtrls, Spin, DB, IBCustomDataSet, IBQuery, RxIBQuery, RxMemDS, FindDlgEh,
-  SplshWnd, IBUpdateSQL, IBUpdSQLW, Menus, ImgList, ComCtrls, Tabs;
+  SplshWnd, IBUpdateSQL, IBUpdSQLW, Menus, ImgList, ComCtrls, Tabs, frxDCtrl,
+  frxClass, frxDBSet;
 
 type
   TFGotProdNaklTbl = class(TForm)
@@ -63,6 +64,9 @@ type
     GotNaklMemSTRUK_ID: TSmallintField;
     GotNaklQueryHAS_PRIH: TIntegerField;
     GotNaklMemHAS_PRIH: TIntegerField;
+    frxReport1: TfrxReport;
+    frxDBDataset1: TfrxDBDataset;
+    frxDialogControls1: TfrxDialogControls;
 
     procedure activateGotNaklQuery;
     procedure assignGotNaklQueryToGotNaklMem;
@@ -99,6 +103,8 @@ type
     procedure ScrollBar1Change(Sender: TObject);
     procedure SpinButton1DownClick(Sender: TObject);
     procedure SpinButton1UpClick(Sender: TObject);
+    procedure SpeedButton5Click(Sender: TObject);
+    procedure frxReport1GetValue(const VarName: string; var Value: Variant);
   private
     { Private declarations }
   public
@@ -331,6 +337,12 @@ begin
   loadGotNaklTbl;
 end;
 
+procedure TFGotProdNaklTbl.SpeedButton5Click(Sender: TObject);
+begin
+  frxReport1.LoadFromFile(reportsPath + 'got_nakls_spisok.fr3');
+  frxReport1.ShowReport();
+end;
+
 procedure TFGotProdNaklTbl.SpinButton1DownClick(Sender: TObject);
 begin
   if (curMonthCombo.ItemIndex > 0) then
@@ -456,6 +468,17 @@ begin
     NaklGrid.Columns[11].Visible := false;
   end;
   loadGotNaklTbl; 
+end;
+
+procedure TFGotProdNaklTbl.frxReport1GetValue(const VarName: string;
+  var Value: Variant);
+begin
+  if (VarName = 'month') then
+    Value := curMonthCombo.Text;
+  if (VarName = 'year') then
+    Value := YearEdit.Value;
+  if (VarName = 'namceh') then
+    Value := dm1.naimCeh;
 end;
 
 procedure TFGotProdNaklTbl.GotNaklQueryCalcFields(DataSet: TDataSet);
