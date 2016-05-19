@@ -208,6 +208,7 @@ object FVibSyr: TFVibSyr
       Top = 22
       Width = 88
       Height = 13
+      Margins.Bottom = 0
       Caption = '  '#1050#1091#1076#1072' '#1087#1077#1088#1077#1076#1072#1090#1100':'
       Layout = tlCenter
     end
@@ -216,6 +217,7 @@ object FVibSyr: TFVibSyr
       Top = 22
       Width = 31
       Height = 13
+      Margins.Bottom = 0
       Caption = 'Label2'
       Layout = tlCenter
     end
