@@ -12,6 +12,7 @@ object FVybPrep: TFVybPrep
   Font.Style = []
   OldCreateOrder = False
   Position = poMainFormCenter
+  OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -38,6 +39,7 @@ object FVybPrep: TFVybPrep
     Options = [dgEditing, dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
     OptionsEh = [dghFixed3D, dghHighlightFocus, dghClearSelection, dghEnterAsTab, dghRowHighlight]
     ParentFont = False
+    STFilter.Visible = True
     TabOrder = 0
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clBlack
@@ -48,12 +50,14 @@ object FVybPrep: TFVybPrep
     UseMultiTitle = True
     VertScrollBar.Tracking = True
     OnDblClick = DBGridEh1DblClick
+    OnTitleBtnClick = DBGridEh1TitleBtnClick
     Columns = <
       item
         EditButtons = <>
         FieldName = 'KOD_PROD'
         Footers = <>
         Title.Caption = #1050#1086#1076' '#1087#1088#1077#1087#1072#1088#1072#1090#1072' '
+        Title.TitleButton = True
         Width = 169
       end
       item
@@ -61,6 +65,9 @@ object FVybPrep: TFVybPrep
         FieldName = 'NMAT'
         Footers = <>
         Title.Caption = #1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077
+        Title.SortIndex = 1
+        Title.SortMarker = smDownEh
+        Title.TitleButton = True
         Width = 258
       end
       item
@@ -196,8 +203,85 @@ object FVybPrep: TFVybPrep
     end
   end
   object DSvprep: TDataSource
-    DataSet = vprep
+    DataSet = mem_vipusk
     Left = 264
     Top = 144
+  end
+  object mem_vipusk: TkbmMemTable
+    DesignActivation = True
+    AttachedAutoRefresh = True
+    AttachMaxCount = 1
+    FieldDefs = <>
+    IndexDefs = <>
+    SortOptions = []
+    AllDataOptions = [mtfSaveData, mtfSaveNonVisible, mtfSaveBlobs, mtfSaveFiltered, mtfSaveIgnoreRange, mtfSaveIgnoreMasterDetail, mtfSaveDeltas]
+    CommaTextOptions = [mtfSaveData]
+    CSVQuote = '"'
+    CSVFieldDelimiter = ','
+    CSVRecordDelimiter = ','
+    CSVTrueString = 'True'
+    CSVFalseString = 'False'
+    PersistentSaveOptions = [mtfSaveData, mtfSaveNonVisible, mtfSaveIgnoreRange, mtfSaveIgnoreMasterDetail]
+    PersistentBackup = False
+    ProgressFlags = [mtpcLoad, mtpcSave, mtpcCopy]
+    FilterOptions = []
+    Version = '2.53g'
+    LanguageID = 0
+    SortID = 0
+    SubLanguageID = 1
+    LocaleID = 1024
+    Left = 432
+    Top = 216
+    object mem_vipuskSTRUK_ID: TSmallintField
+      FieldName = 'STRUK_ID'
+      Origin = '"SPPROD"."STRUK_ID"'
+    end
+    object mem_vipuskKSM_ID: TIntegerField
+      FieldName = 'KSM_ID'
+      Origin = '"KARTV"."KSM_ID"'
+      Required = True
+    end
+    object mem_vipuskKOD_PROD: TStringField
+      FieldName = 'KOD_PROD'
+      Size = 18
+    end
+    object mem_vipuskKOL_PRIH: TFloatField
+      FieldName = 'KOL_PRIH'
+    end
+    object mem_vipuskNMAT: TStringField
+      FieldName = 'NMAT'
+      Size = 60
+    end
+    object mem_vipuskXARKT: TStringField
+      FieldName = 'XARKT'
+      Size = 30
+    end
+    object mem_vipuskNEIS: TStringField
+      FieldName = 'NEIS'
+      Size = 10
+    end
+    object mem_vipuskGOST: TStringField
+      FieldName = 'GOST'
+      Size = 30
+    end
+    object mem_vipuskNAMORG: TStringField
+      FieldName = 'NAMORG'
+      Size = 50
+    end
+    object mem_vipuskNAMREG: TStringField
+      FieldName = 'NAMREG'
+    end
+  end
+  object FindDlgEh1: TFindDlgEh
+    DBGrid = DBGridEh1
+    FindFont.Charset = DEFAULT_CHARSET
+    FindFont.Color = clWindowText
+    FindFont.Height = -11
+    FindFont.Name = 'Tahoma'
+    FindFont.Style = []
+    ShowFilterPanel = True
+    SimpleSeek = True
+    Left = 552
+    Top = 328
   end
 end
