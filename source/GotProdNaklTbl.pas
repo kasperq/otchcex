@@ -7,7 +7,7 @@ uses
   Dialogs, DBGridEh, Buttons, Grids, Mask, StdCtrls, DBCtrlsEh, DBLookupEh,
   ExtCtrls, Spin, DB, IBCustomDataSet, IBQuery, RxIBQuery, RxMemDS, FindDlgEh,
   SplshWnd, IBUpdateSQL, IBUpdSQLW, Menus, ImgList, ComCtrls, Tabs, frxDCtrl,
-  frxClass, frxDBSet;
+  frxClass, frxDBSet, frxExportXLS, frxExportRTF;
 
 type
   TFGotProdNaklTbl = class(TForm)
@@ -67,6 +67,8 @@ type
     frxReport1: TfrxReport;
     frxDBDataset1: TfrxDBDataset;
     frxDialogControls1: TfrxDialogControls;
+    frxRTFExport1: TfrxRTFExport;
+    frxXLSExport1: TfrxXLSExport;
 
     procedure activateGotNaklQuery;
     procedure assignGotNaklQueryToGotNaklMem;
