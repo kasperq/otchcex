@@ -853,6 +853,7 @@ uses
     { Private declarations }
   public
     stkod : string;
+    naimCeh : string;
     klientId : integer;
     strukIdRela : integer;
 
@@ -1149,6 +1150,7 @@ begin
       MODE := 2;
     end;
   FGlMenu.RXLabel1.Caption := DM1.ConfigUMCSTNAME.AsString;
+  naimCeh := DM1.ConfigUMCSTNAME.AsString;
   FGlMenu.Label2.Caption := FormatDateTime('mmmm', EncodeDate(DM1.ConfigUMCGOD.AsInteger,
                                                               DM1.ConfigUMCMES.AsInteger,
                                                               1));
