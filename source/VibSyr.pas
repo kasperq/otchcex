@@ -164,12 +164,12 @@ begin
      FVybPrep.ShowModal;
      if FVybPrep.ModalResult=mrOk then
      begin
-      s_klient1:=FVybPrep.vprepKsm_id.AsInteger;
-      edit1.Text:= FVybPrep.VprepKod_Prod.Asstring;
-      label2.Caption:=FVybPrep.VprepNMAT.AsString;
-//        PeredanoSyrKlient_id.AsInteger:=FVybPrep.vprepKsm_id.AsInteger;
-//        PeredanoSyrKod_prod.AsString:=FVybPrep.VprepKod_Prod.Asstring;
-//        PeredanoSyrNmat.AsString:=FVybPrep.VprepNMAT.AsString;
+      s_klient1:=FVybPrep.mem_vipuskKsm_id.AsInteger;
+      edit1.Text:= FVybPrep.mem_vipuskKod_Prod.Asstring;
+      label2.Caption:=FVybPrep.mem_vipuskNMAT.AsString;
+//        PeredanoSyrKlient_id.AsInteger:=FVybPrep.mem_vipuskKsm_id.AsInteger;
+//        PeredanoSyrKod_prod.AsString:=FVybPrep.mem_vipuskKod_Prod.Asstring;
+//        PeredanoSyrNmat.AsString:=FVybPrep.mem_vipuskNMAT.AsString;
      end;
  end;
  if (fKorOtchet.RadioGroup1.ItemIndex=0) and(fKorOtchet.RadioGroup2.ItemIndex=1) then

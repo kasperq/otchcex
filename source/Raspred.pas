@@ -869,13 +869,13 @@ case nm of
     FVybPrep.ShowModal;
     if FVybPrep.ModalResult=mrOk then
     begin
-     s_kodp:=FVybPrep.vprepKsm_id.AsInteger;
+     s_kodp:=FVybPrep.mem_vipuskKsm_id.AsInteger;
      DM1.IBQuery1.Active := True;
      RaspSyrKlient_id.AsInteger:=s_kodp;
-     RaspSyrKod_prod.AsString:=FVybPrep.vprep.FieldByName('KOD_PROD').AsString;
-     RaspSyrXarkt.AsString:=FVybPrep.vprep.FieldByName('XARKT').AsString;
-     RaspSyrNmat.AsString:=FVybPrep.vprep.FieldByName('NMAT').AsString;
-     RaspSyrNeis.AsString:=FVybPrep.vprep.FieldByName('NEIS').AsString;
+     RaspSyrKod_prod.AsString:=FVybPrep.mem_vipusk.FieldByName('KOD_PROD').AsString;
+     RaspSyrXarkt.AsString:=FVybPrep.mem_vipusk.FieldByName('XARKT').AsString;
+     RaspSyrNmat.AsString:=FVybPrep.mem_vipusk.FieldByName('NMAT').AsString;
+     RaspSyrNeis.AsString:=FVybPrep.mem_vipusk.FieldByName('NEIS').AsString;
      RaspSyrKei_IDn.AsInteger:=s_kei;
      RaspSyrNeiZN.AsString:=label12.Caption;
     end;
@@ -1000,13 +1000,13 @@ case nm of
     FVybPrep.ShowModal;
     if FVybPrep.ModalResult=mrOk then
     begin
-     s_kodp:=FVybPrep.vprepKsm_id.AsInteger;
+     s_kodp:=FVybPrep.mem_vipuskKsm_id.AsInteger;
      DM1.IBQuery1.Active := True;
      RaspSyrKlient_id.AsInteger:=s_kodp;
-     RaspSyrKod_prod.AsString:=FVybPrep.vprep.FieldByName('KOD_PROD').AsString;
-     RaspSyrXarkt.AsString:=FVybPrep.vprep.FieldByName('XARKT').AsString;
-     RaspSyrNmat.AsString:=FVybPrep.vprep.FieldByName('NMAT').AsString;
-     RaspSyrNeis.AsString:=FVybPrep.vprep.FieldByName('NEIS').AsString;
+     RaspSyrKod_prod.AsString:=FVybPrep.mem_vipusk.FieldByName('KOD_PROD').AsString;
+     RaspSyrXarkt.AsString:=FVybPrep.mem_vipusk.FieldByName('XARKT').AsString;
+     RaspSyrNmat.AsString:=FVybPrep.mem_vipusk.FieldByName('NMAT').AsString;
+     RaspSyrNeis.AsString:=FVybPrep.mem_vipusk.FieldByName('NEIS').AsString;
      RaspSyrKei_IDn.AsInteger:=s_kei;
      RaspSyrNeiZN.AsString:=label12.Caption;
     end;
@@ -1060,13 +1060,13 @@ case nm of
     FVybPrep.ShowModal;
     if FVybPrep.ModalResult=mrOk then
     begin
-     s_kodp:=FVybPrep.vprepKsm_id.AsInteger;
+     s_kodp:=FVybPrep.mem_vipuskKsm_id.AsInteger;
      DM1.IBQuery1.Active := True;
      RaspSyrKlient_id.AsInteger:=s_kodp;
-     RaspSyrKod_prod.AsString:=FVybPrep.vprep.FieldByName('KOD_PROD').AsString;
-     RaspSyrXarkt.AsString:=FVybPrep.vprep.FieldByName('XARKT').AsString;
-     RaspSyrNmat.AsString:=FVybPrep.vprep.FieldByName('NMAT').AsString;
-     RaspSyrNeis.AsString:=FVybPrep.vprep.FieldByName('NEIS').AsString;
+     RaspSyrKod_prod.AsString:=FVybPrep.mem_vipusk.FieldByName('KOD_PROD').AsString;
+     RaspSyrXarkt.AsString:=FVybPrep.mem_vipusk.FieldByName('XARKT').AsString;
+     RaspSyrNmat.AsString:=FVybPrep.mem_vipusk.FieldByName('NMAT').AsString;
+     RaspSyrNeis.AsString:=FVybPrep.mem_vipusk.FieldByName('NEIS').AsString;
      RaspSyrKei_IDn.AsInteger:=s_kei;
      RaspSyrNeiZN.AsString:=label12.Caption;
  {    if FindSpprod.IBSpprod.Active=false then FindSpprod.IBSpprod.Active:=true;

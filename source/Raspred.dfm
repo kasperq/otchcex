@@ -271,10 +271,6 @@ object FRaspred: TFRaspred
     object TabSheet3: TTabSheet
       Caption = #1047#1072#1075#1088#1091#1079#1082#1072
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object DBGridEh3: TDBGridEh
         Left = 0
         Top = 0
@@ -955,7 +951,7 @@ object FRaspred: TFRaspred
       Left = 107
       Top = 10
       Width = 66
-      Height = 19
+      Height = 22
       Color = clWhite
       Ctl3D = False
       Font.Charset = DEFAULT_CHARSET
@@ -976,7 +972,7 @@ object FRaspred: TFRaspred
     Left = 568
     Top = 4
     Bitmap = {
-      494C01010B000E000C0018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B000E00100018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
