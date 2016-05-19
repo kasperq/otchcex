@@ -6,7 +6,9 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs,dm, FindDlgEh, Menus, ImgList, Grids, DBGridEh, ComCtrls, ToolWin,
   DBCtrls, StdCtrls, Mask, ExtCtrls, DBGrids,db, IBCustomDataSet, IBQuery,
-  SplshWnd, ToolEdit,IB, Spin, RxIBQuery, FR_DSet, FR_DBSet, FR_Class, PrnDbgeh;
+  SplshWnd, ToolEdit,IB, Spin, RxIBQuery, FR_DSet, FR_DBSet, FR_Class, PrnDbgeh,
+  frxDCtrl, frxClass, frxDBSet, frxExportODF, frxExportRTF, frxExportXML,
+  frxExportPDF, frxExportXLS;
 type
   TFprixcex = class(TForm)
     ToolBar1: TToolBar;
@@ -78,6 +80,14 @@ type
     MenuItem2: TMenuItem;
     ToolButton5: TToolButton;
     DBGridEh4: TDBGridEh;
+    frxReport1: TfrxReport;
+    frxDBDataset1: TfrxDBDataset;
+    frxDialogControls1: TfrxDialogControls;
+    frxXLSExport1: TfrxXLSExport;
+    frxPDFExport1: TfrxPDFExport;
+    frxXMLExport1: TfrxXMLExport;
+    frxRTFExport1: TfrxRTFExport;
+    frxODTExport1: TfrxODTExport;
     procedure activatePrixRasx;
     procedure ToolButton6Click(Sender: TObject);
     procedure ToolButton4Click(Sender: TObject);
@@ -103,6 +113,7 @@ type
     procedure SpinEdit4Change(Sender: TObject);
     procedure frReport1GetValue(const ParName: string; var ParValue: Variant);
     procedure ToolButton5Click(Sender: TObject);
+    procedure frxReport1GetValue(const VarName: string; var Value: Variant);
   private
     { Private declarations }
   public
@@ -148,13 +159,17 @@ procedure TFprixcex.ToolButton4Click(Sender: TObject);
 var
   F_column: string;
 begin
-  F_column := FindDlgEh1.VerbalUsl.Text;
-  printdbgrideh1.Title.Text := 'Приходы сырья в цех. ' + FGlMenu.RXLabel1.Caption
-                               + '.  В период с ' + s_dat1 + ' по ' + s_dat2
-                               + #13 + #10 + ' Условие выборки: ' + F_column;
-  printdbgrideh1.Preview;
-//FrReport1.LoadFromFile(programPath + 'P_Prixod.frf');
-// FrReport1.ShowReport; 
+//  F_column := FindDlgEh1.VerbalUsl.Text;
+//  printdbgrideh1.Title.Text := 'Приходы сырья в цех. ' + FGlMenu.RXLabel1.Caption
+//                               + '.  В период с ' + s_dat1 + ' по ' + s_dat2
+//                               + #13 + #10 + ' Условие выборки: ' + F_column;
+//  printdbgrideh1.Preview;
+
+//  FrReport1.LoadFromFile(reportsPath + 'P_Prixod.frf');
+//  FrReport1.ShowReport;
+
+  frxReport1.LoadFromFile(reportsPath + 'prihod.fr3');
+  frxReport1.ShowReport();
 end;
 
 procedure TFprixcex.ToolButton5Click(Sender: TObject);
@@ -444,46 +459,58 @@ begin
     ParValue := s_dat2_period;
 end;
 
+procedure TFprixcex.frxReport1GetValue(const VarName: string;
+  var Value: Variant);
+begin
+  if (VarName = 'dat1') then
+    Value:=s_dat1_period;
+  if (VarName = 'namceh') then
+    Value := FGlMenu.RxLabel1.Caption;
+  if (VarName = 'dat2') then
+    Value := s_dat2_period;
+end;
+
 procedure TFprixcex.DateEdit1Change(Sender: TObject);
 begin
-s_dat1_period:=datetostr(DateEdit1.Date);
- if PageControl1.ActivePage=tabsheet2 then
- BEGIN
-  s_ksm:=DM1.PrixRasxKsm_id.Asinteger;
-  Usl_Ksm:=' KART.KSM_ID='+inttostr(DM1.PrixRasxKsm_id.Asinteger);
-  Usl_Sort:=' spprod.nmat';
-  Usl_tip:=' (document.Tip_op_id=30 or document.Tip_op_id=21)';
-  usl_dat:=' Document.Date_dok between '+''''+s_dat1_period+'''' +' and '+''''+s_dat2_period+'''';
-  PrixPrep.Active :=False;
-  PrixPrep.MacroByName('SDAT').AsString:= Usl_DAT;
-  PrixPrep.MacroByName('STIP').AsString:= Usl_TIP;
-  PrixPrep.MacroByName('CEX').AsString:= Usl_Struk;
-  PrixPrep.MacroByName('Sksm').AsString:=Usl_Ksm;
-  PrixPrep.Active:=true;
-  PrixPrep.First;
-  Usl_tip:=' 0=0';
-  usl_dat:=' Document.Date_dok between '+''''+s_dat1_period+'''' +' and '+''''+s_dat2_period+'''';
-  Usl_Sort:=' Document.date_op';
-  Usl_grop:=' TIP_OPER.GR_OP_ID=1 and Kart.kol_prih<>0';
-  DM1.PrixRasSyr.Active := False;
-  DM1.PrixRasSyr.MacroByName('SDAT').AsString:= Usl_DAT;
-  DM1.PrixRasSyr.MacroByName('GR_OP').AsString:= Usl_GROP;
-  DM1.PrixRasSyr.MacroByName('CEX').AsString:= Usl_Struk;
-  DM1.PrixRasSyr.MacroByName('SORT').AsString:= Usl_SORT;
-  DM1.PrixRasSyr.MacroByName('Sksm').AsString:=Usl_Ksm;
-  DM1.PrixRasSyr.Active := True;
-  OST_KSM.Close;
-  OST_KSM.ParamByName('STRUK').AsiNTEGER:= VStruk_ID;
-  OST_KSM.ParamByName('ksm').AsInteger:=DM1.PrixRasxKsm_id.Asinteger;
-  Ost_ksm.ParamByName('DAT1').AsDateTime:=strtodate(S_DAT1);
-  Ost_ksm.ParamByName('DAT2').AsDateTime:=strtodate(S_DAT2);
-  OST_KSM.Active:=TRUE;
- END
- ELSE
- BEGIN
-  Usl_Dat:=' Document.Date_doK between '+''''+s_dat1_period+'''' +' and '+''''+s_dat2_period+'''';
-  activatePrixRasx;
- end;
+  s_dat1_period := datetostr(DateEdit1.Date);
+  if (PageControl1.ActivePage = tabsheet2) then
+  BEGIN
+    s_ksm:=DM1.PrixRasxKsm_id.Asinteger;
+    Usl_Ksm:=' KART.KSM_ID='+inttostr(DM1.PrixRasxKsm_id.Asinteger);
+    Usl_Sort:=' spprod.nmat';
+    Usl_tip:=' (document.Tip_op_id=30 or document.Tip_op_id=21)';
+    usl_dat:=' Document.Date_dok between '+''''+s_dat1_period+'''' +' and '+''''+s_dat2_period+'''';
+    PrixPrep.Active :=False;
+    PrixPrep.MacroByName('SDAT').AsString:= Usl_DAT;
+    PrixPrep.MacroByName('STIP').AsString:= Usl_TIP;
+    PrixPrep.MacroByName('CEX').AsString:= Usl_Struk;
+    PrixPrep.MacroByName('Sksm').AsString:=Usl_Ksm;
+    PrixPrep.Active:=true;
+    PrixPrep.First;
+    Usl_tip:=' 0=0';
+    usl_dat:=' Document.Date_dok between '+''''+s_dat1_period+'''' +' and '+''''+s_dat2_period+'''';
+    Usl_Sort:=' Document.date_op';
+    Usl_grop:=' TIP_OPER.GR_OP_ID=1 and Kart.kol_prih<>0';
+    DM1.PrixRasSyr.Active := False;
+    DM1.PrixRasSyr.MacroByName('SDAT').AsString:= Usl_DAT;
+    DM1.PrixRasSyr.MacroByName('GR_OP').AsString:= Usl_GROP;
+    DM1.PrixRasSyr.MacroByName('CEX').AsString:= Usl_Struk;
+    DM1.PrixRasSyr.MacroByName('SORT').AsString:= Usl_SORT;
+    DM1.PrixRasSyr.MacroByName('Sksm').AsString:=Usl_Ksm;
+    DM1.PrixRasSyr.Active := True;
+    OST_KSM.Close;
+    OST_KSM.ParamByName('STRUK').AsiNTEGER:= VStruk_ID;
+    OST_KSM.ParamByName('ksm').AsInteger:=DM1.PrixRasxKsm_id.Asinteger;
+    Ost_ksm.ParamByName('DAT1').AsDateTime:=strtodate(S_DAT1);
+    Ost_ksm.ParamByName('DAT2').AsDateTime:=strtodate(S_DAT2);
+    OST_KSM.Active:=TRUE;
+  END
+  ELSE
+  BEGIN
+    Usl_Dat := ' Document.Date_doK between ' + '''' + s_dat1_period + ''''
+                + ' and ' + '''' + s_dat2_period + '''';
+    activatePrixRasx;
+  end;
 end;
 
 procedure TFprixcex.DateEdit2Change(Sender: TObject);
