@@ -490,7 +490,7 @@ type
 
     function openZagrDoc(seria : string; strukId, ksmIdPrep : integer;
                          dateBegin, dateEnd : TDate) : boolean;
-    procedure openZagrKart;
+    procedure openZagrKart(docId : integer);
     procedure insertKartToTexGur(ksmIdPrep : integer);
 
     function openPrepOst(strukId, ksmIdPrep : integer; dateBegin, dateEnd : TDate) : boolean;
@@ -512,6 +512,7 @@ type
     procedure saveExistingRecord(keiId : integer);
     procedure saveNewRecord(keiId, kartId : integer);
     function saveMemTexGur() : boolean;
+    function getCurKeiId() : integer;
     procedure saveSeriaAndOstatki;
     function findKsmRazdelKsmIdPrInOstatki(ksmId, razdelId, ksmIdPrep, strukId : integer) : boolean;
     procedure createKartId(ksmId, razdelId, ksmIdPrep, strukId, keiId, seriaId : integer);
@@ -712,31 +713,29 @@ begin
             keiId, mem_texGurKSM_ID_PREP.AsInteger, mem_texGurRAZDEL_ID.AsInteger);
 end;
 
+function TFTexGur.getCurKeiId() : integer;
+begin
+  result := mem_texGurKEI_ID_OST_PREP.AsInteger;
+  if (mem_texGurKEI_ID_NORM.AsInteger <> 0) then
+    result := mem_texGurKEI_ID_NORM.AsInteger
+  else
+    if (mem_texGurKEI_ID_KART.AsInteger <> 0) then
+      result := mem_texGurKEI_ID_KART.AsInteger;
+end;
+
 function TFTexGur.saveMemTexGur() : boolean;
 var
   curKeiId : integer;
 begin
-  openZagrKart;
-
   mem_texGur.First;
   while (not mem_texGur.Eof) do
   begin
     try
-      curKeiId := mem_texGurKEI_ID_OST_PREP.AsInteger;
-      if (mem_texGurKEI_ID_NORM.AsInteger <> 0) then
-        curKeiId := mem_texGurKEI_ID_NORM.AsInteger
-      else
-        if (mem_texGurKEI_ID_KART.AsInteger <> 0) then
-          curKeiId := mem_texGurKEI_ID_KART.AsInteger;
-
-//      if (mem_texGurKOL_RASH_EDIZ.AsFloat = 0) or (mem_texGurDELETE.AsBoolean) then
-//      begin
-//        deletePrih(mem_texGurKSM_ID_PREP.AsInteger, mem_texGurKSM_ID.AsInteger, vStruk_Id, mem_texGurRAZDEL_ID.AsInteger);
-//        addPrihod(0, mem_texGurKSM_ID.AsInteger, curKeiId, mem_texGurKSM_ID_PREP.AsInteger, mem_texGurRAZDEL_ID.AsInteger);
-//      end;
+      curKeiId := getCurKeiId();
 
       if (mem_texGurDOC_ID.AsInteger <> 0) then
       begin
+        openZagrKart(q_docDOC_ID.AsInteger);
         if (q_kart.Locate('kart_id;doc_id;stroka_id',
                           VarArrayOf([mem_texGurKART_ID.AsInteger,
                                       mem_texGurDOC_ID.AsInteger,
@@ -1069,8 +1068,13 @@ begin
       insertNormsToTexGur(ksmIdPrep);
     if (openZagrDoc(seria, strukId, ksmIdPrep, dateBegin, dateEnd)) then
     begin
-      openZagrKart;
-      insertKartToTexGur(ksmIdPrep);
+      q_doc.First;
+      while (not q_doc.Eof) do
+      begin
+        openZagrKart(q_docDOC_ID.AsInteger);
+        insertKartToTexGur(ksmIdPrep);
+        q_doc.Next;
+      end;
     end;
     if (openPrepOst(strukId, ksmIdPrep, dateBegin, dateEnd)) then
       insertPrepOstToTexGur(ksmIdPrep);
@@ -1118,10 +1122,10 @@ begin
     result := true;
 end;
 
-procedure TFTexGur.openZagrKart;
+procedure TFTexGur.openZagrKart(docId : integer);
 begin
   q_kart.Close;
-  q_kart.ParamByName('doc_id').AsInteger := q_docDOC_ID.AsInteger;
+  q_kart.ParamByName('doc_id').AsInteger := docId;
   q_kart.Open;
 end;
 
@@ -1163,6 +1167,7 @@ begin
       mem_texGurDOC_ID.AsInteger := q_kartDOC_ID.AsInteger;
       mem_texGurKART_ID.AsInteger := q_kartKART_ID.AsInteger;
       mem_texGurSTROKA_ID.AsInteger := q_kartSTROKA_ID.AsInteger;
+      mem_texGurDATE_DOK.AsDateTime := q_docDATE_DOK.AsDateTime;
       mem_texGur.Post;
     end
     else
@@ -1182,6 +1187,7 @@ begin
       mem_texGurDOC_ID.AsInteger := q_kartDOC_ID.AsInteger;
       mem_texGurKART_ID.AsInteger := q_kartKART_ID.AsInteger;
       mem_texGurSTROKA_ID.AsInteger := q_kartSTROKA_ID.AsInteger;
+      mem_texGurDATE_DOK.AsDateTime := q_docDATE_DOK.AsDateTime;
       mem_texGur.Post;
     end;
     q_kart.Next;

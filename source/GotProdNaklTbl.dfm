@@ -686,7 +686,7 @@ object FGotProdNaklTbl: TFGotProdNaklTbl
       Layout = blGlyphTop
       ParentShowHint = False
       ShowHint = True
-      Visible = False
+      OnClick = SpeedButton5Click
       ExplicitLeft = 523
     end
   end
@@ -988,7 +988,7 @@ object FGotProdNaklTbl: TFGotProdNaklTbl
     Left = 680
     Top = 328
     Bitmap = {
-      494C010105000700100010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010105000700140010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000A87D7800B781
       8300B7818300B7818300B7818300B7818300B7818300B7818300B7818300B781
@@ -1258,5 +1258,633 @@ object FGotProdNaklTbl: TFGotProdNaklTbl
       C001FE00F01F00000001FE00F03F00000001FE00F03F00000001FE00F03F8001
       C001FE01E07FFFFFFFFFFE03E07FFFFF00000000000000000000000000000000
       000000000000}
+  end
+  object frxReport1: TfrxReport
+    Version = '4.9.32'
+    DotMatrixReport = False
+    IniFile = '\Software\Fast Reports'
+    PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator, pbExportQuick]
+    PreviewOptions.Zoom = 1.000000000000000000
+    PrintOptions.Printer = #1055#1086' '#1091#1084#1086#1083#1095#1072#1085#1080#1102
+    PrintOptions.PrintOnSheet = 0
+    ReportOptions.CreateDate = 42509.662789155100000000
+    ReportOptions.LastChange = 42509.675973333330000000
+    ScriptLanguage = 'PascalScript'
+    ScriptText.Strings = (
+      ''
+      'begin'
+      ''
+      'end.')
+    OnGetValue = frxReport1GetValue
+    Left = 408
+    Top = 336
+    Datasets = <
+      item
+        DataSet = frxDBDataset1
+        DataSetName = 'frxGotNakls'
+      end>
+    Variables = <>
+    Style = <>
+    object Data: TfrxDataPage
+      Height = 1000.000000000000000000
+      Width = 1000.000000000000000000
+    end
+    object Page1: TfrxReportPage
+      PaperWidth = 210.000000000000000000
+      PaperHeight = 297.000000000000000000
+      PaperSize = 9
+      LeftMargin = 10.000000000000000000
+      RightMargin = 10.000000000000000000
+      TopMargin = 10.000000000000000000
+      BottomMargin = 10.000000000000000000
+      object ReportTitle1: TfrxReportTitle
+        Height = 42.677180000000000000
+        Top = 18.897650000000000000
+        Width = 718.110700000000000000
+        object Memo2: TfrxMemoView
+          Top = 1.102350000000000000
+          Width = 723.719019240000000000
+          Height = 28.897650000000000000
+          ShowHint = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          HAlign = haCenter
+          Memo.UTF8 = (
+            
+              #1056#1116#1056#176#1056#1108#1056#187#1056#176#1056#1169#1056#1029#1057#8249#1056#181' '#1056#1029#1056#176' '#1057#1027#1056#1169#1056#176#1057#8225#1057#1107' '#1056#1110#1056#1109#1057#8218#1056#1109#1056#1030#1056#1109#1056#8470' '#1056#1111#1057#1026#1056#1109#1056#1169#1057#1107#1056#1108#1057#8224 +
+              #1056#1105#1056#1105' '#1056#183#1056#176' [month] [year] '#1056#1110#1056#1109#1056#1169#1056#176
+            #1056#1111#1056#1109' [namceh]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+      end
+      object MasterData1: TfrxMasterData
+        Height = 18.897650000000000000
+        Top = 219.212740000000000000
+        Width = 718.110700000000000000
+        DataSet = frxDBDataset1
+        DataSetName = 'frxGotNakls'
+        RowCount = 0
+        Stretched = True
+        object Memo3: TfrxMemoView
+          Align = baLeft
+          Width = 52.180557690000000000
+          Height = 18.897650000000000000
+          ShowHint = False
+          StretchMode = smMaxHeight
+          DataField = 'NDOK'
+          DataSet = frxDBDataset1
+          DataSetName = 'frxGotNakls'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          Memo.UTF8 = (
+            '[frxGotNakls."NDOK"]')
+          ParentFont = False
+        end
+        object Memo4: TfrxMemoView
+          Align = baLeft
+          Left = 52.180557690000000000
+          Width = 76.795942310000000000
+          Height = 18.897650000000000000
+          ShowHint = False
+          StretchMode = smMaxHeight
+          DataField = 'DATE_DOK'
+          DataSet = frxDBDataset1
+          DataSetName = 'frxGotNakls'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          Memo.UTF8 = (
+            '[frxGotNakls."DATE_DOK"]')
+          ParentFont = False
+        end
+        object Memo5: TfrxMemoView
+          Align = baLeft
+          Left = 128.976500000000000000
+          Width = 115.257480770000000000
+          Height = 18.897650000000000000
+          ShowHint = False
+          StretchMode = smMaxHeight
+          DataField = 'KOD_PROD'
+          DataSet = frxDBDataset1
+          DataSetName = 'frxGotNakls'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          Memo.UTF8 = (
+            '[frxGotNakls."KOD_PROD"]')
+          ParentFont = False
+        end
+        object Memo6: TfrxMemoView
+          Align = baWidth
+          Left = 244.233980770000000000
+          Width = 220.539103850000000000
+          Height = 18.897650000000000000
+          ShowHint = False
+          StretchMode = smMaxHeight
+          DataField = 'NMAT'
+          DataSet = frxDBDataset1
+          DataSetName = 'frxGotNakls'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          Memo.UTF8 = (
+            '[frxGotNakls."NMAT"]')
+          ParentFont = False
+        end
+        object Memo7: TfrxMemoView
+          Align = baRight
+          Left = 464.773084620000000000
+          Width = 64.488250000000000000
+          Height = 18.897650000000000000
+          ShowHint = False
+          StretchMode = smMaxHeight
+          DataField = 'SERIA'
+          DataSet = frxDBDataset1
+          DataSetName = 'frxGotNakls'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          Memo.UTF8 = (
+            '[frxGotNakls."SERIA"]')
+          ParentFont = False
+        end
+        object Memo8: TfrxMemoView
+          Align = baRight
+          Left = 529.261334620000000000
+          Width = 44.488250000000000000
+          Height = 18.897650000000000000
+          ShowHint = False
+          StretchMode = smMaxHeight
+          DataSet = frxDBDataset1
+          DataSetName = 'frxGotNakls'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          Memo.UTF8 = (
+            '[Trim(<frxGotNakls."NEIS">)]')
+          ParentFont = False
+        end
+        object Memo9: TfrxMemoView
+          Align = baRight
+          Left = 573.749584620000000000
+          Width = 49.872865380000000000
+          Height = 18.897650000000000000
+          ShowHint = False
+          StretchMode = smMaxHeight
+          DataSet = frxDBDataset1
+          DataSetName = 'frxGotNakls'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          Memo.UTF8 = (
+            '[frxGotNakls."KOL_RASH"]')
+          ParentFont = False
+        end
+        object Memo10: TfrxMemoView
+          Align = baRight
+          Left = 623.622450000000000000
+          Width = 94.488250000000000000
+          Height = 18.897650000000000000
+          ShowHint = False
+          StretchMode = smMaxHeight
+          DataField = 'STNAME'
+          DataSet = frxDBDataset1
+          DataSetName = 'frxGotNakls'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          Memo.UTF8 = (
+            '[frxGotNakls."STNAME"]')
+          ParentFont = False
+        end
+      end
+      object PageFooter1: TfrxPageFooter
+        Height = 14.282265380000000000
+        Top = 321.260050000000000000
+        Width = 718.110700000000000000
+        object Memo1: TfrxMemoView
+          Left = 491.750869230000000000
+          Width = 226.359830770000000000
+          Height = 14.282265380000000000
+          ShowHint = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'Arial'
+          Font.Style = []
+          HAlign = haRight
+          Memo.UTF8 = (
+            
+              #1056#1038#1057#8222#1056#1109#1057#1026#1056#1112#1056#1105#1057#1026#1056#1109#1056#1030#1056#176#1056#1029#1056#1109' '#1056#1111#1057#1026#1056#1109#1056#1110#1057#1026#1056#176#1056#1112#1056#1112#1056#1029#1057#8249#1056#1112' '#1056#1109#1056#177#1056#181#1057#1027#1056#1111#1056#181#1057#8225#1056#181 +
+              #1056#1029#1056#1105#1056#181#1056#1112' '#1056#1115#1056#152#1056#1118)
+          ParentFont = False
+        end
+      end
+      object Header1: TfrxHeader
+        Height = 27.968503940000000000
+        Top = 170.078850000000000000
+        Width = 718.110700000000000000
+        object Memo11: TfrxMemoView
+          Align = baLeft
+          Width = 52.180557690000000000
+          Height = 27.968503940000000000
+          ShowHint = False
+          StretchMode = smActualHeight
+          DataSet = frxDBDataset1
+          DataSetName = 'frxGotNakls'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          HAlign = haCenter
+          Memo.UTF8 = (
+            #1056#8221#1056#1109#1056#1108#1057#1107#1056#1112#1056#181#1056#1029#1057#8218)
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo12: TfrxMemoView
+          Align = baLeft
+          Left = 52.180557690000000000
+          Width = 76.795942310000000000
+          Height = 27.968503937007870000
+          ShowHint = False
+          StretchMode = smActualHeight
+          DataSet = frxDBDataset1
+          DataSetName = 'frxGotNakls'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          HAlign = haCenter
+          Memo.UTF8 = (
+            #1056#8221#1056#176#1057#8218#1056#176' '#1056#1169#1056#1109#1056#1108#1057#1107#1056#1112#1056#181#1056#1029#1057#8218#1056#176)
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo13: TfrxMemoView
+          Align = baLeft
+          Left = 128.976500000000000000
+          Width = 115.257480770000000000
+          Height = 27.968503937007870000
+          ShowHint = False
+          StretchMode = smActualHeight
+          DataSet = frxDBDataset1
+          DataSetName = 'frxGotNakls'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          HAlign = haCenter
+          Memo.UTF8 = (
+            #1056#1113#1056#1109#1056#1169' '#1056#1111#1057#1026#1056#181#1056#1111#1056#176#1057#1026#1056#176#1057#8218#1056#176)
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo14: TfrxMemoView
+          Align = baWidth
+          Left = 244.233980770000000000
+          Width = 220.539103850000000000
+          Height = 27.968503937007870000
+          ShowHint = False
+          StretchMode = smActualHeight
+          DataSet = frxDBDataset1
+          DataSetName = 'frxGotNakls'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          HAlign = haCenter
+          Memo.UTF8 = (
+            #1056#1116#1056#176#1056#1105#1056#1112#1056#181#1056#1029#1056#1109#1056#1030#1056#176#1056#1029#1056#1105#1056#181' '#1056#1111#1057#1026#1056#181#1056#1111#1056#176#1057#1026#1056#176#1057#8218#1056#176)
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo15: TfrxMemoView
+          Align = baRight
+          Left = 464.773084620000000000
+          Width = 64.488250000000000000
+          Height = 27.968503937007870000
+          ShowHint = False
+          StretchMode = smActualHeight
+          DataSet = frxDBDataset1
+          DataSetName = 'frxGotNakls'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          HAlign = haCenter
+          Memo.UTF8 = (
+            #1056#1038#1056#181#1057#1026#1056#1105#1057#1039)
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo16: TfrxMemoView
+          Align = baRight
+          Left = 529.261334620000000000
+          Width = 44.488250000000000000
+          Height = 27.968503937007870000
+          ShowHint = False
+          StretchMode = smActualHeight
+          DataSet = frxDBDataset1
+          DataSetName = 'frxGotNakls'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          HAlign = haCenter
+          Memo.UTF8 = (
+            #1056#8226#1056#1169'. '#1056#1105#1056#183#1056#1112'.')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo17: TfrxMemoView
+          Align = baRight
+          Left = 573.749584620000000000
+          Width = 49.872865380000000000
+          Height = 27.968503937007870000
+          ShowHint = False
+          StretchMode = smActualHeight
+          DataSet = frxDBDataset1
+          DataSetName = 'frxGotNakls'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          HAlign = haCenter
+          Memo.UTF8 = (
+            #1056#1113#1056#1109#1056#187'-'#1056#1030#1056#1109)
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo18: TfrxMemoView
+          Align = baRight
+          Left = 623.622450000000000000
+          Width = 94.488250000000000000
+          Height = 27.968503937007870000
+          ShowHint = False
+          StretchMode = smActualHeight
+          DataSet = frxDBDataset1
+          DataSetName = 'frxGotNakls'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          HAlign = haCenter
+          Memo.UTF8 = (
+            #1056#1113#1057#1107#1056#1169#1056#176' '#1057#1027#1056#1169#1056#176#1056#1029#1056#1109)
+          ParentFont = False
+          VAlign = vaCenter
+        end
+      end
+      object Footer1: TfrxFooter
+        Height = 1.168973850000000000
+        Top = 260.787570000000000000
+        Width = 718.110700000000000000
+      end
+      object PageHeader1: TfrxPageHeader
+        Height = 27.968503940000000000
+        Top = 83.149660000000000000
+        Width = 718.110700000000000000
+        PrintOnFirstPage = False
+        object Memo19: TfrxMemoView
+          Align = baLeft
+          Width = 52.180557690000000000
+          Height = 27.968503940000000000
+          ShowHint = False
+          StretchMode = smActualHeight
+          DataSet = frxDBDataset1
+          DataSetName = 'frxGotNakls'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          HAlign = haCenter
+          Memo.UTF8 = (
+            #1056#8221#1056#1109#1056#1108#1057#1107#1056#1112#1056#181#1056#1029#1057#8218)
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo20: TfrxMemoView
+          Align = baLeft
+          Left = 52.180557690000000000
+          Width = 76.795942310000000000
+          Height = 27.968503940000000000
+          ShowHint = False
+          StretchMode = smActualHeight
+          DataSet = frxDBDataset1
+          DataSetName = 'frxGotNakls'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          HAlign = haCenter
+          Memo.UTF8 = (
+            #1056#8221#1056#176#1057#8218#1056#176' '#1056#1169#1056#1109#1056#1108#1057#1107#1056#1112#1056#181#1056#1029#1057#8218#1056#176)
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo21: TfrxMemoView
+          Align = baLeft
+          Left = 128.976500000000000000
+          Width = 115.257480770000000000
+          Height = 27.968503940000000000
+          ShowHint = False
+          StretchMode = smActualHeight
+          DataSet = frxDBDataset1
+          DataSetName = 'frxGotNakls'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          HAlign = haCenter
+          Memo.UTF8 = (
+            #1056#1113#1056#1109#1056#1169' '#1056#1111#1057#1026#1056#181#1056#1111#1056#176#1057#1026#1056#176#1057#8218#1056#176)
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo22: TfrxMemoView
+          Align = baWidth
+          Left = 244.233980770000000000
+          Width = 220.539103850000000000
+          Height = 27.968503940000000000
+          ShowHint = False
+          StretchMode = smActualHeight
+          DataSet = frxDBDataset1
+          DataSetName = 'frxGotNakls'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          HAlign = haCenter
+          Memo.UTF8 = (
+            #1056#1116#1056#176#1056#1105#1056#1112#1056#181#1056#1029#1056#1109#1056#1030#1056#176#1056#1029#1056#1105#1056#181' '#1056#1111#1057#1026#1056#181#1056#1111#1056#176#1057#1026#1056#176#1057#8218#1056#176)
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo23: TfrxMemoView
+          Align = baRight
+          Left = 464.773084620000000000
+          Width = 64.488250000000000000
+          Height = 27.968503940000000000
+          ShowHint = False
+          StretchMode = smActualHeight
+          DataSet = frxDBDataset1
+          DataSetName = 'frxGotNakls'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          HAlign = haCenter
+          Memo.UTF8 = (
+            #1056#1038#1056#181#1057#1026#1056#1105#1057#1039)
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo24: TfrxMemoView
+          Align = baRight
+          Left = 529.261334620000000000
+          Width = 44.488250000000000000
+          Height = 27.968503940000000000
+          ShowHint = False
+          StretchMode = smActualHeight
+          DataSet = frxDBDataset1
+          DataSetName = 'frxGotNakls'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          HAlign = haCenter
+          Memo.UTF8 = (
+            #1056#8226#1056#1169'. '#1056#1105#1056#183#1056#1112'.')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo25: TfrxMemoView
+          Align = baRight
+          Left = 573.749584620000000000
+          Width = 49.872865380000000000
+          Height = 27.968503940000000000
+          ShowHint = False
+          StretchMode = smActualHeight
+          DataSet = frxDBDataset1
+          DataSetName = 'frxGotNakls'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          HAlign = haCenter
+          Memo.UTF8 = (
+            #1056#1113#1056#1109#1056#187'-'#1056#1030#1056#1109)
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo26: TfrxMemoView
+          Align = baRight
+          Left = 623.622450000000000000
+          Width = 94.488250000000000000
+          Height = 27.968503940000000000
+          ShowHint = False
+          StretchMode = smActualHeight
+          DataSet = frxDBDataset1
+          DataSetName = 'frxGotNakls'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          HAlign = haCenter
+          Memo.UTF8 = (
+            #1056#1113#1057#1107#1056#1169#1056#176' '#1057#1027#1056#1169#1056#176#1056#1029#1056#1109)
+          ParentFont = False
+          VAlign = vaCenter
+        end
+      end
+    end
+  end
+  object frxDBDataset1: TfrxDBDataset
+    UserName = 'frxGotNakls'
+    CloseDataSource = False
+    FieldAliases.Strings = (
+      'DOC_ID=DOC_ID'
+      'NDOK=NDOK'
+      'DATE_DOK=DATE_DOK'
+      'KOD_PROD=KOD_PROD'
+      'NMAT=NMAT'
+      'SERIA_ID=SERIA_ID'
+      'SERIA=SERIA'
+      'KOL_RASH=KOL_RASH'
+      'STNAME=STNAME'
+      'NEIS=NEIS'
+      'oneDoc=oneDoc'
+      'STRUK_ID=STRUK_ID'
+      'HAS_PRIH=HAS_PRIH')
+    DataSet = GotNaklQuery
+    BCDToCurrency = False
+    Left = 416
+    Top = 376
+  end
+  object frxDialogControls1: TfrxDialogControls
+    Left = 416
+    Top = 416
   end
 end
