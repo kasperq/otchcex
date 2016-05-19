@@ -988,7 +988,7 @@ object FGotProdNaklTbl: TFGotProdNaklTbl
     Left = 680
     Top = 328
     Bitmap = {
-      494C010105000700140010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010105000700180010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000A87D7800B781
       8300B7818300B7818300B7818300B7818300B7818300B7818300B7818300B781
@@ -1886,5 +1886,32 @@ object FGotProdNaklTbl: TFGotProdNaklTbl
   object frxDialogControls1: TfrxDialogControls
     Left = 416
     Top = 416
+  end
+  object frxRTFExport1: TfrxRTFExport
+    UseFileCache = True
+    ShowProgress = True
+    OverwritePrompt = False
+    ExportEMF = True
+    Wysiwyg = True
+    Creator = 'FastReport'
+    SuppressPageHeadersFooters = False
+    HeaderFooterMode = hfText
+    AutoSize = False
+    Left = 472
+    Top = 424
+  end
+  object frxXLSExport1: TfrxXLSExport
+    UseFileCache = True
+    ShowProgress = True
+    OverwritePrompt = False
+    ExportEMF = True
+    AsText = False
+    Background = True
+    FastExport = True
+    PageBreaks = True
+    EmptyLines = True
+    SuppressPageHeadersFooters = False
+    Left = 472
+    Top = 464
   end
 end
