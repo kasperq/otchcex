@@ -1722,9 +1722,9 @@ begin
   if (FVybPrep.ModalResult = mrOk) then
   begin
     StartWait;
-    s_kodp := FVybPrep.vprepKsm_id.AsInteger;
+    s_kodp := FVybPrep.mem_vipuskKsm_id.AsInteger;
 
-    loadPrepInfo(FVybPrep.vprepKOD_PROD.AsString);
+    loadPrepInfo(FVybPrep.mem_vipuskKOD_PROD.AsString);
   end;
   StopWait;
 end;

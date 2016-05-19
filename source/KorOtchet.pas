@@ -1955,7 +1955,7 @@ begin
  FVybPrep.ShowModal;
  if FVybPrep.ModalResult=mrOk then
  begin
-    s_kodp:=FVybPrep.vprepKsm_id.AsInteger;
+    s_kodp:=FVybPrep.mem_vipuskKsm_id.AsInteger;
     StartWait;
     DM1.IBQuery1.Active := False;
     DM1.IBQuery1.SQL.Clear;
@@ -2503,9 +2503,9 @@ begin
        FVybPrep.ShowModal;
        if FVybPrep.ModalResult=mrOk then
        begin
-          PeredanoSyrKlient_id.AsInteger:=FVybPrep.vprepKsm_id.AsInteger;
-          PeredanoSyrKod_prod.AsString:=FVybPrep.VprepKod_Prod.Asstring;
-          PeredanoSyrNmat.AsString:=FVybPrep.VprepNMAT.AsString;
+          PeredanoSyrKlient_id.AsInteger:=FVybPrep.mem_vipuskKsm_id.AsInteger;
+          PeredanoSyrKod_prod.AsString:=FVybPrep.mem_vipuskKod_Prod.Asstring;
+          PeredanoSyrNmat.AsString:=FVybPrep.mem_vipuskNMAT.AsString;
        end;
       end;
       end;
