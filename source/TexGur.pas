@@ -756,7 +756,10 @@ begin
         begin
           if (findOrCreateZagrDocument(edit2.Text, mem_texGurDATE_DOK.AsDateTime,
                                        mem_texGurDOC_ID.AsInteger, vStruk_Id, s_kodp)) then
+          begin
+            openZagrKart(q_docDOC_ID.AsInteger);
             saveNewRecord(curKeiId, mem_texGurKART_ID.AsInteger);
+          end;
         end;
       end;
 
