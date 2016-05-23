@@ -488,6 +488,7 @@ type
 
     function openNorms(year, month, ksmIdPrep, strukId : integer) : boolean;
     procedure insertNormsToTexGur(ksmIdPrep : integer);
+    procedure setDefaultDateDok;
 
     function openZagrDoc(seria : string; strukId, ksmIdPrep : integer;
                          dateBegin, dateEnd : TDate) : boolean;
@@ -1181,8 +1182,7 @@ begin
     mem_texGurGOST.AsString := q_normGOST.AsString;
     mem_texGurXARKT.AsString := q_normXARKT.AsString;
     mem_texGurKSM_ID_PREP.AsInteger := ksmIdPrep;
-    mem_texGurDATE_DOK.AsDateTime := StrToDate(s_dat1);
-    mem_texGurOLD_DATE_DOK.AsDateTime := StrToDate(s_dat1);
+    setDefaultDateDok;
     mem_texGur.Post;
     q_norm.Next;
   end;
@@ -1301,8 +1301,7 @@ begin
       mem_texGurPEREDANO_RASH_S.AsFloat := q_ostPEREDANO_RASH_S.AsFloat;
       mem_texGurPEREDANO_RASH_NZ.AsFloat := q_ostPEREDANO_RASH_NZ.AsFloat;
       mem_texGurKEI_ID_OST_PREP.AsInteger := q_ostKEI_ID.AsInteger;
-      mem_texGurDATE_DOK.AsDateTime := StrToDate(s_dat1);
-      mem_texGurOLD_DATE_DOK.AsDateTime := StrToDate(s_dat1);
+      setDefaultDateDok;
       mem_texGur.Post;
     end;
     q_ost.Next;
@@ -2236,10 +2235,26 @@ begin
 //  mem_texGurRAZDEL_ID.AsInteger := curRazdelId;
 //  mem_texGurKRAZ.AsInteger := curKraz;
   mem_texGurKSM_ID_PREP.AsInteger := curKsmIdPrep;
-  mem_texGurDATE_DOK.AsDateTime := StrToDate(s_dat1);
-  mem_texGurOLD_DATE_DOK.AsDateTime := StrToDate(s_dat1);
+  setDefaultDateDok;
   mem_texGur.BeforePost := mem_texGurBeforePost;
   s_seria := s_seria_p;
+end;
+
+procedure TFTexGur.setDefaultDateDok;
+var
+  day, month, year : word;
+begin
+  DecodeDate(now, year, month, day);
+  if (month > mes) then
+  begin
+    mem_texGurDATE_DOK.AsDateTime := StrToDate(s_dat2);
+    mem_texGurOLD_DATE_DOK.AsDateTime := StrToDate(s_dat2);
+  end
+  else
+  begin
+    mem_texGurDATE_DOK.AsDateTime := now;
+    mem_texGurOLD_DATE_DOK.AsDateTime := now;
+  end;
 end;
 
 procedure TFTexGur.grid_seriesDblClick(Sender: TObject);
