@@ -417,6 +417,8 @@ type
     Splitter2: TSplitter;
     q_allZagrs: TRxIBQuery;
     ds_allZagrs: TDataSource;
+    q_kartUSER_NAME: TIBStringField;
+    mem_texGurUSER_NAME: TStringField;
     q_allZagrsNDOK: TIBStringField;
     q_allZagrsKLIENT_ID: TIntegerField;
     q_allZagrsDATE_DOK: TDateField;
@@ -428,8 +430,6 @@ type
     q_allZagrsSERIA: TIBStringField;
     q_allZagrsSTRUK_ID: TSmallintField;
     q_allZagrsKSM_ID: TIntegerField;
-    q_allZagrsDOC_ID: TIntegerField;
-    q_allZagrsDOC_ID1: TIntegerField;
     procedure MyGetValue(const s: String; var v: Variant);
     procedure MyGetValue1(const s: String; var v: Variant);
     procedure Edit1Change(Sender: TObject);
@@ -1310,6 +1310,7 @@ begin
       mem_texGurSTROKA_ID.AsInteger := q_kartSTROKA_ID.AsInteger;
       mem_texGurDATE_DOK.AsDateTime := q_docDATE_OP.AsDateTime;
       mem_texGurOLD_DATE_DOK.AsDateTime := q_docDATE_OP.AsDateTime;
+      mem_texGurUSER_NAME.AsString := q_kartUSER_NAME.AsString;
       mem_texGur.Post;
     end
     else
@@ -1331,6 +1332,7 @@ begin
       mem_texGurSTROKA_ID.AsInteger := q_kartSTROKA_ID.AsInteger;
       mem_texGurDATE_DOK.AsDateTime := q_docDATE_OP.AsDateTime;
       mem_texGurOLD_DATE_DOK.AsDateTime := q_docDATE_OP.AsDateTime;
+      mem_texGurUSER_NAME.AsString := q_kartUSER_NAME.AsString;
       mem_texGur.Post;
     end;
     q_kart.Next;
