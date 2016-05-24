@@ -234,8 +234,6 @@ type
     ds_prepSeries: TDataSource;
     q_prepSeriesNDOK: TIBStringField;
     q_prepSeriesKLIENT_ID: TIntegerField;
-    q_prepSeriesDATE_DOK: TDateField;
-    q_prepSeriesDATE_OP: TDateField;
     q_prepSeriesKOD_PROD: TIBStringField;
     q_prepSeriesNMAT: TIBStringField;
     q_prepSeriesSUBSTRING: TIBStringField;
@@ -399,7 +397,6 @@ type
     q_prihSumPRIHSUM: TFloatField;
     btn_delAll: TToolButton;
     upd_prepSeries: TIBUpdateSQLW;
-    q_prepSeriesDOC_ID: TIntegerField;
     Panel4: TPanel;
     btn_vipuskList1: TSpeedButton;
     btn_syrInfo: TSpeedButton;
@@ -415,6 +412,24 @@ type
     SpinEdit3: TSpinEdit;
     SpinEdit4: TSpinEdit;
     mem_texGurOLD_DATE_DOK: TDateField;
+    q_prepSeriesNAM_REGION: TIBStringField;
+    grid_allZagrs: TDBGridEh;
+    Splitter2: TSplitter;
+    q_allZagrs: TRxIBQuery;
+    ds_allZagrs: TDataSource;
+    q_allZagrsNDOK: TIBStringField;
+    q_allZagrsKLIENT_ID: TIntegerField;
+    q_allZagrsDATE_DOK: TDateField;
+    q_allZagrsDATE_OP: TDateField;
+    q_allZagrsKOD_PROD: TIBStringField;
+    q_allZagrsNMAT: TIBStringField;
+    q_allZagrsSUBSTRING: TIBStringField;
+    q_allZagrsSERIA_ID: TIntegerField;
+    q_allZagrsSERIA: TIBStringField;
+    q_allZagrsSTRUK_ID: TSmallintField;
+    q_allZagrsKSM_ID: TIntegerField;
+    q_allZagrsDOC_ID: TIntegerField;
+    q_allZagrsDOC_ID1: TIntegerField;
     procedure MyGetValue(const s: String; var v: Variant);
     procedure MyGetValue1(const s: String; var v: Variant);
     procedure Edit1Change(Sender: TObject);
@@ -478,6 +493,7 @@ type
     procedure q_kartNewRecord(DataSet: TDataSet);
     procedure btn_delAllClick(Sender: TObject);
     procedure acceptSeria(Sender: TObject);
+    procedure q_prepSeriesAfterScroll(DataSet: TDataSet);
   private
     { Private declarations }
     drLoad : TDrugLoad;
@@ -514,6 +530,7 @@ type
     // Сохранение загрузки
     function saveZagrDocument() : boolean;
     procedure deletePrih(ksmIdPrep, ksmId, strukId, razdelId : integer);
+    procedure delEmptyZagrDocuments(seria : string; year, month, ksmIdPrep, strukId : integer);
     procedure saveExistingRecord(keiId : integer);
     procedure saveNewRecord(keiId, kartId : integer);
     function saveMemTexGur() : boolean;
@@ -769,6 +786,16 @@ begin
         addPrihod(mem_texGurKOL_RASH_EDIZ.AsFloat, mem_texGurKSM_ID.AsInteger,
                   curKeiId, mem_texGurKSM_ID_PREP.AsInteger, mem_texGurRAZDEL_ID.AsInteger);
         dm1.commitWriteTrans(true);
+      end
+      else
+      begin
+        if (mem_texGurOSTATOK_END_S.AsFloat < 0)
+           or (mem_texGurPRIX_PERIOD.AsFloat <> mem_texGurZAG_PERIOD.AsFloat) then
+        begin
+          addPrihod(mem_texGurKOL_RASH_EDIZ.AsFloat, mem_texGurKSM_ID.AsInteger,
+                  curKeiId, mem_texGurKSM_ID_PREP.AsInteger, mem_texGurRAZDEL_ID.AsInteger);
+          dm1.commitWriteTrans(true);
+        end;
       end;
     except
       on e : exception do
@@ -780,11 +807,15 @@ begin
     end;
     mem_texGur.Next;
   end;
-  q_kart.ApplyUpdates;
+//  q_kart.ApplyUpdates;
   result := true;
 end;
 
 procedure TFTexGur.addPrihod(kolRash : double; ksmId, keiId, klientId, razdelId : integer);
+var
+  curSDat1, curSDat2, str_month : string;
+  curMes, curGod : integer;
+  day, month, year : word;
 begin
   v_raspred_dob := kolRash;
   s_ksm := ksmId;
@@ -794,7 +825,40 @@ begin
   v_razdel := razdelId;
   tochn := -6;
   pr_kor := 0;
+
+  curSDat1 := '01.01.0001';
+  curSDat2 := '01.01.0001';
+  curMes := 1;
+  curGod := 1;
+  if (mem_texGurDATE_DOK.AsDateTime < StrToDate(s_dat1))
+     or (mem_texGurDATE_DOK.AsDateTime > StrToDate(s_dat2)) then
+  begin
+    curSDat1 := s_dat1;
+    curSDat2 := s_dat2;
+    curMes := mes;
+    curGod := god;
+    DecodeDate(mem_texGurDATE_DOK.AsDateTime, year, month, day);
+    if (month < 10) then
+      str_month := '0' + IntToStr(month)
+    else
+      str_month := IntToStr(month);
+    s_dat1 :=  '01.' + str_month + '.' + IntToStr(year);
+    s_dat2 := datetostr(IncMonth(strtodate(s_dat1), 1) -1);
+    mes := month;
+    god := year;
+  end;
+
   dm1.DobPrixPrep;
+
+  if (curSDat1 <> '01.01.0001') then
+    if (mem_texGurDATE_DOK.AsDateTime < StrToDate(curSDat1))
+       or (mem_texGurDATE_DOK.AsDateTime > StrToDate(curSDat2)) then
+    begin
+      s_dat1 := curSDat1;
+      s_dat2 := curSDat2;
+      mes := curMes;
+      god := curGod;
+    end;
 //  dm1.commitWriteTrans(true);
 end;
 
@@ -1055,11 +1119,45 @@ end;
 
 procedure TFTexGur.openPrepSeries(dateBegin, dateEnd : TDate; strukId : integer);
 begin
+  q_prepSeries.AfterScroll := nil;
   q_prepSeries.Close;
   q_prepSeries.ParamByName('dat1').AsDate := dateBegin;
   q_prepSeries.ParamByName('dat2').AsDate := dateEnd;
   q_prepSeries.ParamByName('struk_id').AsInteger := strukID;
   q_prepSeries.Open;
+  q_prepSeries.AfterScroll := q_prepSeriesAfterScroll;
+  q_prepSeries.First;
+end;
+
+procedure TFTexGur.delEmptyZagrDocuments(seria : string; year, month, ksmIdPrep, strukId : integer);
+var
+  dateBegin, dateEnd : TDate;
+  str_month : string;
+begin
+  if (month < 10) then
+    str_month := '0' + IntToStr(month)
+  else
+    str_month := IntToStr(month);
+  dateBegin := StrToDate('01.' + str_month + '.' + IntToStr(year));
+  dateEnd := IncMonth(dateBegin, 1) - 1;
+  if (openZagrDoc(seria, strukId, ksmIdPrep, dateBegin, dateEnd)) then
+  begin
+    q_doc.First;
+    while (not q_doc.Eof) do
+    begin
+      openZagrKart(q_docDOC_ID.AsInteger);
+      q_kart.FetchAll;
+      if (q_kart.RecordCount = 0) then
+        q_doc.Delete
+      else
+        q_doc.Next;
+    end;
+    if (q_doc.UpdatesPending) then
+    begin
+      q_doc.ApplyUpdates;
+      dm1.commitWriteTrans(true);
+    end;
+  end;
 end;
 
 procedure TFTexGur.createTexGur(seria : string; year, month, ksmIdPrep, strukId : integer);
@@ -1657,18 +1755,12 @@ begin
                                'Сохранение данных. Подождите, пожалуйста...', True, nil);
     try
       mem_texGur.DisableControls;
-//      if (saveZagrDocument()) then
-//      begin
-        saveSeriaAndOstatki;
-        saveMemTexGur;
-        if (q_kart.IsEmpty) then
-        begin
-          q_doc.Delete;
-          q_doc.ApplyUpdates;
-          setSeriaDateZag(s_kodp, s_seria, '');
-        end;
-        dm1.commitWriteTrans(true);
-//      end;
+
+      saveSeriaAndOstatki;
+      saveMemTexGur;
+      s_seria := edit2.Text;
+      delEmptyZagrDocuments(s_seria, god, mes, s_kodp, vStruk_Id);
+      dm1.commitWriteTrans(true);
       Splash.Free;
 
       createTexGur(curSeria, god, mes, s_kodp, vStruk_id);
@@ -1684,8 +1776,6 @@ begin
     end;
   end;
 end;
-
-
 
 procedure TFTexGur.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
@@ -1957,6 +2047,17 @@ begin
   q_kartTIP_OP_ID.AsInteger := 33;
   q_kartTIP_DOK_ID.AsInteger := 34;
   q_kartKOL_PRIH_EDIZ.AsFloat := 0.0;
+end;
+
+procedure TFTexGur.q_prepSeriesAfterScroll(DataSet: TDataSet);
+begin
+  q_allZagrs.Close;
+  q_allZagrs.ParamByName('dat1').AsDate := q_prepSeries.ParamByName('dat1').AsDate;
+  q_allZagrs.ParamByName('dat2').AsDate := q_prepSeries.ParamByName('dat2').AsDate;
+  q_allZagrs.ParamByName('struk_id').AsInteger := q_prepSeriesSTRUK_ID.AsInteger;
+  q_allZagrs.ParamByName('klient_id').AsInteger := q_prepSeriesKLIENT_ID.AsInteger;
+  q_allZagrs.ParamByName('ndok').AsString := q_prepSeriesNDOK.AsString;
+  q_allZagrs.Open;
 end;
 
 procedure TFTexGur.FormShow(Sender: TObject);
@@ -2616,7 +2717,8 @@ begin
   S_DAT2_period := datetostr(IncMonth(strtodate(s_dat1_period), 1) - 1);
   S_DAT1 := '01.' + S_MES + '.' + copy(INTTOSTR(GOD), 3, 2);
   S_DAT2 := datetostr(IncMonth(strtodate(s_dat1_period), 1) -1);
-
+  s_seria := edit2.Text;
+  
   initToolButtons;
   if (Edit1.Text <> '') then
     createTexGur(s_seria, god, mes, s_kodp, vStruk_id);
