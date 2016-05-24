@@ -1297,10 +1297,13 @@ begin
     if (mem_texGur.Locate('ksm_id;razdel_id',
                           VarArrayOf([q_kartKSM_ID.AsInteger,
                                       q_kartRAZDEL_ID.AsInteger]),
-                          [])) then
+                          [])) and (mem_texGurKOL_RASH_EDIZ.AsFloat = 0) then
     begin
       mem_texGur.Edit;
-      mem_texGurKOL_RASH_EDIZ.AsFloat := q_kartKOL_RASH_EDIZ.AsFloat;
+//      if (mem_texGurKOL_RASH_EDIZ.AsFloat = 0) then
+        mem_texGurKOL_RASH_EDIZ.AsFloat := q_kartKOL_RASH_EDIZ.AsFloat;
+//      else
+//        mem_texGurKOL_RASH_EDIZ.AsFloat := mem_texGurKOL_RASH_EDIZ.AsFloat + q_kartKOL_RASH_EDIZ.AsFloat;
       mem_texGurKEI_ID_KART.AsInteger := q_kartKEI_ID.AsInteger;
       mem_texGurDOC_ID.AsInteger := q_kartDOC_ID.AsInteger;
       mem_texGurKART_ID.AsInteger := q_kartKART_ID.AsInteger;
