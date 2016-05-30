@@ -105,7 +105,9 @@ uses
   DMSelectOstKsm in 'Source\DMSelectOstKsm.pas' {dmSelOstKsm: TDataModule},
   Prihod in 'Source\Prihod.pas',
   PrihodDM in 'Source\PrihodDM.pas' {PrihDM: TDataModule},
-  OtdelDropDown in 'Source\OtdelDropDown.pas' {FOtdelDropDown};
+  OtdelDropDown in 'Source\OtdelDropDown.pas' {FOtdelDropDown},
+  UnderSign in 'Source\UnderSign.pas',
+  UnderSignDM in 'Source\UnderSignDM.pas' {dmUnd: TDataModule};
 
 {$R *.res}
 

@@ -2,7 +2,7 @@ unit AktRashoda;
 
 interface
 
-uses
+uses UnderSign,
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, frxClass, frxDBSet, frxDCtrl, DB, IBCustomDataSet, IBQuery, RxIBQuery,
   Grids, DBGridEh, StdCtrls, RxMemDS, Buttons, RxStrUtils, VCLUtils, Menus,
@@ -15,6 +15,7 @@ type
   private
     FKey: integer;
     FValue: double;
+
   public
     Constructor Create (vFKey: integer; vFValue:double);
     Destructor Destroy; override;
@@ -428,6 +429,16 @@ type
     q_matropGR_ID: TSmallintField;
     q_matropPGR_ID: TSmallintField;
     q_matropSPEC: TSmallintField;
+    DBGridEh3: TDBGridEh;
+    ds_underSign: TDataSource;
+    mem_underSign: TkbmMemTable;
+    mem_underSignTIP_DOK_ID: TSmallintField;
+    mem_underSignSTRUK_ID: TSmallintField;
+    mem_underSignTIP_PARAM_ID: TSmallintField;
+    mem_underSignORDER_PARAM: TSmallintField;
+    mem_underSignPARAM_NAME: TStringField;
+    mem_underSignPARAM_TYPE: TStringField;
+    mem_underSignDEFAULT_VALUE: TStringField;
     function GetCehNum(cehName : string) : integer;
     function SetMonthCombo(month : integer) : boolean;
     function activateNormQuery() : boolean;
@@ -518,6 +529,8 @@ type
   private
     realMonth, realYear : integer;
     firstMonthChange : boolean;
+
+    underS : TUnderSign;
 //    procedure formCenaQ(allMem : boolean);
 //    procedure distributeCena(allMem : boolean);
 //    procedure setCurNormiMemDatCena;
@@ -1157,6 +1170,7 @@ begin
   destroyTIFPairArr;
   btn_notAdded.Visible := false;
   closeQueries();
+  FreeAndNil(underS);
 end;
 
 procedure TFAktRashoda.FormCreate(Sender: TObject);
@@ -2518,8 +2532,13 @@ end;
 { Загружаем подписи }
 function TFAktRashoda.loadDocTipParam(tipDokId, strukId : integer) : boolean;
 begin
+  if (underS = nil) then
+    underS := TUnderSign.Create(dm1.BELMED);
+  unders.loadUnderSign(vStruk_id, vTip_Doc_Id, DM1.DocumentDOC_ID.AsInteger,
+                       dm1.DocumentKLIENT_ID.AsInteger);
+  ds_underSign.DataSet := underS.getUnderSign();
 //  try
-    DocTipParam.Active := false;
+{    DocTipParam.Active := false;
     DocTipParam.ParamByName('struk_id').AsInteger := strukId;
     DocTipParam.ParamByName('tip_dok_id').AsInteger := tipDokId;
     DocTipParam.Active := true;
@@ -2527,7 +2546,6 @@ begin
     if DocTipParam.IsEmpty then
     begin
       DocTipParam.Insert;
-//      DocTipParam.Edit;
       DocTipParamPARAM_NAME.AsString := 'Зам. главного технолога';
       DocTipParamPARAM_TYPE.AsString := 'C';
       DocTipParamTIP_DOK_ID.AsInteger := vTip_Doc_Id;
@@ -2566,7 +2584,7 @@ begin
       DocTipParamSTRUK_ID.AsInteger := vStruk_Id;
       DocTipParam.Post;
     end;
-
+ }
     result := true;
 //  except
 //  on e : exception do
@@ -2576,14 +2594,8 @@ end;
 
 function TFAktRashoda.deactivateDocTipParam() : boolean;
 begin
-//  try
-    if DocTipParam.Active then
-      DocTipParam.Active := false;
-    result := true;
-//  except
-//  on e : exception do
-//    result := false;
-//  end;
+  DocTipParam.Close;
+  result := true;
 end;
 
 procedure TFAktRashoda.DelBtnClick(Sender: TObject);

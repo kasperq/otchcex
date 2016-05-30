@@ -338,6 +338,37 @@ object FAktRashoda: TFAktRashoda
         OnClick = delBtnClick
       end
     end
+    object DBGridEh3: TDBGridEh
+      Left = 728
+      Top = 40
+      Width = 433
+      Height = 120
+      AutoFitColWidths = True
+      DataSource = ds_underSign
+      FooterColor = clWindow
+      FooterFont.Charset = DEFAULT_CHARSET
+      FooterFont.Color = clWindowText
+      FooterFont.Height = -11
+      FooterFont.Name = 'Tahoma'
+      FooterFont.Style = []
+      TabOrder = 2
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'Tahoma'
+      TitleFont.Style = []
+      Columns = <
+        item
+          EditButtons = <>
+          FieldName = 'PARAM_NAME'
+          Footers = <>
+        end
+        item
+          EditButtons = <>
+          FieldName = 'DEFAULT_VALUE'
+          Footers = <>
+        end>
+    end
   end
   object Panel2: TPanel
     Left = 0
@@ -2127,7 +2158,7 @@ object FAktRashoda: TFAktRashoda
     Width = 24
     Left = 808
     Bitmap = {
-      494C01010B001C00900018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B001C00940018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       000000000000000000000000000000000000000000000000000000000000A87D
       7800B7818300B7818300B7818300B7818300B7818300B7818300B7818300B781
@@ -5321,6 +5352,67 @@ object FAktRashoda: TFAktRashoda
     object q_matropSPEC: TSmallintField
       FieldName = 'SPEC'
       Origin = '"MATROP"."SPEC"'
+    end
+  end
+  object ds_underSign: TDataSource
+    DataSet = mem_underSign
+    Left = 872
+    Top = 496
+  end
+  object mem_underSign: TkbmMemTable
+    DesignActivation = True
+    AttachedAutoRefresh = True
+    AttachMaxCount = 1
+    FieldDefs = <>
+    IndexDefs = <>
+    SortOptions = []
+    AllDataOptions = [mtfSaveData, mtfSaveNonVisible, mtfSaveBlobs, mtfSaveFiltered, mtfSaveIgnoreRange, mtfSaveIgnoreMasterDetail, mtfSaveDeltas]
+    CommaTextOptions = [mtfSaveData]
+    CSVQuote = '"'
+    CSVFieldDelimiter = ','
+    CSVRecordDelimiter = ','
+    CSVTrueString = 'True'
+    CSVFalseString = 'False'
+    PersistentSaveOptions = [mtfSaveData, mtfSaveNonVisible, mtfSaveIgnoreRange, mtfSaveIgnoreMasterDetail]
+    PersistentBackup = False
+    ProgressFlags = [mtpcLoad, mtpcSave, mtpcCopy]
+    FilterOptions = []
+    Version = '2.53g'
+    LanguageID = 0
+    SortID = 0
+    SubLanguageID = 1
+    LocaleID = 1024
+    Left = 784
+    Top = 488
+    object mem_underSignTIP_DOK_ID: TSmallintField
+      FieldName = 'TIP_DOK_ID'
+      Origin = '"DOC_TIP_PARAM"."TIP_DOK_ID"'
+      Required = True
+    end
+    object mem_underSignSTRUK_ID: TSmallintField
+      FieldName = 'STRUK_ID'
+      Origin = '"DOC_TIP_PARAM"."STRUK_ID"'
+    end
+    object mem_underSignTIP_PARAM_ID: TSmallintField
+      FieldName = 'TIP_PARAM_ID'
+      Origin = '"DOC_TIP_PARAM"."TIP_PARAM_ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+    end
+    object mem_underSignORDER_PARAM: TSmallintField
+      FieldName = 'ORDER_PARAM'
+      Origin = '"DOC_TIP_PARAM"."ORDER_PARAM"'
+    end
+    object mem_underSignPARAM_NAME: TStringField
+      FieldName = 'PARAM_NAME'
+      Size = 50
+    end
+    object mem_underSignPARAM_TYPE: TStringField
+      FieldName = 'PARAM_TYPE'
+      Size = 1
+    end
+    object mem_underSignDEFAULT_VALUE: TStringField
+      FieldName = 'DEFAULT_VALUE'
+      Size = 100
     end
   end
 end
