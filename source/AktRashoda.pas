@@ -91,7 +91,6 @@ type
     NormVQueryKEI_ID: TSmallintField;
     DocTipParam: TRxIBQuery;
     DSDocTipParam: TDataSource;
-    DBGridEh2: TDBGridEh;
     DocTipParamTIP_DOK_ID: TSmallintField;
     DocTipParamPARAM_NAME: TIBStringField;
     DocTipParamPARAM_TYPE: TIBStringField;
@@ -432,13 +431,16 @@ type
     DBGridEh3: TDBGridEh;
     ds_underSign: TDataSource;
     mem_underSign: TkbmMemTable;
+    frds_underSign: TfrxDBDataset;
     mem_underSignTIP_DOK_ID: TSmallintField;
     mem_underSignSTRUK_ID: TSmallintField;
     mem_underSignTIP_PARAM_ID: TSmallintField;
     mem_underSignORDER_PARAM: TSmallintField;
     mem_underSignPARAM_NAME: TStringField;
-    mem_underSignPARAM_TYPE: TStringField;
     mem_underSignDEFAULT_VALUE: TStringField;
+    mem_underSignPARAM_ID: TIntegerField;
+    mem_underSignDOC_ID: TIntegerField;
+    Label5: TLabel;
     function GetCehNum(cehName : string) : integer;
     function SetMonthCombo(month : integer) : boolean;
     function activateNormQuery() : boolean;
@@ -1029,14 +1031,14 @@ begin
 //      setAktOrCurMonth2Conf(true);
       curMonth := monthCombo.ItemIndex + 1;
       curYear := StrToInt(yearEdit.Text);
-      if (not findCurDoc(vStruk_Id, curMonth, curYear, vTip_Doc_Id, '')) then
-        createCurDoc(vStruk_Id, curMonth, curYear, '');
-      if (saveDoc()) then
-      begin
-        loadKart(vStruk_Id, DM1.DocumentDOC_ID.AsInteger);
-        saveMemToKart();
+//      if (not findCurDoc(vStruk_Id, curMonth, curYear, vTip_Doc_Id, '')) then
+//        createCurDoc(vStruk_Id, curMonth, curYear, '');
+//      if (saveDoc()) then
+//      begin
+//        loadKart(vStruk_Id, DM1.DocumentDOC_ID.AsInteger);
+//        saveMemToKart();
         saveDocTipParam();
-      end;
+//      end;
       NormiMemDat.EnableControls;
       btn_notAdded.Visible := false;
       Splash.Free;
@@ -1590,15 +1592,14 @@ end;
 
 function TFAktRashoda.loadNormiReport() : boolean;
 begin
-//  try
-    frxReport1.Script.Variables['year'] := yearEdit.Text;
-    frxReport1.Script.Variables['month'] := dm1.GetStrMes(monthCombo.ItemIndex + 1);
-    if NormVQuerySTNAME.AsString <> 'Экспер-произв.цех' then
-      frxReport1.Script.Variables['ceh'] := IntToStr(GetCehNum(NormVQuerySTNAME.AsString))
-    else
-      frxReport1.Script.Variables['ceh'] := 'экспер.-произв. цех';
-    frxReport1.Script.Variables['nDoc'] := nDocEdit.Text;
-    DocTipParam.First;
+  frxReport1.Script.Variables['year'] := yearEdit.Text;
+  frxReport1.Script.Variables['month'] := dm1.GetStrMes(monthCombo.ItemIndex + 1);
+  if NormVQuerySTNAME.AsString <> 'Экспер-произв.цех' then
+    frxReport1.Script.Variables['ceh'] := IntToStr(GetCehNum(NormVQuerySTNAME.AsString))
+  else
+    frxReport1.Script.Variables['ceh'] := 'экспер.-произв. цех';
+  frxReport1.Script.Variables['nDoc'] := nDocEdit.Text;
+    {DocTipParam.First;
     frxReport1.Script.Variables['param1'] := DocTipParamPARAM_NAME.AsString;
     frxReport1.Script.Variables['podp1'] := DocTipParamDEFAULT_VALUE.AsString;
     DocTipParam.Next;
@@ -1677,13 +1678,9 @@ begin
     begin
       frxReport1.Script.Variables['param8'] := '';
       frxReport1.Script.Variables['podp8'] := '';
-    end;
-    frxReport1.ShowReport(true);
-    result := true;
-//  except
-//    On e : exception do
-//    result := false;
-//  end;
+    end;                   }
+  frxReport1.ShowReport(true);
+  result := true;
 end;
 
 procedure TFAktRashoda.NormiMemDatFACTRASHODChange(Sender: TField);
@@ -2386,8 +2383,6 @@ begin
     activateNormQuery();
 
     loadAndAddKart;
-    {loadKart(vStruk_Id, DM1.DocumentDOC_ID.AsInteger);
-    addKart2Mem();}
 
 //    findAndSet10Account;
     addNormi2Mem();
@@ -2398,6 +2393,7 @@ begin
 //    NormiMemDat.SortOnFields('factrashod', true, true);
     nDocEdit.Text := DM1.DocumentNDOK.AsString;
 
+    label5.Caption := dm1.DocumentDOC_ID.AsString;
     loadDocTipParam(vTip_Doc_Id, vStruk_Id);
 
     saveCurState();
@@ -2534,9 +2530,10 @@ function TFAktRashoda.loadDocTipParam(tipDokId, strukId : integer) : boolean;
 begin
   if (underS = nil) then
     underS := TUnderSign.Create(dm1.BELMED);
-  unders.loadUnderSign(vStruk_id, vTip_Doc_Id, DM1.DocumentDOC_ID.AsInteger,
-                       dm1.DocumentKLIENT_ID.AsInteger);
+  unders.loadUnderSign(vStruk_id, 32, vTip_Doc_Id,
+                       DM1.DocumentDOC_ID.AsInteger, vklient_id);
   ds_underSign.DataSet := underS.getUnderSign();
+  frds_underSign.DataSet := underS.getUnderSign();
 //  try
 {    DocTipParam.Active := false;
     DocTipParam.ParamByName('struk_id').AsInteger := strukId;
@@ -2606,13 +2603,22 @@ end;
 function TFAktRashoda.saveDocTipParam() : boolean;
 begin
   try
-    if (DocTipParam.UpdatesPending) then
+    if (underS.underSign.State = dsInsert)
+        or (underS.underSign.State = dsEdit)
+        or (underS.underSign.Modified) then
     begin
-      DocTipParam.ApplyUpdates;
-      dm1.startWriteTrans;
-      DM1.IBT_WRITE.CommitRetaining;
-      DocTipParam.Refresh;
+      underS.underSign.Post;
     end;
+      underS.saveUnderSign(vStruk_Id, 32, vTip_Doc_Id, dm1.DocumentDOC_ID.AsInteger,
+                           VKlient_Id);
+
+//    if (DocTipParam.UpdatesPending) then
+//    begin
+//      DocTipParam.ApplyUpdates;
+//      dm1.startWriteTrans;
+//      DM1.IBT_WRITE.CommitRetaining;
+//      DocTipParam.Refresh;
+//    end;
     result := true;
   except
   on e : exception do
@@ -2625,22 +2631,18 @@ end;
 
 procedure TFAktRashoda.insertDocTipParam;
 begin
-  DocTipParam.Insert;
-  DocTipParamTIP_DOK_ID.AsInteger := vTip_Doc_Id;
-  DocTipParamPARAM_TYPE.AsString := 'C';
-  DocTipParamSTRUK_ID.AsInteger := vStruk_Id;
-  DocTipParam.Post;
+  underS.insertUnderSign;
+//  DocTipParam.Insert;
+//  DocTipParamTIP_DOK_ID.AsInteger := vTip_Doc_Id;
+//  DocTipParamPARAM_TYPE.AsString := 'C';
+//  DocTipParamSTRUK_ID.AsInteger := vStruk_Id;
+//  DocTipParam.Post;
 end;
 
 procedure TFAktRashoda.deleteDocTipParam;
 begin
-  try
-    if (not DocTipParam.IsEmpty) then
-      DocTipParam.Delete;  
-  except
-    on e : exception do
-      MessageDlg('Произошла ошибка при удалении подписи! '+ #13 + E.Message, mtWarning, [mbOK], 0);
-  end;
+  if (not DocTipParam.IsEmpty) then
+    DocTipParam.Delete;
 end;
 
 procedure TFAktRashoda.loadCehNormZ(ksmIdPr : integer);
