@@ -19,6 +19,7 @@ type
     procedure loadUnderSign(strukId, tipOpId, tipDokId, docId, klientId : integer);
     procedure saveUnderSign(strukId, tipOpId, tipDokId, docId, klientId : integer);
     procedure insertUnderSign;
+    procedure appendUnderSign;
 
     property ds_underSign : TDataSource read getDSUnderSign;
     property underSign : TkbmMemTable read getUnderSign;
@@ -71,7 +72,12 @@ end;
 
 procedure TUnderSign.insertUnderSign;
 begin
-  dm.insertUnderSign;
+  dm.insertUnderSign(false);
+end;
+
+procedure TUnderSign.appendUnderSign;
+begin
+  dm.insertUnderSign(true);
 end;
 
 end.

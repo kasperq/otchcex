@@ -441,6 +441,8 @@ type
     mem_underSignPARAM_ID: TIntegerField;
     mem_underSignDOC_ID: TIntegerField;
     Label5: TLabel;
+    btn_appenSign: TSpeedButton;
+    btn_insertSign: TSpeedButton;
     function GetCehNum(cehName : string) : integer;
     function SetMonthCombo(month : integer) : boolean;
     function activateNormQuery() : boolean;
@@ -501,7 +503,7 @@ type
     procedure N4Click(Sender: TObject);
     procedure N3Click(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
-    procedure SpeedButton1Click(Sender: TObject);
+    procedure ToolButton1Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
     procedure NormiMemDatPLNORMChange(Sender: TField);
     procedure DBGridEh1CellClick(Column: TColumnEh);
@@ -527,6 +529,8 @@ type
     procedure FormCreate(Sender: TObject);
     procedure N1Click(Sender: TObject);
     procedure N2Click(Sender: TObject);
+    procedure btn_appenSignClick(Sender: TObject);
+    procedure btn_insertSignClick(Sender: TObject);
 
   private
     realMonth, realYear : integer;
@@ -1729,9 +1733,19 @@ begin
 //  end;
 end;
 
-procedure TFAktRashoda.SpeedButton1Click(Sender: TObject);
+procedure TFAktRashoda.ToolButton1Click(Sender: TObject);
 begin
-  PopupMenu1.Popup(Mouse.CursorPos.x,Mouse.CursorPos.y);
+   PopupMenu1.Popup(Mouse.CursorPos.x,Mouse.CursorPos.y);
+end;
+
+procedure TFAktRashoda.btn_appenSignClick(Sender: TObject);
+begin
+  underS.appendUnderSign;
+end;
+
+procedure TFAktRashoda.btn_insertSignClick(Sender: TObject);
+begin
+  insertDocTipParam;
 end;
 
 procedure TFAktRashoda.SpeedButton2Click(Sender: TObject);

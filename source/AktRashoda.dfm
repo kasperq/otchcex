@@ -68,7 +68,7 @@ object FAktRashoda: TFAktRashoda
       ImageIndex = 2
       ParentShowHint = False
       ShowHint = True
-      OnClick = SpeedButton1Click
+      OnClick = ToolButton1Click
     end
     object ToolButton3: TToolButton
       Left = 164
@@ -253,11 +253,11 @@ object FAktRashoda: TFAktRashoda
     object ToolBar2: TToolBar
       Left = 1
       Top = 4
-      Width = 80
+      Width = 213
       Height = 40
       Align = alCustom
-      ButtonHeight = 40
-      ButtonWidth = 40
+      ButtonHeight = 41
+      ButtonWidth = 31
       Caption = 'ToolBar2'
       GradientEndColor = 13288646
       Images = ImageList1
@@ -267,18 +267,41 @@ object FAktRashoda: TFAktRashoda
       object ToolButton6: TToolButton
         Left = 0
         Top = 0
-        Hint = #1044#1086#1073#1072#1074#1080#1090#1100' '#1079#1072#1087#1080#1089#1100
+        Hint = #1042#1089#1090#1072#1074#1080#1090#1100' '#1079#1072#1087#1080#1089#1100
         Caption = 'ToolButton6'
         ImageIndex = 1
         OnClick = AddBtnClick
       end
       object ToolButton7: TToolButton
-        Left = 40
+        Left = 31
         Top = 0
         Hint = #1059#1076#1072#1083#1080#1090#1100' '#1079#1072#1087#1080#1089#1100
         Caption = 'ToolButton7'
         ImageIndex = 6
         OnClick = delBtnClick
+      end
+      object btn_insertSign: TSpeedButton
+        Left = 62
+        Top = 0
+        Width = 60
+        Height = 41
+        Caption = #1042#1089#1090#1072#1074#1080#1090#1100
+        OnClick = btn_insertSignClick
+      end
+      object btn_appenSign: TSpeedButton
+        Left = 122
+        Top = 0
+        Width = 75
+        Height = 41
+        Hint = #1042#1089#1090#1072#1074#1080#1090#1100' '#1079#1072#1087#1080#1089#1100' '#1074' '#1082#1086#1085#1077#1094
+        Caption = #1044#1086#1073'. '#1074' '#1082#1086#1085#1077#1094
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        OnClick = btn_appenSignClick
       end
     end
     object DBGridEh3: TDBGridEh
@@ -1933,7 +1956,7 @@ object FAktRashoda: TFAktRashoda
     Width = 24
     Left = 808
     Bitmap = {
-      494C01010B001C00980018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B001C009C0018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       000000000000000000000000000000000000000000000000000000000000A87D
       7800B7818300B7818300B7818300B7818300B7818300B7818300B7818300B781

@@ -72,7 +72,7 @@ type
     procedure deleteUnderSign;
     procedure appenUnderSignToQuery(docId : integer);
     procedure saveUnderSign;
-    procedure insertUnderSign;
+    procedure insertUnderSign(toTheEnd : boolean);
 
   end;
 
@@ -167,11 +167,18 @@ begin
   mem_underSign.Post;
 end;
 
-procedure TdmUnd.insertUnderSign;
+procedure TdmUnd.insertUnderSign(toTheEnd : boolean);
+var
+  curTipParamId : integer;
 begin
-  mem_underSign.Insert;
+  curTipParamId := mem_underSignTIP_PARAM_ID.AsInteger;
+  if (toTheEnd) then
+    mem_underSign.Append
+  else
+    mem_underSign.Insert;
   mem_underSignDOC_ID.AsInteger := 0;
   mem_underSignPARAM_ID.AsInteger := 0;
+  mem_underSignTIP_PARAM_ID.AsInteger := curTipParamId;
 end;
 
 function TdmUnd.loadUnderSign(docId : integer) : boolean;
