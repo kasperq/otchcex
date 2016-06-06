@@ -20,6 +20,10 @@ type
     procedure saveUnderSign(strukId, tipOpId, tipDokId, docId, klientId : integer);
     procedure insertUnderSign;
     procedure appendUnderSign;
+    procedure delete;
+    procedure deleteAll;
+    procedure moveUp;
+    procedure moveDown;
 
     property ds_underSign : TDataSource read getDSUnderSign;
     property underSign : TkbmMemTable read getUnderSign;
@@ -66,7 +70,7 @@ procedure TUnderSign.saveUnderSign(strukId, tipOpId, tipDokId, docId, klientId :
 begin
   if (dm.loadUnderSign(docId)) then
     dm.deleteUnderSign;
-  dm.appenUnderSignToQuery(docId);
+  dm.appendUnderSignToQuery(docId, tipDokId);
   dm.saveUnderSign;
 end;
 
@@ -78,6 +82,26 @@ end;
 procedure TUnderSign.appendUnderSign;
 begin
   dm.insertUnderSign(true);
+end;
+
+procedure TUnderSign.delete;
+begin
+  dm.deleteUnderSignRecord;
+end;
+
+procedure TUnderSign.deleteAll;
+begin
+  dm.deleteAllUnderSign;
+end;
+
+procedure TUnderSign.moveUp;
+begin
+  dm.swapRecord(true);
+end;
+
+procedure TUnderSign.moveDown;
+begin
+  dm.swapRecord(false);
 end;
 
 end.

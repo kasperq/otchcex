@@ -56,6 +56,21 @@ type
     q_docTIP_DOK_ID: TSmallintField;
     mem_underSignPARAM_ID: TIntegerField;
     mem_underSignDOC_ID: TIntegerField;
+    q_docTipParam: TRxIBQuery;
+    q_docTipParamTIP_PARAM_ID: TSmallintField;
+    q_docTipParamTIP_DOK_ID: TSmallintField;
+    q_docTipParamPARAM_NAME: TIBStringField;
+    q_docTipParamPARAM_TYPE: TIBStringField;
+    q_docTipParamDEFAULT_VALUE: TIBStringField;
+    q_docTipParamLOOKUP: TIBStringField;
+    q_docTipParamKEY_FIELD: TIBStringField;
+    q_docTipParamRESULT_FIELD: TIBStringField;
+    q_docTipParamKOL_PARAM: TFloatField;
+    q_docTipParamCENA_PARAM: TIBBCDField;
+    q_docTipParamSTAVKA_NDS: TFloatField;
+    q_docTipParamSTRUK_ID: TIntegerField;
+    q_docTipParamORDER_PARAM: TSmallintField;
+    q_docTipParamUNIQ_PARAM: TSmallintField;
   private
     function getAllDocId(strukId, klientId, tipOpId, tipDokId : integer) : boolean;
     procedure unparseQueryAndAddToMem(query : TRxIBQuery);
@@ -70,9 +85,12 @@ type
 
     function getLastUnderSign(strukId, klientId, tipOpId, tipDokId : integer) : boolean;
     procedure deleteUnderSign;
-    procedure appenUnderSignToQuery(docId : integer);
+    procedure appendUnderSignToQuery(docId, tipDokId : integer);
     procedure saveUnderSign;
     procedure insertUnderSign(toTheEnd : boolean);
+    procedure deleteUnderSignRecord;
+    procedure deleteAllUnderSign;
+    procedure swapRecord(withUpperRec : boolean);
 
   end;
 
@@ -85,6 +103,85 @@ begin
   self.db := db;
 end;
 
+procedure TdmUnd.swapRecord(withUpperRec : boolean);
+var
+  tipDokId, strukId, tipParamId, paramId, docId, curRecNo, recCount : integer;
+  paramName, defaultValue : string;
+begin
+  curRecNo := mem_underSign.RecNo;
+  recCount := mem_underSign.RecordCount;
+  if (withUpperRec) then
+  begin
+    if (curRecNo > 1) then
+    begin
+      tipDokId := mem_underSignTIP_DOK_ID.AsInteger;
+      strukId := mem_underSignSTRUK_ID.AsInteger;
+      tipParamId := mem_underSignTIP_PARAM_ID.AsInteger;
+      paramId := mem_underSignPARAM_ID.AsInteger;
+      docId := mem_underSignDOC_ID.AsInteger;
+      paramName := mem_underSignPARAM_NAME.AsString;
+      defaultValue := mem_underSignDEFAULT_VALUE.AsString;
+      mem_underSign.Delete;
+      if (curRecNo < recCount) then
+        mem_underSign.Prior;
+      mem_underSign.Insert;
+      mem_underSignTIP_DOK_ID.AsInteger := tipDokId;
+      mem_underSignSTRUK_ID.AsInteger := strukId;
+      mem_underSignTIP_PARAM_ID.AsInteger := tipParamId;
+      mem_underSignPARAM_NAME.AsString := paramName;
+      mem_underSignDEFAULT_VALUE.AsString := defaultValue;
+      mem_underSignPARAM_ID.AsInteger := paramId;
+      mem_underSignDOC_ID.AsInteger := docId;
+      mem_underSign.Post;
+      mem_underSign.MoveBy(curRecNo - 2);
+    end;
+  end
+  else
+  begin
+    if (curRecNo < recCount) then
+    begin
+      tipDokId := mem_underSignTIP_DOK_ID.AsInteger;
+      strukId := mem_underSignSTRUK_ID.AsInteger;
+      tipParamId := mem_underSignTIP_PARAM_ID.AsInteger;
+      paramId := mem_underSignPARAM_ID.AsInteger;
+      docId := mem_underSignDOC_ID.AsInteger;
+      paramName := mem_underSignPARAM_NAME.AsString;
+      defaultValue := mem_underSignDEFAULT_VALUE.AsString;
+      mem_underSign.Delete;
+      if (mem_underSign.RecNo = mem_underSign.RecordCount) then
+      begin
+        mem_underSign.Append;
+      end
+      else
+      begin
+        mem_underSign.Next;
+        mem_underSign.Insert;
+      end;
+      mem_underSignTIP_DOK_ID.AsInteger := tipDokId;
+      mem_underSignSTRUK_ID.AsInteger := strukId;
+      mem_underSignTIP_PARAM_ID.AsInteger := tipParamId;
+      mem_underSignPARAM_NAME.AsString := paramName;
+      mem_underSignDEFAULT_VALUE.AsString := defaultValue;
+      mem_underSignPARAM_ID.AsInteger := paramId;
+      mem_underSignDOC_ID.AsInteger := docId;
+      mem_underSign.Post;
+      mem_underSign.MoveBy(curRecNo);
+    end;
+  end;
+end;
+
+procedure TdmUnd.deleteUnderSignRecord;
+begin
+  mem_underSign.Delete;
+end;
+
+procedure TdmUnd.deleteAllUnderSign;
+begin
+  mem_underSign.First;
+  while (not mem_underSign.Eof) do
+    mem_underSign.Delete;
+end;
+
 procedure TdmUnd.deleteUnderSign;
 begin
   q_underSign.First;
@@ -92,13 +189,24 @@ begin
     q_underSign.Delete;
 end;
 
-procedure TdmUnd.appenUnderSignToQuery(docId : integer);
+procedure TdmUnd.appendUnderSignToQuery(docId, tipDokId : integer);
 begin
   mem_underSign.First;
   while (not mem_underSign.Eof) do
   begin
     q_underSign.Append;
-    q_underSignTIP_PARAM_ID.AsInteger := mem_underSignTIP_PARAM_ID.AsInteger;
+    if (mem_underSignTIP_PARAM_ID.AsInteger = 0) then
+    begin
+      q_docTipParam.Close;
+      q_docTipParam.ParamByName('tip_dok_id').AsInteger := tipDokId;
+      q_docTipParam.Open;
+      q_docTipParam.FetchAll;
+      q_docTipParam.First;
+      if (q_docTipParam.RecordCount > 0) then
+        q_underSignTIP_PARAM_ID.AsInteger := q_docTipParamTIP_PARAM_ID.AsInteger;
+    end
+    else
+      q_underSignTIP_PARAM_ID.AsInteger := mem_underSignTIP_PARAM_ID.AsInteger;
     q_underSignDOC_ID.AsInteger := docId;
     q_underSignPARAM_VALUE.AsString := mem_underSignPARAM_NAME.AsString + '     '
                                        + mem_underSignDEFAULT_VALUE.AsString;
@@ -124,6 +232,8 @@ begin
   DocTipParam.Open;
 //  DocTipParam.FetchAll;
 //  appendQueryToMem(DocTipParam);
+  mem_underSign.EmptyTable;
+  mem_underSign.Open;
   DocTipParam.First;
   mem_underSign.Append;
   mem_underSignTIP_DOK_ID.AsInteger := tipDokId;

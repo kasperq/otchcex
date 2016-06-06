@@ -283,52 +283,6 @@ type
     q_specKartCENA_VP: TIBBCDField;
     q_specKartDOC_ID: TIntegerField;
     q_ostatki: TRxIBQuery;
-    q_ostatkiKART_ID: TIntegerField;
-    q_ostatkiOT_S: TFMTBCDField;
-    q_ostatkiKSM_ID: TIntegerField;
-    q_ostatkiSTRUK_ID: TIntegerField;
-    q_ostatkiMES: TSmallintField;
-    q_ostatkiONM_S: TFMTBCDField;
-    q_ostatkiCENA_UCH: TFloatField;
-    q_ostatkiGOD: TSmallintField;
-    q_ostatkiSPROD_ID: TIntegerField;
-    q_ostatkiKEI_ID: TSmallintField;
-    q_ostatkiONM_NZ: TFMTBCDField;
-    q_ostatkiOT_NZ: TFMTBCDField;
-    q_ostatkiKOL_TRANS: TFloatField;
-    q_ostatkiNOMU_ID_TRANS: TSmallintField;
-    q_ostatkiSERIA_ID: TIntegerField;
-    q_ostatkiOT_FD: TFMTBCDField;
-    q_ostatkiONM_FD: TFMTBCDField;
-    q_ostatkiNOMU_ID_GRP: TSmallintField;
-    q_ostatkiKOL_GRP: TFloatField;
-    q_ostatkiVES_TRANS: TIBBCDField;
-    q_ostatkiVOL_TRANS: TFMTBCDField;
-    q_ostatkiUSER_NAME: TIBStringField;
-    q_ostatkiORG_RESERV: TIntegerField;
-    q_ostatkiOT_DOKUM: TFMTBCDField;
-    q_ostatkiONM_DOKUM: TFMTBCDField;
-    q_ostatkiDATE_TIME_UPDATE: TDateTimeField;
-    q_ostatkiKSM_IDPR: TIntegerField;
-    q_ostatkiRAZDEL_ID: TSmallintField;
-    q_ostatkiINV_ID: TIntegerField;
-    q_ostatkiACCOUNT: TIBStringField;
-    q_ostatkiSUMMA_KART: TIBBCDField;
-    q_ostatkiOT_S2: TFMTBCDField;
-    q_ostatkiKEI_ID2: TSmallintField;
-    q_ostatkiVOL_GRP: TFMTBCDField;
-    q_ostatkiVES_GRP: TIBBCDField;
-    q_ostatkiPROC_OV: TFMTBCDField;
-    q_ostatkiCENA_OPT: TIBBCDField;
-    q_ostatkiONM_S_P: TFMTBCDField;
-    q_ostatkiSTRUK_ID_RELA: TIntegerField;
-    q_ostatkiBSO: TSmallintField;
-    q_ostatkiDATE_VID: TDateField;
-    q_ostatkiSROK: TIBBCDField;
-    q_ostatkiNLK: TIntegerField;
-    q_ostatkiSUMMA_SPIS: TIBBCDField;
-    q_ostatkiCENA_UCH_NM: TIBBCDField;
-    q_ostatkiACCOUNT_OLD: TIBStringField;
     upd_ostatki: TIBUpdateSQLW;
     mem_notAdded: TkbmMemTable;
     mem_notAddedKSM_ID: TIntegerField;
@@ -441,8 +395,48 @@ type
     mem_underSignPARAM_ID: TIntegerField;
     mem_underSignDOC_ID: TIntegerField;
     Label5: TLabel;
-    btn_appenSign: TSpeedButton;
+    btn_appendSign: TSpeedButton;
     btn_insertSign: TSpeedButton;
+    btn_delSign: TSpeedButton;
+    btn_moveUp: TSpeedButton;
+    btn_moveDown: TSpeedButton;
+    q_ostatkiPEREDANO_PRIH_NZ: TFMTBCDField;
+    q_ostatkiPEREDANO_RASH_NZ: TFMTBCDField;
+    q_ostatkiPEREDANO_PRIH_S: TFMTBCDField;
+    q_ostatkiPEREDANO_RASH_S: TFMTBCDField;
+    q_ostatkiKART_ID: TIntegerField;
+    q_ostatkiKSM_ID: TIntegerField;
+    q_ostatkiSTRUK_ID: TIntegerField;
+    q_ostatkiSPVIS: TSmallintField;
+    q_ostatkiSPSR: TSmallintField;
+    q_ostatkiNMAT: TIBStringField;
+    q_ostatkiKEI_ID: TSmallintField;
+    q_ostatkiNEIS: TIBStringField;
+    q_ostatkiREG: TSmallintField;
+    q_ostatkiPRMAT: TIBStringField;
+    q_ostatkiGR: TIBStringField;
+    q_ostatkiPGR: TIBStringField;
+    q_ostatkiKORG: TIntegerField;
+    q_ostatkiKOD_PROD: TIBStringField;
+    q_ostatkiOSTATOK_BEGIN_S: TFMTBCDField;
+    q_ostatkiOSTATOK_BEGIN_NZ: TFMTBCDField;
+    q_ostatkiOSTATOK_END_S: TFMTBCDField;
+    q_ostatkiOSTATOK_END_NZ: TFMTBCDField;
+    q_ostatkiPRIX_PERIOD: TFMTBCDField;
+    q_ostatkiRASX_PERIOD: TFMTBCDField;
+    q_ostatkiRAZDEL_ID: TSmallintField;
+    q_ostatkiSERIA_ID: TIntegerField;
+    q_ostatkiKSM_IDPR: TIntegerField;
+    q_ostatkiSERIA: TIBStringField;
+    q_ostatkiZAG_PERIOD: TFMTBCDField;
+    q_ostatkiRASH_VIRAB_PERIOD: TFMTBCDField;
+    q_ostatkiNMAT_PREP: TIBStringField;
+    q_ostatkiKOD_PREP: TIBStringField;
+    q_ostatkiACCOUNT: TIBStringField;
+    btn_delAll: TSpeedButton;
+    mem_printNull: TkbmMemTable;
+    mem_printNullprintNull: TIntegerField;
+    frxDBDataset2: TfrxDBDataset;
     function GetCehNum(cehName : string) : integer;
     function SetMonthCombo(month : integer) : boolean;
     function activateNormQuery() : boolean;
@@ -529,12 +523,16 @@ type
     procedure FormCreate(Sender: TObject);
     procedure N1Click(Sender: TObject);
     procedure N2Click(Sender: TObject);
-    procedure btn_appenSignClick(Sender: TObject);
+    procedure btn_appendSignClick(Sender: TObject);
     procedure btn_insertSignClick(Sender: TObject);
+    procedure btn_delSignClick(Sender: TObject);
+    procedure btn_moveUpClick(Sender: TObject);
+    procedure btn_moveDownClick(Sender: TObject);
+    procedure btn_delAllClick(Sender: TObject);
 
   private
-    realMonth, realYear : integer;
-    firstMonthChange : boolean;
+    realMonth, realYear, vklient_id1 : integer;
+    firstMonthChange, printNuls : boolean;
 
     underS : TUnderSign;
 //    procedure formCenaQ(allMem : boolean);
@@ -572,6 +570,7 @@ type
 
     procedure openConfigumc;
     procedure setAktOrCurMonth2Conf(setAktMonth : boolean);
+    procedure askToPrintNullRecords;
 
 
   public
@@ -815,24 +814,20 @@ begin
       q_specKartKSM_ID.AsInteger := NormiMemDatKSM_ID.AsInteger;
       q_specKartCENA.AsFloat := q_specOstCENA_UCH.AsFloat;
       q_specKartCENA_VP.AsFloat := q_specOstCENA_UCH.AsFloat;
+      q_specKartRAZDEL_ID.AsInteger := NormiMemDatRAZDEL_ID.AsInteger;
       DM1.Add_KartDok.StoredProcName := 'ADD_KART';
       DM1.Add_KartDok.ExecProc;
       q_specKartSTROKA_ID.AsInteger := DM1.Add_KartDok.Params.Items[0].AsInteger;
-      if (q_specOstOT_S.AsFloat < ostKol) and (q_specOst.RecNo < q_specOst.RecordCount) then
-        q_specKartKOL_RASH.AsFloat := q_specOstOT_S.AsFloat
+      if (q_ostatkiOSTATOK_END_S.AsFloat < ostKol) and (q_ostatki.RecNo < q_ostatki.RecordCount) then
+        q_specKartKOL_RASH.AsFloat := q_ostatkiOSTATOK_END_S.AsFloat
       else
         q_specKartKOL_RASH.AsFloat := ostKol;
+//      if (q_specOstOT_S.AsFloat < ostKol) and (q_specOst.RecNo < q_specOst.RecordCount) then
+//        q_specKartKOL_RASH.AsFloat := q_specOstOT_S.AsFloat
+//      else
+//        q_specKartKOL_RASH.AsFloat := ostKol;
       ostKol := ostKol - q_specKartKOL_RASH.AsFloat;
       q_specKart.Post;
-
-//      if (q_ostatkiACCOUNT.AsString <> '10/11') then
-//      begin
-//        q_ostatki.Edit;
-//        q_ostatkiACCOUNT.AsString := '10/11';
-//        q_ostatki.Post;
-//        q_ostatki.ApplyUpdates;
-//      end;
-
       q_ostatki.Next;
     end;
   end;
@@ -863,8 +858,12 @@ begin
   q_ostatki.close;
   q_ostatki.ParamByName('struk_id').AsInteger := vStruk_Id;
   q_ostatki.ParamByName('ksm_id').AsInteger := ksmId;
-  q_ostatki.ParamByName('ksm_idpr').AsInteger := s_kodp;
-  q_ostatki.ParamByName('razdel_id').AsInteger := razdelId;
+//  q_ostatki.ParamByName('ksm_idpr').AsInteger := s_kodp;
+//  q_ostatki.ParamByName('ksm_idpr').AsInteger := 0;
+//  q_ostatki.ParamByName('razdel_id').AsInteger := razdelId;
+//  q_ostatki.ParamByName('razdel_id').AsInteger := 0;
+  q_ostatki.ParamByName('dat1').AsDate := StrToDate(s_dat1);
+  q_ostatki.ParamByName('dat2').AsDate := StrToDate(s_dat2);
   q_ostatki.Open;
   q_ostatki.FetchAll;
   if (q_ostatki.RecordCount > 0) then
@@ -969,7 +968,7 @@ begin
                            []))  then
     begin
       NormiMemDat.Edit;
-      NormiMemDatFACTRASHOD.AsFloat := q_specKartKOL_RASH.AsFloat;
+      NormiMemDatFACTRASHOD.AsFloat := NormiMemDatFACTRASHOD.AsFloat + q_specKartKOL_RASH.AsFloat;
       NormiMemDatACCOUNT.AsString := '10/11';
       NormiMemDat.Post;
     end
@@ -1035,14 +1034,14 @@ begin
 //      setAktOrCurMonth2Conf(true);
       curMonth := monthCombo.ItemIndex + 1;
       curYear := StrToInt(yearEdit.Text);
-//      if (not findCurDoc(vStruk_Id, curMonth, curYear, vTip_Doc_Id, '')) then
-//        createCurDoc(vStruk_Id, curMonth, curYear, '');
-//      if (saveDoc()) then
-//      begin
-//        loadKart(vStruk_Id, DM1.DocumentDOC_ID.AsInteger);
-//        saveMemToKart();
+      if (not findCurDoc(vStruk_Id, curMonth, curYear, vTip_Doc_Id, '')) then
+        createCurDoc(vStruk_Id, curMonth, curYear, '');
+      if (saveDoc()) then
+      begin
+        loadKart(vStruk_Id, DM1.DocumentDOC_ID.AsInteger);
+        saveMemToKart();
         saveDocTipParam();
-//      end;
+      end;
       NormiMemDat.EnableControls;
       btn_notAdded.Visible := false;
       Splash.Free;
@@ -1448,7 +1447,7 @@ begin
               if (findSpecOstAllOr11(NormiMemDatKSM_ID.AsInteger, false))
                  and (getCurOst11() >= NormiMemDatFACTRASHOD.AsFloat) then
               begin
-                if (addSpecRec2Prixod()) then
+//                if (addSpecRec2Prixod()) then
                   insertRecToSpecKart;
               end
               else
@@ -1479,7 +1478,7 @@ begin
     if (vTip_Doc_Id = 144) or (vTip_Doc_Id = 209) then
       deleteSpecDoc;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    add2Prixod();//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//    add2Prixod();//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     NormiMemDat.First;
     while (not NormiMemDat.Eof) do
@@ -1568,7 +1567,7 @@ end;
 procedure TFAktRashoda.N3Click(Sender: TObject);
 begin
   askToSaveModified(Sender);
-
+  askToPrintNullRecords;
   frxReport1.LoadFromFile(reportsPath + 'AktRashoda#2.fr3');
   loadNormiReport();
 end;
@@ -1576,6 +1575,7 @@ end;
 procedure TFAktRashoda.N1Click(Sender: TObject);
 begin
   askToSaveModified(Sender);
+  askToPrintNullRecords;
   frxReport1.LoadFromFile(reportsPath + 'AktRashoda#2inv.fr3');
   loadNormiReport();
 end;
@@ -1583,6 +1583,7 @@ end;
 procedure TFAktRashoda.N2Click(Sender: TObject);
 begin
   askToSaveModified(Sender);
+  askToPrintNullRecords;
   frxReport1.LoadFromFile(reportsPath + 'AktRashoda#2spec.fr3');
   loadNormiReport();
 end;
@@ -1590,6 +1591,7 @@ end;
 procedure TFAktRashoda.N4Click(Sender: TObject);
 begin
   askToSaveModified(Sender);
+  askToPrintNullRecords;
   frxReport1.LoadFromFile(reportsPath + 'AktRashoda#2materials.fr3');
   loadNormiReport();
 end;
@@ -1738,14 +1740,34 @@ begin
    PopupMenu1.Popup(Mouse.CursorPos.x,Mouse.CursorPos.y);
 end;
 
-procedure TFAktRashoda.btn_appenSignClick(Sender: TObject);
+procedure TFAktRashoda.btn_appendSignClick(Sender: TObject);
 begin
   underS.appendUnderSign;
+end;
+
+procedure TFAktRashoda.btn_delAllClick(Sender: TObject);
+begin
+  underS.deleteAll;
+end;
+
+procedure TFAktRashoda.btn_delSignClick(Sender: TObject);
+begin
+  deleteDocTipParam;
 end;
 
 procedure TFAktRashoda.btn_insertSignClick(Sender: TObject);
 begin
   insertDocTipParam;
+end;
+
+procedure TFAktRashoda.btn_moveDownClick(Sender: TObject);
+begin
+  underS.moveDown;
+end;
+
+procedure TFAktRashoda.btn_moveUpClick(Sender: TObject);
+begin
+  underS.moveUp;
 end;
 
 procedure TFAktRashoda.SpeedButton2Click(Sender: TObject);
@@ -2393,7 +2415,8 @@ begin
       findCurDoc(vStruk_Id, curMonth, curYear, 209, '');
       vTip_Doc_Id := 209;
     end;
-    vklient_id := s_kodp;
+    vklient_id := 0;
+    vklient_id1 := s_kodp;
     activateNormQuery();
 
     loadAndAddKart;
@@ -2545,7 +2568,7 @@ begin
   if (underS = nil) then
     underS := TUnderSign.Create(dm1.BELMED);
   unders.loadUnderSign(vStruk_id, 32, vTip_Doc_Id,
-                       DM1.DocumentDOC_ID.AsInteger, vklient_id);
+                       DM1.DocumentDOC_ID.AsInteger, vklient_id1);
   ds_underSign.DataSet := underS.getUnderSign();
   frds_underSign.DataSet := underS.getUnderSign();
 //  try
@@ -2624,7 +2647,7 @@ begin
       underS.underSign.Post;
     end;
       underS.saveUnderSign(vStruk_Id, 32, vTip_Doc_Id, dm1.DocumentDOC_ID.AsInteger,
-                           VKlient_Id);
+                           VKlient_Id1);
 
 //    if (DocTipParam.UpdatesPending) then
 //    begin
@@ -2655,8 +2678,9 @@ end;
 
 procedure TFAktRashoda.deleteDocTipParam;
 begin
-  if (not DocTipParam.IsEmpty) then
-    DocTipParam.Delete;
+  underS.delete;
+//  if (not DocTipParam.IsEmpty) then
+//    DocTipParam.Delete;
 end;
 
 procedure TFAktRashoda.loadCehNormZ(ksmIdPr : integer);
@@ -2699,6 +2723,20 @@ begin
     else
       reloadNorms(0);
   end;
+end;
+
+procedure TFAktRashoda.askToPrintNullRecords;
+begin
+  mem_printNull.EmptyTable;
+  mem_printNull.Open;
+  mem_printNull.Append;
+  if (MessageDlg('ѕечатать строки с нулевым фактическим расходом?',
+                  mtConfirmation, [mbYes, mbNo], 0) = mrYes) then
+
+    mem_printNullprintNull.AsInteger := 1
+  else
+    mem_printNullprintNull.AsInteger := 0;
+  mem_printNull.Post;
 end;
 
 function TFAktRashoda.setZnak1(ksmId : integer; otklonenie, plNorm : double) : double;

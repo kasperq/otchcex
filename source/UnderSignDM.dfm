@@ -155,7 +155,6 @@ object dmUnd: TdmUnd
       'where doc_tip_param.struk_id = :struk_id '
       'and doc_tip_param.tip_dok_id = :tip_dok_id'
       'order by doc_tip_param.order_param, doc_tip_param.tip_param_id')
-    UpdateObject = DocTipParamUpdate
     Macros = <>
     Left = 472
     Top = 64
@@ -415,6 +414,98 @@ object dmUnd: TdmUnd
       FieldName = 'TIP_DOK_ID'
       Origin = '"DOCUMENT"."TIP_DOK_ID"'
       Required = True
+    end
+  end
+  object q_docTipParam: TRxIBQuery
+    Database = db
+    Transaction = trans_read
+    CachedUpdates = True
+    SQL.Strings = (
+      'select *'
+      'from doc_tip_param'
+      'where coalesce(doc_tip_param.struk_id, 0) = 0'
+      'and doc_tip_param.tip_dok_id = :tip_dok_id'
+      'and doc_tip_param.order_param = 1'
+      'order by doc_tip_param.order_param, doc_tip_param.tip_param_id')
+    Macros = <>
+    Left = 368
+    Top = 72
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'tip_dok_id'
+        ParamType = ptInputOutput
+      end>
+    object q_docTipParamTIP_PARAM_ID: TSmallintField
+      FieldName = 'TIP_PARAM_ID'
+      Origin = '"DOC_TIP_PARAM"."TIP_PARAM_ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object q_docTipParamTIP_DOK_ID: TSmallintField
+      FieldName = 'TIP_DOK_ID'
+      Origin = '"DOC_TIP_PARAM"."TIP_DOK_ID"'
+      Required = True
+    end
+    object q_docTipParamPARAM_NAME: TIBStringField
+      FieldName = 'PARAM_NAME'
+      Origin = '"DOC_TIP_PARAM"."PARAM_NAME"'
+      Size = 50
+    end
+    object q_docTipParamPARAM_TYPE: TIBStringField
+      FieldName = 'PARAM_TYPE'
+      Origin = '"DOC_TIP_PARAM"."PARAM_TYPE"'
+      FixedChar = True
+      Size = 1
+    end
+    object q_docTipParamDEFAULT_VALUE: TIBStringField
+      FieldName = 'DEFAULT_VALUE'
+      Origin = '"DOC_TIP_PARAM"."DEFAULT_VALUE"'
+      Size = 100
+    end
+    object q_docTipParamLOOKUP: TIBStringField
+      FieldName = 'LOOKUP'
+      Origin = '"DOC_TIP_PARAM"."LOOKUP"'
+      FixedChar = True
+      Size = 10
+    end
+    object q_docTipParamKEY_FIELD: TIBStringField
+      FieldName = 'KEY_FIELD'
+      Origin = '"DOC_TIP_PARAM"."KEY_FIELD"'
+      FixedChar = True
+      Size = 10
+    end
+    object q_docTipParamRESULT_FIELD: TIBStringField
+      FieldName = 'RESULT_FIELD'
+      Origin = '"DOC_TIP_PARAM"."RESULT_FIELD"'
+      FixedChar = True
+      Size = 10
+    end
+    object q_docTipParamKOL_PARAM: TFloatField
+      FieldName = 'KOL_PARAM'
+      Origin = '"DOC_TIP_PARAM"."KOL_PARAM"'
+    end
+    object q_docTipParamCENA_PARAM: TIBBCDField
+      FieldName = 'CENA_PARAM'
+      Origin = '"DOC_TIP_PARAM"."CENA_PARAM"'
+      Precision = 18
+      Size = 2
+    end
+    object q_docTipParamSTAVKA_NDS: TFloatField
+      FieldName = 'STAVKA_NDS'
+      Origin = '"DOC_TIP_PARAM"."STAVKA_NDS"'
+    end
+    object q_docTipParamSTRUK_ID: TIntegerField
+      FieldName = 'STRUK_ID'
+      Origin = '"DOC_TIP_PARAM"."STRUK_ID"'
+    end
+    object q_docTipParamORDER_PARAM: TSmallintField
+      FieldName = 'ORDER_PARAM'
+      Origin = '"DOC_TIP_PARAM"."ORDER_PARAM"'
+    end
+    object q_docTipParamUNIQ_PARAM: TSmallintField
+      FieldName = 'UNIQ_PARAM'
+      Origin = '"DOC_TIP_PARAM"."UNIQ_PARAM"'
     end
   end
 end
