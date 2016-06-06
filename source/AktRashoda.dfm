@@ -68,7 +68,7 @@ object FAktRashoda: TFAktRashoda
       ImageIndex = 2
       ParentShowHint = False
       ShowHint = True
-      OnClick = SpeedButton1Click
+      OnClick = ToolButton1Click
     end
     object ToolButton3: TToolButton
       Left = 164
@@ -250,53 +250,140 @@ object FAktRashoda: TFAktRashoda
     Height = 204
     Align = alBottom
     TabOrder = 2
-    object DBGridEh2: TDBGridEh
+    object ToolBar2: TToolBar
       Left = 1
-      Top = 43
+      Top = 4
+      Width = 504
+      Height = 40
+      Align = alCustom
+      ButtonHeight = 41
+      ButtonWidth = 31
+      Caption = 'ToolBar2'
+      GradientEndColor = 13288646
+      Images = ImageList1
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 0
+      object ToolButton6: TToolButton
+        Left = 0
+        Top = 0
+        Hint = #1042#1089#1090#1072#1074#1080#1090#1100' '#1079#1072#1087#1080#1089#1100
+        Caption = 'ToolButton6'
+        ImageIndex = 1
+        Visible = False
+        OnClick = AddBtnClick
+      end
+      object ToolButton7: TToolButton
+        Left = 31
+        Top = 0
+        Hint = #1059#1076#1072#1083#1080#1090#1100' '#1079#1072#1087#1080#1089#1100
+        Caption = 'ToolButton7'
+        ImageIndex = 6
+        Visible = False
+        OnClick = delBtnClick
+      end
+      object btn_insertSign: TSpeedButton
+        Left = 62
+        Top = 0
+        Width = 60
+        Height = 41
+        Hint = #1042#1089#1090#1072#1074#1080#1090#1100' '#1079#1072#1087#1080#1089#1100' '#1074' '#1090#1077#1082#1091#1097#1091#1102' '#1087#1086#1079#1080#1094#1080#1102
+        Caption = #1042#1089#1090#1072#1074#1080#1090#1100
+        OnClick = btn_insertSignClick
+      end
+      object btn_appendSign: TSpeedButton
+        Left = 122
+        Top = 0
+        Width = 75
+        Height = 41
+        Hint = #1042#1089#1090#1072#1074#1080#1090#1100' '#1079#1072#1087#1080#1089#1100' '#1074' '#1082#1086#1085#1077#1094' '#1089#1087#1080#1089#1082#1072
+        Caption = #1044#1086#1073'. '#1074' '#1082#1086#1085#1077#1094
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        OnClick = btn_appendSignClick
+      end
+      object btn_delSign: TSpeedButton
+        Left = 197
+        Top = 0
+        Width = 62
+        Height = 41
+        Hint = #1059#1076#1072#1083#1080#1090#1100' '#1090#1077#1082#1091#1097#1091#1102' '#1079#1072#1087#1080#1089#1100
+        Caption = #1059#1076#1072#1083#1080#1090#1100
+        OnClick = btn_delSignClick
+      end
+      object btn_delAll: TSpeedButton
+        Left = 259
+        Top = 0
+        Width = 69
+        Height = 41
+        Caption = #1059#1076#1072#1083#1080#1090#1100' '#1074#1089#1077
+        OnClick = btn_delAllClick
+      end
+      object btn_moveUp: TSpeedButton
+        Left = 328
+        Top = 0
+        Width = 78
+        Height = 41
+        Hint = #1055#1077#1088#1077#1084#1077#1089#1090#1080#1090#1100' '#1079#1072#1087#1080#1089#1100' '#1085#1072' '#1086#1076#1085#1091' '#1087#1086#1079#1080#1094#1080#1102' '#1074#1074#1077#1088#1093#1091' '#1087#1086' '#1089#1087#1080#1089#1082#1091
+        Caption = #1055#1077#1088#1077#1084'. '#1074#1074#1077#1088#1093
+        OnClick = btn_moveUpClick
+      end
+      object btn_moveDown: TSpeedButton
+        Left = 406
+        Top = 0
+        Width = 72
+        Height = 41
+        Hint = #1055#1077#1088#1077#1084#1077#1089#1090#1080#1090#1100' '#1079#1072#1087#1080#1089#1100' '#1085#1072' '#1086#1076#1085#1091' '#1087#1086#1079#1080#1094#1080#1102' '#1074#1085#1080#1079' '#1087#1086' '#1089#1087#1080#1089#1082#1091
+        Caption = #1055#1077#1088#1077#1084'. '#1074#1085#1080#1079
+        OnClick = btn_moveDownClick
+      end
+    end
+    object DBGridEh3: TDBGridEh
+      Left = 1
+      Top = 44
       Width = 689
       Height = 158
       AutoFitColWidths = True
-      DataSource = DSDocTipParam
+      DataSource = ds_underSign
       FooterColor = clWindow
       FooterFont.Charset = DEFAULT_CHARSET
       FooterFont.Color = clWindowText
       FooterFont.Height = -11
       FooterFont.Name = 'Tahoma'
       FooterFont.Style = []
-      OptionsEh = [dghFixed3D, dghHighlightFocus, dghClearSelection, dghRowHighlight, dghDialogFind]
-      TabOrder = 0
+      HorzScrollBar.Visible = False
+      TabOrder = 1
       TitleFont.Charset = DEFAULT_CHARSET
       TitleFont.Color = clWindowText
       TitleFont.Height = -11
       TitleFont.Name = 'Tahoma'
       TitleFont.Style = []
-      OnKeyPress = DBGridEh2KeyPress
       Columns = <
-        item
-          EditButtons = <>
-          FieldName = 'ORDER_PARAM'
-          Footers = <>
-          Title.Caption = #1055#1086#1088#1103#1076#1086#1082
-        end
         item
           EditButtons = <>
           FieldName = 'PARAM_NAME'
           Footers = <>
-          Title.Alignment = taCenter
           Title.Caption = #1044#1086#1083#1078#1085#1086#1089#1090#1100
-          Width = 286
         end
         item
           EditButtons = <>
           FieldName = 'DEFAULT_VALUE'
           Footers = <>
-          Title.Alignment = taCenter
           Title.Caption = #1060#1048#1054
-          Width = 245
         end
         item
           EditButtons = <>
-          FieldName = 'STRUK_ID'
+          FieldName = 'DOC_ID'
+          Footers = <>
+          Visible = False
+        end
+        item
+          EditButtons = <>
+          FieldName = 'PARAM_ID'
           Footers = <>
           Visible = False
         end
@@ -305,38 +392,13 @@ object FAktRashoda: TFAktRashoda
           FieldName = 'TIP_DOK_ID'
           Footers = <>
           Visible = False
+        end
+        item
+          EditButtons = <>
+          FieldName = 'TIP_PARAM_ID'
+          Footers = <>
+          Visible = False
         end>
-    end
-    object ToolBar2: TToolBar
-      Left = 1
-      Top = 4
-      Width = 80
-      Height = 40
-      Align = alCustom
-      ButtonHeight = 40
-      ButtonWidth = 40
-      Caption = 'ToolBar2'
-      GradientEndColor = 13288646
-      Images = ImageList1
-      ParentShowHint = False
-      ShowHint = True
-      TabOrder = 1
-      object ToolButton6: TToolButton
-        Left = 0
-        Top = 0
-        Hint = #1044#1086#1073#1072#1074#1080#1090#1100' '#1079#1072#1087#1080#1089#1100
-        Caption = 'ToolButton6'
-        ImageIndex = 1
-        OnClick = AddBtnClick
-      end
-      object ToolButton7: TToolButton
-        Left = 40
-        Top = 0
-        Hint = #1059#1076#1072#1083#1080#1090#1100' '#1079#1072#1087#1080#1089#1100
-        Caption = 'ToolButton7'
-        ImageIndex = 6
-        OnClick = delBtnClick
-      end
     end
   end
   object Panel2: TPanel
@@ -462,6 +524,14 @@ object FAktRashoda: TFAktRashoda
       Height = 13
       Margins.Bottom = 0
       Caption = #1044#1072#1090#1072' '#1076#1086#1082#1091#1084#1077#1085#1090#1072':'
+    end
+    object Label5: TLabel
+      Left = 888
+      Top = 40
+      Width = 31
+      Height = 13
+      Margins.Bottom = 0
+      Caption = 'Label5'
     end
     object Edit1: TEdit
       Left = 62
@@ -679,7 +749,7 @@ object FAktRashoda: TFAktRashoda
     PrintOptions.Printer = #1055#1086' '#1091#1084#1086#1083#1095#1072#1085#1080#1102
     PrintOptions.PrintOnSheet = 0
     ReportOptions.CreateDate = 40739.434456192100000000
-    ReportOptions.LastChange = 42496.476005208340000000
+    ReportOptions.LastChange = 42527.610204351850000000
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
       'procedure Memo58OnBeforePrint(Sender: TfrxComponent);'
@@ -715,7 +785,7 @@ object FAktRashoda: TFAktRashoda
       '      ds.prior'
       '  else'
       '  begin'
-      ''
+      ' {  '
       '    if param8 = '#39#39' then'
       '    begin      '
       '      Memo61.Visible := false;'
@@ -796,11 +866,27 @@ object FAktRashoda: TFAktRashoda
       '      Memo64.Visible := false; '
       '    if podp8 = '#39#39' then '
       '      Memo65.Visible := false;'
-      '      '
+      '     }        '
       '    if (Engine.FreeSpace < Footer1.Height) then '
       '      Engine.NewPage;'
       '  end;'
       ''
+      'end;'
+      ''
+      'procedure Memo40OnBeforePrint(Sender: TfrxComponent);'
+      'begin'
+      
+        '  if (<frxDBDataSet1."FACTRASHOD"> = 0) and (<frxPrintNull."prin' +
+        'tNull"> = 0) then'
+      '  begin'
+      
+        '   masterdata1.visible := false;                                ' +
+        '                                       '
+      '  end'
+      '  else'
+      '  begin'
+      '    masterdata1.visible := true;  '
+      '  end;  '
       'end;'
       ''
       'begin'
@@ -812,6 +898,14 @@ object FAktRashoda: TFAktRashoda
       item
         DataSet = frxDBDataset1
         DataSetName = 'frxDBDataset1'
+      end
+      item
+        DataSet = frxDBDataset2
+        DataSetName = 'frxPrintNull'
+      end
+      item
+        DataSet = frds_underSign
+        DataSetName = 'frxUnderSign'
       end>
     Variables = <>
     Style = <>
@@ -1362,7 +1456,7 @@ object FAktRashoda: TFAktRashoda
         end
       end
       object Footer1: TfrxFooter
-        Height = 408.189240000000000000
+        Height = 211.653680000000000000
         Top = 525.354670000000000000
         Width = 718.110700000000000000
         OnBeforePrint = 'Footer1OnBeforePrint'
@@ -1450,250 +1544,6 @@ object FAktRashoda: TFAktRashoda
           Font.Style = []
           Memo.UTF8 = (
             #1056#8212'.'#1056#1114'.'#1056#1116#1056#176#1056#1169#1056#1030#1056#1105#1056#1108#1056#1109#1056#1030#1056#176)
-          ParentFont = False
-        end
-        object Memo49: TfrxMemoView
-          Left = 7.559060000000000000
-          Top = 234.330860000000000000
-          Width = 313.700990000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[param2]:')
-          ParentFont = False
-        end
-        object Memo50: TfrxMemoView
-          Left = 7.559060000000000000
-          Top = 257.008040000000000000
-          Width = 313.700990000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[param3]:')
-          ParentFont = False
-        end
-        object Memo51: TfrxMemoView
-          Left = 7.559060000000000000
-          Top = 283.464750000000000000
-          Width = 313.700990000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[param4]:')
-          ParentFont = False
-        end
-        object Memo52: TfrxMemoView
-          Left = 7.559060000000000000
-          Top = 309.921460000000000000
-          Width = 313.700990000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[param5]:')
-          ParentFont = False
-        end
-        object Memo54: TfrxMemoView
-          Left = 502.677490000000000000
-          Top = 234.330860000000000000
-          Width = 313.700990000000000000
-          Height = 18.897650000000000000
-          OnBeforePrint = 'Memo54OnBeforePrint'
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[podp2]')
-          ParentFont = False
-        end
-        object Memo55: TfrxMemoView
-          Left = 502.677490000000000000
-          Top = 257.008040000000000000
-          Width = 313.700990000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[podp3]')
-          ParentFont = False
-        end
-        object Memo56: TfrxMemoView
-          Left = 502.677490000000000000
-          Top = 283.464750000000000000
-          Width = 313.700990000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[podp4]')
-          ParentFont = False
-        end
-        object Memo57: TfrxMemoView
-          Left = 502.677490000000000000
-          Top = 309.921460000000000000
-          Width = 313.700990000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[podp5]')
-          ParentFont = False
-        end
-        object Memo58: TfrxMemoView
-          Left = 7.559060000000000000
-          Top = 211.653680000000000000
-          Width = 313.700990000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[param1]:')
-          ParentFont = False
-        end
-        object Memo59: TfrxMemoView
-          Left = 502.677490000000000000
-          Top = 211.653680000000000000
-          Width = 215.433210000000000000
-          Height = 18.897650000000000000
-          OnBeforePrint = 'Memo59OnBeforePrint'
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[podp1]')
-          ParentFont = False
-        end
-        object Memo60: TfrxMemoView
-          Left = 7.559060000000000000
-          Top = 362.834880000000000000
-          Width = 313.700990000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[param7]:')
-          ParentFont = False
-        end
-        object Memo61: TfrxMemoView
-          Left = 7.559060000000000000
-          Top = 385.512060000000000000
-          Width = 313.700990000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[param8]:')
-          ParentFont = False
-        end
-        object Memo64: TfrxMemoView
-          Left = 502.677490000000000000
-          Top = 362.834880000000000000
-          Width = 313.700990000000000000
-          Height = 18.897650000000000000
-          OnBeforePrint = 'Memo54OnBeforePrint'
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[podp7]')
-          ParentFont = False
-        end
-        object Memo65: TfrxMemoView
-          Left = 502.677490000000000000
-          Top = 385.512060000000000000
-          Width = 313.700990000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[podp8]')
-          ParentFont = False
-        end
-        object Memo68: TfrxMemoView
-          Left = 7.559060000000000000
-          Top = 336.378170000000000000
-          Width = 313.700990000000000000
-          Height = 18.897650000000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[param6]:')
-          ParentFont = False
-        end
-        object Memo69: TfrxMemoView
-          Left = 502.677490000000000000
-          Top = 336.378170000000000000
-          Width = 215.433210000000000000
-          Height = 18.897650000000000000
-          OnBeforePrint = 'Memo59OnBeforePrint'
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Times New Roman'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[podp6]')
           ParentFont = False
         end
         object Memo44: TfrxMemoView
@@ -1834,6 +1684,7 @@ object FAktRashoda: TFAktRashoda
           Left = 449.764070000000000000
           Width = 98.267780000000000000
           Height = 18.897650000000000000
+          OnBeforePrint = 'Memo40OnBeforePrint'
           ShowHint = False
           StretchMode = smMaxHeight
           DataField = 'FACTRASHOD'
@@ -1940,7 +1791,7 @@ object FAktRashoda: TFAktRashoda
       end
       object PageFooter1: TfrxPageFooter
         Height = 18.897650000000000000
-        Top = 994.016390000000000000
+        Top = 842.835190000000000000
         Width = 718.110700000000000000
         object Memo5: TfrxMemoView
           Width = 718.110700000000000000
@@ -1983,6 +1834,48 @@ object FAktRashoda: TFAktRashoda
       object GroupFooter1: TfrxGroupFooter
         Top = 502.677490000000000000
         Width = 718.110700000000000000
+      end
+      object MasterData2: TfrxMasterData
+        Height = 22.677180000000000000
+        Top = 759.685530000000000000
+        Width = 718.110700000000000000
+        DataSet = frds_underSign
+        DataSetName = 'frxUnderSign'
+        RowCount = 0
+        object Memo72: TfrxMemoView
+          Left = 503.846153850000000000
+          Width = 214.360993340000000000
+          Height = 18.897650000000000000
+          ShowHint = False
+          DataField = 'DEFAULT_VALUE'
+          DataSet = frds_underSign
+          DataSetName = 'frxUnderSign'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Times New Roman'
+          Font.Style = []
+          Memo.UTF8 = (
+            '[frxUnderSign."DEFAULT_VALUE"]')
+          ParentFont = False
+        end
+        object Memo71: TfrxMemoView
+          Left = 7.559055118110240000
+          Width = 315.239451540000000000
+          Height = 18.897650000000000000
+          ShowHint = False
+          DataField = 'PARAM_NAME'
+          DataSet = frds_underSign
+          DataSetName = 'frxUnderSign'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Times New Roman'
+          Font.Style = []
+          Memo.UTF8 = (
+            '[frxUnderSign."PARAM_NAME"]')
+          ParentFont = False
+        end
       end
     end
   end
@@ -2127,7 +2020,7 @@ object FAktRashoda: TFAktRashoda
     Width = 24
     Left = 808
     Bitmap = {
-      494C01010B001C00900018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B001C00A00018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       000000000000000000000000000000000000000000000000000000000000A87D
       7800B7818300B7818300B7818300B7818300B7818300B7818300B7818300B781
@@ -3305,8 +3198,8 @@ object FAktRashoda: TFAktRashoda
         'document.tip_op_id, document.tip_dok_id, kart.ksm_id, kart.kol_r' +
         'ash, kart.kart_id,'
       
-        'kart.stroka_id, kart.cena, kart.cena_vp, kart.doc_id, ostatki.ra' +
-        'zdel_id, ostatki.kei_id,'
+        'kart.stroka_id, kart.cena, kart.cena_vp, kart.doc_id, razdel.raz' +
+        'del_id, ostatki.kei_id,'
       
         'razdel.namraz, razdel.kraz, iif(coalesce(ediz.kei_id, 0) = 0, ed' +
         '_ost.neis, ediz.neis) neis, '
@@ -3314,7 +3207,7 @@ object FAktRashoda: TFAktRashoda
       'from kart'
       'inner join document on kart.doc_id = document.doc_id'
       'left join ostatki on ostatki.kart_id = kart.kart_id'
-      'left join razdel on razdel.razdel_id = ostatki.razdel_id'
+      'left join razdel on razdel.razdel_id = kart.razdel_id'
       'left join ediz on ediz.kei_id = kart.kei_id'
       'left join matrop on matrop.ksm_id = kart.ksm_id'
       'left join ediz ed_ost on ed_ost.kei_id = ostatki.kei_id'
@@ -3540,7 +3433,8 @@ object FAktRashoda: TFAktRashoda
       '  STROKA_ID,'
       '  CENA,'
       '  CENA_VP,'
-      '  DOC_ID'
+      '  DOC_ID,'
+      '  RAZDEL_ID'
       'from kart '
       'where'
       '  STROKA_ID = :STROKA_ID')
@@ -3553,16 +3447,19 @@ object FAktRashoda: TFAktRashoda
       '  KART_ID = :KART_ID,'
       '  KOL_RASH = :KOL_RASH,'
       '  KSM_ID = :KSM_ID,'
-      '  STROKA_ID = :STROKA_ID'
+      '  STROKA_ID = :STROKA_ID,'
+      '  RAZDEL_ID = :RAZDEL_ID'
       'where'
       '  STROKA_ID = :OLD_STROKA_ID')
     InsertSQL.Strings = (
       'insert into kart'
-      '  (CENA, CENA_VP, DOC_ID, KART_ID, KOL_RASH, KSM_ID, STROKA_ID)'
+      
+        '  (CENA, CENA_VP, DOC_ID, KART_ID, KOL_RASH, KSM_ID, STROKA_ID, ' +
+        'RAZDEL_ID)'
       'values'
       
         '  (:CENA, :CENA_VP, :DOC_ID, :KART_ID, :KOL_RASH, :KSM_ID, :STRO' +
-        'KA_ID)')
+        'KA_ID, :RAZDEL_ID)')
     DeleteSQL.Strings = (
       'delete from kart'
       'where'
@@ -4402,17 +4299,26 @@ object FAktRashoda: TFAktRashoda
     Database = DM1.BELMED
     Transaction = DM1.IBT_Read
     SQL.Strings = (
-      'select ostatki.*'
-      'from ostatki'
-      'where ostatki.struk_id = :struk_id'
-      'and ostatki.ksm_id = :ksm_id'
-      'and coalesce(ostatki.ksm_idpr, 0) = :ksm_idpr'
-      'and ostatki.razdel_id = :razdel_id')
+      'select ost.*'
+      
+        'from select_ost_ksm_acc1(:dat1, :dat2, 1, :struk_id, :ksm_id, '#39'1' +
+        '0/11'#39', 0, '#39#39') ost'
+      'where ost.ostatok_end_s <> 0')
     UpdateObject = upd_ostatki
     Macros = <>
     Left = 920
     Top = 152
     ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'dat1'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'dat2'
+        ParamType = ptUnknown
+      end
       item
         DataType = ftUnknown
         Name = 'struk_id'
@@ -4422,257 +4328,176 @@ object FAktRashoda: TFAktRashoda
         DataType = ftUnknown
         Name = 'ksm_id'
         ParamType = ptUnknown
-      end
-      item
-        DataType = ftUnknown
-        Name = 'ksm_idpr'
-        ParamType = ptUnknown
-      end
-      item
-        DataType = ftUnknown
-        Name = 'razdel_id'
-        ParamType = ptUnknown
       end>
-    object q_ostatkiKART_ID: TIntegerField
-      FieldName = 'KART_ID'
-      Origin = '"OSTATKI"."KART_ID"'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-    end
-    object q_ostatkiOT_S: TFMTBCDField
-      FieldName = 'OT_S'
-      Origin = '"OSTATKI"."OT_S"'
+    object q_ostatkiPEREDANO_PRIH_NZ: TFMTBCDField
+      FieldName = 'PEREDANO_PRIH_NZ'
+      Origin = '"SELECT_OST_KSM_ACC1"."PEREDANO_PRIH_NZ"'
       Precision = 18
       Size = 6
+    end
+    object q_ostatkiPEREDANO_RASH_NZ: TFMTBCDField
+      FieldName = 'PEREDANO_RASH_NZ'
+      Origin = '"SELECT_OST_KSM_ACC1"."PEREDANO_RASH_NZ"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiPEREDANO_PRIH_S: TFMTBCDField
+      FieldName = 'PEREDANO_PRIH_S'
+      Origin = '"SELECT_OST_KSM_ACC1"."PEREDANO_PRIH_S"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiPEREDANO_RASH_S: TFMTBCDField
+      FieldName = 'PEREDANO_RASH_S'
+      Origin = '"SELECT_OST_KSM_ACC1"."PEREDANO_RASH_S"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiKART_ID: TIntegerField
+      FieldName = 'KART_ID'
+      Origin = '"SELECT_OST_KSM_ACC1"."KART_ID"'
     end
     object q_ostatkiKSM_ID: TIntegerField
       FieldName = 'KSM_ID'
-      Origin = '"OSTATKI"."KSM_ID"'
-      Required = True
+      Origin = '"SELECT_OST_KSM_ACC1"."KSM_ID"'
     end
     object q_ostatkiSTRUK_ID: TIntegerField
       FieldName = 'STRUK_ID'
-      Origin = '"OSTATKI"."STRUK_ID"'
-      Required = True
+      Origin = '"SELECT_OST_KSM_ACC1"."STRUK_ID"'
     end
-    object q_ostatkiMES: TSmallintField
-      FieldName = 'MES'
-      Origin = '"OSTATKI"."MES"'
-      Required = True
+    object q_ostatkiSPVIS: TSmallintField
+      FieldName = 'SPVIS'
+      Origin = '"SELECT_OST_KSM_ACC1"."SPVIS"'
     end
-    object q_ostatkiONM_S: TFMTBCDField
-      FieldName = 'ONM_S'
-      Origin = '"OSTATKI"."ONM_S"'
-      Precision = 18
-      Size = 6
+    object q_ostatkiSPSR: TSmallintField
+      FieldName = 'SPSR'
+      Origin = '"SELECT_OST_KSM_ACC1"."SPSR"'
     end
-    object q_ostatkiCENA_UCH: TFloatField
-      FieldName = 'CENA_UCH'
-      Origin = '"OSTATKI"."CENA_UCH"'
-    end
-    object q_ostatkiGOD: TSmallintField
-      FieldName = 'GOD'
-      Origin = '"OSTATKI"."GOD"'
-      Required = True
-    end
-    object q_ostatkiSPROD_ID: TIntegerField
-      FieldName = 'SPROD_ID'
-      Origin = '"OSTATKI"."SPROD_ID"'
+    object q_ostatkiNMAT: TIBStringField
+      FieldName = 'NMAT'
+      Origin = '"SELECT_OST_KSM_ACC1"."NMAT"'
+      Size = 60
     end
     object q_ostatkiKEI_ID: TSmallintField
       FieldName = 'KEI_ID'
-      Origin = '"OSTATKI"."KEI_ID"'
-      Required = True
+      Origin = '"SELECT_OST_KSM_ACC1"."KEI_ID"'
     end
-    object q_ostatkiONM_NZ: TFMTBCDField
-      FieldName = 'ONM_NZ'
-      Origin = '"OSTATKI"."ONM_NZ"'
-      Precision = 18
-      Size = 6
-    end
-    object q_ostatkiOT_NZ: TFMTBCDField
-      FieldName = 'OT_NZ'
-      Origin = '"OSTATKI"."OT_NZ"'
-      Precision = 18
-      Size = 6
-    end
-    object q_ostatkiKOL_TRANS: TFloatField
-      FieldName = 'KOL_TRANS'
-      Origin = '"OSTATKI"."KOL_TRANS"'
-    end
-    object q_ostatkiNOMU_ID_TRANS: TSmallintField
-      FieldName = 'NOMU_ID_TRANS'
-      Origin = '"OSTATKI"."NOMU_ID_TRANS"'
-    end
-    object q_ostatkiSERIA_ID: TIntegerField
-      FieldName = 'SERIA_ID'
-      Origin = '"OSTATKI"."SERIA_ID"'
-    end
-    object q_ostatkiOT_FD: TFMTBCDField
-      FieldName = 'OT_FD'
-      Origin = '"OSTATKI"."OT_FD"'
-      Precision = 18
-      Size = 6
-    end
-    object q_ostatkiONM_FD: TFMTBCDField
-      FieldName = 'ONM_FD'
-      Origin = '"OSTATKI"."ONM_FD"'
-      Precision = 18
-      Size = 6
-    end
-    object q_ostatkiNOMU_ID_GRP: TSmallintField
-      FieldName = 'NOMU_ID_GRP'
-      Origin = '"OSTATKI"."NOMU_ID_GRP"'
-    end
-    object q_ostatkiKOL_GRP: TFloatField
-      FieldName = 'KOL_GRP'
-      Origin = '"OSTATKI"."KOL_GRP"'
-    end
-    object q_ostatkiVES_TRANS: TIBBCDField
-      FieldName = 'VES_TRANS'
-      Origin = '"OSTATKI"."VES_TRANS"'
-      Precision = 9
-      Size = 2
-    end
-    object q_ostatkiVOL_TRANS: TFMTBCDField
-      FieldName = 'VOL_TRANS'
-      Origin = '"OSTATKI"."VOL_TRANS"'
-      Precision = 18
-      Size = 6
-    end
-    object q_ostatkiUSER_NAME: TIBStringField
-      FieldName = 'USER_NAME'
-      Origin = '"OSTATKI"."USER_NAME"'
+    object q_ostatkiNEIS: TIBStringField
+      FieldName = 'NEIS'
+      Origin = '"SELECT_OST_KSM_ACC1"."NEIS"'
       FixedChar = True
       Size = 10
     end
-    object q_ostatkiORG_RESERV: TIntegerField
-      FieldName = 'ORG_RESERV'
-      Origin = '"OSTATKI"."ORG_RESERV"'
+    object q_ostatkiREG: TSmallintField
+      FieldName = 'REG'
+      Origin = '"SELECT_OST_KSM_ACC1"."REG"'
     end
-    object q_ostatkiOT_DOKUM: TFMTBCDField
-      FieldKind = fkInternalCalc
-      FieldName = 'OT_DOKUM'
-      Origin = '"OSTATKI"."OT_DOKUM"'
-      ProviderFlags = []
-      ReadOnly = True
+    object q_ostatkiPRMAT: TIBStringField
+      FieldName = 'PRMAT'
+      Origin = '"SELECT_OST_KSM_ACC1"."PRMAT"'
+      FixedChar = True
+      Size = 2
+    end
+    object q_ostatkiGR: TIBStringField
+      FieldName = 'GR'
+      Origin = '"SELECT_OST_KSM_ACC1"."GR"'
+      FixedChar = True
+      Size = 2
+    end
+    object q_ostatkiPGR: TIBStringField
+      FieldName = 'PGR'
+      Origin = '"SELECT_OST_KSM_ACC1"."PGR"'
+      FixedChar = True
+      Size = 2
+    end
+    object q_ostatkiKORG: TIntegerField
+      FieldName = 'KORG'
+      Origin = '"SELECT_OST_KSM_ACC1"."KORG"'
+    end
+    object q_ostatkiKOD_PROD: TIBStringField
+      FieldName = 'KOD_PROD'
+      Origin = '"SELECT_OST_KSM_ACC1"."KOD_PROD"'
+      FixedChar = True
+      Size = 18
+    end
+    object q_ostatkiOSTATOK_BEGIN_S: TFMTBCDField
+      FieldName = 'OSTATOK_BEGIN_S'
+      Origin = '"SELECT_OST_KSM_ACC1"."OSTATOK_BEGIN_S"'
       Precision = 18
       Size = 6
     end
-    object q_ostatkiONM_DOKUM: TFMTBCDField
-      FieldKind = fkInternalCalc
-      FieldName = 'ONM_DOKUM'
-      Origin = '"OSTATKI"."ONM_DOKUM"'
-      ProviderFlags = []
-      ReadOnly = True
+    object q_ostatkiOSTATOK_BEGIN_NZ: TFMTBCDField
+      FieldName = 'OSTATOK_BEGIN_NZ'
+      Origin = '"SELECT_OST_KSM_ACC1"."OSTATOK_BEGIN_NZ"'
       Precision = 18
       Size = 6
     end
-    object q_ostatkiDATE_TIME_UPDATE: TDateTimeField
-      FieldName = 'DATE_TIME_UPDATE'
-      Origin = '"OSTATKI"."DATE_TIME_UPDATE"'
+    object q_ostatkiOSTATOK_END_S: TFMTBCDField
+      FieldName = 'OSTATOK_END_S'
+      Origin = '"SELECT_OST_KSM_ACC1"."OSTATOK_END_S"'
+      Precision = 18
+      Size = 6
     end
-    object q_ostatkiKSM_IDPR: TIntegerField
-      FieldName = 'KSM_IDPR'
-      Origin = '"OSTATKI"."KSM_IDPR"'
+    object q_ostatkiOSTATOK_END_NZ: TFMTBCDField
+      FieldName = 'OSTATOK_END_NZ'
+      Origin = '"SELECT_OST_KSM_ACC1"."OSTATOK_END_NZ"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiPRIX_PERIOD: TFMTBCDField
+      FieldName = 'PRIX_PERIOD'
+      Origin = '"SELECT_OST_KSM_ACC1"."PRIX_PERIOD"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiRASX_PERIOD: TFMTBCDField
+      FieldName = 'RASX_PERIOD'
+      Origin = '"SELECT_OST_KSM_ACC1"."RASX_PERIOD"'
+      Precision = 18
+      Size = 6
     end
     object q_ostatkiRAZDEL_ID: TSmallintField
       FieldName = 'RAZDEL_ID'
-      Origin = '"OSTATKI"."RAZDEL_ID"'
+      Origin = '"SELECT_OST_KSM_ACC1"."RAZDEL_ID"'
     end
-    object q_ostatkiINV_ID: TIntegerField
-      FieldName = 'INV_ID'
-      Origin = '"OSTATKI"."INV_ID"'
+    object q_ostatkiSERIA_ID: TIntegerField
+      FieldName = 'SERIA_ID'
+      Origin = '"SELECT_OST_KSM_ACC1"."SERIA_ID"'
+    end
+    object q_ostatkiKSM_IDPR: TIntegerField
+      FieldName = 'KSM_IDPR'
+      Origin = '"SELECT_OST_KSM_ACC1"."KSM_IDPR"'
+    end
+    object q_ostatkiSERIA: TIBStringField
+      FieldName = 'SERIA'
+      Origin = '"SELECT_OST_KSM_ACC1"."SERIA"'
+    end
+    object q_ostatkiZAG_PERIOD: TFMTBCDField
+      FieldName = 'ZAG_PERIOD'
+      Origin = '"SELECT_OST_KSM_ACC1"."ZAG_PERIOD"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiRASH_VIRAB_PERIOD: TFMTBCDField
+      FieldName = 'RASH_VIRAB_PERIOD'
+      Origin = '"SELECT_OST_KSM_ACC1"."RASH_VIRAB_PERIOD"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostatkiNMAT_PREP: TIBStringField
+      FieldName = 'NMAT_PREP'
+      Origin = '"SELECT_OST_KSM_ACC1"."NMAT_PREP"'
+      Size = 60
+    end
+    object q_ostatkiKOD_PREP: TIBStringField
+      FieldName = 'KOD_PREP'
+      Origin = '"SELECT_OST_KSM_ACC1"."KOD_PREP"'
+      FixedChar = True
+      Size = 18
     end
     object q_ostatkiACCOUNT: TIBStringField
       FieldName = 'ACCOUNT'
-      Origin = '"OSTATKI"."ACCOUNT"'
-      FixedChar = True
-      Size = 5
-    end
-    object q_ostatkiSUMMA_KART: TIBBCDField
-      FieldName = 'SUMMA_KART'
-      Origin = '"OSTATKI"."SUMMA_KART"'
-      Precision = 18
-      Size = 2
-    end
-    object q_ostatkiOT_S2: TFMTBCDField
-      FieldName = 'OT_S2'
-      Origin = '"OSTATKI"."OT_S2"'
-      Precision = 18
-      Size = 6
-    end
-    object q_ostatkiKEI_ID2: TSmallintField
-      FieldName = 'KEI_ID2'
-      Origin = '"OSTATKI"."KEI_ID2"'
-    end
-    object q_ostatkiVOL_GRP: TFMTBCDField
-      FieldName = 'VOL_GRP'
-      Origin = '"OSTATKI"."VOL_GRP"'
-      Precision = 18
-      Size = 6
-    end
-    object q_ostatkiVES_GRP: TIBBCDField
-      FieldName = 'VES_GRP'
-      Origin = '"OSTATKI"."VES_GRP"'
-      Precision = 9
-      Size = 3
-    end
-    object q_ostatkiPROC_OV: TFMTBCDField
-      FieldName = 'PROC_OV'
-      Origin = '"OSTATKI"."PROC_OV"'
-      Precision = 18
-      Size = 6
-    end
-    object q_ostatkiCENA_OPT: TIBBCDField
-      FieldName = 'CENA_OPT'
-      Origin = '"OSTATKI"."CENA_OPT"'
-      Precision = 18
-      Size = 2
-    end
-    object q_ostatkiONM_S_P: TFMTBCDField
-      FieldName = 'ONM_S_P'
-      Origin = '"OSTATKI"."ONM_S_P"'
-      Precision = 18
-      Size = 6
-    end
-    object q_ostatkiSTRUK_ID_RELA: TIntegerField
-      FieldName = 'STRUK_ID_RELA'
-      Origin = '"OSTATKI"."STRUK_ID_RELA"'
-    end
-    object q_ostatkiBSO: TSmallintField
-      FieldName = 'BSO'
-      Origin = '"OSTATKI"."BSO"'
-    end
-    object q_ostatkiDATE_VID: TDateField
-      FieldName = 'DATE_VID'
-      Origin = '"OSTATKI"."DATE_VID"'
-    end
-    object q_ostatkiSROK: TIBBCDField
-      FieldName = 'SROK'
-      Origin = '"OSTATKI"."SROK"'
-      Precision = 9
-      Size = 2
-    end
-    object q_ostatkiNLK: TIntegerField
-      FieldName = 'NLK'
-      Origin = '"OSTATKI"."NLK"'
-    end
-    object q_ostatkiSUMMA_SPIS: TIBBCDField
-      FieldName = 'SUMMA_SPIS'
-      Origin = '"OSTATKI"."SUMMA_SPIS"'
-      Precision = 18
-      Size = 2
-    end
-    object q_ostatkiCENA_UCH_NM: TIBBCDField
-      FieldName = 'CENA_UCH_NM'
-      Origin = '"OSTATKI"."CENA_UCH_NM"'
-      Precision = 18
-      Size = 4
-    end
-    object q_ostatkiACCOUNT_OLD: TIBStringField
-      FieldName = 'ACCOUNT_OLD'
-      Origin = '"OSTATKI"."ACCOUNT_OLD"'
+      Origin = '"SELECT_OST_KSM_ACC1"."ACCOUNT"'
       FixedChar = True
       Size = 5
     end
@@ -5322,5 +5147,115 @@ object FAktRashoda: TFAktRashoda
       FieldName = 'SPEC'
       Origin = '"MATROP"."SPEC"'
     end
+  end
+  object ds_underSign: TDataSource
+    DataSet = mem_underSign
+    Left = 872
+    Top = 496
+  end
+  object mem_underSign: TkbmMemTable
+    DesignActivation = True
+    AttachedAutoRefresh = True
+    AttachMaxCount = 1
+    FieldDefs = <>
+    IndexDefs = <>
+    SortOptions = []
+    AllDataOptions = [mtfSaveData, mtfSaveNonVisible, mtfSaveBlobs, mtfSaveFiltered, mtfSaveIgnoreRange, mtfSaveIgnoreMasterDetail, mtfSaveDeltas]
+    CommaTextOptions = [mtfSaveData]
+    CSVQuote = '"'
+    CSVFieldDelimiter = ','
+    CSVRecordDelimiter = ','
+    CSVTrueString = 'True'
+    CSVFalseString = 'False'
+    PersistentSaveOptions = [mtfSaveData, mtfSaveNonVisible, mtfSaveIgnoreRange, mtfSaveIgnoreMasterDetail]
+    PersistentBackup = False
+    ProgressFlags = [mtpcLoad, mtpcSave, mtpcCopy]
+    FilterOptions = []
+    Version = '2.53g'
+    LanguageID = 0
+    SortID = 0
+    SubLanguageID = 1
+    LocaleID = 1024
+    Left = 784
+    Top = 488
+    object mem_underSignTIP_DOK_ID: TSmallintField
+      FieldName = 'TIP_DOK_ID'
+      Origin = '"DOC_TIP_PARAM"."TIP_DOK_ID"'
+      Required = True
+    end
+    object mem_underSignSTRUK_ID: TSmallintField
+      FieldName = 'STRUK_ID'
+      Origin = '"DOC_TIP_PARAM"."STRUK_ID"'
+    end
+    object mem_underSignTIP_PARAM_ID: TSmallintField
+      FieldName = 'TIP_PARAM_ID'
+      Origin = '"DOC_TIP_PARAM"."TIP_PARAM_ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+    end
+    object mem_underSignORDER_PARAM: TSmallintField
+      FieldName = 'ORDER_PARAM'
+      Origin = '"DOC_TIP_PARAM"."ORDER_PARAM"'
+    end
+    object mem_underSignPARAM_NAME: TStringField
+      FieldName = 'PARAM_NAME'
+      Size = 50
+    end
+    object mem_underSignDEFAULT_VALUE: TStringField
+      FieldName = 'DEFAULT_VALUE'
+      Size = 100
+    end
+    object mem_underSignPARAM_ID: TIntegerField
+      FieldName = 'PARAM_ID'
+    end
+    object mem_underSignDOC_ID: TIntegerField
+      FieldName = 'DOC_ID'
+    end
+  end
+  object frds_underSign: TfrxDBDataset
+    UserName = 'frxUnderSign'
+    CloseDataSource = False
+    DataSet = mem_underSign
+    BCDToCurrency = False
+    Left = 632
+    Top = 56
+  end
+  object mem_printNull: TkbmMemTable
+    DesignActivation = True
+    AttachedAutoRefresh = True
+    AttachMaxCount = 1
+    FieldDefs = <>
+    IndexDefs = <>
+    SortOptions = []
+    AllDataOptions = [mtfSaveData, mtfSaveNonVisible, mtfSaveBlobs, mtfSaveFiltered, mtfSaveIgnoreRange, mtfSaveIgnoreMasterDetail, mtfSaveDeltas]
+    CommaTextOptions = [mtfSaveData]
+    CSVQuote = '"'
+    CSVFieldDelimiter = ','
+    CSVRecordDelimiter = ','
+    CSVTrueString = 'True'
+    CSVFalseString = 'False'
+    PersistentSaveOptions = [mtfSaveData, mtfSaveNonVisible, mtfSaveIgnoreRange, mtfSaveIgnoreMasterDetail]
+    PersistentBackup = False
+    ProgressFlags = [mtpcLoad, mtpcSave, mtpcCopy]
+    FilterOptions = []
+    Version = '2.53g'
+    LanguageID = 0
+    SortID = 0
+    SubLanguageID = 1
+    LocaleID = 1024
+    Left = 504
+    Top = 16
+    object mem_printNullprintNull: TIntegerField
+      FieldName = 'printNull'
+    end
+  end
+  object frxDBDataset2: TfrxDBDataset
+    UserName = 'frxPrintNull'
+    CloseDataSource = False
+    FieldAliases.Strings = (
+      'printNull=printNull')
+    DataSet = mem_printNull
+    BCDToCurrency = False
+    Left = 504
+    Top = 48
   end
 end
