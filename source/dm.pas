@@ -850,7 +850,7 @@ uses
     procedure Ceh_NormzNewRecord(DataSet: TDataSet);
 
   private
-    { Private declarations }
+    procedure findOrCreateKartId;
   public
     stkod : string;
     naimCeh : string;
@@ -2541,9 +2541,11 @@ procedure TDM1.OstatkiNewRecord(DataSet: TDataSet);
 begin
   DM1.Ostatki.FieldByName('Kart_Id').AsInteger := vKart_Id;
   DM1.Ostatki.FieldByName('Ksm_Id').AsInteger := s_KSM;
-  IF v_razdel <> 0 then
+  IF (v_razdel <> 0) then
     DM1.Ostatki.FieldByName('razdel_id').AsInteger := v_razdel;
-  IF (s_kodp <> 0) and (s_kodp <> s_ksm) then
+  IF (s_kodp <> 0) and (s_kodp <> s_ksm)
+     and (vTip_Doc_Id <> 143) and (vTip_Doc_Id <> 144) and (vTip_Doc_Id <> 145)
+     and (vTip_Doc_Id <> 209) then
     DM1.Ostatki.FieldByName('ksm_idpr').AsInteger := s_kodp;
   IF vSeria_id <> 0 then
     DM1.Ostatki.FieldByName('Seria_id').AsInteger := vseria_id;
@@ -2900,7 +2902,7 @@ begin
   s_ksm := dm1.KartKSM_ID.AsInteger;
   s_kei := dm1.KartKei_ID.AsInteger;
   v_Razdel := dm1.KartRazdel_ID.AsInteger;
-  If DM1.Kart.FieldByName('Ksm_id').AsInteger = 0 then
+  If (DM1.Kart.FieldByName('Ksm_id').AsInteger = 0) then
   begin
     MessageDlg('Введите код сырья!', mtWarning, [mbOK], 0);
     Abort;
@@ -2913,10 +2915,10 @@ begin
     Abort;
   end;
   try
-    DM1.Seria.Active := False;
+    DM1.Seria.Close;
     DM1.Seria.ParamByName('ksm_id').AsInteger := dm1.KartKSM_ID.AsInteger;
-    dm1.Seria.Active := true;
-    if dm1.Seria.locate('seria', dm1.KartSeria.asstring, []) then
+    dm1.Seria.Open;
+    if (dm1.Seria.locate('seria', dm1.KartSeria.asstring, [])) then
     begin
       s_seria := dm1.SeriaSeria.asstring;
       vseria_id := dm1.SeriaSERIA_ID.AsInteger;
@@ -2924,7 +2926,7 @@ begin
     end
     else
     begin
-      if not dm1.KartSeria.IsNull then
+      if (not dm1.KartSeria.IsNull) then
       begin
         s_seria := dm1.KartSeria.asstring;
         DM1.Seria.Insert;
@@ -2934,42 +2936,51 @@ begin
       else
         vSeria_id := 0;
     end;
-    IF vKart_Id = 0  then
+    IF (vKart_Id = 0) then
     begin
-      if dm1.Ostatki.Active then
-        dm1.Ostatki.Active := false;
+      dm1.Ostatki.Close;
       DM1.Ostatki.ParamByName('struk_ID').AsInteger := vstruk_id;
-      if v_Razdel = 0 then
-        DM1.Ostatki.MacroByName('usl').AsString := ' ((ost.razdel_id is null) OR (ost.razdel_id = 0))'
-                                                   + ' AND OST.KSM_ID = ' + INTTOSTR(dm1.KartKSM_ID.AsInteger)
+      if (vTip_Doc_Id = 143) or (vTip_Doc_Id = 144) or (vTip_Doc_Id = 145) or
+          (vTip_Doc_Id = 209) then
+      begin
+        findOrCreateKartId;
+      end
       else
       begin
-        DM1.Ostatki.MacroByName('usl').AsString := '  ost.razdel_id = ' + inttostr(v_Razdel)
-                                                   + ' and ost.ksm_idpr = ' + inttostr(s_kodp)
-                                                   + ' AND OST.KSM_ID = ' + INTTOSTR(dm1.KartKSM_ID.AsInteger);
-      end;
-      dm1.Ostatki.Open;
-      dm1.Ostatki.First;
-      if dm1.Ostatki.Eof then
-        dm1.Ostatki.Insert
-      else
-        if vSeria_id <> 0 then
-          if dm1.Ostatki.Locate('SERIA_ID;ksm_idpr', VarArrayOf([vseria_id, s_kodp]), []) then
-            vkart_id := dm1.OstatkiKART_ID.AsInteger
-          else
-          BEGIN
-            IF S_KODP = 0 THEN
-            begin
-              if dm1.Ostatki.Locate('SERIA_ID;ksm_idpr', VarArrayOf([vseria_id, null]), []) then
-                vkart_id := dm1.OstatkiKART_ID.AsInteger
-              else
-                dm1.Ostatki.Insert
-            end
+        if (v_Razdel = 0) then
+        begin
+          DM1.Ostatki.MacroByName('usl').AsString := ' ((ost.razdel_id is null) OR (ost.razdel_id = 0))'
+                                                     + ' AND OST.KSM_ID = ' + INTTOSTR(dm1.KartKSM_ID.AsInteger)
+        end
+        else
+        begin
+          DM1.Ostatki.MacroByName('usl').AsString := '  ost.razdel_id = ' + inttostr(v_Razdel)
+                                                     + ' and ost.ksm_idpr = ' + inttostr(s_kodp)
+                                                     + ' AND OST.KSM_ID = ' + INTTOSTR(dm1.KartKSM_ID.AsInteger);
+        end;
+        dm1.Ostatki.Open;
+        dm1.Ostatki.First;
+        if (dm1.Ostatki.Eof) then
+          dm1.Ostatki.Insert
+        else
+          if (vSeria_id <> 0) then
+            if (dm1.Ostatki.Locate('SERIA_ID;ksm_idpr', VarArrayOf([vseria_id, s_kodp]), [])) then
+              vkart_id := dm1.OstatkiKART_ID.AsInteger
             else
-              dm1.Ostatki.Insert;
-          END
-          else
-            vkart_id := dm1.OstatkiKART_ID.AsInteger;
+            BEGIN
+              IF (S_KODP = 0) THEN
+              begin
+                if (dm1.Ostatki.Locate('SERIA_ID;ksm_idpr', VarArrayOf([vseria_id, null]), [])) then
+                  vkart_id := dm1.OstatkiKART_ID.AsInteger
+                else
+                  dm1.Ostatki.Insert
+              end
+              else
+                dm1.Ostatki.Insert;
+            END
+            else
+              vkart_id := dm1.OstatkiKART_ID.AsInteger;
+      end;
     end;
     if (DM1.Ostatki.Modified)
         or (DM1.Ostatki.State = dsEdit)
@@ -2984,6 +2995,18 @@ begin
     MessageDlg('Произошла ошибка при добавлении нового сырья в документ.', mtWarning, [mbOK], 0);
     Abort;
   end;
+end;
+
+procedure TDM1.findOrCreateKartId;
+begin
+  DM1.Ostatki.MacroByName('usl').AsString := ' (coalesce(ost.ksm_idpr,0) = 0)'
+                                             + ' AND OST.KSM_ID = ' + INTTOSTR(dm1.KartKSM_ID.AsInteger);
+  dm1.Ostatki.Open;
+  dm1.Ostatki.First;
+  if (dm1.Ostatki.Eof) then
+    dm1.Ostatki.Insert
+  else
+    vkart_id := dm1.OstatkiKART_ID.AsInteger;
 end;
 
 procedure TDM1.KartKRAZValidate(Sender: TField);
