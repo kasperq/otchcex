@@ -466,13 +466,17 @@ begin
 end;
 
 procedure TFact_spirt.uniteDepartments;
+var
+  curNmat : string;
 begin
   mem_spirt.EmptyTable;
   mem_spirt.Open;
   Spirt.First;
   while (not Spirt.Eof) do
   begin
-    if (SpirtNMAT_PROD.AsString = '  Приход со склада') then
+    curNmat := trim(SpirtNMAT_PROD.AsString);
+//    if (SpirtNMAT_PROD.AsString = '  Приход со склада') then
+    if (curNmat = 'Приход со склада') then
     begin
       if (mem_spirt.RecordCount = 0) then
       begin
@@ -515,6 +519,14 @@ begin
         mem_spirtRASX_PERIOD.AsFloat := mem_spirtRASX_PERIOD.AsFloat + spirtRASX_PERIOD.AsFloat;
         mem_spirtPEREDANO_RASH_S.AsFloat := mem_spirtPEREDANO_RASH_S.AsFloat + spirtPEREDANO_RASH_S.AsFloat;
         mem_spirtPEREDANO_RASH_NZ.AsFloat := mem_spirtPEREDANO_RASH_NZ.AsFloat + spirtPEREDANO_RASH_NZ.AsFloat;
+        mem_spirtOSTATOK_BEGIN_NZ.AsFloat := mem_spirtOSTATOK_BEGIN_NZ.AsFloat + spirtOSTATOK_BEGIN_NZ.AsFloat;
+        mem_spirtOSTATOK_BEGIN_S.AsFloat := mem_spirtOSTATOK_BEGIN_S.AsFloat + spirtOSTATOK_BEGIN_S.AsFloat;
+        mem_spirtOSTATOK_END_NZ.AsFloat := mem_spirtOSTATOK_END_NZ.AsFloat + spirtOSTATOK_END_NZ.AsFloat;
+        mem_spirtOSTATOK_END_S.AsFloat := mem_spirtOSTATOK_END_S.AsFloat + spirtOSTATOK_END_S.AsFloat;
+        mem_spirtOST_NN.AsFloat := mem_spirtOST_NN.AsFloat + spirtOST_NN.AsFloat;
+        mem_spirtOST_NK.AsFloat := mem_spirtOST_NK.AsFloat + spirtOST_NK.AsFloat;
+        if (mem_spirtZNAK.AsInteger < spirtZNAK.AsInteger) then
+          mem_spirtZNAK.AsInteger := spirtZNAK.AsInteger;
       end;
       Spirt.Delete;
     end
@@ -550,7 +562,26 @@ begin
   spirtFACTNORM.AsFloat := mem_spirtFACTNORM.AsFloat;
   spirtVIP.AsFloat := mem_spirtVIP.AsFloat;
   spirtSTRUK_ID.AsInteger := mem_spirtSTRUK_ID.AsInteger;
-  spirtZNAK.AsInteger := mem_spirtZNAK.AsInteger;
+//  spirtZNAK.AsInteger := mem_spirtZNAK.AsInteger;
+  if (dm1.stkod = '1800') then
+  begin
+    tochn := getCurZnak(SpirtOSTATOK_BEGIN_S.AsFloat, 3);
+    if (getCurZnak(SpirtPRIX_PERIOD.AsFloat, 3) > tochn) then
+      tochn := getCurZnak(SpirtPRIX_PERIOD.AsFloat, 3);
+    if (getCurZnak(SpirtZAG_PERIOD.AsFloat, 3) > tochn) then
+      tochn := getCurZnak(SpirtZAG_PERIOD.AsFloat, 3);
+    if (getCurZnak(SpirtRASH_VIRAB_PERIOD.AsFloat, 3) > tochn) then
+      tochn := getCurZnak(SpirtRASH_VIRAB_PERIOD.AsFloat, 3);
+    if (getCurZnak(SpirtPEREDANO_RASH_S.AsFloat, 3) > tochn) then
+      tochn := getCurZnak(SpirtPEREDANO_RASH_S.AsFloat, 3);
+    if (getCurZnak(SpirtPEREDANO_RASH_NZ.AsFloat, 3) > tochn) then
+      tochn := getCurZnak(SpirtPEREDANO_RASH_NZ.AsFloat, 3);
+    if (getCurZnak(SpirtOSTATOK_END_S.AsFloat, 3) > tochn) then
+      tochn := getCurZnak(SpirtOSTATOK_END_S.AsFloat, 3);
+  end
+  else
+    tochn := 3;
+  spirtZNAK.AsInteger := tochn;
   spirt.Post;
   if (Spirt.Locate('nmat_prod', ' Приход из др.подразделений', [])) then
   begin
