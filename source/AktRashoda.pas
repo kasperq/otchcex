@@ -552,7 +552,7 @@ type
 
   private
     realMonth, realYear, vklient_id1 : integer;
-    firstMonthChange, printNuls : boolean;
+    firstMonthChange : boolean;
 
     underS : TUnderSign;
 //    procedure formCenaQ(allMem : boolean);
