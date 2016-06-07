@@ -116,6 +116,8 @@ object FAktRashoda: TFAktRashoda
     FooterFont.Name = 'Tahoma'
     FooterFont.Style = []
     OptionsEh = [dghFixed3D, dghHighlightFocus, dghClearSelection, dghRowHighlight, dghDialogFind]
+    ParentShowHint = False
+    ShowHint = True
     SortLocal = True
     TabOrder = 0
     TitleFont.Charset = DEFAULT_CHARSET
@@ -191,6 +193,9 @@ object FAktRashoda: TFAktRashoda
         FieldName = 'PRINTNULL'
         Footers = <>
         Title.Caption = #1055#1077#1095'.?'
+        Title.Hint = #1055#1077#1095#1072#1090#1072#1090#1100' '#1080#1083#1080' '#1085#1077#1090' '#1085#1091#1083#1077#1074#1099#1077' '#1079#1085#1072#1095#1077#1085#1080#1103'?'
+        Title.ToolTips = True
+        ToolTips = True
       end
       item
         Checkboxes = True
@@ -2023,7 +2028,7 @@ object FAktRashoda: TFAktRashoda
     Width = 24
     Left = 808
     Bitmap = {
-      494C01010B001C00C00018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B001C00C40018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       000000000000000000000000000000000000000000000000000000000000A87D
       7800B7818300B7818300B7818300B7818300B7818300B7818300B7818300B781
