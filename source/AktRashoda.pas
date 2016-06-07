@@ -2194,10 +2194,7 @@ begin
     dm1.DocumentDATE_DOK.AsDateTime := edit_dokDate.Date;
     DM1.Document.Post;
     DM1.Document.ApplyUpdates;
-    dm1.startReadTrans;
-    dm1.startWriteTrans;
-    DM1.IBT_WRITE.CommitRetaining;
-    DM1.IBT_READ.CommitRetaining;
+    dm1.commitWriteTrans(true);
     curDocId := dm1.DocumentDOC_ID.AsInteger;
     result := true;
   except
@@ -2491,8 +2488,22 @@ begin
   while (not dm1.Document.Eof) do
   begin
     loadKart(vStruk_Id, DM1.DocumentDOC_ID.AsInteger);
-    addKart2Mem();
-    dm1.Document.Next;
+//    if (dm1.Kart.RecordCount > 0) then
+//    begin
+      addKart2Mem();
+      dm1.Document.Next;
+//    end;
+//    else
+//    begin
+//      try
+//        dm1.Document.Delete;
+//        DM1.Document.ApplyUpdates;
+//        dm1.commitWriteTrans(true);
+//      except
+//        on e : exception do
+//          dm1.IBT_Write.RollbackRetaining;
+//      end;
+//    end;
   end;
   
 end;
