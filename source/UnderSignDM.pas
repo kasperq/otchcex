@@ -191,6 +191,10 @@ end;
 
 procedure TdmUnd.appendUnderSignToQuery(docId, tipDokId : integer);
 begin
+  if (mem_underSign.RecordCount = 0) then
+  begin
+    insertUnderSign(true);
+  end;
   mem_underSign.First;
   while (not mem_underSign.Eof) do
   begin
