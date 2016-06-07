@@ -434,9 +434,29 @@ type
     q_ostatkiKOD_PREP: TIBStringField;
     q_ostatkiACCOUNT: TIBStringField;
     btn_delAll: TSpeedButton;
-    mem_printNull: TkbmMemTable;
-    mem_printNullprintNull: TIntegerField;
-    frxDBDataset2: TfrxDBDataset;
+    NormiMemDatPRINTNULL: TBooleanField;
+    mem_print: TRxMemoryData;
+    mem_printKSM_ID: TIntegerField;
+    mem_printNMAT_KSM: TStringField;
+    mem_printNEIS: TStringField;
+    mem_printNEIS_PROD: TStringField;
+    mem_printPLNORM: TFloatField;
+    mem_printSTRUK_ID: TIntegerField;
+    mem_printSTNAME: TStringField;
+    mem_printNAMSPSR: TStringField;
+    mem_printNMAT: TStringField;
+    mem_printFACTRASHOD: TFloatField;
+    mem_printNAMRAZ: TStringField;
+    mem_printOTKLONENIE: TStringField;
+    mem_printRAZDEL_ID: TSmallintField;
+    mem_printPERENOS: TBooleanField;
+    mem_printMEDEND: TWordField;
+    mem_printKEI_ID: TSmallintField;
+    mem_printOST_STRUK_ID: TIntegerField;
+    mem_printKRAZ: TIntegerField;
+    mem_printSPEC: TIntegerField;
+    mem_printACCOUNT: TStringField;
+    mem_printPRINTNULL: TBooleanField;
     function GetCehNum(cehName : string) : integer;
     function SetMonthCombo(month : integer) : boolean;
     function activateNormQuery() : boolean;
@@ -570,8 +590,7 @@ type
 
     procedure openConfigumc;
     procedure setAktOrCurMonth2Conf(setAktMonth : boolean);
-    procedure askToPrintNullRecords;
-
+    procedure copyAndSaveMem;
 
   public
     DataBaseName : TIBDataBase;
@@ -1566,34 +1585,48 @@ end;
 
 procedure TFAktRashoda.N3Click(Sender: TObject);
 begin
-  askToSaveModified(Sender);
-  askToPrintNullRecords;
+  copyAndSaveMem;
   frxReport1.LoadFromFile(reportsPath + 'AktRashoda#2.fr3');
   loadNormiReport();
 end;
 
 procedure TFAktRashoda.N1Click(Sender: TObject);
 begin
-  askToSaveModified(Sender);
-  askToPrintNullRecords;
+  copyAndSaveMem;
   frxReport1.LoadFromFile(reportsPath + 'AktRashoda#2inv.fr3');
   loadNormiReport();
 end;
 
 procedure TFAktRashoda.N2Click(Sender: TObject);
 begin
-  askToSaveModified(Sender);
-  askToPrintNullRecords;
+  copyAndSaveMem;
   frxReport1.LoadFromFile(reportsPath + 'AktRashoda#2spec.fr3');
   loadNormiReport();
 end;
 
 procedure TFAktRashoda.N4Click(Sender: TObject);
 begin
-  askToSaveModified(Sender);
-  askToPrintNullRecords;
+  copyAndSaveMem;
   frxReport1.LoadFromFile(reportsPath + 'AktRashoda#2materials.fr3');
   loadNormiReport();
+end;
+
+procedure TFAktRashoda.copyAndSaveMem;
+begin
+  mem_print.EmptyTable;
+  mem_print.Open;
+  mem_print.LoadFromDataSet(NormiMemDat, 0, lmAppend);
+
+  askToSaveModified(self);
+
+  mem_print.First;
+  while (not mem_print.Eof) do
+  begin
+    if (not mem_printPRINTNULL.AsBoolean) and (mem_printFACTRASHOD.AsFloat = 0) then
+      mem_print.delete
+    else
+      mem_print.Next;
+  end;
 end;
 
 function TFAktRashoda.loadNormiReport() : boolean;
@@ -1991,7 +2024,7 @@ end;
 
 procedure TFAktRashoda.DBGridEh1CellClick(Column: TColumnEh);
 begin
-  if (Column.Index = 6) then
+  if (Column.FieldName = 'PERENOS') then
   begin
     NormiMemDat.Edit;
     if (Column.CheckboxState = (cbUnChecked)) then
@@ -2432,7 +2465,14 @@ begin
 
     label5.Caption := dm1.DocumentDOC_ID.AsString;
     loadDocTipParam(vTip_Doc_Id, vStruk_Id);
-
+    NormiMemDat.First;
+    while (not NormiMemDat.Eof) do
+    begin
+      NormiMemDat.Edit;
+      NormiMemDatprintNull.AsBoolean := true;
+      NormiMemDat.Post;
+      NormiMemDat.Next;
+    end;
     saveCurState();
 //    formCenaQ(true);
 //    cenaQ.Open;
@@ -2715,28 +2755,14 @@ end;
 
 procedure TFAktRashoda.askToSaveModified(Sender: TObject);
 begin
-   if NormiMemDat.Modified then
+  if (NormiMemDat.Modified) then
   begin
-    if MessageDlg('Записать изменения?',
-                  mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+    if (MessageDlg('Записать изменения?',
+                  mtConfirmation, [mbYes, mbNo], 0) = mrYes) then
       Button1Click(Sender)
     else
       reloadNorms(0);
   end;
-end;
-
-procedure TFAktRashoda.askToPrintNullRecords;
-begin
-  mem_printNull.EmptyTable;
-  mem_printNull.Open;
-  mem_printNull.Append;
-  if (MessageDlg('Печатать строки с нулевым фактическим расходом?',
-                  mtConfirmation, [mbYes, mbNo], 0) = mrYes) then
-
-    mem_printNullprintNull.AsInteger := 1
-  else
-    mem_printNullprintNull.AsInteger := 0;
-  mem_printNull.Post;
 end;
 
 function TFAktRashoda.setZnak1(ksmId : integer; otklonenie, plNorm : double) : double;
