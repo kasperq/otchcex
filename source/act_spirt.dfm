@@ -442,7 +442,7 @@ object Fact_spirt: TFact_spirt
     Left = 520
     Top = 4
     Bitmap = {
-      494C01010A000C00280018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010A000C002C0018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -4064,16 +4064,15 @@ object Fact_spirt: TFact_spirt
     OnCalcFields = Spirt_OtchetCalcFields
     CachedUpdates = True
     SQL.Strings = (
-      '  SELECT distinct'
-      'ostatki.Ksm_Id,'
-      '(cast('#39#39' as char(10))) as neis_prod,'
-      '(cast(0 as numeric(15,6))) as PLNORM,'
-      '(cast(0 as numeric(10,0))) as kein,'
-      'razdel.kraz,'
-      'ostatki.nmat_prep as nmat_prod,'
-      'ostatki.kod_prep as KOD_PROD,'
-      '(cast('#39#39' as char(15))) as nam,'
-      'ostatki.razdel_id,ostatki.NEIS neis_syr,OSTATKI.KSM_IDPR KODP,'
+      '  SELECT distinct ostatki.Ksm_Id,'
+      
+        '(cast('#39#39' as char(10))) as neis_prod, (cast(0 as numeric(15,6))) ' +
+        'as PLNORM,'
+      
+        '(cast(0 as numeric(10,0))) as kein, razdel.kraz, ostatki.nmat_pr' +
+        'ep as nmat_prod,'
+      'ostatki.kod_prep as KOD_PROD, (cast('#39#39' as char(15))) as nam,'
+      'ostatki.razdel_id, ostatki.NEIS neis_syr, OSTATKI.KSM_IDPR KODP,'
       
         'sum(ostatki.ostatok_begin_nz+ostatki.ostatok_begin_s)  as ost_nn' +
         ','
@@ -4104,27 +4103,29 @@ object Fact_spirt: TFact_spirt
       'ostatki.rasx_period <>0 or'
       'ostatki.rash_virab_period<>0)'
       'and not(ostatki.ksm_idpr is null)'
-      'group by ostatki.Ksm_Id,'
-      'neis_prod,'
-      'PLNORM,KEIn,razdel.kraz,'
-      'ostatki.nmat_prep,'
-      'ostatki.kod_prep,'
-      'nam,'
       
-        'ostatki.razdel_id,ostatki.NEIS,OSTATKI.KSM_IDPR, ostatki.struk_i' +
-        'd'
+        'group by ostatki.Ksm_Id, neis_prod, PLNORM, KEIn, razdel.kraz, o' +
+        'statki.nmat_prep,'
+      
+        'ostatki.kod_prep, nam, ostatki.razdel_id, ostatki.NEIS, OSTATKI.' +
+        'KSM_IDPR, ostatki.struk_id'
       ''
       ' union'
-      ' SELECT distinct'
-      'ostatki.Ksm_Id,'
-      '(cast('#39#39' as char(10))) as neis_prod,'
-      '(cast(0 as numeric(15,6))) as PLNORM,'
-      '(cast(0 as numeric(10,0))) as kein,'
-      '(cast(0 as numeric(10,0))) as kraz,'
-      'cast('#39'  '#1055#1088#1080#1093#1086#1076' '#1089#1086' '#1089#1082#1083#1072#1076#1072#39' as char(60)) as nmat_prod,'
-      'ostatki.kod_prep as KOD_PROD,'
-      '(cast('#39#39' as char(15))) as nam,'
-      'ostatki.razdel_id,ostatki.NEIS neis_syr,OSTATKI.KSM_IDPR KODP,'
+      ''
+      'SELECT distinct ostatki.Ksm_Id,'
+      
+        '(cast('#39#39' as char(10))) as neis_prod, (cast(0 as numeric(15,6))) ' +
+        'as PLNORM,'
+      
+        '(cast(0 as numeric(10,0))) as kein, (cast(0 as numeric(10,0))) a' +
+        's kraz,'
+      
+        'cast('#39'  '#1055#1088#1080#1093#1086#1076' '#1089#1086' '#1089#1082#1083#1072#1076#1072#39' as char(60)) as nmat_prod, ostatki.kod' +
+        '_prep as KOD_PROD,'
+      
+        '(cast('#39#39' as char(15))) as nam, ostatki.razdel_id, ostatki.NEIS n' +
+        'eis_syr,'
+      'OSTATKI.KSM_IDPR KODP,'
       
         'sum(ostatki.ostatok_begin_nz+ostatki.ostatok_begin_s)  as ost_nn' +
         ','
@@ -4149,26 +4150,23 @@ object Fact_spirt: TFact_spirt
       
         '  where struk.pr_sklad=1 and (document.date_op between :DAT1 and' +
         ' :DAT2)'
-      ' group by'
-      '  ostatki.Ksm_Id,'
-      ' neis_prod,'
-      ' PLNORM,'
-      ' kein,'
-      ' kraz,'
-      'ostatki.nmat_prep,'
-      'ostatki.kod_prep ,'
-      ' nam,'
-      'ostatki.razdel_id,ostatki.NEIS,OSTATKI.KSM_IDPR ,'
-      ' factnorm,'
-      ' vip, ostatki.struk_id'
+      
+        ' group by ostatki.Ksm_Id, neis_prod, PLNORM, kein, kraz, ostatki' +
+        '.nmat_prep,'
+      
+        'ostatki.kod_prep, nam, ostatki.razdel_id, ostatki.NEIS,OSTATKI.K' +
+        'SM_IDPR,'
+      ' factnorm, vip, ostatki.struk_id'
       ''
       ' union'
-      ' SELECT distinct'
-      'ostatki.Ksm_Id,'
-      '(cast('#39#39' as char(10))) as neis_prod,'
-      '(cast(0 as numeric(15,6))) as PLNORM,'
-      '(cast(0 as numeric(10,0))) as kein,'
-      '(cast(0 as numeric(10,0))) as kraz,'
+      ''
+      ' SELECT distinct ostatki.Ksm_Id,'
+      
+        '(cast('#39#39' as char(10))) as neis_prod, (cast(0 as numeric(15,6))) ' +
+        'as PLNORM,'
+      
+        '(cast(0 as numeric(10,0))) as kein, (cast(0 as numeric(10,0))) a' +
+        's kraz,'
       'cast('#39' '#1055#1088#1080#1093#1086#1076' '#1080#1079' '#1076#1088'.'#1087#1086#1076#1088#1072#1079#1076#1077#1083#1077#1085#1080#1081#39' as char(60)) as nmat_prod,'
       'ostatki.kod_prep as KOD_PROD,'
       '(cast('#39#39' as char(15))) as nam,'
@@ -4197,30 +4195,19 @@ object Fact_spirt: TFact_spirt
         '  where struk.pr_sklad is null and (document.date_op between :DA' +
         'T1 and :DAT2)'
       '  and document.tip_op_id=6'
-      ' group by'
-      '  ostatki.Ksm_Id,'
-      ' neis_prod,'
-      ' PLNORM,'
-      ' kein,'
-      ' kraz,'
-      'ostatki.nmat_prep,'
-      'ostatki.kod_prep ,'
-      ' nam,'
-      'ostatki.razdel_id,ostatki.NEIS,OSTATKI.KSM_IDPR ,'
-      ' ost_nn,'
-      'ost_nk,'
-      'ostatok_begin_nz,'
-      ' ostatok_begin_s,'
-      'ostatok_end_nz,'
-      ' ostatok_end_s,'
-      ' zag_period,'
-      'rash_virab_period,'
-      '  rasx_period,'
-      ' PEREDANO_RASH_s,'
-      'PEREDANO_RASH_NZ,'
-      ' factnorm,'
-      ' vip,'
-      'ostatki.struk_id'
+      
+        ' group by  ostatki.Ksm_Id, neis_prod, PLNORM, kein, kraz, ostatk' +
+        'i.nmat_prep,'
+      
+        'ostatki.kod_prep, nam, ostatki.razdel_id, ostatki.NEIS, OSTATKI.' +
+        'KSM_IDPR,'
+      
+        'ost_nn, ost_nk, ostatok_begin_nz, ostatok_begin_s, ostatok_end_n' +
+        'z,'
+      
+        'ostatok_end_s, zag_period, rash_virab_period, rasx_period, PERED' +
+        'ANO_RASH_s,'
+      'PEREDANO_RASH_NZ, factnorm, vip, ostatki.struk_id'
       'order by 6,5')
     UpdateObject = IBUpdateSpirt_Otchet
     Macros = <>
