@@ -187,6 +187,12 @@ object FAktRashoda: TFAktRashoda
         Width = 77
       end
       item
+        EditButtons = <>
+        FieldName = 'PRINTNULL'
+        Footers = <>
+        Title.Caption = #1055#1077#1095'.?'
+      end
+      item
         Checkboxes = True
         EditButtons = <>
         FieldName = 'PERENOS'
@@ -532,6 +538,7 @@ object FAktRashoda: TFAktRashoda
       Height = 13
       Margins.Bottom = 0
       Caption = 'Label5'
+      Visible = False
     end
     object Edit1: TEdit
       Left = 62
@@ -553,7 +560,7 @@ object FAktRashoda: TFAktRashoda
       OnKeyDown = Edit1KeyDown
     end
     object monthCombo: TComboBox
-      Left = 41
+      Left = 47
       Top = 1
       Width = 86
       Height = 21
@@ -749,7 +756,7 @@ object FAktRashoda: TFAktRashoda
     PrintOptions.Printer = #1055#1086' '#1091#1084#1086#1083#1095#1072#1085#1080#1102
     PrintOptions.PrintOnSheet = 0
     ReportOptions.CreateDate = 40739.434456192100000000
-    ReportOptions.LastChange = 42527.610204351850000000
+    ReportOptions.LastChange = 42528.373225937500000000
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
       'procedure Memo58OnBeforePrint(Sender: TfrxComponent);'
@@ -785,7 +792,7 @@ object FAktRashoda: TFAktRashoda
       '      ds.prior'
       '  else'
       '  begin'
-      ' {  '
+      '{    '
       '    if param8 = '#39#39' then'
       '    begin      '
       '      Memo61.Visible := false;'
@@ -866,7 +873,7 @@ object FAktRashoda: TFAktRashoda
       '      Memo64.Visible := false; '
       '    if podp8 = '#39#39' then '
       '      Memo65.Visible := false;'
-      '     }        '
+      '                           }        '
       '    if (Engine.FreeSpace < Footer1.Height) then '
       '      Engine.NewPage;'
       '  end;'
@@ -875,18 +882,7 @@ object FAktRashoda: TFAktRashoda
       ''
       'procedure Memo40OnBeforePrint(Sender: TfrxComponent);'
       'begin'
-      
-        '  if (<frxDBDataSet1."FACTRASHOD"> = 0) and (<frxPrintNull."prin' +
-        'tNull"> = 0) then'
-      '  begin'
-      
-        '   masterdata1.visible := false;                                ' +
-        '                                       '
-      '  end'
-      '  else'
-      '  begin'
-      '    masterdata1.visible := true;  '
-      '  end;  '
+      '     '
       'end;'
       ''
       'begin'
@@ -898,10 +894,6 @@ object FAktRashoda: TFAktRashoda
       item
         DataSet = frxDBDataset1
         DataSetName = 'frxDBDataset1'
-      end
-      item
-        DataSet = frxDBDataset2
-        DataSetName = 'frxPrintNull'
       end
       item
         DataSet = frds_underSign
@@ -1027,8 +1019,9 @@ object FAktRashoda: TFAktRashoda
           HAlign = haCenter
           Memo.UTF8 = (
             
-              #1057#1027#1056#1111#1056#181#1057#8224#1056#1109#1056#1169#1056#181#1056#182#1056#1169#1056#176' '#1056#1105' '#1057#1027#1057#1026#1056#181#1056#1169#1057#1027#1057#8218#1056#1030#1056#176' '#1056#1105#1056#1029#1056#1169#1056#1105#1056#1030#1056#1105#1056#1169#1057#1107#1056#176#1056#187#1057#1034#1056 +
-              #1029#1056#1109#1056#8470' '#1056#183#1056#176#1057#8240#1056#1105#1057#8218#1057#8249)
+              #1057#1026#1056#176#1057#1027#1057#8230#1056#1109#1056#1169#1056#176' '#1056#1112#1056#176#1057#8218#1056#181#1057#1026#1056#1105#1056#176#1056#187#1056#1109#1056#1030' '#1056#1169#1056#187#1057#1039' '#1057#1027#1056#1109#1056#1169#1056#181#1057#1026#1056#182#1056#176#1056#1029#1056#1105#1057#1039' ' +
+              #1056#1105' '#1057#1036#1056#1108#1057#1027#1056#1111#1056#187#1057#1107#1056#176#1057#8218#1056#176#1057#8224#1056#1105#1056#1105' '#1056#1109#1056#177#1056#1109#1057#1026#1057#1107#1056#1169#1056#1109#1056#1030#1056#176#1056#1029#1056#1105#1057#1039' '#1056#1111#1057#1026#1056#1105' '#1056#1111#1057#1026 +
+              #1056#1109#1056#1105#1056#183#1056#1030#1056#1109#1056#1169#1057#1027#1057#8218#1056#1030#1056#181)
           ParentFont = False
         end
         object Memo13: TfrxMemoView
@@ -1043,7 +1036,9 @@ object FAktRashoda: TFAktRashoda
           Font.Style = [fsBold]
           HAlign = haCenter
           Memo.UTF8 = (
-            #1056#1111#1056#1109' '#1057#8224#1056#181#1057#8230#1057#1107' '#1074#8222#8211' [ceh] '#1056#183#1056#176' [month] [year] '#1056#1110'.')
+            
+              #1056#187#1056#181#1056#1108#1056#176#1057#1026#1057#1027#1057#8218#1056#1030#1056#181#1056#1029#1056#1029#1057#8249#1057#8230' '#1057#1027#1057#1026#1056#181#1056#1169#1057#1027#1057#8218#1056#1030' '#1056#1111#1056#1109' '#1057#8224#1056#181#1057#8230#1057#1107' '#1074#8222#8211' [ceh' +
+              '] '#1056#183#1056#176' [month] [year] '#1056#1110'.')
           ParentFont = False
         end
       end
@@ -1903,8 +1898,13 @@ object FAktRashoda: TFAktRashoda
       'PERENOS=PERENOS'
       'MEDEND=MEDEND'
       'KEI_ID=KEI_ID'
-      'KRAZ=KRAZ')
-    DataSet = NormiMemDat
+      'OST_STRUK_ID=OST_STRUK_ID'
+      'KRAZ=KRAZ'
+      'CENA=CENA'
+      'SPEC=SPEC'
+      'ACCOUNT=ACCOUNT'
+      'PRINTNULL=printNull')
+    DataSet = mem_print
     BCDToCurrency = False
     Left = 632
     Top = 14
@@ -1994,6 +1994,9 @@ object FAktRashoda: TFAktRashoda
       FieldName = 'ACCOUNT'
       Size = 5
     end
+    object NormiMemDatPRINTNULL: TBooleanField
+      FieldName = 'PRINTNULL'
+    end
   end
   object PopupMenu1: TPopupMenu
     Left = 128
@@ -2020,7 +2023,7 @@ object FAktRashoda: TFAktRashoda
     Width = 24
     Left = 808
     Bitmap = {
-      494C01010B001C00A00018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B001C00C00018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       000000000000000000000000000000000000000000000000000000000000A87D
       7800B7818300B7818300B7818300B7818300B7818300B7818300B7818300B781
@@ -5219,43 +5222,185 @@ object FAktRashoda: TFAktRashoda
     Left = 632
     Top = 56
   end
-  object mem_printNull: TkbmMemTable
-    DesignActivation = True
-    AttachedAutoRefresh = True
-    AttachMaxCount = 1
-    FieldDefs = <>
-    IndexDefs = <>
-    SortOptions = []
-    AllDataOptions = [mtfSaveData, mtfSaveNonVisible, mtfSaveBlobs, mtfSaveFiltered, mtfSaveIgnoreRange, mtfSaveIgnoreMasterDetail, mtfSaveDeltas]
-    CommaTextOptions = [mtfSaveData]
-    CSVQuote = '"'
-    CSVFieldDelimiter = ','
-    CSVRecordDelimiter = ','
-    CSVTrueString = 'True'
-    CSVFalseString = 'False'
-    PersistentSaveOptions = [mtfSaveData, mtfSaveNonVisible, mtfSaveIgnoreRange, mtfSaveIgnoreMasterDetail]
-    PersistentBackup = False
-    ProgressFlags = [mtpcLoad, mtpcSave, mtpcCopy]
-    FilterOptions = []
-    Version = '2.53g'
-    LanguageID = 0
-    SortID = 0
-    SubLanguageID = 1
-    LocaleID = 1024
-    Left = 504
-    Top = 16
-    object mem_printNullprintNull: TIntegerField
-      FieldName = 'printNull'
+  object mem_print: TRxMemoryData
+    FieldDefs = <
+      item
+        Name = 'KSM_ID'
+        DataType = ftInteger
+      end
+      item
+        Name = 'NMAT_KSM'
+        DataType = ftString
+        Size = 60
+      end
+      item
+        Name = 'NEIS'
+        DataType = ftString
+        Size = 256
+      end
+      item
+        Name = 'NEIS_PROD'
+        DataType = ftString
+        Size = 60
+      end
+      item
+        Name = 'PLNORM'
+        DataType = ftFloat
+      end
+      item
+        Name = 'STRUK_ID'
+        DataType = ftInteger
+      end
+      item
+        Name = 'STNAME'
+        DataType = ftString
+        Size = 20
+      end
+      item
+        Name = 'NAMSPSR'
+        DataType = ftString
+        Size = 30
+      end
+      item
+        Name = 'NMAT'
+        DataType = ftString
+        Size = 60
+      end
+      item
+        Name = 'FACTRASHOD'
+        DataType = ftFloat
+      end
+      item
+        Name = 'NAMRAZ'
+        DataType = ftString
+        Size = 60
+      end
+      item
+        Name = 'OTKLONENIE'
+        DataType = ftString
+        Size = 20
+      end
+      item
+        Name = 'RAZDEL_ID'
+        DataType = ftSmallint
+      end
+      item
+        Name = 'PERENOS'
+        DataType = ftBoolean
+      end
+      item
+        Name = 'MEDEND'
+        DataType = ftWord
+      end
+      item
+        Name = 'KEI_ID'
+        DataType = ftSmallint
+      end
+      item
+        Name = 'OST_STRUK_ID'
+        DataType = ftInteger
+      end
+      item
+        Name = 'KRAZ'
+        DataType = ftInteger
+      end
+      item
+        Name = 'CENA'
+        DataType = ftFloat
+      end
+      item
+        Name = 'SPEC'
+        DataType = ftInteger
+      end
+      item
+        Name = 'ACCOUNT'
+        DataType = ftString
+        Size = 5
+      end
+      item
+        Name = 'PRINTNULL'
+        DataType = ftBoolean
+      end>
+    Left = 752
+    Top = 54
+    object mem_printKSM_ID: TIntegerField
+      FieldName = 'KSM_ID'
     end
-  end
-  object frxDBDataset2: TfrxDBDataset
-    UserName = 'frxPrintNull'
-    CloseDataSource = False
-    FieldAliases.Strings = (
-      'printNull=printNull')
-    DataSet = mem_printNull
-    BCDToCurrency = False
-    Left = 504
-    Top = 48
+    object mem_printNMAT_KSM: TStringField
+      DisplayWidth = 60
+      FieldName = 'NMAT_KSM'
+      Size = 60
+    end
+    object mem_printNEIS: TStringField
+      FieldName = 'NEIS'
+      Size = 256
+    end
+    object mem_printNEIS_PROD: TStringField
+      DisplayWidth = 10
+      FieldName = 'NEIS_PROD'
+      Size = 60
+    end
+    object mem_printPLNORM: TFloatField
+      DisplayWidth = 19
+      FieldName = 'PLNORM'
+      DisplayFormat = '0.######'
+    end
+    object mem_printSTRUK_ID: TIntegerField
+      FieldName = 'STRUK_ID'
+    end
+    object mem_printSTNAME: TStringField
+      DisplayWidth = 20
+      FieldName = 'STNAME'
+    end
+    object mem_printNAMSPSR: TStringField
+      FieldName = 'NAMSPSR'
+      Size = 30
+    end
+    object mem_printNMAT: TStringField
+      FieldName = 'NMAT'
+      Size = 60
+    end
+    object mem_printFACTRASHOD: TFloatField
+      DisplayWidth = 19
+      FieldName = 'FACTRASHOD'
+      DisplayFormat = '0.######'
+    end
+    object mem_printNAMRAZ: TStringField
+      DisplayWidth = 60
+      FieldName = 'NAMRAZ'
+      Size = 60
+    end
+    object mem_printOTKLONENIE: TStringField
+      FieldName = 'OTKLONENIE'
+    end
+    object mem_printRAZDEL_ID: TSmallintField
+      FieldName = 'RAZDEL_ID'
+    end
+    object mem_printPERENOS: TBooleanField
+      FieldName = 'PERENOS'
+    end
+    object mem_printMEDEND: TWordField
+      DisplayWidth = 1
+      FieldName = 'MEDEND'
+    end
+    object mem_printKEI_ID: TSmallintField
+      FieldName = 'KEI_ID'
+    end
+    object mem_printOST_STRUK_ID: TIntegerField
+      FieldName = 'OST_STRUK_ID'
+    end
+    object mem_printKRAZ: TIntegerField
+      FieldName = 'KRAZ'
+    end
+    object mem_printSPEC: TIntegerField
+      FieldName = 'SPEC'
+    end
+    object mem_printACCOUNT: TStringField
+      FieldName = 'ACCOUNT'
+      Size = 5
+    end
+    object mem_printPRINTNULL: TBooleanField
+      FieldName = 'PRINTNULL'
+    end
   end
 end
