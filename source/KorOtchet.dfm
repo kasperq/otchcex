@@ -180,7 +180,7 @@ object FKorOtchet: TFKorOtchet
     Top = 97
     Width = 1159
     Height = 577
-    ActivePage = TabSheet3
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     OnChange = PageControl1Change
@@ -462,7 +462,6 @@ object FKorOtchet: TFKorOtchet
             EditButtons = <>
             FieldName = 'KART_ID'
             Footers = <>
-            Visible = False
           end>
       end
     end
@@ -595,6 +594,11 @@ object FKorOtchet: TFKorOtchet
             FieldName = 'PLAN_NORM'
             Footers = <>
             Visible = False
+          end
+          item
+            EditButtons = <>
+            FieldName = 'KART_ID'
+            Footers = <>
           end>
       end
     end
@@ -1167,7 +1171,7 @@ object FKorOtchet: TFKorOtchet
     Left = 776
     Top = 212
     Bitmap = {
-      494C010108000900600018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010108000900640018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
