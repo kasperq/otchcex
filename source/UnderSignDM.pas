@@ -71,6 +71,7 @@ type
     q_docTipParamSTRUK_ID: TIntegerField;
     q_docTipParamORDER_PARAM: TSmallintField;
     q_docTipParamUNIQ_PARAM: TSmallintField;
+
   private
     function getAllDocId(strukId, klientId, tipOpId, tipDokId : integer) : boolean;
     procedure unparseQueryAndAddToMem(query : TRxIBQuery);

@@ -2,7 +2,7 @@ unit KorOtchet;
 
 interface
 
-uses
+uses ChooseKart,
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, RxMemDS, IBCustomDataSet, IBUpdateSQL, IBUpdSQLW, DB, RxIBQuery,
   IBQuery, Menus, FindDlgEh, ImgList, StdCtrls, Mask, DBCtrls, ExtCtrls,
@@ -308,6 +308,7 @@ type
   private
     ksmArray : array of integer;
     ksmLength : integer;
+    chKart : TFChooseKart;
 //    curRazdelId, curKraz : integer;
 
     procedure openOstCeh;

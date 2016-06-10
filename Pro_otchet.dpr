@@ -107,7 +107,8 @@ uses
   PrihodDM in 'Source\PrihodDM.pas' {PrihDM: TDataModule},
   OtdelDropDown in 'Source\OtdelDropDown.pas' {FOtdelDropDown},
   UnderSign in 'Source\UnderSign.pas',
-  UnderSignDM in 'Source\UnderSignDM.pas' {dmUnd: TDataModule};
+  UnderSignDM in 'Source\UnderSignDM.pas' {dmUnd: TDataModule},
+  ChooseKart in 'Source\ChooseKart.pas' {FChooseKart};
 
 {$R *.res}
 

@@ -2168,8 +2168,8 @@ begin
         v_kol_upak := trunc(1 / (StrToFloat(MD_Nakl_s.FieldByName('KOL_RASH').AsString) * 1000));
     end;
 
-    if v_kol_upak < (MD_Nakl_s.FieldByName('KOL_RASH').AsFloat * 1000)
-                     / MD_Nakl_s.FieldByName('kol_trans').AsFloat then
+    if (v_kol_upak < (StrToFloat(MD_Nakl_s.FieldByName('KOL_RASH').AsString) * 1000)
+                     / StrToFloat(MD_Nakl_s.FieldByName('kol_trans').AsString)) then
       v_kol_upak1 := 1;
 
     if (cbRF.Checked) then
