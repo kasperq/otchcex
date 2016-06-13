@@ -305,6 +305,12 @@ type
     procedure ComboBox1Change(Sender: TObject);
     procedure ComboBox2Change(Sender: TObject);
     procedure ToolButton6Click(Sender: TObject);
+    procedure DBGridEh2Columns12EditButtonClick(Sender: TObject;
+      var Handled: Boolean);
+    procedure DBGridEh3Columns7EditButtonClick(Sender: TObject;
+      var Handled: Boolean);
+    procedure DBGridEh1Columns5EditButtonClick(Sender: TObject;
+      var Handled: Boolean);
   private
     ksmArray : array of integer;
     ksmLength : integer;
@@ -312,6 +318,7 @@ type
 //    curRazdelId, curKraz : integer;
 
     procedure openOstCeh;
+    procedure changeKartId(var query : TRxIBQuery);
     
   public
     procedure KorSost;
@@ -1453,6 +1460,7 @@ begin
   begin
     KartKorrOtchet.edit;
     KartKorrOtchetKol_Rash_Ediz.AsFloat := RaspSyrPrepKol_rash_Ediz.AsFloat;
+    KartKorrOtchetKart_id.AsInteger := RaspSyrPrepKart_id.AsInteger;
     KartKorrOtchet.Post;
   end
   else
@@ -2045,6 +2053,12 @@ if not dm1.Razdel.Active then dm1.Razdel.Active:=true;
  end;
 end;
 
+procedure TFKorOtchet.DBGridEh3Columns7EditButtonClick(Sender: TObject;
+  var Handled: Boolean);
+begin
+  changeKartId(RaspSyrPrep);
+end;
+
 procedure TFKorOtchet.DBGridEh3EditButtonClick(Sender: TObject);
 var
   nm : integer;
@@ -2099,6 +2113,29 @@ begin
             RaspSyrPrepKraz.AsInteger := s_Razdel;
           end;
         end;
+  end;
+end;
+
+procedure TFKorOtchet.DBGridEh2Columns12EditButtonClick(Sender: TObject;
+  var Handled: Boolean);
+begin
+  changeKartId(RaspSyrPrep);
+end;
+
+procedure TFKorOtchet.changeKartId(var query : TRxIBQuery);
+begin
+  if (chKart = nil) then
+    chKart := TFChooseKart.Create(Application);
+//  chKart.loadPrepKart(vStruk_Id, s_kodp, RaspSyrPrepKSM_ID.AsInteger,
+//                      RaspSyrPrepRAZDEL_ID.AsInteger, RaspSyrPrepKART_ID.AsInteger);
+  chKart.loadPrepKart(vStruk_Id, s_kodp, query.fieldbyname('ksm_id').AsInteger,
+                      query.fieldbyname('RAZDEL_ID').AsInteger, query.fieldbyname('KART_ID').AsInteger);
+  chKart.ShowModal;
+  if (chKart.ModalResult > 50) then
+  begin
+    query.Edit;
+    query.fieldbyname('KART_ID').AsInteger := chKart.kartId;
+    query.Post;
   end;
 end;
 
@@ -2181,6 +2218,12 @@ begin
       KartKorrOtchet.Close;
     KorSost;
   end;
+end;
+
+procedure TFKorOtchet.DBGridEh1Columns5EditButtonClick(Sender: TObject;
+  var Handled: Boolean);
+begin
+  changeKartId(RaspSyrPrep);
 end;
 
 procedure TFKorOtchet.DBGridEh1EditButtonClick(Sender: TObject);

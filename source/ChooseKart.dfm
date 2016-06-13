@@ -1,9 +1,10 @@
 object FChooseKart: TFChooseKart
   Left = 0
   Top = 0
-  Caption = 'FChooseKart'
-  ClientHeight = 345
-  ClientWidth = 510
+  BorderStyle = bsDialog
+  Caption = #1042#1099#1073#1086#1088' '#1082#1072#1088#1090#1086#1095#1082#1080
+  ClientHeight = 355
+  ClientWidth = 520
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -11,39 +12,37 @@ object FChooseKart: TFChooseKart
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Position = poOwnerFormCenter
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 510
+    Width = 520
     Height = 41
     Align = alTop
     TabOrder = 0
     Visible = False
-    ExplicitLeft = 48
-    ExplicitTop = 8
-    ExplicitWidth = 185
+    ExplicitWidth = 510
   end
   object Panel2: TPanel
     Left = 0
     Top = 41
-    Width = 510
-    Height = 263
+    Width = 520
+    Height = 273
     Align = alClient
     TabOrder = 1
-    ExplicitLeft = 48
-    ExplicitTop = 80
-    ExplicitWidth = 185
-    ExplicitHeight = 41
+    ExplicitWidth = 510
+    ExplicitHeight = 263
     object DBGridEh1: TDBGridEh
       Left = 1
       Top = 1
-      Width = 508
-      Height = 261
+      Width = 518
+      Height = 271
       Align = alClient
       AutoFitColWidths = True
       DataSource = ds_prepKart
+      Flat = True
       FooterColor = clWindow
       FooterFont.Charset = DEFAULT_CHARSET
       FooterFont.Color = clWindowText
@@ -56,6 +55,7 @@ object FChooseKart: TFChooseKart
       TitleFont.Height = -11
       TitleFont.Name = 'Tahoma'
       TitleFont.Style = []
+      OnDblClick = DBGridEh1DblClick
       Columns = <
         item
           EditButtons = <>
@@ -91,19 +91,18 @@ object FChooseKart: TFChooseKart
   end
   object Panel3: TPanel
     Left = 0
-    Top = 304
-    Width = 510
+    Top = 314
+    Width = 520
     Height = 41
     Align = alBottom
     TabOrder = 2
-    ExplicitLeft = 40
-    ExplicitTop = 232
-    ExplicitWidth = 185
+    ExplicitTop = 304
+    ExplicitWidth = 510
     DesignSize = (
-      510
+      520
       41)
     object btn_ok: TBitBtn
-      Left = 290
+      Left = 300
       Top = 6
       Width = 105
       Height = 25
@@ -138,9 +137,10 @@ object FChooseKart: TFChooseKart
         FF00FF35870D48CA0751F30053FA0056F40751EA0446C7053795082B77052B77
         05FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF34830C3A9C0A3B
         9E09368D0A2E7909297403FF00FFFF00FFFF00FFFF00FFFF00FF}
+      ExplicitLeft = 290
     end
     object btn_cancel: TBitBtn
-      Left = 394
+      Left = 404
       Top = 6
       Width = 105
       Height = 25
@@ -175,6 +175,7 @@ object FChooseKart: TFChooseKart
         FF00FF2D82EB91C5FBCCE6FFD9EDFFDCEDFEC4E0FE86BFFC348BF40A65E10A65
         E1FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF247BEB4696F34A
         98F42F87F0116CE6075FDCFF00FFFF00FFFF00FFFF00FFFF00FF}
+      ExplicitLeft = 394
     end
   end
   object q_prepKart: TRxIBQuery

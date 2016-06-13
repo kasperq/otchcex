@@ -180,7 +180,7 @@ object FKorOtchet: TFKorOtchet
     Top = 97
     Width = 1159
     Height = 577
-    ActivePage = TabSheet2
+    ActivePage = TabSheet3
     Align = alClient
     TabOrder = 1
     OnChange = PageControl1Change
@@ -265,6 +265,16 @@ object FKorOtchet: TFKorOtchet
             Footers = <>
             Title.Caption = #1055#1088#1080#1093#1086#1076
             Width = 83
+          end
+          item
+            AlwaysShowEditButton = True
+            ButtonStyle = cbsEllipsis
+            EditButtons = <>
+            FieldName = 'KART_ID'
+            Footers = <>
+            Title.Caption = #1050#1072#1088#1090#1086#1095#1082#1072
+            Visible = False
+            OnEditButtonClick = DBGridEh1Columns5EditButtonClick
           end
           item
             EditButtons = <>
@@ -393,6 +403,16 @@ object FKorOtchet: TFKorOtchet
             Width = 108
           end
           item
+            AlwaysShowEditButton = True
+            ButtonStyle = cbsEllipsis
+            EditButtons = <>
+            FieldName = 'KART_ID'
+            Footers = <>
+            Title.Caption = #1050#1072#1088#1090#1086#1095#1082#1072
+            Visible = False
+            OnEditButtonClick = DBGridEh3Columns7EditButtonClick
+          end
+          item
             DisplayFormat = '########0.000000'
             EditButtons = <>
             FieldName = 'ONM_S'
@@ -457,11 +477,6 @@ object FKorOtchet: TFKorOtchet
             FieldName = 'RAZDEL_ID'
             Footers = <>
             Visible = False
-          end
-          item
-            EditButtons = <>
-            FieldName = 'KART_ID'
-            Footers = <>
           end>
       end
     end
@@ -562,6 +577,15 @@ object FKorOtchet: TFKorOtchet
             Title.Caption = #1056#1072#1089#1093#1086#1076' '#1085#1072' '#1074#1099#1088#1072#1073#1086#1090#1082#1091'| '#1087#1086' '#1085#1086#1088#1084#1077
           end
           item
+            AlwaysShowEditButton = True
+            ButtonStyle = cbsEllipsis
+            EditButtons = <>
+            FieldName = 'KART_ID'
+            Footers = <>
+            Title.Caption = #1050#1072#1088#1090#1086#1095#1082#1072
+            OnEditButtonClick = DBGridEh2Columns12EditButtonClick
+          end
+          item
             DisplayFormat = '########0.000000'
             EditButtons = <>
             FieldName = 'OT_S'
@@ -594,11 +618,6 @@ object FKorOtchet: TFKorOtchet
             FieldName = 'PLAN_NORM'
             Footers = <>
             Visible = False
-          end
-          item
-            EditButtons = <>
-            FieldName = 'KART_ID'
-            Footers = <>
           end>
       end
     end
@@ -1171,7 +1190,7 @@ object FKorOtchet: TFKorOtchet
     Left = 776
     Top = 212
     Bitmap = {
-      494C010108000900640018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010108000900680018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
