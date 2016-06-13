@@ -1630,6 +1630,9 @@ begin
 end;
 
 function TFAktRashoda.loadNormiReport() : boolean;
+var
+  i : integer;
+  j : integer;
 begin
   frxReport1.Script.Variables['year'] := yearEdit.Text;
   frxReport1.Script.Variables['month'] := dm1.GetStrMes(monthCombo.ItemIndex + 1);
@@ -1638,7 +1641,22 @@ begin
   else
     frxReport1.Script.Variables['ceh'] := 'экспер.-произв. цех';
   frxReport1.Script.Variables['nDoc'] := nDocEdit.Text;
-    {DocTipParam.First;
+  i := 0;
+  j := 0;
+  underS.underSign.First;
+  while (not underS.underSign.Eof) do
+  begin
+    i := i + 1;
+    frxReport1.Script.Variables['param' + inttoStr(i)] := underS.underSign.FieldByName('param_name').AsString;
+    frxReport1.Script.Variables['podp' + inttoStr(i)] := underS.underSign.FieldByName('DEFAULT_VALUE').AsString;
+    underS.underSign.Next;
+  end;
+  for j := i + 1 to 8 do
+  begin
+    frxReport1.Script.Variables['param' + inttoStr(j)] := '';
+    frxReport1.Script.Variables['podp' + inttoStr(j)] := '';
+  end;
+   { DocTipParam.First;
     frxReport1.Script.Variables['param1'] := DocTipParamPARAM_NAME.AsString;
     frxReport1.Script.Variables['podp1'] := DocTipParamDEFAULT_VALUE.AsString;
     DocTipParam.Next;
@@ -1717,7 +1735,7 @@ begin
     begin
       frxReport1.Script.Variables['param8'] := '';
       frxReport1.Script.Variables['podp8'] := '';
-    end;                   }
+    end;  }
   frxReport1.ShowReport(true);
   result := true;
 end;
