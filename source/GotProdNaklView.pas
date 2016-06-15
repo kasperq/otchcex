@@ -2150,17 +2150,26 @@ var
   v_kol_upak : integer;
   v_kol_upak1 : integer;
   v_seria1 : string;
+  kolRash, kolTrans, divRT, divRT1000 : double;
+  truncDivRT, truncDivRT1000 : integer;
 
 begin
   while (not MD_Nakl_s.Eof) do
   begin
     v_kol_upak1 := 0;
+    kolRash := MD_Nakl_s.FieldByName('KOL_RASH').AsFloat;
+    kolTrans := MD_Nakl_s.FieldByName('kol_trans').AsFloat;
+    divRT := kolRash / kolTrans;
+    divRT1000 := divRT * 1000;
+    truncDivRT := trunc(divRT);
+    truncDivRT1000 := trunc(divRT * 1000);
     MD_Nakl_s.Edit;
     MD_Nakl_s.FieldByName('kol_upak').AsInteger := MD_Nakl_s.FieldByName('kol_grp').AsInteger;
     st := SumToString(Round(MD_Nakl_s.FieldByName('kol_grp').AsInteger));
     MD_Nakl_s.FieldByName('kol_upak_prop').AsString := st;
-    v_kol_upak := Trunc(StrToFloat(MD_Nakl_s.FieldByName('KOL_RASH').AsString) * 1000
-                        / StrToFloat(MD_Nakl_s.FieldByName('kol_trans').AsString));
+    v_kol_upak := truncDivRT1000;
+//    v_kol_upak := Trunc(StrToFloat(MD_Nakl_s.FieldByName('KOL_RASH').AsString) * 1000
+//                        / StrToFloat(MD_Nakl_s.FieldByName('kol_trans').AsString));
     if (cbRF.Checked) then                                                            // для Реополюглюкина на РФ для 1 цеха
     begin
       v_kol_upak := trunc(StrToFloat(MD_Nakl_s.FieldByName('KOL_RASH').AsString) * 1000);          // для Реополюглюкина на РФ для 1 цеха
@@ -2168,8 +2177,9 @@ begin
         v_kol_upak := trunc(1 / (StrToFloat(MD_Nakl_s.FieldByName('KOL_RASH').AsString) * 1000));
     end;
 
-    if (v_kol_upak < (StrToFloat(MD_Nakl_s.FieldByName('KOL_RASH').AsString) * 1000)
-                     / StrToFloat(MD_Nakl_s.FieldByName('kol_trans').AsString)) then
+//    if (v_kol_upak < (StrToFloat(MD_Nakl_s.FieldByName('KOL_RASH').AsString) * 1000)
+//                     / StrToFloat(MD_Nakl_s.FieldByName('kol_trans').AsString)) then
+   if (v_kol_upak < divRT1000) then
       v_kol_upak1 := 1;
 
     if (cbRF.Checked) then
@@ -2348,31 +2358,31 @@ begin
 end;
 
 procedure TFGotProdNaklView.GotKartQueryCalcFields(DataSet: TDataSet);
+var
+  kolRash, kolTrans, divResult, truncDiv, truncDiv1000, div1000 : double;
 begin
   if (GotKartQueryKOL_TRANS.AsFloat <> 0) then
   begin
+    kolRash := SimpleRoundTo(GotKartQueryKOL_RASH.AsFloat, -6);
+    kolTrans := SimpleRoundTo(GotKartQueryKOL_TRANS.AsFloat, -5);
+    divResult := kolRash / kolTrans;
+    truncDiv := trunc(divResult);
+    div1000 := divResult * 1000;
+    truncDiv1000 := trunc(div1000);
     if (GotKartQueryKEI_ID.AsInteger = 166) or (GotKartQueryKEI_ID.AsInteger = 163)
         or (GotKartQueryKEI_ID.AsInteger = 170) then
     begin
-      if ((GotKartQueryKOL_RASH.AsFloat / GotKartQueryKOL_TRANS.AsFloat) >
-           trunc(GotKartQueryKOL_RASH.AsFloat / GotKartQueryKOL_TRANS.AsFloat)) then
-        GotKartQueryKOL_UPAK.AsFloat := trunc(GotKartQueryKOL_RASH.AsFloat
-                                              / GotKartQueryKOL_TRANS.AsFloat) + 1
+      if (divResult > truncDiv) then
+        GotKartQueryKOL_UPAK.AsFloat := truncDiv + 1
       else
-        GotKartQueryKOL_UPAK.AsFloat := trunc(GotKartQueryKOL_RASH.AsFloat
-                                              / GotKartQueryKOL_TRANS.AsFloat);
+        GotKartQueryKOL_UPAK.AsFloat := truncDiv;
     end
     else
-    begin 
-      if ((GotKartQueryKOL_RASH.AsFloat * 1000 / GotKartQueryKOL_TRANS.AsFloat) >
-           trunc(GotKartQueryKOL_RASH.AsFloat * 1000 / GotKartQueryKOL_TRANS.AsFloat)) then
-        GotKartQueryKOL_UPAK.AsFloat := trunc(GotKartQueryKOL_RASH.AsFloat
-                                              * 1000
-                                              / GotKartQueryKOL_TRANS.AsFloat) + 1
+    begin
+      if (div1000 > truncDiv1000) then
+        GotKartQueryKOL_UPAK.AsFloat := truncDiv1000 + 1
       else
-        GotKartQueryKOL_UPAK.AsFloat := trunc(GotKartQueryKOL_RASH.AsFloat
-                                              * 1000
-                                              / GotKartQueryKOL_TRANS.AsFloat);
+        GotKartQueryKOL_UPAK.AsFloat := truncDiv1000;
     end;
   end;
 end;
