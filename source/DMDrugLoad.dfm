@@ -24,183 +24,14 @@ object FDMDrugLoad: TFDMDrugLoad
     Left = 32
     Top = 80
   end
-  object mem_texGur: TkbmMemTable
-    DesignActivation = True
-    AttachedAutoRefresh = True
-    AttachMaxCount = 1
-    FieldDefs = <>
-    IndexDefs = <>
-    SortOptions = []
-    AllDataOptions = [mtfSaveData, mtfSaveNonVisible, mtfSaveBlobs, mtfSaveFiltered, mtfSaveIgnoreRange, mtfSaveIgnoreMasterDetail, mtfSaveDeltas]
-    CommaTextOptions = [mtfSaveData]
-    CSVQuote = '"'
-    CSVFieldDelimiter = ','
-    CSVRecordDelimiter = ','
-    CSVTrueString = 'True'
-    CSVFalseString = 'False'
-    PersistentSaveOptions = [mtfSaveData, mtfSaveNonVisible, mtfSaveIgnoreRange, mtfSaveIgnoreMasterDetail]
-    PersistentBackup = False
-    ProgressFlags = [mtpcLoad, mtpcSave, mtpcCopy]
-    FilterOptions = []
-    Version = '2.53g'
-    LanguageID = 0
-    SortID = 0
-    SubLanguageID = 1
-    LocaleID = 1024
-    BeforePost = mem_texGurBeforePost
-    Left = 112
-    Top = 24
-    object mem_texGurKART_ID: TIntegerField
-      DefaultExpression = '0'
-      FieldName = 'KART_ID'
-    end
-    object mem_texGurKEI_ID_KART: TIntegerField
-      DefaultExpression = '0'
-      FieldName = 'KEI_ID_KART'
-    end
-    object mem_texGurKEI_ID_NORM: TIntegerField
-      DefaultExpression = '0'
-      FieldName = 'KEI_ID_NORM'
-    end
-    object mem_texGurKEI_ID_OST_PREP: TIntegerField
-      DefaultExpression = '0'
-      FieldName = 'KEI_ID_OST_PREP'
-    end
-    object mem_texGurKEI_ID_OST_CEX: TIntegerField
-      DefaultExpression = '0'
-      FieldName = 'KEI_ID_OST_CEX'
-    end
-    object mem_texGurRAZDEL_ID: TIntegerField
-      DefaultExpression = '0'
-      FieldName = 'RAZDEL_ID'
-    end
-    object mem_texGurKSM_ID: TIntegerField
-      FieldName = 'KSM_ID'
-      OnValidate = mem_texGurKSM_IDValidate
-    end
-    object mem_texGurSTROKA_ID: TIntegerField
-      DefaultExpression = '0'
-      FieldName = 'STROKA_ID'
-    end
-    object mem_texGurSERIA_ID: TIntegerField
-      DefaultExpression = '0'
-      FieldName = 'SERIA_ID'
-    end
-    object mem_texGurDOC_ID: TIntegerField
-      DefaultExpression = '0'
-      FieldName = 'DOC_ID'
-    end
-    object mem_texGurDATE_DOK: TDateField
-      FieldName = 'DATE_DOK'
-    end
-    object mem_texGurNEIS: TStringField
-      FieldName = 'NEIS'
-      Size = 10
-    end
-    object mem_texGurNDOK: TStringField
-      FieldName = 'NDOK'
-    end
-    object mem_texGurNMAT: TStringField
-      FieldName = 'NMAT'
-      Size = 60
-    end
-    object mem_texGurKOL_RASH_EDIZ: TFloatField
-      DefaultExpression = '0'
-      FieldName = 'KOL_RASH_EDIZ'
-    end
-    object mem_texGurPLNORM: TFloatField
-      DefaultExpression = '0'
-      FieldName = 'PLNORM'
-    end
-    object mem_texGurOSTATOK_END_S: TFloatField
-      DefaultExpression = '0'
-      FieldName = 'OSTATOK_END_S'
-    end
-    object mem_texGurOSTATOK_END_NZ: TFloatField
-      DefaultExpression = '0'
-      FieldName = 'OSTATOK_END_NZ'
-    end
-    object mem_texGurOSTATOK_END_S_CEX: TFloatField
-      DefaultExpression = '0'
-      FieldName = 'OSTATOK_END_S_CEX'
-    end
-    object mem_texGurKRAZ: TIntegerField
-      FieldName = 'KRAZ'
-    end
-    object mem_texGurZAG_ALL: TFloatField
-      DefaultExpression = '0'
-      FieldName = 'ZAG_ALL'
-    end
-    object mem_texGurDELETE: TBooleanField
-      DefaultExpression = 'false'
-      FieldName = 'DELETE'
-    end
-    object mem_texGurADD: TBooleanField
-      FieldName = 'ADD'
-    end
-    object mem_texGurOSTATOK_BEGIN_S: TFloatField
-      DefaultExpression = '0'
-      FieldName = 'OSTATOK_BEGIN_S'
-    end
-    object mem_texGurOSTATOK_BEGIN_NZ: TFloatField
-      DefaultExpression = '0'
-      FieldName = 'OSTATOK_BEGIN_NZ'
-    end
-    object mem_texGurPRIX: TFloatField
-      FieldName = 'PRIX'
-    end
-    object mem_texGurPEREDANO_PRIH_NZ: TFloatField
-      DefaultExpression = '0'
-      FieldName = 'PEREDANO_PRIH_NZ'
-    end
-    object mem_texGurPRIX_PERIOD: TFloatField
-      DefaultExpression = '0'
-      FieldName = 'PRIX_PERIOD'
-    end
-    object mem_texGurZAG: TFloatField
-      DefaultExpression = '0'
-      FieldName = 'ZAG'
-    end
-    object mem_texGurZAG_PERIOD: TFloatField
-      DefaultExpression = '0'
-      FieldName = 'ZAG_PERIOD'
-    end
-    object mem_texGurRASH_VIRAB_PERIOD: TFloatField
-      DefaultExpression = '0'
-      FieldName = 'RASH_VIRAB_PERIOD'
-    end
-    object mem_texGurPEREDANO_RASH_S: TFloatField
-      DefaultExpression = '0'
-      FieldName = 'PEREDANO_RASH_S'
-    end
-    object mem_texGurPEREDANO_RASH_NZ: TFloatField
-      DefaultExpression = '0'
-      FieldName = 'PEREDANO_RASH_NZ'
-    end
-    object mem_texGurCHANGED: TBooleanField
-      FieldName = 'CHANGED'
-    end
-    object mem_texGurXARKT: TStringField
-      FieldName = 'XARKT'
-      Size = 30
-    end
-    object mem_texGurGOST: TStringField
-      FieldName = 'GOST'
-      Size = 60
-    end
-    object mem_texGurKSM_ID_PREP: TIntegerField
-      DefaultExpression = '0'
-      FieldName = 'KSM_ID_PREP'
-    end
-  end
   object ds_texGur: TDataSource
     DataSet = mem_texGur
     Left = 112
     Top = 80
   end
   object ostceh: TIBQuery
-    Database = DM1.BELMED
-    Transaction = DM1.IBT_Read
+    Database = db
+    Transaction = trans_read
     SQL.Strings = (
       
         'select ost.ksm_id, sum(ost.ostatok_end_s) ostatok_end_s, ost.kei' +
@@ -270,8 +101,8 @@ object FDMDrugLoad: TFDMDrugLoad
     end
   end
   object q_ost: TRxIBQuery
-    Database = DM1.BELMED
-    Transaction = DM1.IBT_Read
+    Database = db
+    Transaction = trans_read
     SQL.Strings = (
       
         'SELECT DISTINCT ost.KART_ID, ost.kei_id, ost.KSM_ID, ost.KSM_IDp' +
@@ -442,8 +273,8 @@ object FDMDrugLoad: TFDMDrugLoad
     end
   end
   object q_norm: TRxIBQuery
-    Database = DM1.BELMED
-    Transaction = DM1.IBT_Read
+    Database = db
+    Transaction = trans_read
     SQL.Strings = (
       'SELECT distinct norm.plnorm, norm.KODP, '
       'NORM.KEI_ID KEIN, NORM.KSM_ID, NORM.KRAZ, NORM.MES, '
@@ -544,8 +375,8 @@ object FDMDrugLoad: TFDMDrugLoad
     end
   end
   object q_prixKart: TRxIBQuery
-    Database = DM1.BELMED
-    Transaction = DM1.IBT_Read
+    Database = db
+    Transaction = trans_read
     CachedUpdates = True
     SQL.Strings = (
       'select kart.*'
@@ -928,13 +759,13 @@ object FDMDrugLoad: TFDMDrugLoad
       'where'
       '  STROKA_ID = :OLD_STROKA_ID')
     AutoCommit = False
-    UpdateTransaction = DM1.IBT_Write
+    UpdateTransaction = trans_write
     Left = 248
     Top = 80
   end
   object q_prixDoc: TRxIBQuery
-    Database = DM1.BELMED
-    Transaction = DM1.IBT_Read
+    Database = db
+    Transaction = trans_read
     CachedUpdates = True
     SQL.Strings = (
       'select document.*'
@@ -1123,8 +954,8 @@ object FDMDrugLoad: TFDMDrugLoad
     end
   end
   object q_prihSum: TRxIBQuery
-    Database = DM1.BELMED
-    Transaction = DM1.IBT_Read
+    Database = db
+    Transaction = trans_read
     CachedUpdates = True
     SQL.Strings = (
       
@@ -1188,144 +1019,9 @@ object FDMDrugLoad: TFDMDrugLoad
       ProviderFlags = []
     end
   end
-  object q_doc: TRxIBQuery
-    Database = DM1.BELMED
-    Transaction = DM1.IBT_Read
-    BeforeInsert = q_docBeforeInsert
-    OnNewRecord = q_docNewRecord
-    CachedUpdates = True
-    SQL.Strings = (
-      
-        'select document.doc_id, document.ndok, document.date_dok, docume' +
-        'nt.struk_id,'
-      
-        'document.klient_id, document.date_op, document.tip_op_id, docume' +
-        'nt.tip_dok_id'
-      'from document'
-      'where document.tip_op_id = 33 and document.tip_dok_id = 34'
-      'and document.date_dok between :dat1 and :dat2'
-      'and document.struk_id = :struk_id'
-      'and document.klient_id = :klient_id'
-      'and %doc_id')
-    UpdateObject = upd_doc
-    Macros = <
-      item
-        DataType = ftString
-        Name = 'doc_id'
-        ParamType = ptInput
-        Value = '0=0'
-      end>
-    Left = 328
-    Top = 24
-    ParamData = <
-      item
-        DataType = ftUnknown
-        Name = 'dat1'
-        ParamType = ptUnknown
-      end
-      item
-        DataType = ftUnknown
-        Name = 'dat2'
-        ParamType = ptUnknown
-      end
-      item
-        DataType = ftUnknown
-        Name = 'struk_id'
-        ParamType = ptUnknown
-      end
-      item
-        DataType = ftUnknown
-        Name = 'klient_id'
-        ParamType = ptUnknown
-      end>
-    object q_docDOC_ID: TIntegerField
-      FieldName = 'DOC_ID'
-      Origin = '"DOCUMENT"."DOC_ID"'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-    end
-    object q_docNDOK: TIBStringField
-      FieldName = 'NDOK'
-      Origin = '"DOCUMENT"."NDOK"'
-    end
-    object q_docDATE_DOK: TDateField
-      FieldName = 'DATE_DOK'
-      Origin = '"DOCUMENT"."DATE_DOK"'
-    end
-    object q_docSTRUK_ID: TSmallintField
-      FieldName = 'STRUK_ID'
-      Origin = '"DOCUMENT"."STRUK_ID"'
-      Required = True
-    end
-    object q_docKLIENT_ID: TIntegerField
-      FieldName = 'KLIENT_ID'
-      Origin = '"DOCUMENT"."KLIENT_ID"'
-      Required = True
-    end
-    object q_docDATE_OP: TDateField
-      FieldName = 'DATE_OP'
-      Origin = '"DOCUMENT"."DATE_OP"'
-    end
-    object q_docTIP_OP_ID: TSmallintField
-      FieldName = 'TIP_OP_ID'
-      Origin = '"DOCUMENT"."TIP_OP_ID"'
-      Required = True
-    end
-    object q_docTIP_DOK_ID: TSmallintField
-      FieldName = 'TIP_DOK_ID'
-      Origin = '"DOCUMENT"."TIP_DOK_ID"'
-      Required = True
-    end
-  end
-  object upd_doc: TIBUpdateSQLW
-    RefreshSQL.Strings = (
-      'Select '
-      '  DOC_ID,'
-      '  NDOK,'
-      '  DATE_DOK,'
-      '  STRUK_ID,'
-      '  KLIENT_ID,'
-      '  DATE_OP,'
-      '  TIP_OP_ID,'
-      '  TIP_DOK_ID'
-      'from document '
-      'where'
-      '  DOC_ID = :DOC_ID')
-    ModifySQL.Strings = (
-      'update document'
-      'set'
-      '  DATE_DOK = :DATE_DOK,'
-      '  DATE_OP = :DATE_OP,'
-      '  DOC_ID = :DOC_ID,'
-      '  KLIENT_ID = :KLIENT_ID,'
-      '  NDOK = :NDOK,'
-      '  STRUK_ID = :STRUK_ID,'
-      '  TIP_DOK_ID = :TIP_DOK_ID,'
-      '  TIP_OP_ID = :TIP_OP_ID'
-      'where'
-      '  DOC_ID = :OLD_DOC_ID')
-    InsertSQL.Strings = (
-      'insert into document'
-      
-        '  (DATE_DOK, DATE_OP, DOC_ID, KLIENT_ID, NDOK, STRUK_ID, TIP_DOK' +
-        '_ID, TIP_OP_ID)'
-      'values'
-      
-        '  (:DATE_DOK, :DATE_OP, :DOC_ID, :KLIENT_ID, :NDOK, :STRUK_ID, :' +
-        'TIP_DOK_ID, '
-      '   :TIP_OP_ID)')
-    DeleteSQL.Strings = (
-      'delete from document'
-      'where'
-      '  DOC_ID = :OLD_DOC_ID')
-    AutoCommit = False
-    UpdateTransaction = DM1.IBT_Write
-    Left = 376
-    Top = 24
-  end
   object q_ostatki: TRxIBQuery
-    Database = DM1.BELMED
-    Transaction = DM1.IBT_Read
+    Database = db
+    Transaction = trans_read
     CachedUpdates = True
     SQL.Strings = (
       
@@ -1458,171 +1154,9 @@ object FDMDrugLoad: TFDMDrugLoad
       'where'
       '  KART_ID = :OLD_KART_ID')
     AutoCommit = False
-    UpdateTransaction = DM1.IBT_Write
+    UpdateTransaction = trans_write
     Left = 520
     Top = 24
-  end
-  object upd_kart: TIBUpdateSQLW
-    RefreshSQL.Strings = (
-      'Select '
-      '  DOC_ID,'
-      '  STROKA_ID,'
-      '  KART_ID,'
-      '  KOL_RASH,'
-      '  KOL_RASH_EDIZ,'
-      '  RAZDEL_ID,'
-      '  KEI_ID,'
-      '  KSM_ID,'
-      '  NEIS,'
-      '  NMAT,'
-      '  KRAZ,'
-      '  XARKT,'
-      '  GOST,'
-      '  TIP_OP_ID,'
-      '  TIP_DOK_ID,'
-      '  KOL_PRIH_EDIZ'
-      'from kart '
-      'where'
-      '  STROKA_ID = :STROKA_ID')
-    ModifySQL.Strings = (
-      'update kart'
-      'set'
-      '  DOC_ID = :DOC_ID,'
-      '  KART_ID = :KART_ID,'
-      '  KEI_ID = :KEI_ID,'
-      '  KOL_PRIH_EDIZ = :KOL_PRIH_EDIZ,'
-      '  KOL_RASH = :KOL_RASH,'
-      '  KOL_RASH_EDIZ = :KOL_RASH_EDIZ,'
-      '  KSM_ID = :KSM_ID,'
-      '  RAZDEL_ID = :RAZDEL_ID,'
-      '  STROKA_ID = :STROKA_ID,'
-      '  TIP_DOK_ID = :TIP_DOK_ID,'
-      '  TIP_OP_ID = :TIP_OP_ID'
-      'where'
-      '  STROKA_ID = :OLD_STROKA_ID')
-    InsertSQL.Strings = (
-      'insert into kart'
-      
-        '  (DOC_ID, KART_ID, KEI_ID, KOL_PRIH_EDIZ, KOL_RASH, KOL_RASH_ED' +
-        'IZ, KSM_ID, '
-      '   RAZDEL_ID, STROKA_ID, TIP_DOK_ID, TIP_OP_ID)'
-      'values'
-      
-        '  (:DOC_ID, :KART_ID, :KEI_ID, :KOL_PRIH_EDIZ, :KOL_RASH, :KOL_R' +
-        'ASH_EDIZ, '
-      '   :KSM_ID, :RAZDEL_ID, :STROKA_ID, :TIP_DOK_ID, :TIP_OP_ID)')
-    DeleteSQL.Strings = (
-      'delete from kart'
-      'where'
-      '  STROKA_ID = :OLD_STROKA_ID')
-    AutoCommit = False
-    UpdateTransaction = DM1.IBT_Write
-    Left = 248
-    Top = 24
-  end
-  object q_kart: TRxIBQuery
-    Database = DM1.BELMED
-    Transaction = DM1.IBT_Read
-    BeforeInsert = q_kartBeforeInsert
-    OnNewRecord = q_kartNewRecord
-    CachedUpdates = True
-    SQL.Strings = (
-      'select kart.doc_id, kart.stroka_id, kart.kart_id, kart.kol_rash,'
-      'kart.kol_rash_ediz, kart.razdel_id, kart.kei_id, kart.ksm_id,'
-      'ediz.neis, matrop.nmat, razdel.kraz,  matrop.xarkt, matrop.gost,'
-      'kart.tip_op_id, kart.tip_dok_id, kart.kol_prih_ediz'
-      'from kart'
-      'left join ediz on ediz.kei_id = kart.kei_id'
-      'left join matrop on matrop.ksm_id = kart.ksm_id'
-      'left join razdel on razdel.razdel_id = kart.razdel_id'
-      'where kart.doc_id = :doc_id'
-      'order by razdel.kraz, matrop.nmat')
-    UpdateObject = upd_kart
-    Macros = <>
-    Left = 184
-    Top = 24
-    ParamData = <
-      item
-        DataType = ftUnknown
-        Name = 'doc_id'
-        ParamType = ptUnknown
-      end>
-    object q_kartDOC_ID: TIntegerField
-      FieldName = 'DOC_ID'
-      Origin = '"KART"."DOC_ID"'
-      Required = True
-    end
-    object q_kartSTROKA_ID: TIntegerField
-      FieldName = 'STROKA_ID'
-      Origin = '"KART"."STROKA_ID"'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-    end
-    object q_kartKART_ID: TIntegerField
-      FieldName = 'KART_ID'
-      Origin = '"KART"."KART_ID"'
-      Required = True
-    end
-    object q_kartKOL_RASH: TFMTBCDField
-      FieldName = 'KOL_RASH'
-      Origin = '"KART"."KOL_RASH"'
-      Precision = 18
-      Size = 6
-    end
-    object q_kartKOL_RASH_EDIZ: TFloatField
-      FieldName = 'KOL_RASH_EDIZ'
-      Origin = '"KART"."KOL_RASH_EDIZ"'
-    end
-    object q_kartRAZDEL_ID: TSmallintField
-      FieldName = 'RAZDEL_ID'
-      Origin = '"KART"."RAZDEL_ID"'
-    end
-    object q_kartKEI_ID: TSmallintField
-      FieldName = 'KEI_ID'
-      Origin = '"KART"."KEI_ID"'
-    end
-    object q_kartKSM_ID: TIntegerField
-      FieldName = 'KSM_ID'
-      Origin = '"KART"."KSM_ID"'
-      Required = True
-    end
-    object q_kartNEIS: TIBStringField
-      FieldName = 'NEIS'
-      Origin = '"EDIZ"."NEIS"'
-      FixedChar = True
-      Size = 10
-    end
-    object q_kartNMAT: TIBStringField
-      FieldName = 'NMAT'
-      Origin = '"MATROP"."NMAT"'
-      Size = 60
-    end
-    object q_kartKRAZ: TSmallintField
-      FieldName = 'KRAZ'
-      Origin = '"RAZDEL"."KRAZ"'
-    end
-    object q_kartXARKT: TIBStringField
-      FieldName = 'XARKT'
-      Origin = '"MATROP"."XARKT"'
-      Size = 30
-    end
-    object q_kartGOST: TIBStringField
-      FieldName = 'GOST'
-      Origin = '"MATROP"."GOST"'
-      Size = 60
-    end
-    object q_kartTIP_OP_ID: TSmallintField
-      FieldName = 'TIP_OP_ID'
-      Origin = '"KART"."TIP_OP_ID"'
-    end
-    object q_kartTIP_DOK_ID: TSmallintField
-      FieldName = 'TIP_DOK_ID'
-      Origin = '"KART"."TIP_DOK_ID"'
-    end
-    object q_kartKOL_PRIH_EDIZ: TFloatField
-      FieldName = 'KOL_PRIH_EDIZ'
-      Origin = '"KART"."KOL_PRIH_EDIZ"'
-    end
   end
   object trans_write: TIBTransaction
     DefaultDatabase = db
@@ -1634,6 +1168,8 @@ object FDMDrugLoad: TFDMDrugLoad
     Top = 136
   end
   object Matrop: TIBQuery
+    Database = db
+    Transaction = trans_read
     SQL.Strings = (
       
         'select MATROP.NMAT,matrop.prmat, MATROP.GOST,MATROP.XARKT,MATROP' +
@@ -2148,16 +1684,22 @@ object FDMDrugLoad: TFDMDrugLoad
     Top = 372
   end
   object AddSeria: TIBStoredProc
+    Database = db
+    Transaction = trans_read
     StoredProcName = 'ADD_SERIA'
     Left = 40
     Top = 200
   end
   object Add_Ostatki: TIBStoredProc
+    Database = db
+    Transaction = trans_read
     StoredProcName = 'ADD_OSTATKI'
     Left = 40
     Top = 256
   end
   object ADD_KartDok: TIBStoredProc
+    Database = db
+    Transaction = trans_read
     StoredProcName = 'ADD_KART'
     Left = 40
     Top = 304
@@ -2167,5 +1709,483 @@ object FDMDrugLoad: TFDMDrugLoad
         Name = 'STROKA_ID'
         ParamType = ptOutput
       end>
+  end
+  object mem_texGur: TkbmMemTable
+    DesignActivation = True
+    AttachedAutoRefresh = True
+    AttachMaxCount = 1
+    FieldDefs = <>
+    IndexDefs = <>
+    SortOptions = []
+    AllDataOptions = [mtfSaveData, mtfSaveNonVisible, mtfSaveBlobs, mtfSaveFiltered, mtfSaveIgnoreRange, mtfSaveIgnoreMasterDetail, mtfSaveDeltas]
+    CommaTextOptions = [mtfSaveData]
+    CSVQuote = '"'
+    CSVFieldDelimiter = ','
+    CSVRecordDelimiter = ','
+    CSVTrueString = 'True'
+    CSVFalseString = 'False'
+    PersistentSaveOptions = [mtfSaveData, mtfSaveNonVisible, mtfSaveIgnoreRange, mtfSaveIgnoreMasterDetail]
+    PersistentBackup = False
+    ProgressFlags = [mtpcLoad, mtpcSave, mtpcCopy]
+    FilterOptions = []
+    Version = '2.53g'
+    LanguageID = 0
+    SortID = 0
+    SubLanguageID = 1
+    LocaleID = 1024
+    BeforePost = mem_texGurBeforePost
+    Left = 112
+    Top = 24
+    object mem_texGurKART_ID: TIntegerField
+      DefaultExpression = '0'
+      FieldName = 'KART_ID'
+    end
+    object mem_texGurKEI_ID_KART: TIntegerField
+      DefaultExpression = '0'
+      FieldName = 'KEI_ID_KART'
+    end
+    object mem_texGurKEI_ID_NORM: TIntegerField
+      DefaultExpression = '0'
+      FieldName = 'KEI_ID_NORM'
+    end
+    object mem_texGurKEI_ID_OST_PREP: TIntegerField
+      DefaultExpression = '0'
+      FieldName = 'KEI_ID_OST_PREP'
+    end
+    object mem_texGurKEI_ID_OST_CEX: TIntegerField
+      DefaultExpression = '0'
+      FieldName = 'KEI_ID_OST_CEX'
+    end
+    object mem_texGurRAZDEL_ID: TIntegerField
+      DefaultExpression = '0'
+      FieldName = 'RAZDEL_ID'
+    end
+    object mem_texGurKSM_ID: TIntegerField
+      FieldName = 'KSM_ID'
+      OnValidate = mem_texGurKSM_IDValidate
+    end
+    object mem_texGurSTROKA_ID: TIntegerField
+      DefaultExpression = '0'
+      FieldName = 'STROKA_ID'
+    end
+    object mem_texGurSERIA_ID: TIntegerField
+      DefaultExpression = '0'
+      FieldName = 'SERIA_ID'
+    end
+    object mem_texGurDOC_ID: TIntegerField
+      DefaultExpression = '0'
+      FieldName = 'DOC_ID'
+    end
+    object mem_texGurDATE_DOK: TDateField
+      FieldName = 'DATE_DOK'
+    end
+    object mem_texGurNEIS: TStringField
+      FieldName = 'NEIS'
+      Size = 10
+    end
+    object mem_texGurNDOK: TStringField
+      FieldName = 'NDOK'
+    end
+    object mem_texGurNMAT: TStringField
+      FieldName = 'NMAT'
+      Size = 60
+    end
+    object mem_texGurKOL_RASH_EDIZ: TFloatField
+      DefaultExpression = '0'
+      FieldName = 'KOL_RASH_EDIZ'
+    end
+    object mem_texGurPLNORM: TFloatField
+      DefaultExpression = '0'
+      FieldName = 'PLNORM'
+    end
+    object mem_texGurOSTATOK_END_S: TFloatField
+      DefaultExpression = '0'
+      FieldName = 'OSTATOK_END_S'
+    end
+    object mem_texGurOSTATOK_END_NZ: TFloatField
+      DefaultExpression = '0'
+      FieldName = 'OSTATOK_END_NZ'
+    end
+    object mem_texGurOSTATOK_END_S_CEX: TFloatField
+      DefaultExpression = '0'
+      FieldName = 'OSTATOK_END_S_CEX'
+    end
+    object mem_texGurKRAZ: TIntegerField
+      FieldName = 'KRAZ'
+    end
+    object mem_texGurZAG_ALL: TFloatField
+      DefaultExpression = '0'
+      FieldName = 'ZAG_ALL'
+    end
+    object mem_texGurDELETE: TBooleanField
+      DefaultExpression = 'false'
+      FieldName = 'DELETE'
+    end
+    object mem_texGurADD: TBooleanField
+      FieldName = 'ADD'
+    end
+    object mem_texGurOSTATOK_BEGIN_S: TFloatField
+      DefaultExpression = '0'
+      FieldName = 'OSTATOK_BEGIN_S'
+    end
+    object mem_texGurOSTATOK_BEGIN_NZ: TFloatField
+      DefaultExpression = '0'
+      FieldName = 'OSTATOK_BEGIN_NZ'
+    end
+    object mem_texGurPRIX: TFloatField
+      FieldName = 'PRIX'
+    end
+    object mem_texGurPEREDANO_PRIH_NZ: TFloatField
+      DefaultExpression = '0'
+      FieldName = 'PEREDANO_PRIH_NZ'
+    end
+    object mem_texGurPRIX_PERIOD: TFloatField
+      DefaultExpression = '0'
+      FieldName = 'PRIX_PERIOD'
+    end
+    object mem_texGurZAG: TFloatField
+      DefaultExpression = '0'
+      FieldName = 'ZAG'
+    end
+    object mem_texGurZAG_PERIOD: TFloatField
+      DefaultExpression = '0'
+      FieldName = 'ZAG_PERIOD'
+    end
+    object mem_texGurRASH_VIRAB_PERIOD: TFloatField
+      DefaultExpression = '0'
+      FieldName = 'RASH_VIRAB_PERIOD'
+    end
+    object mem_texGurPEREDANO_RASH_S: TFloatField
+      DefaultExpression = '0'
+      FieldName = 'PEREDANO_RASH_S'
+    end
+    object mem_texGurPEREDANO_RASH_NZ: TFloatField
+      DefaultExpression = '0'
+      FieldName = 'PEREDANO_RASH_NZ'
+    end
+    object mem_texGurCHANGED: TBooleanField
+      FieldName = 'CHANGED'
+    end
+    object mem_texGurXARKT: TStringField
+      FieldName = 'XARKT'
+      Size = 30
+    end
+    object mem_texGurGOST: TStringField
+      FieldName = 'GOST'
+      Size = 60
+    end
+    object mem_texGurKSM_ID_PREP: TIntegerField
+      DefaultExpression = '0'
+      FieldName = 'KSM_ID_PREP'
+    end
+    object mem_texGurOLD_DATE_DOK: TDateField
+      FieldName = 'OLD_DATE_DOK'
+    end
+    object mem_texGurUSER_NAME: TStringField
+      FieldName = 'USER_NAME'
+      Size = 10
+    end
+  end
+  object q_kart: TRxIBQuery
+    Database = db
+    Transaction = trans_read
+    BeforeInsert = q_kartBeforeInsert
+    OnNewRecord = q_kartNewRecord
+    CachedUpdates = True
+    SQL.Strings = (
+      'select kart.doc_id, kart.stroka_id, kart.kart_id, kart.kol_rash,'
+      'kart.kol_rash_ediz, kart.razdel_id, kart.kei_id, kart.ksm_id,'
+      'ediz.neis, matrop.nmat, razdel.kraz,  matrop.xarkt, matrop.gost,'
+      
+        'kart.tip_op_id, kart.tip_dok_id, kart.kol_prih_ediz, kart.user_n' +
+        'ame'
+      'from kart'
+      'left join ediz on ediz.kei_id = kart.kei_id'
+      'left join matrop on matrop.ksm_id = kart.ksm_id'
+      'left join razdel on razdel.razdel_id = kart.razdel_id'
+      'where kart.doc_id = :doc_id'
+      'order by razdel.kraz, matrop.nmat')
+    UpdateObject = upd_kart
+    Macros = <>
+    Left = 184
+    Top = 16
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'doc_id'
+        ParamType = ptUnknown
+      end>
+    object q_kartDOC_ID: TIntegerField
+      FieldName = 'DOC_ID'
+      Origin = '"KART"."DOC_ID"'
+      Required = True
+    end
+    object q_kartSTROKA_ID: TIntegerField
+      FieldName = 'STROKA_ID'
+      Origin = '"KART"."STROKA_ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object q_kartKART_ID: TIntegerField
+      FieldName = 'KART_ID'
+      Origin = '"KART"."KART_ID"'
+      Required = True
+    end
+    object q_kartKOL_RASH: TFMTBCDField
+      FieldName = 'KOL_RASH'
+      Origin = '"KART"."KOL_RASH"'
+      Precision = 18
+      Size = 6
+    end
+    object q_kartKOL_RASH_EDIZ: TFloatField
+      FieldName = 'KOL_RASH_EDIZ'
+      Origin = '"KART"."KOL_RASH_EDIZ"'
+    end
+    object q_kartRAZDEL_ID: TSmallintField
+      FieldName = 'RAZDEL_ID'
+      Origin = '"KART"."RAZDEL_ID"'
+    end
+    object q_kartKEI_ID: TSmallintField
+      FieldName = 'KEI_ID'
+      Origin = '"KART"."KEI_ID"'
+    end
+    object q_kartKSM_ID: TIntegerField
+      FieldName = 'KSM_ID'
+      Origin = '"KART"."KSM_ID"'
+      Required = True
+    end
+    object q_kartNEIS: TIBStringField
+      FieldName = 'NEIS'
+      Origin = '"EDIZ"."NEIS"'
+      FixedChar = True
+      Size = 10
+    end
+    object q_kartNMAT: TIBStringField
+      FieldName = 'NMAT'
+      Origin = '"MATROP"."NMAT"'
+      Size = 60
+    end
+    object q_kartKRAZ: TSmallintField
+      FieldName = 'KRAZ'
+      Origin = '"RAZDEL"."KRAZ"'
+    end
+    object q_kartXARKT: TIBStringField
+      FieldName = 'XARKT'
+      Origin = '"MATROP"."XARKT"'
+      Size = 30
+    end
+    object q_kartGOST: TIBStringField
+      FieldName = 'GOST'
+      Origin = '"MATROP"."GOST"'
+      Size = 60
+    end
+    object q_kartTIP_OP_ID: TSmallintField
+      FieldName = 'TIP_OP_ID'
+      Origin = '"KART"."TIP_OP_ID"'
+    end
+    object q_kartTIP_DOK_ID: TSmallintField
+      FieldName = 'TIP_DOK_ID'
+      Origin = '"KART"."TIP_DOK_ID"'
+    end
+    object q_kartKOL_PRIH_EDIZ: TFloatField
+      FieldName = 'KOL_PRIH_EDIZ'
+      Origin = '"KART"."KOL_PRIH_EDIZ"'
+    end
+    object q_kartUSER_NAME: TIBStringField
+      FieldName = 'USER_NAME'
+      Origin = '"KART"."USER_NAME"'
+      FixedChar = True
+      Size = 10
+    end
+  end
+  object upd_kart: TIBUpdateSQLW
+    RefreshSQL.Strings = (
+      'Select '
+      '  DOC_ID,'
+      '  STROKA_ID,'
+      '  KART_ID,'
+      '  KOL_RASH,'
+      '  KOL_RASH_EDIZ,'
+      '  RAZDEL_ID,'
+      '  KEI_ID,'
+      '  KSM_ID,'
+      '  NEIS,'
+      '  NMAT,'
+      '  KRAZ,'
+      '  XARKT,'
+      '  GOST,'
+      '  TIP_OP_ID,'
+      '  TIP_DOK_ID,'
+      '  KOL_PRIH_EDIZ'
+      'from kart '
+      'where'
+      '  STROKA_ID = :STROKA_ID')
+    ModifySQL.Strings = (
+      'update kart'
+      'set'
+      '  DOC_ID = :DOC_ID,'
+      '  KART_ID = :KART_ID,'
+      '  KEI_ID = :KEI_ID,'
+      '  KOL_PRIH_EDIZ = :KOL_PRIH_EDIZ,'
+      '  KOL_RASH = :KOL_RASH,'
+      '  KOL_RASH_EDIZ = :KOL_RASH_EDIZ,'
+      '  KSM_ID = :KSM_ID,'
+      '  RAZDEL_ID = :RAZDEL_ID,'
+      '  STROKA_ID = :STROKA_ID,'
+      '  TIP_DOK_ID = :TIP_DOK_ID,'
+      '  TIP_OP_ID = :TIP_OP_ID'
+      'where'
+      '  STROKA_ID = :OLD_STROKA_ID')
+    InsertSQL.Strings = (
+      'insert into kart'
+      
+        '  (DOC_ID, KART_ID, KEI_ID, KOL_PRIH_EDIZ, KOL_RASH, KOL_RASH_ED' +
+        'IZ, KSM_ID, '
+      '   RAZDEL_ID, STROKA_ID, TIP_DOK_ID, TIP_OP_ID)'
+      'values'
+      
+        '  (:DOC_ID, :KART_ID, :KEI_ID, :KOL_PRIH_EDIZ, :KOL_RASH, :KOL_R' +
+        'ASH_EDIZ, '
+      '   :KSM_ID, :RAZDEL_ID, :STROKA_ID, :TIP_DOK_ID, :TIP_OP_ID)')
+    DeleteSQL.Strings = (
+      'delete from kart'
+      'where'
+      '  STROKA_ID = :OLD_STROKA_ID')
+    AutoCommit = False
+    UpdateTransaction = trans_write
+    Left = 248
+    Top = 16
+  end
+  object q_doc: TRxIBQuery
+    Database = db
+    Transaction = trans_read
+    BeforeInsert = q_docBeforeInsert
+    OnNewRecord = q_docNewRecord
+    CachedUpdates = True
+    SQL.Strings = (
+      
+        'select document.doc_id, document.ndok, document.date_dok, docume' +
+        'nt.struk_id,'
+      
+        'document.klient_id, document.date_op, document.tip_op_id, docume' +
+        'nt.tip_dok_id'
+      'from document'
+      'where document.tip_op_id = 33 '
+      'and document.tip_dok_id = 34'
+      'and document.struk_id = :struk_id'
+      'and document.klient_id = :klient_id'
+      'and %date_dok'
+      'and %doc_id')
+    UpdateObject = upd_doc
+    Macros = <
+      item
+        DataType = ftString
+        Name = 'date_dok'
+        ParamType = ptInput
+        Value = '0=0'
+      end
+      item
+        DataType = ftString
+        Name = 'doc_id'
+        ParamType = ptInput
+        Value = '0=0'
+      end>
+    Left = 328
+    Top = 16
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'struk_id'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'klient_id'
+        ParamType = ptUnknown
+      end>
+    object q_docDOC_ID: TIntegerField
+      FieldName = 'DOC_ID'
+      Origin = '"DOCUMENT"."DOC_ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object q_docNDOK: TIBStringField
+      FieldName = 'NDOK'
+      Origin = '"DOCUMENT"."NDOK"'
+    end
+    object q_docDATE_DOK: TDateField
+      FieldName = 'DATE_DOK'
+      Origin = '"DOCUMENT"."DATE_DOK"'
+    end
+    object q_docSTRUK_ID: TSmallintField
+      FieldName = 'STRUK_ID'
+      Origin = '"DOCUMENT"."STRUK_ID"'
+      Required = True
+    end
+    object q_docKLIENT_ID: TIntegerField
+      FieldName = 'KLIENT_ID'
+      Origin = '"DOCUMENT"."KLIENT_ID"'
+      Required = True
+    end
+    object q_docDATE_OP: TDateField
+      FieldName = 'DATE_OP'
+      Origin = '"DOCUMENT"."DATE_OP"'
+    end
+    object q_docTIP_OP_ID: TSmallintField
+      FieldName = 'TIP_OP_ID'
+      Origin = '"DOCUMENT"."TIP_OP_ID"'
+      Required = True
+    end
+    object q_docTIP_DOK_ID: TSmallintField
+      FieldName = 'TIP_DOK_ID'
+      Origin = '"DOCUMENT"."TIP_DOK_ID"'
+      Required = True
+    end
+  end
+  object upd_doc: TIBUpdateSQLW
+    RefreshSQL.Strings = (
+      'Select '
+      '  DOC_ID,'
+      '  NDOK,'
+      '  DATE_DOK,'
+      '  STRUK_ID,'
+      '  KLIENT_ID,'
+      '  DATE_OP,'
+      '  TIP_OP_ID,'
+      '  TIP_DOK_ID'
+      'from document '
+      'where'
+      '  DOC_ID = :DOC_ID')
+    ModifySQL.Strings = (
+      'update document'
+      'set'
+      '  DATE_DOK = :DATE_DOK,'
+      '  DATE_OP = :DATE_OP,'
+      '  DOC_ID = :DOC_ID,'
+      '  KLIENT_ID = :KLIENT_ID,'
+      '  NDOK = :NDOK,'
+      '  STRUK_ID = :STRUK_ID,'
+      '  TIP_DOK_ID = :TIP_DOK_ID,'
+      '  TIP_OP_ID = :TIP_OP_ID'
+      'where'
+      '  DOC_ID = :OLD_DOC_ID')
+    InsertSQL.Strings = (
+      'insert into document'
+      
+        '  (DATE_DOK, DATE_OP, DOC_ID, KLIENT_ID, NDOK, STRUK_ID, TIP_DOK' +
+        '_ID, TIP_OP_ID)'
+      'values'
+      
+        '  (:DATE_DOK, :DATE_OP, :DOC_ID, :KLIENT_ID, :NDOK, :STRUK_ID, :' +
+        'TIP_DOK_ID, '
+      '   :TIP_OP_ID)')
+    DeleteSQL.Strings = (
+      'delete from document'
+      'where'
+      '  DOC_ID = :OLD_DOC_ID')
+    AutoCommit = False
+    UpdateTransaction = trans_write
+    Left = 384
+    Top = 16
   end
 end

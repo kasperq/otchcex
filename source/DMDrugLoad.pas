@@ -2,52 +2,14 @@ unit DMDrugLoad;
 
 interface
 
-uses
+uses SprFormul,
   SysUtils, Classes, kbmMemTable, DB, IBCustomDataSet, IBQuery, RxIBQuery,
-  IBDatabase, Dialogs, IBStoredProc, IBUpdateSQL, IBUpdSQLW;
+  IBDatabase, Dialogs, IBStoredProc, IBUpdateSQL, IBUpdSQLW, Variants, UtilRIB;
 
 type
   TFDMDrugLoad = class(TDataModule)
     db: TIBDatabase;
     trans_read: TIBTransaction;
-    mem_texGur: TkbmMemTable;
-    mem_texGurKART_ID: TIntegerField;
-    mem_texGurKEI_ID_KART: TIntegerField;
-    mem_texGurKEI_ID_NORM: TIntegerField;
-    mem_texGurKEI_ID_OST_PREP: TIntegerField;
-    mem_texGurKEI_ID_OST_CEX: TIntegerField;
-    mem_texGurRAZDEL_ID: TIntegerField;
-    mem_texGurKSM_ID: TIntegerField;
-    mem_texGurSTROKA_ID: TIntegerField;
-    mem_texGurSERIA_ID: TIntegerField;
-    mem_texGurDOC_ID: TIntegerField;
-    mem_texGurDATE_DOK: TDateField;
-    mem_texGurNEIS: TStringField;
-    mem_texGurNDOK: TStringField;
-    mem_texGurNMAT: TStringField;
-    mem_texGurKOL_RASH_EDIZ: TFloatField;
-    mem_texGurPLNORM: TFloatField;
-    mem_texGurOSTATOK_END_S: TFloatField;
-    mem_texGurOSTATOK_END_NZ: TFloatField;
-    mem_texGurOSTATOK_END_S_CEX: TFloatField;
-    mem_texGurKRAZ: TIntegerField;
-    mem_texGurZAG_ALL: TFloatField;
-    mem_texGurDELETE: TBooleanField;
-    mem_texGurADD: TBooleanField;
-    mem_texGurOSTATOK_BEGIN_S: TFloatField;
-    mem_texGurOSTATOK_BEGIN_NZ: TFloatField;
-    mem_texGurPRIX: TFloatField;
-    mem_texGurPEREDANO_PRIH_NZ: TFloatField;
-    mem_texGurPRIX_PERIOD: TFloatField;
-    mem_texGurZAG: TFloatField;
-    mem_texGurZAG_PERIOD: TFloatField;
-    mem_texGurRASH_VIRAB_PERIOD: TFloatField;
-    mem_texGurPEREDANO_RASH_S: TFloatField;
-    mem_texGurPEREDANO_RASH_NZ: TFloatField;
-    mem_texGurCHANGED: TBooleanField;
-    mem_texGurXARKT: TStringField;
-    mem_texGurGOST: TStringField;
-    mem_texGurKSM_ID_PREP: TIntegerField;
     ds_texGur: TDataSource;
     ostceh: TIBQuery;
     ostcehKSM_ID: TIntegerField;
@@ -179,16 +141,6 @@ type
     q_prihSumKSM_ID: TIntegerField;
     q_prihSumRAZDEL_ID: TSmallintField;
     q_prihSumPRIHSUM: TFloatField;
-    q_doc: TRxIBQuery;
-    q_docDOC_ID: TIntegerField;
-    q_docNDOK: TIBStringField;
-    q_docDATE_DOK: TDateField;
-    q_docSTRUK_ID: TSmallintField;
-    q_docKLIENT_ID: TIntegerField;
-    q_docDATE_OP: TDateField;
-    q_docTIP_OP_ID: TSmallintField;
-    q_docTIP_DOK_ID: TSmallintField;
-    upd_doc: TIBUpdateSQLW;
     q_ostatki: TRxIBQuery;
     q_ostatkiSTRUK_ID: TIntegerField;
     q_ostatkiKSM_ID: TIntegerField;
@@ -203,24 +155,6 @@ type
     q_ostatkiMES: TSmallintField;
     q_ostatkiGOD: TSmallintField;
     upd_ostatki: TIBUpdateSQLW;
-    upd_kart: TIBUpdateSQLW;
-    q_kart: TRxIBQuery;
-    q_kartDOC_ID: TIntegerField;
-    q_kartSTROKA_ID: TIntegerField;
-    q_kartKART_ID: TIntegerField;
-    q_kartKOL_RASH: TFMTBCDField;
-    q_kartKOL_RASH_EDIZ: TFloatField;
-    q_kartRAZDEL_ID: TSmallintField;
-    q_kartKEI_ID: TSmallintField;
-    q_kartKSM_ID: TIntegerField;
-    q_kartNEIS: TIBStringField;
-    q_kartNMAT: TIBStringField;
-    q_kartKRAZ: TSmallintField;
-    q_kartXARKT: TIBStringField;
-    q_kartGOST: TIBStringField;
-    q_kartTIP_OP_ID: TSmallintField;
-    q_kartTIP_DOK_ID: TSmallintField;
-    q_kartKOL_PRIH_EDIZ: TFloatField;
     trans_write: TIBTransaction;
     Matrop: TIBQuery;
     MatropNMAT: TIBStringField;
@@ -287,6 +221,75 @@ type
     AddSeria: TIBStoredProc;
     Add_Ostatki: TIBStoredProc;
     ADD_KartDok: TIBStoredProc;
+    mem_texGur: TkbmMemTable;
+    mem_texGurKART_ID: TIntegerField;
+    mem_texGurKEI_ID_KART: TIntegerField;
+    mem_texGurKEI_ID_NORM: TIntegerField;
+    mem_texGurKEI_ID_OST_PREP: TIntegerField;
+    mem_texGurKEI_ID_OST_CEX: TIntegerField;
+    mem_texGurRAZDEL_ID: TIntegerField;
+    mem_texGurKSM_ID: TIntegerField;
+    mem_texGurSTROKA_ID: TIntegerField;
+    mem_texGurSERIA_ID: TIntegerField;
+    mem_texGurDOC_ID: TIntegerField;
+    mem_texGurDATE_DOK: TDateField;
+    mem_texGurNEIS: TStringField;
+    mem_texGurNDOK: TStringField;
+    mem_texGurNMAT: TStringField;
+    mem_texGurKOL_RASH_EDIZ: TFloatField;
+    mem_texGurPLNORM: TFloatField;
+    mem_texGurOSTATOK_END_S: TFloatField;
+    mem_texGurOSTATOK_END_NZ: TFloatField;
+    mem_texGurOSTATOK_END_S_CEX: TFloatField;
+    mem_texGurKRAZ: TIntegerField;
+    mem_texGurZAG_ALL: TFloatField;
+    mem_texGurDELETE: TBooleanField;
+    mem_texGurADD: TBooleanField;
+    mem_texGurOSTATOK_BEGIN_S: TFloatField;
+    mem_texGurOSTATOK_BEGIN_NZ: TFloatField;
+    mem_texGurPRIX: TFloatField;
+    mem_texGurPEREDANO_PRIH_NZ: TFloatField;
+    mem_texGurPRIX_PERIOD: TFloatField;
+    mem_texGurZAG: TFloatField;
+    mem_texGurZAG_PERIOD: TFloatField;
+    mem_texGurRASH_VIRAB_PERIOD: TFloatField;
+    mem_texGurPEREDANO_RASH_S: TFloatField;
+    mem_texGurPEREDANO_RASH_NZ: TFloatField;
+    mem_texGurCHANGED: TBooleanField;
+    mem_texGurXARKT: TStringField;
+    mem_texGurGOST: TStringField;
+    mem_texGurKSM_ID_PREP: TIntegerField;
+    mem_texGurOLD_DATE_DOK: TDateField;
+    mem_texGurUSER_NAME: TStringField;
+    q_kart: TRxIBQuery;
+    q_kartDOC_ID: TIntegerField;
+    q_kartSTROKA_ID: TIntegerField;
+    q_kartKART_ID: TIntegerField;
+    q_kartKOL_RASH: TFMTBCDField;
+    q_kartKOL_RASH_EDIZ: TFloatField;
+    q_kartRAZDEL_ID: TSmallintField;
+    q_kartKEI_ID: TSmallintField;
+    q_kartKSM_ID: TIntegerField;
+    q_kartNEIS: TIBStringField;
+    q_kartNMAT: TIBStringField;
+    q_kartKRAZ: TSmallintField;
+    q_kartXARKT: TIBStringField;
+    q_kartGOST: TIBStringField;
+    q_kartTIP_OP_ID: TSmallintField;
+    q_kartTIP_DOK_ID: TSmallintField;
+    q_kartKOL_PRIH_EDIZ: TFloatField;
+    q_kartUSER_NAME: TIBStringField;
+    upd_kart: TIBUpdateSQLW;
+    q_doc: TRxIBQuery;
+    q_docDOC_ID: TIntegerField;
+    q_docNDOK: TIBStringField;
+    q_docDATE_DOK: TDateField;
+    q_docSTRUK_ID: TSmallintField;
+    q_docKLIENT_ID: TIntegerField;
+    q_docDATE_OP: TDateField;
+    q_docTIP_OP_ID: TSmallintField;
+    q_docTIP_DOK_ID: TSmallintField;
+    upd_doc: TIBUpdateSQLW;
     procedure mem_texGurBeforePost(DataSet: TDataSet);
     procedure mem_texGurKSM_IDValidate(Sender: TField);
     procedure SeriaBeforeInsert(DataSet: TDataSet);
@@ -297,6 +300,7 @@ type
     procedure q_kartNewRecord(DataSet: TDataSet);
     procedure q_docBeforeInsert(DataSet: TDataSet);
     procedure q_docNewRecord(DataSet: TDataSet);
+
   private
     login, password, serverAddr, role : string;
     procedure startReadTrans;
@@ -306,6 +310,8 @@ type
     procedure setDB(db : TIBDatabase); overload;
     function connectToDB() : boolean;
     function disconnectFromDB() : boolean;
+    function getTochn(ksmIdPrep, ksm_id : integer) : integer;
+    function Koef_per(kei_in : integer; kei_from : integer; ksm : integer) : double;
 
   end;
 
@@ -359,6 +365,54 @@ begin
   except
 
   end;
+end;
+
+function TFDMDrugLoad.getTochn(ksmIdPrep, ksm_id : integer) : integer;
+begin
+  if (FSprFormul = nil) then
+    FSprFormul := TfSprFormul.Create(self);
+  if (FSprFormul.Ceh_Normz.Active = true) then
+    FSprFormul.CEH_NormZ.Close;
+  FSprFormul.CEH_NormZ.MacroByName('SORT').AsString := '';
+  FSprFormul.CEH_NormZ.MacroByName('USL').AsString := ' Where CEH_NORMZ.KSM_ID_PR = '
+                                                      + INTTOSTR(ksmIdPrep)
+                                                      + ' and CEH_NORMZ.KSM_ID_MAt = '
+                                                      + INTTOSTR(ksm_id);
+  FSprFormul.CEH_NormZ.Open;
+  if (not FSprFormul.CEH_NORMZ.eof) then
+    if (FSprFormul.CEH_NORMZDecznak.AsVariant <> null)  then
+      result := -FSprFormul.CEH_NORMZDecznak.asinteger
+    else
+      result := -3
+  else
+      result := -3;
+end;
+
+function TFDMDrugLoad.Koef_per(kei_in : integer; kei_from : integer; ksm : integer) : double;
+var
+  vKoef : variant;
+begin
+  if (kei_in <> kei_from) and (kei_in <> 0) and (kei_from <> 0) then
+  begin
+// Коэффициент перевода  из одной единицы измерения в другую
+    vKoef := SelectToVarIB('SELECT KOEFPR.KOEF FROM KOEFPR WHERE KOEFPR.KEIR = '
+                           + IntToStr(kei_in) + ' AND KOEFPR.KEI_ID = '
+                           + IntToStr(kei_from) + ' AND KOEFPR.KSM_ID = 0 AND KOEFPR.KOEF <> 0 ',
+                           db, trans_read);
+    if (vKoef = NULL) then
+    begin
+      vKoef := SelectToVarIB('SELECT KOEFPR.KOEF FROM KOEFPR WHERE KOEFPR.KEIR = '
+                             + IntToStr(kei_in) + ' AND KOEFPR.KEI_ID = '
+                             + IntToStr(kei_from) + ' AND KOEFPR.KSM_ID =' + IntToStr(Ksm)
+                             + ' AND KOEFPR.KOEF <> 0 ',
+                             db, trans_read);
+      if (vKoef = NULL) then
+        vKoef := 1;
+    end;
+    result := vKoef;
+  end
+  else
+    result := 1;
 end;
 
 procedure TFDMDrugLoad.mem_texGurBeforePost(DataSet: TDataSet);

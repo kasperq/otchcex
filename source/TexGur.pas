@@ -499,30 +499,31 @@ type
     drLoad : TDrugLoad;
     curRazdelId, curKraz, curDocId, curStrokaId, curKsmIdPrep : integer;
 
+    procedure loadTexGur(seria, prepNmat : string; year, month, ksmIdPrep, strukId : integer);
     // Загрузка загрузки :))
-    procedure createTexGur(seria : string; year, month, ksmIdPrep, strukId : integer);
+//    procedure createTexGur(seria : string; year, month, ksmIdPrep, strukId : integer);
 
-    function openNorms(year, month, ksmIdPrep, strukId : integer) : boolean;
-    procedure insertNormsToTexGur(ksmIdPrep : integer);
-    procedure setDefaultDateDok;
+//    function openNorms(year, month, ksmIdPrep, strukId : integer) : boolean;
+//    procedure insertNormsToTexGur(ksmIdPrep : integer);
+//    procedure setDefaultDateDok;
 
-    function openZagrDoc(seria : string; strukId, ksmIdPrep : integer;
-                         dateBegin, dateEnd : TDate) : boolean;
+//    function openZagrDoc(seria : string; strukId, ksmIdPrep : integer;
+//                         dateBegin, dateEnd : TDate) : boolean;
     function findOrCreateZagrDocument(seria : string;dateDok : TDate; docId, strukId,
                               ksmIdPrep : integer) : boolean;
 
-    procedure openZagrKart(docId : integer);
-    procedure insertKartToTexGur(ksmIdPrep : integer);
+//    procedure openZagrKart(docId : integer);
+//    procedure insertKartToTexGur(ksmIdPrep : integer);
 
-    function openPrepOst(strukId, ksmIdPrep : integer; dateBegin, dateEnd : TDate) : boolean;
-    procedure insertPrepOstToTexGur(ksmIdPrep : integer);
+//    function openPrepOst(strukId, ksmIdPrep : integer; dateBegin, dateEnd : TDate) : boolean;
+//    procedure insertPrepOstToTexGur(ksmIdPrep : integer);
 
-    function openCexOst(dateBegin, dateEnd : TDate; strukId : integer) : boolean;
-    procedure insertCexOstToTexGur;
+//    function openCexOst(dateBegin, dateEnd : TDate; strukId : integer) : boolean;
+//    procedure insertCexOstToTexGur;
 
-    procedure convertKeiId(ksmIdPrep : integer);
-    procedure convertRecord(var value : TFloatField; kart, ostPrep, ostCex : boolean;
-                            tochn : integer);
+//    procedure convertKeiId(ksmIdPrep : integer);
+//    procedure convertRecord(var value : TFloatField; kart, ostPrep, ostCex : boolean;
+//                            tochn : integer);
     procedure delTexGurRecord;
     procedure delAllTexGurRecords;
     // ^^^ Загрузка загрузки :))
@@ -551,7 +552,7 @@ type
 
     procedure setSeriaDateZag(ksmIdPrep : integer; seria, dateZag : string);
     procedure openViborSeriesAndLoadTexGur;
-    procedure openZagrSeriaTab(kodProd, seria : string; ksmIdPrep, month, year, strukId : integer);
+    procedure openZagrSeriaTab(kodProd, seria, prepNmat : string; ksmIdPrep, month, year, strukId : integer);
     procedure initToolButtons;
 
     procedure openZagSyr(strukId, ksmId, tipDokId, ksmIdPrep : integer;
@@ -978,14 +979,15 @@ begin
   ZagSyr.Open;
 end;
 
-procedure TFTexGur.openZagrSeriaTab(kodProd, seria : string; ksmIdPrep, month, year, strukId : integer);
+procedure TFTexGur.openZagrSeriaTab(kodProd, seria, prepNmat : string; ksmIdPrep, month, year, strukId : integer);
 begin
   loadPrepInfo(kodProd);
   if (loadSeriaInfo(ksmIdPrep, seria)) then
   begin
     PageControl1.ActivePage := tab_zagr;
     PageControl1Change(self);
-    createTexGur(seria, year, month, ksmIdPrep, strukId);
+    loadTexGur(seria, prepNmat, year, month, ksmIdPrep, vStruk_Id);
+//    createTexGur(seria, year, month, ksmIdPrep, strukId);
   end;
 end;
 
@@ -1160,6 +1162,14 @@ begin
   end;
 end;
 
+procedure TFTexGur.loadTexGur(seria, prepNmat : string; year, month, ksmIdPrep, strukId : integer);
+begin
+  if (drLoad = nil) then
+    drLoad := TDrugLoad.Create(dm1.BELMED);
+  drLoad.createTexGur(seria, prepNmat, year, month, ksmIdPrep, strukId);
+  ds_texGur.DataSet := drLoad.texGurLoad;
+end;
+{
 procedure TFTexGur.createTexGur(seria : string; year, month, ksmIdPrep, strukId : integer);
 var
   dateBegin, dateEnd : TDate;
@@ -1205,7 +1215,8 @@ begin
   StopWait;
   Splash.Free;
 end;
-
+}
+{
 function TFTexGur.openNorms(year, month, ksmIdPrep, strukId : integer) : boolean;
 begin
   result := false;
@@ -1219,8 +1230,9 @@ begin
   if (not q_norm.Eof) then
     result := true;
 end;
+}
 
-function TFTexGur.openZagrDoc(seria : string; strukId, ksmIdPrep : integer;
+{function TFTexGur.openZagrDoc(seria : string; strukId, ksmIdPrep : integer;
                               dateBegin, dateEnd : TDate) : boolean;
 begin
   result := false;
@@ -1240,7 +1252,7 @@ begin
   q_doc.First;
   if (not q_doc.Eof) then
     result := true;
-end;
+end;  }
 
 function TFTexGur.findOrCreateZagrDocument(seria : string; dateDok : TDate; docId,
                                            strukId, ksmIdPrep : integer) : boolean;
@@ -1259,14 +1271,14 @@ begin
   end;
 end;
 
-procedure TFTexGur.openZagrKart(docId : integer);
+{procedure TFTexGur.openZagrKart(docId : integer);
 begin
   q_kart.Close;
   q_kart.ParamByName('doc_id').AsInteger := docId;
   q_kart.Open;
-end;
+end; }
 
-procedure TFTexGur.insertNormsToTexGur(ksmIdPrep : integer);
+{procedure TFTexGur.insertNormsToTexGur(ksmIdPrep : integer);
 begin
   q_norm.First;
   while (not q_norm.Eof) do
@@ -1287,9 +1299,9 @@ begin
     mem_texGur.Post;
     q_norm.Next;
   end;
-end;
+end; }
 
-procedure TFTexGur.insertKartToTexGur(ksmIdPrep : integer);
+{procedure TFTexGur.insertKartToTexGur(ksmIdPrep : integer);
 begin
   q_kart.First;
   while (not q_kart.eof) do
@@ -1337,9 +1349,9 @@ begin
     end;
     q_kart.Next;
   end;
-end;
+end; }
 
-function TFTexGur.openPrepOst(strukId, ksmIdPrep : integer;
+{function TFTexGur.openPrepOst(strukId, ksmIdPrep : integer;
                               dateBegin, dateEnd : TDate) : boolean;
 begin
   result := false;
@@ -1352,9 +1364,9 @@ begin
   q_ost.First;
   if (not q_ost.Eof) then
     result := true;
-end;
+end;  }
 
-procedure TFTexGur.insertPrepOstToTexGur(ksmIdPrep : integer);
+{procedure TFTexGur.insertPrepOstToTexGur(ksmIdPrep : integer);
 begin
   q_ost.First;
   while (not q_ost.Eof) do
@@ -1412,7 +1424,7 @@ begin
     end;
     q_ost.Next;
   end;
-end;
+end; }
 
 procedure TFTexGur.mem_texGurBeforePost(DataSet: TDataSet);
 begin
@@ -1462,7 +1474,7 @@ begin
     showMessage('Нет такого кода! Воспользуйтесь справочником!');   
 end;
 
-function TFTexGur.openCexOst(dateBegin, dateEnd : TDate; strukId : integer) : boolean;
+{function TFTexGur.openCexOst(dateBegin, dateEnd : TDate; strukId : integer) : boolean;
 var
   ksmArr : string;
   i, ksmLength : integer;
@@ -1518,9 +1530,9 @@ begin
     if (not ostCeh.Eof) then
       result := true;
   end;
-end;
+end; }
 
-procedure TFTexGur.insertCexOstToTexGur;
+{procedure TFTexGur.insertCexOstToTexGur;
 begin
   mem_texGur.First;
   while (not mem_texGur.Eof) do
@@ -1535,7 +1547,7 @@ begin
     end;
     mem_texGur.Next;
   end;
-end;
+end;   }
 
 procedure TFTexGur.cb_allSyrClick(Sender: TObject);
 begin
@@ -1550,7 +1562,7 @@ begin
   end;
 end;
 
-procedure TFTexGur.convertKeiId(ksmIdPrep : integer);
+{procedure TFTexGur.convertKeiId(ksmIdPrep : integer);
 begin
   mem_texGur.First;
   while (not mem_texGur.Eof) do
@@ -1574,9 +1586,9 @@ begin
     mem_texGur.Post;
     mem_texGur.Next;
   end;
-end;
+end;    }
 
-procedure TFTexGur.convertRecord(var value : TFloatField; kart, ostPrep, ostCex : boolean;
+{procedure TFTexGur.convertRecord(var value : TFloatField; kart, ostPrep, ostCex : boolean;
                                  tochn : integer);
 var
   keiFrom, keiTo : integer;
@@ -1600,7 +1612,7 @@ begin
                                                             mem_texGurKSM_ID.AsInteger),
                                tochn);
   end;
-end;
+end;   }
 
 procedure TFTexGur.Edit1Change(Sender: TObject);
 begin
@@ -1694,7 +1706,8 @@ begin
         begin
           DateEdit1.Date := dm1.SeriaDATE_ZAG.AsDateTime;
           DateEdit1.ReadOnly := false;
-          createTexGur(s_seria, god, mes, s_kodp, vStruk_id);
+          loadTexGur(s_seria, label19.Caption, god, mes, s_kodp, vStruk_Id);
+//          createTexGur(s_seria, god, mes, s_kodp, vStruk_id);
         end
         else
         begin
@@ -1855,7 +1868,7 @@ end;
 procedure TFTexGur.btn_openSeriaClick(Sender: TObject);
 begin
   openZagrSeriaTab(q_prepSeriesKOD_PROD.AsString, q_prepSeriesSERIA.AsString,
-                   q_prepSeriesKSM_ID.AsInteger, mes, god, vStruk_id);
+                   q_prepSeriesNMAT.AsString, q_prepSeriesKSM_ID.AsInteger, mes, god, vStruk_id);
 end;
 
 procedure TFTexGur.btn_vipuskListClick(Sender: TObject);
@@ -2251,7 +2264,7 @@ begin
     s_seria := Copy(ZagSyrNDOK.AsString, 11, length(ZagSyrNDOK.AsString));
     s_ksm := s_kodp;
 
-    openZagrSeriaTab(ZagSyrKOD_PREP.AsString, s_seria, ZagSyrKODP.AsInteger,
+    openZagrSeriaTab(ZagSyrKOD_PREP.AsString, s_seria, ZagSyrNMAT.AsString, ZagSyrKODP.AsInteger,
                      mes, god, vStruk_Id);
   end;
 end;
@@ -2311,7 +2324,8 @@ begin
     if (DateEdit1.text <> '' )and (DateEdit1.text <= s_dat2_period)  then
     begin
       acceptSeria(sender);
-      createTexGur(s_seria, god, mes, s_kodp, vStruk_id);
+      loadTexGur(s_seria, label19.Caption, god, mes, s_kodp, vStruk_Id);
+//      createTexGur(s_seria, god, mes, s_kodp, vStruk_id);
     end;
 end;
 
@@ -2349,27 +2363,10 @@ begin
   s_seria := s_seria_p;
 end;
 
-procedure TFTexGur.setDefaultDateDok;
-var
-  day, month, year : word;
-begin
-  DecodeDate(now, year, month, day);
-  if (month > mes) then
-  begin
-    mem_texGurDATE_DOK.AsDateTime := StrToDate(s_dat2);
-    mem_texGurOLD_DATE_DOK.AsDateTime := StrToDate(s_dat2);
-  end
-  else
-  begin
-    mem_texGurDATE_DOK.AsDateTime := now;
-    mem_texGurOLD_DATE_DOK.AsDateTime := now;
-  end;
-end;
-
 procedure TFTexGur.grid_seriesDblClick(Sender: TObject);
 begin
   openZagrSeriaTab(q_prepSeriesKOD_PROD.AsString, q_prepSeriesSERIA.AsString,
-                   q_prepSeriesKSM_ID.AsInteger, mes, god, vStruk_id);
+                   q_prepSeriesNMAT.AsString, q_prepSeriesKSM_ID.AsInteger, mes, god, vStruk_id);
 end;
 
 procedure TFTexGur.grid_seriesKeyDown(Sender: TObject; var Key: Word;
@@ -2377,26 +2374,26 @@ procedure TFTexGur.grid_seriesKeyDown(Sender: TObject; var Key: Word;
 begin
   if (key = VK_RETURN) then
     openZagrSeriaTab(q_prepSeriesKOD_PROD.AsString, q_prepSeriesSERIA.AsString,
-                     q_prepSeriesKSM_ID.AsInteger, mes, god, vStruk_id);
+                     q_prepSeriesNMAT.AsString, q_prepSeriesKSM_ID.AsInteger, mes, god, vStruk_id);
 end;
 
 procedure TFTexGur.grid_zagrDrawColumnCell(Sender: TObject; const Rect: TRect;
   DataCol: Integer; Column: TColumnEh; State: TGridDrawState);
 begin
-  if ((mem_texGurKOL_RASH_EDIZ.AsFloat = 0) and (Column.FieldName = 'KOL_RASH_EDIZ'))
-     or ((mem_texGurZAG_PERIOD.AsFloat = 0) and (Column.FieldName = 'ZAG_PERIOD')) then
+  if ((drLoad.texGurLoad.fieldbyname('KOL_RASH_EDIZ').AsFloat = 0) and (Column.FieldName = 'KOL_RASH_EDIZ'))
+     or ((drLoad.texGurLoad.fieldbyname('ZAG_PERIOD').AsFloat = 0) and (Column.FieldName = 'ZAG_PERIOD')) then
     grid_zagr.Canvas.Font.Style := [fsItalic];
-  if (mem_texGurDELETE.AsBoolean = true) then
+  if (drLoad.texGurLoad.fieldbyname('DELETE').AsBoolean = true) then
   begin
-    if (mem_texGurADD.AsBoolean = true) then
+    if (drLoad.texGurLoad.fieldbyname('ADD').AsBoolean = true) then
       grid_zagr.Canvas.Brush.Color := clYellow
     else
       grid_zagr.Canvas.Brush.Color := clRed;
   end;
 
-  if (mem_texGurADD.AsBoolean = true) then
+  if (drLoad.texGurLoad.fieldbyname('ADD').AsBoolean = true) then
   begin
-    if (mem_texGurDELETE.AsBoolean = true) then
+    if (drLoad.texGurLoad.fieldbyname('DELETE').AsBoolean = true) then
       grid_zagr.Canvas.Brush.Color := clYellow
     else
       grid_zagr.Canvas.Brush.Color := clMoneyGreen;
@@ -2473,23 +2470,6 @@ begin
       end;
     end;
   end;
-end;
-
-
-procedure TFTexGur.frReport2GetValue(const ParName: String;
-  var ParValue: Variant);
-begin
- if ParName='Kod_prod' then ParValue:=FTexGur.Edit1.Text;
- if ParName='gost' then ParValue:=FTexGur.Label22.Caption;
- if ParName='xarkt' then ParValue:=FTexGur.Label11.Caption;
- if ParName='namorg' then ParValue:=FTexGur.Label29.Caption;
- if ParName='namcex' then ParValue:=FGlMenu.RxLabel1.Caption;
- if ParName='nmat' then ParValue:=FTexGur.Label19.Caption;
- if ParName='neis' then ParValue:=FTexGur.Label21.Caption;
- if ParName='seria' then ParValue:=FTexGur.Edit2.Text;
- if ParName='dat_ser' then ParValue:=FTexGur.DateEdit1.Text;
-
-
 end;
 
 procedure TFTexGur.ToolButton5Click(Sender: TObject);
@@ -2628,7 +2608,8 @@ begin
     if (dm1.SeriaDATE_ZAG.AsVariant <> null) then
     begin
       DateEdit1.Date := dm1.SeriaDATE_ZAG.AsDateTime;
-      createTexGur(s_seria, god, mes, s_kodp, vStruk_id);;
+      loadTexGur(s_seria, label19.Caption, god, mes, s_kodp, vStruk_Id);
+//      createTexGur(s_seria, god, mes, s_kodp, vStruk_id);;
     end
     else
     begin
@@ -2660,43 +2641,10 @@ begin
   if (DateEdit1.text <> '' )and (DateEdit1.text <= s_dat2_period)  then
   begin
     acceptSeria(sender);
-    createTexGur(s_seria, god, mes, s_kodp, vStruk_id);
+//    createTexGur(s_seria, god, mes, s_kodp, vStruk_id);
+    loadTexGur(s_seria, label19.Caption, god, mes, s_kodp, vStruk_Id);
   end;
 end;
-
-procedure TFTexGur.Edit16KeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-{ if key=vk_return then
- BEGIN
-  if CEH_MARSH.Active=false then
-  begin
-   CEH_MARSH.ParamByName('Kodp').AsInteger:=S_KODP;
-   CEH_MARSH.ParamByName('seria').AsInteger:=vseria_id;
-   CEH_MARSH.Active:=TRUE;
-  end;
-  ceh_marsh.First;
-  if (edit17.Text<>'') and (edit17.Text<>'0')then
-  begin
-   v_11:=0;
-   While not ceh_marsh.Eof  do
-   begin
-    if (DBedit7.Text='') then DBedit7.Text:='1';
-    if (DBedit8.Text='') then DBedit8.Text:='1';
-    if (DBedit11.Text='') then DBedit11.Text:='1';
-    if (edit13.Text='') then edit13.Text:='1';
-    if (edit16.Text='') then edit16.Text:='1';
-    if (edit17.Text='') then edit17.Text:='1';
-    v_11:=v_11+SimpleRoundTo(SimpleRoundTo((strtofloat(DBedit7.Text)*strtofloat(DBedit8.Text)/100)*(100-strtofloat(DBedit11.Text))/100,-3)
-    *strtofloat(edit13.Text)/strtofloat(edit17.Text),-2);
-    ceh_marsh.Next;
-   end;
-   ceh_marsh.First;
-   edit11.Text:=floattostr(v_11);
-   edit10.Text:=floattostr(SimpleRoundTo(v_11*(100-strtofloat(edit16.Text))/100,-2));
-  end;
- END; }
-END;
 
 procedure TFTexGur.Seria_sBeforeInsert(DataSet: TDataSet);
 begin
@@ -2723,10 +2671,11 @@ begin
   S_DAT1 := '01.' + S_MES + '.' + copy(INTTOSTR(GOD), 3, 2);
   S_DAT2 := datetostr(IncMonth(strtodate(s_dat1_period), 1) -1);
   s_seria := edit2.Text;
-  
+
   initToolButtons;
   if (Edit1.Text <> '') then
-    createTexGur(s_seria, god, mes, s_kodp, vStruk_id);
+    loadTexGur(s_seria, label19.Caption, god, mes, s_kodp, vStruk_Id);
+//    createTexGur(s_seria, god, mes, s_kodp, vStruk_id);
 
   PageControl1Change(sender);
 end;
@@ -2745,7 +2694,8 @@ begin
 
   initToolButtons;
   if (Edit1.Text <> '') then
-    createTexGur(s_seria, god, mes, s_kodp, vStruk_id)
+    loadTexGur(s_seria, label19.Caption, god, mes, s_kodp, vStruk_Id);
+//    createTexGur(s_seria, god, mes, s_kodp, vStruk_id)
 end;
 
 procedure TFTexGur.ToolButton4Click(Sender: TObject);
