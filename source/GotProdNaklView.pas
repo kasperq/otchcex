@@ -2160,9 +2160,9 @@ begin
     kolRash := MD_Nakl_s.FieldByName('KOL_RASH').AsFloat;
     kolTrans := MD_Nakl_s.FieldByName('kol_trans').AsFloat;
     divRT := kolRash / kolTrans;
-    divRT1000 := divRT * 1000;
+    divRT1000 := kolRash * 1000 / kolTrans ;
     truncDivRT := trunc(divRT);
-    truncDivRT1000 := trunc(divRT * 1000);
+    truncDivRT1000 := trunc(divRT1000);
     MD_Nakl_s.Edit;
     MD_Nakl_s.FieldByName('kol_upak').AsInteger := MD_Nakl_s.FieldByName('kol_grp').AsInteger;
     st := SumToString(Round(MD_Nakl_s.FieldByName('kol_grp').AsInteger));
