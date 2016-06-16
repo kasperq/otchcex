@@ -310,6 +310,8 @@ type
     procedure setDB(db : TIBDatabase); overload;
     function connectToDB() : boolean;
     function disconnectFromDB() : boolean;
+    procedure commitWriteTrans(retaining : boolean);
+    procedure startWriteTrans;
     function getTochn(ksmIdPrep, ksm_id : integer) : integer;
     function Koef_per(kei_in : integer; kei_from : integer; ksm : integer) : double;
 
@@ -365,6 +367,21 @@ begin
   except
 
   end;
+end;
+
+procedure TFDMDrugLoad.commitWriteTrans(retaining : boolean);
+begin
+  startWriteTrans;
+  if (retaining) then
+    trans_write.CommitRetaining
+  else
+    trans_write.Commit;
+end;
+
+procedure TFDMDrugLoad.startWriteTrans;
+begin
+  if (not trans_write.Active) then
+    trans_write.StartTransaction;
 end;
 
 function TFDMDrugLoad.getTochn(ksmIdPrep, ksm_id : integer) : integer;

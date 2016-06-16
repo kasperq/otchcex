@@ -4,7 +4,7 @@ interface
 
 uses DMDrugLoad,
   kbmMemTable, IBDatabase, Forms, SysUtils, Controls, DB, SplshWnd, Windows,
-  VCLUtils, Variants, Math;
+  VCLUtils, Variants, Math, Dialogs;
 
 type
   TDrugLoad = class
@@ -16,9 +16,14 @@ type
     dateBegin, dateEnd : TDate;
     docName : string;
     prepNmat : string;
+    seria : string;
+    ksmIdPrep : integer;
+    strukId : integer;
+    kolSeria : double;
+    dateLoadSeria : TDate;
 
     function getMemTexGur() : TkbmMemTable;
-
+    // loading
     function openNorms(year, month, ksmIdPrep, strukId : integer) : boolean;
     procedure insertNormsToTexGur(ksmIdPrep : integer);
     procedure setDefaultDateDok;
@@ -37,6 +42,12 @@ type
     procedure convertKeiId(ksmIdPrep : integer);
     procedure convertRecord(var value : TFloatField; kart, ostPrep, ostCex : boolean;
                             tochn : integer);
+    // saving
+    function saveTexGur(kolSeria : double; dateLoadSeria : TDate) : boolean;
+    procedure saveSeriaAndOstatki;
+    function saveMemTexGur() : boolean;
+    function getCurKeiId() : integer;
+
 //    procedure delTexGurRecord;
 //    procedure delAllTexGurRecords;
 //
@@ -45,8 +56,7 @@ type
 //    procedure deletePrih(ksmIdPrep, ksmId, strukId, razdelId : integer);
 //    procedure saveExistingRecord(keiId : integer);
 //    procedure saveNewRecord(keiId, kartId : integer);
-//    function saveMemTexGur() : boolean;
-//    procedure saveSeriaAndOstatki;
+
 //    function findKsmRazdelKsmIdPrInOstatki(ksmId, razdelId, ksmIdPrep, strukId : integer) : boolean;
 //    procedure createKartId(ksmId, razdelId, ksmIdPrep, strukId, keiId, seriaId : integer);
 //
@@ -479,6 +489,164 @@ begin
                                                            dm.mem_texGurKSM_ID.AsInteger),
                                tochn);
   end;
+end;
+
+function TDrugLoad.saveTexGur(kolSeria : double; dateLoadSeria : TDate) : boolean;
+begin
+  result := false;
+  if (dm.mem_texGur.Modified)
+     or (dm.mem_texGur.State = dsEdit)
+     or (dm.mem_texGur.State = dsInsert) then
+    dm.mem_texGur.Post;
+
+  Splash := ShowSplashWindow(AniBmp1, 'Сохранение данных. Подождите, пожалуйста...', True, nil);
+  try
+    dm.mem_texGur.DisableControls;
+    self.kolSeria := kolSeria;
+    self.dateLoadSeria := dateLoadSeria;
+    saveSeriaAndOstatki;
+    saveMemTexGur;
+
+    delEmptyZagrDocuments(seria, curYear, curMonth, ksmIdPrep, strukId);
+    dm.commitWriteTrans(true);
+    Splash.Free;
+
+    createTexGur(seria, curYear, curMonth, ksmIdPrep, strukId);
+    dm.mem_texGur.EnableControls;
+  except
+    on E : exception do
+    begin
+      MessageDlg('Произошла ошибка при записи!', mtWarning, [mbOK], 0);
+      dm.mem_texGur.EnableControls;
+      dm.trans_read.RollbackRetaining;
+      Splash.Free;
+    end;
+  end;
+end;
+
+procedure TDrugLoad.saveSeriaAndOstatki;
+var
+  usl_ser : string;
+begin
+  if (not dm.seria.Active) then
+  begin
+    dm.Seria.ParamByName('Ksm_id').AsInteger := ksmIdPrep;
+    dm.Seria.MacroByName('usl').AsString := 'SERIA.SERIA=' + '''' + seria + '''';
+    dm.Seria.Open;
+    dm.Seria.First;
+    vSeria_id := dm.SeriaSeria_id.AsInteger;
+  end;
+  S_KSM := ksmIdPrep;
+  dm.Seria.Edit;
+  dm.SeriaDate_ZAG.AsDateTime := dateLoadSeria;
+  dm.SeriaKol_seria.AsFloat := kolSeria;
+  dm.Seria.Post;
+  dm.Seria.ApplyUpdates;
+  if (dm.Ostatki.Active) then
+  begin
+    if (dm.Ostatki.UpdatesPending) then
+      dm.Ostatki.ApplyUpdates;
+    dm.Ostatki.Active := false;
+  end;
+  usl_ser := '  OST.KSM_ID=' + INTTOSTR(ksmIdPrep) + ' and ost.seria_id=' + inttostr(vSeria_id);
+  dm.Ostatki.ParamByName('struk_ID').AsInteger := strukId;
+  dm.Ostatki.MacroByName('usl').AsString := usl_ser;
+  dm.Ostatki.Open;
+  if (not dm.Ostatki.Eof) then
+    s_kart_id := dm.OstatkiKart_id.AsInteger
+  else
+  begin
+    v_razdel := 0;
+    dm.Ostatki.Insert;
+    dm.Ostatki.Post;
+    dm.Ostatki.ApplyUpdates;
+    s_kart_id := vKart_id;
+  end;
+  if (dm.Seria.Modified) or (dm.Seria.State = dsEdit)
+     or (dm.Seria.State = dsInsert) then
+    dm.Seria.Post;
+  if (dm.Ostatki.Modified) or (dm.Ostatki.State = dsEdit)
+     or (dm.Ostatki.State = dsInsert) then
+    dm.Ostatki.Post;
+  if (dm.Seria.UpdatesPending) then
+    dm.Seria.ApplyUpdates;
+  if (dm.Ostatki.UpdatesPending) then
+    dm.Ostatki.ApplyUpdates;
+end;
+
+function TDrugLoad.saveMemTexGur() : boolean;
+var
+  curKeiId : integer;
+begin
+  dm.mem_texGur.First;
+  while (not dm.mem_texGur.Eof) do
+  begin
+    try
+      curKeiId := getCurKeiId();
+      if (dm.mem_texGurDOC_ID.AsInteger <> 0) then
+      begin
+        openZagrKart(dm.mem_texGurDOC_ID.AsInteger);
+        if (dm.q_kart.Locate('kart_id;doc_id;stroka_id',
+                          VarArrayOf([dm.mem_texGurKART_ID.AsInteger,
+                                      dm.mem_texGurDOC_ID.AsInteger,
+                                      dm.mem_texGurSTROKA_ID.AsInteger]),
+                          [])) then
+        begin
+          saveExistingRecord(curKeiId);
+        end;
+      end
+      else
+      begin
+        if (dm.mem_texGurKOL_RASH_EDIZ.AsFloat <> 0) then
+        begin
+          if (findOrCreateZagrDocument(seria, dm.mem_texGurDATE_DOK.AsDateTime,
+                                       dm.mem_texGurDOC_ID.AsInteger, strukId, ksmIdPrep)) then
+          begin
+            openZagrKart(dm.q_docDOC_ID.AsInteger);
+            saveNewRecord(curKeiId, dm.mem_texGurKART_ID.AsInteger);
+          end;
+        end;
+      end;
+
+      if (dm.q_kart.UpdatesPending) then
+      begin
+        dm.q_kart.ApplyUpdates;
+        addPrihod(dm.mem_texGurKOL_RASH_EDIZ.AsFloat, dm.mem_texGurKSM_ID.AsInteger,
+                  curKeiId, dm.mem_texGurKSM_ID_PREP.AsInteger, dm.mem_texGurRAZDEL_ID.AsInteger);
+        dm.commitWriteTrans(true);
+      end
+      else
+      begin
+        if (dm.mem_texGurOSTATOK_END_S.AsFloat < 0)
+           or (dm.mem_texGurPRIX_PERIOD.AsFloat <> dm.mem_texGurZAG_PERIOD.AsFloat) then
+        begin
+          addPrihod(dm.mem_texGurKOL_RASH_EDIZ.AsFloat, dm.mem_texGurKSM_ID.AsInteger,
+                  curKeiId, dm.mem_texGurKSM_ID_PREP.AsInteger, dm.mem_texGurRAZDEL_ID.AsInteger);
+          dm.commitWriteTrans(true);
+        end;
+      end;
+    except
+      on e : exception do
+      begin
+        MessageDlg('Произошла ошибка при сохранении сырья: ' + dm.mem_texGurKSM_ID.AsString
+                   + '. ' + e.Message, mtWarning, [mbOK], 0);
+        dm.trans_write.RollbackRetaining;
+      end;
+    end;
+    mem_texGur.Next;
+  end;
+//  q_kart.ApplyUpdates;
+  result := true;
+end;
+
+function TDrugLoad.getCurKeiId() : integer;
+begin
+  result := dm.mem_texGurKEI_ID_OST_PREP.AsInteger;
+  if (dm.mem_texGurKEI_ID_NORM.AsInteger <> 0) then
+    result := dm.mem_texGurKEI_ID_NORM.AsInteger
+  else
+    if (dm.mem_texGurKEI_ID_KART.AsInteger <> 0) then
+      result := dm.mem_texGurKEI_ID_KART.AsInteger;
 end;
 
 end.

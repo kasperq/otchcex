@@ -2515,13 +2515,7 @@ end;
 
 procedure TFTexGur.ToolButton6Click(Sender: TObject);
 begin
-  S_ksm := mem_texGurKsm_id.AsInteger;
-//  S_ksm := TexGurKsm_id.AsInteger;
-//  FOstSyr.Edit1.text := inttostr(TexGurKsm_id.AsInteger);
-//  FOstSyr.Label7.Caption := TexGurNmat.AsString;
-//  FOstSyr.label8.Caption := TexGurNeis.AsString;
-//  FOstSyr.DateEdit3.Date := strtodate(s_dat1);
-//  FOstSyr.DateEdit4.Date := strtodate(s_dat2);
+  S_ksm := drLoad.texGurLoad.FieldByName('Ksm_id').AsInteger;
   if (FOstSyr = nil) then
     FOstSyr := TFOstSyr.Create(Application);
   FOstSyr.DateEdit3.Date := strtodate(s_dat1);
