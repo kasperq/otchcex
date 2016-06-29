@@ -1651,7 +1651,7 @@ begin
     frxReport1.Script.Variables['podp' + inttoStr(i)] := underS.underSign.FieldByName('DEFAULT_VALUE').AsString;
     underS.underSign.Next;
   end;
-  for j := i + 1 to 8 do
+  for j := i + 1 to 16 do
   begin
     frxReport1.Script.Variables['param' + inttoStr(j)] := '';
     frxReport1.Script.Variables['podp' + inttoStr(j)] := '';
