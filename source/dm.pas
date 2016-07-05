@@ -3006,7 +3006,22 @@ begin
   if (dm1.Ostatki.Eof) then
     dm1.Ostatki.Insert
   else
-    vkart_id := dm1.OstatkiKART_ID.AsInteger;
+  begin
+    vkart_id := 0;
+    while (not dm1.Ostatki.Eof) do
+    begin
+      if (dm1.OstatkiOT_S.AsFloat > 0) then
+      begin
+        vkart_id := dm1.OstatkiKART_ID.AsInteger;
+        break;
+      end
+      else
+        dm1.Ostatki.Next;
+    end;
+    dm1.Ostatki.First;
+    if (vkart_id = 0) then
+      vkart_id := dm1.OstatkiKART_ID.AsInteger;
+  end;
 end;
 
 procedure TDM1.KartKRAZValidate(Sender: TField);
