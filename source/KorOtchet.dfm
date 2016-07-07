@@ -180,7 +180,7 @@ object FKorOtchet: TFKorOtchet
     Top = 97
     Width = 1159
     Height = 577
-    ActivePage = TabSheet2
+    ActivePage = TabSheet3
     Align = alClient
     TabOrder = 1
     OnChange = PageControl1Change
@@ -1171,7 +1171,7 @@ object FKorOtchet: TFKorOtchet
     Left = 776
     Top = 212
     Bitmap = {
-      494C010108000900640018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010108000900680018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -3781,6 +3781,95 @@ object FKorOtchet: TFKorOtchet
       OnClick = MenuItem1Click
     end
     object MenuItem3: TMenuItem
+    end
+  end
+  object q_ostPrep: TRxIBQuery
+    Database = DM1.BELMED
+    Transaction = DM1.IBT_Read
+    SQL.Strings = (
+      'select ost.ostatok_end_s ot_s, ost.ostatok_end_nz ot_nz,'
+      'ost.ostatok_begin_s onm_s, ost.ostatok_begin_nz onm_nz,'
+      'ost.ksm_id, ost.ksm_idpr, ost.razdel_id, ost.kart_id, ost.kei_id'
+      
+        'from select_ost_ksm_acc1(:dat1, :dat2, :ksm_idpr, :struk_id, 0, ' +
+        #39#39', :struk_id_rela, :ksm_id_array) ost')
+    Macros = <>
+    Left = 328
+    Top = 416
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'dat1'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'dat2'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'ksm_idpr'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'struk_id'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'struk_id_rela'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'ksm_id_array'
+        ParamType = ptUnknown
+      end>
+    object q_ostPrepOT_S: TFMTBCDField
+      FieldName = 'OT_S'
+      Origin = '"SELECT_OST_KSM_ACC1"."OSTATOK_END_S"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostPrepOT_NZ: TFMTBCDField
+      FieldName = 'OT_NZ'
+      Origin = '"SELECT_OST_KSM_ACC1"."OSTATOK_END_NZ"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostPrepONM_S: TFMTBCDField
+      FieldName = 'ONM_S'
+      Origin = '"SELECT_OST_KSM_ACC1"."OSTATOK_BEGIN_S"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostPrepONM_NZ: TFMTBCDField
+      FieldName = 'ONM_NZ'
+      Origin = '"SELECT_OST_KSM_ACC1"."OSTATOK_BEGIN_NZ"'
+      Precision = 18
+      Size = 6
+    end
+    object q_ostPrepKSM_ID: TIntegerField
+      FieldName = 'KSM_ID'
+      Origin = '"SELECT_OST_KSM_ACC1"."KSM_ID"'
+    end
+    object q_ostPrepKSM_IDPR: TIntegerField
+      FieldName = 'KSM_IDPR'
+      Origin = '"SELECT_OST_KSM_ACC1"."KSM_IDPR"'
+    end
+    object q_ostPrepRAZDEL_ID: TSmallintField
+      FieldName = 'RAZDEL_ID'
+      Origin = '"SELECT_OST_KSM_ACC1"."RAZDEL_ID"'
+    end
+    object q_ostPrepKART_ID: TIntegerField
+      FieldName = 'KART_ID'
+      Origin = '"SELECT_OST_KSM_ACC1"."KART_ID"'
+    end
+    object q_ostPrepKEI_ID: TSmallintField
+      FieldName = 'KEI_ID'
+      Origin = '"SELECT_OST_KSM_ACC1"."KEI_ID"'
     end
   end
 end

@@ -261,6 +261,16 @@ type
     ostcehKEI_ID: TSmallintField;
     ostcehNMAT: TIBStringField;
     ostcehNEIS: TIBStringField;
+    q_ostPrep: TRxIBQuery;
+    q_ostPrepOT_S: TFMTBCDField;
+    q_ostPrepOT_NZ: TFMTBCDField;
+    q_ostPrepONM_S: TFMTBCDField;
+    q_ostPrepONM_NZ: TFMTBCDField;
+    q_ostPrepKSM_ID: TIntegerField;
+    q_ostPrepKSM_IDPR: TIntegerField;
+    q_ostPrepRAZDEL_ID: TSmallintField;
+    q_ostPrepKART_ID: TIntegerField;
+    q_ostPrepKEI_ID: TSmallintField;
 
     procedure FormShow(Sender: TObject);
     procedure Edit1KeyDown(Sender: TObject; var Key: Word;
@@ -379,12 +389,24 @@ begin
     ostceh.ParamByName('dat2').AsDateTime := strtodate(s_dat2);
     ostceh.ParamByName('struk_id').AsInteger := vStruk_id;
     ostceh.ParamByName('ksm_id').AsInteger := 0;
-    if (vStruk_Id = 540) then    
+    if (vStruk_Id = 540) then
       ostceh.ParamByName('struk_id_rela').AsInteger := 1
     else
       ostceh.ParamByName('struk_id_rela').AsInteger := 0;
     ostceh.ParamByName('ksm_array').AsString := ksmArr;
     ostceh.Open;
+
+    q_ostPrep.Close;
+    q_ostPrep.ParamByName('dat1').AsDateTime := strtodate(s_dat1);
+    q_ostPrep.ParamByName('dat2').AsDateTime := strtodate(s_dat2);
+    q_ostPrep.ParamByName('struk_id').AsInteger := vStruk_id;
+    q_ostPrep.ParamByName('ksm_idpr').AsInteger := s_kodp;
+    if (vStruk_Id = 540) then
+      q_ostPrep.ParamByName('struk_id_rela').AsInteger := 1
+    else
+      q_ostPrep.ParamByName('struk_id_rela').AsInteger := 0;
+    q_ostPrep.ParamByName('ksm_id_array').AsString := ksmArr;
+    q_ostPrep.Open;
   end;
 end;
 
@@ -1128,6 +1150,35 @@ begin
                                                                        RaspSyrPrep.FieldByName('KEI').AsInteger,
                                                                        RaspSyrPrep.FieldByName('Ksm_id').AsInteger),
                                                         -6));
+        if (vTip_Op_Id = 35) then
+        begin
+          if (q_ostPrep.Locate('ksm_id;razdel_id',
+                                  VarArrayOf([RaspSyrPrep.FieldByName('KSM_ID').AsInteger,
+                                              RaspSyrPrep.FieldByName('razdel_id').AsInteger]),
+                                              [])) THEN
+          begin
+            RaspSyrPrepOt_s.ASstring := FloatToStr(RoundTo(q_ostPrep.FieldByName('Ot_s').ASFLOAT
+                                                           * dm1.Koef_per(RaspSyrPrep.FieldByName('KEI_id').AsInteger,
+                                                                          q_ostPrep.FieldByName('Kei_id').AsInteger,
+                                                                          q_ostPrep.FieldByName('Ksm_id').AsInteger),
+                                                           tochn));
+            RaspSyrPrepOt_Nz.ASstring := FloatToStr(RoundTo(q_ostPrep.FieldByName('Ot_nz').ASFLOAT
+                                                            * dm1.Koef_per(RaspSyrPrep.FieldByName('KEI_id').AsInteger,
+                                                                           q_ostPrep.FieldByName('Kei_id').AsInteger,
+                                                                           q_ostPrep.FieldByName('Ksm_id').AsInteger),
+                                                            tochn));
+            RaspSyrPrepOnm_s.ASstring := FloatToStr(RoundTo(q_ostPrep.FieldByName('Onm_s').AsFloat
+                                                            * dm1.Koef_per(RaspSyrPrep.FieldByName('KEI_id').AsInteger,
+                                                                           q_ostPrep.FieldByName('Kei_id').AsInteger,
+                                                                           q_ostPrep.FieldByName('Ksm_id').AsInteger),
+                                                            tochn));
+            RaspSyrPrepOnm_Nz.asfloat := RoundTo(q_ostPrep.FieldByName('Onm_NZ').AsFloat
+                                                 * dm1.Koef_per(RaspSyrPrep.FieldByName('KEI_id').AsInteger,
+                                                                q_ostPrep.FieldByName('Kei_id').AsInteger,
+                                                                q_ostPrep.FieldByName('Ksm_id').AsInteger),
+                                                 tochn);
+          end;
+        end;
         RaspSyrPrep.post;
         RaspSyrPrep.Next;
       end;
