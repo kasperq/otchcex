@@ -2223,9 +2223,12 @@ begin
       RMUpak.FieldByName('seria').asstring := v_seria1;
       RMUpak.FieldByName('kol_upak').AsInteger := v_kol_upak1;
 
-      vv := MyCeil(MD_Nakl_s.FieldByName('KOL_RASH').AsFloat * 1000);
+//      vv := MyCeil(MD_Nakl_s.FieldByName('KOL_RASH').AsFloat * 1000);
+//
+//      RMUpak.FieldByName('kol_trans').AsFloat := vv - (MD_Nakl_s.FieldByName('KOL_trans').AsFloat * v_kol_upak);
+      vv := Trunc(StrToFloat(FloatToStr(MD_Nakl_s.FieldByName('KOL_RASH').AsFloat * 1000)));
 
-      RMUpak.FieldByName('kol_trans').AsFloat := vv - (MD_Nakl_s.FieldByName('KOL_trans').AsFloat * v_kol_upak);
+      RMUpak.FieldByName('kol_trans').AsFloat := vv - StrToInt(FloatToStr((MD_Nakl_s.FieldByName('KOL_trans').AsFloat * v_kol_upak)));
 
       if (cbRF.Checked) then
       begin
