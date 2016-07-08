@@ -2762,11 +2762,11 @@ begin
       st := AnsiUpperCase(FloatToText(MD_Naklad.FieldByName('KOL_RASH').AsFloat, 3))
     else
     begin
-      if (keiId = 660) then
+      if (keiId = 660) or (keiId = 800) then
         st := FloatToText(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000000,
                           KolZnakovPosleZap(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000000))
       else
-        st := FloatToText(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000,
+        st := FloatToText(StrToFloat(FloatToStr(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000)),
                           KolZnakovPosleZap(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000));
     end;
 
