@@ -2161,7 +2161,7 @@ begin
     kolRash := MD_Nakl_s.FieldByName('KOL_RASH').AsFloat;
     kolTrans := MD_Nakl_s.FieldByName('kol_trans').AsFloat;
     divRT := kolRash / kolTrans;
-    divRT1000 := kolRash * 1000 / kolTrans;
+    divRT1000 := StrToFloat(FloatToStr(kolRash * 1000 / kolTrans));
     SetRoundMode(rmUp);
     truncDivRT := trunc(divRT);
 //    e_truncDivRT := int(divRT);
