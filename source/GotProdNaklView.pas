@@ -1806,7 +1806,7 @@ begin
 
     TempQuery.Active := False;
     TempQuery.SQL.Clear;
-    TempQuery.SQL.Add(' SELECT sum(KART.KOL_Rash) kol_rash, SPPROD.NMAT, KART.DOC_ID, KART.KSM_ID,');
+    TempQuery.SQL.Add(' SELECT sum(coalesce(KART.KOL_Rash,0)) kol_rash, SPPROD.NMAT, KART.DOC_ID, KART.KSM_ID,');
     TempQuery.SQL.Add(' OSTATKI.SERIA_ID, SERIA.SERIA, EDIZ.NEIS, region.nam ');
     TempQuery.SQL.Add(' FROM KART ');
     TempQuery.SQL.Add(' inner JOIN OSTATKI ON (KART.KART_ID = OSTATKI.KART_ID)');
@@ -2246,10 +2246,10 @@ begin
         RMUpak.FieldByName('ves_upak').AsFloat := MD_Nakl_s.FieldByName('Ves_upak').AsFloat;
       if (MD_Nakl_s.FieldByName('KOL_trans').AsInteger <> 0) then
         RMUpak.FieldByName('ves_trans').AsFloat := roundto(((vv
-                                                             - (MD_Nakl_s.FieldByName('KOL_trans').AsInteger
+                                                             - (MD_Nakl_s.FieldByName('KOL_trans').AsFloat
                                                              * v_kol_upak))
                                                              * MD_Nakl_s.FieldByName('Ves_trans').AsFloat)
-                                                             / MD_Nakl_s.FieldByName('KOL_trans').AsInteger,
+                                                             / MD_Nakl_s.FieldByName('KOL_trans').AsFloat,
                                                            -2)
       else
         RMUpak.FieldByName('ves_trans').AsFloat := 0;
