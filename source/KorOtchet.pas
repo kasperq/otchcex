@@ -1138,6 +1138,7 @@ begin
       RaspSyrPrep.First;
       while (not RaspSyrPrep.Eof) do
       begin
+        tochn := dm1.getTochn(s_kodp, RaspSyrPrep.FieldByName('KSM_ID').AsInteger);
         ostceh.First;
         if (ostceh.Locate('ksm_id', RaspSyrPrep.FieldByName('Ksm_id').AsInteger, [])) THEN
           s_ost := ostcehOSTATOK_END_S.asfloat
@@ -1161,22 +1162,22 @@ begin
                                                            * dm1.Koef_per(RaspSyrPrep.FieldByName('KEI_id').AsInteger,
                                                                           q_ostPrep.FieldByName('Kei_id').AsInteger,
                                                                           q_ostPrep.FieldByName('Ksm_id').AsInteger),
-                                                           tochn));
+                                                           {tochn}-6));
             RaspSyrPrepOt_Nz.ASstring := FloatToStr(RoundTo(q_ostPrep.FieldByName('Ot_nz').ASFLOAT
                                                             * dm1.Koef_per(RaspSyrPrep.FieldByName('KEI_id').AsInteger,
                                                                            q_ostPrep.FieldByName('Kei_id').AsInteger,
                                                                            q_ostPrep.FieldByName('Ksm_id').AsInteger),
-                                                            tochn));
+                                                            -6));
             RaspSyrPrepOnm_s.ASstring := FloatToStr(RoundTo(q_ostPrep.FieldByName('Onm_s').AsFloat
                                                             * dm1.Koef_per(RaspSyrPrep.FieldByName('KEI_id').AsInteger,
                                                                            q_ostPrep.FieldByName('Kei_id').AsInteger,
                                                                            q_ostPrep.FieldByName('Ksm_id').AsInteger),
-                                                            tochn));
+                                                            -6));
             RaspSyrPrepOnm_Nz.asfloat := RoundTo(q_ostPrep.FieldByName('Onm_NZ').AsFloat
                                                  * dm1.Koef_per(RaspSyrPrep.FieldByName('KEI_id').AsInteger,
                                                                 q_ostPrep.FieldByName('Kei_id').AsInteger,
                                                                 q_ostPrep.FieldByName('Ksm_id').AsInteger),
-                                                 tochn);
+                                                 -6);
           end;
         end;
         RaspSyrPrep.post;
