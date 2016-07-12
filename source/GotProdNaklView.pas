@@ -2152,7 +2152,6 @@ var
   v_seria1 : string;
   kolRash, kolTrans, divRT, divRT1000 : double;
   truncDivRT, truncDivRT1000 : integer;
-  e_truncDivRT, e_truncDivRT1000 : extended;
 
 begin
   while (not MD_Nakl_s.Eof) do
@@ -2164,11 +2163,8 @@ begin
     divRT1000 := StrToFloat(FloatToStr(kolRash * 1000 / kolTrans));
     SetRoundMode(rmUp);
     truncDivRT := trunc(divRT);
-//    e_truncDivRT := int(divRT);
-//    truncDivRT := trunc(e_truncDivRT);
     truncDivRT1000 := trunc(StrToFloat(FloatToStr(divRT1000)));
-//    e_truncDivRT1000 := int(divRT1000);
-//    truncDivRT1000 := trunc(e_truncDivRT1000);
+
     MD_Nakl_s.Edit;
     MD_Nakl_s.FieldByName('kol_upak').AsInteger := MD_Nakl_s.FieldByName('kol_grp').AsInteger;
     st := SumToString(Round(MD_Nakl_s.FieldByName('kol_grp').AsInteger));
@@ -2223,10 +2219,10 @@ begin
       RMUpak.FieldByName('seria').asstring := v_seria1;
       RMUpak.FieldByName('kol_upak').AsInteger := v_kol_upak1;
 
-//      vv := MyCeil(MD_Nakl_s.FieldByName('KOL_RASH').AsFloat * 1000);
+      vv := MyCeil(MD_Nakl_s.FieldByName('KOL_RASH').AsFloat * 1000);
 //
 //      RMUpak.FieldByName('kol_trans').AsFloat := vv - (MD_Nakl_s.FieldByName('KOL_trans').AsFloat * v_kol_upak);
-      vv := Trunc(StrToFloat(FloatToStr(MD_Nakl_s.FieldByName('KOL_RASH').AsFloat * 1000)));
+//      vv := Trunc(StrToFloat(FloatToStr(MD_Nakl_s.FieldByName('KOL_RASH').AsFloat * 1000)));
 
       RMUpak.FieldByName('kol_trans').AsFloat := vv - StrToInt(FloatToStr((MD_Nakl_s.FieldByName('KOL_trans').AsFloat * v_kol_upak)));
 
