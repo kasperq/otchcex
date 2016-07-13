@@ -1023,7 +1023,6 @@ object FGotProdNaklView: TFGotProdNaklView
       Width = 23
       Height = 22
       Caption = '...'
-      Flat = True
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -16
