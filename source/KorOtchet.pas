@@ -573,7 +573,7 @@ begin
                                                            * dm1.Koef_per(IBQuery1.FieldByName('Kein').AsInteger,
                                                                           IBQuery1.FieldByName('Kei_id').AsInteger,
                                                                           IBQuery1.FieldByName('Ksm_id').AsInteger),
-                                                           tochn))
+                                                           -6{tochn}))
           else
             RaspSyrPrepOt_s.AsVariant := 0;
 //    if (IBQuery1.FieldByName('Ost_c').ASFLOAT<>0) and (IBQuery1.FieldByName('Ost_c').AsVariant<>null) then
@@ -589,7 +589,7 @@ begin
                                                             * dm1.Koef_per(IBQuery1.FieldByName('Kein').AsInteger,
                                                                            IBQuery1.FieldByName('Kei_id').AsInteger,
                                                                            IBQuery1.FieldByName('Ksm_id').AsInteger),
-                                                            tochn))
+                                                            -6{tochn}))
           else
             RaspSyrPrepOt_nz.AsVariant := 0;
           if (IBQuery1.FieldByName('Onm_s').ASFLOAT <> 0)
@@ -598,7 +598,7 @@ begin
                                                             * dm1.Koef_per(IBQuery1.FieldByName('Kein').AsInteger,
                                                                            IBQuery1.FieldByName('Kei_id').AsInteger,
                                                                            IBQuery1.FieldByName('Ksm_id').AsInteger),
-                                                            tochn))
+                                                            {tochn}-6))
           else
             RaspSyrPrepOnm_s.AsVariant := 0;
           if (IBQuery1.FieldByName('Onm_NZ').AsFloat <> 0)
@@ -607,7 +607,7 @@ begin
                                                  * dm1.Koef_per(IBQuery1.FieldByName('Kein').AsInteger,
                                                                 IBQuery1.FieldByName('Kei_id').AsInteger,
                                                                 IBQuery1.FieldByName('Ksm_id').AsInteger),
-                                                 tochn)
+                                                 {tochn}-6)
           else
             RaspSyrPrepOnm_nz.AsVariant := 0;
           if (IBQuery1.FieldByName('Kart_id').AsInteger = 0)
@@ -657,7 +657,7 @@ begin
                                                                * dm1.Koef_per(IBQuery1.FieldByName('Kein').AsInteger,
                                                                               IBQuery1.FieldByName('Kei_id').AsInteger,
                                                                               IBQuery1.FieldByName('Ksm_id').AsInteger),
-                                                               tochn))
+                                                               -6{tochn}))
               else
                 RaspSyrPrepOt_s.AsVariant := 0;
 
@@ -667,7 +667,7 @@ begin
                                                                 *dm1.Koef_per(IBQuery1.FieldByName('Kein').AsInteger,
                                                                               IBQuery1.FieldByName('Kei_id').AsInteger,
                                                                               IBQuery1.FieldByName('Ksm_id').AsInteger),
-                                                                tochn))
+                                                                -6{tochn}))
               else
                 RaspSyrPrepOt_nz.AsVariant := 0;
 
@@ -677,7 +677,7 @@ begin
                                                                 * dm1.Koef_per(IBQuery1.FieldByName('Kein').AsInteger,
                                                                                IBQuery1.FieldByName('Kei_id').AsInteger,
                                                                                IBQuery1.FieldByName('Ksm_id').AsInteger),
-                                                                tochn))
+                                                                -6{tochn}))
               else
                 RaspSyrPrepOnm_s.AsVariant := 0;
 
@@ -687,7 +687,7 @@ begin
                                                                  * dm1.Koef_per(IBQuery1.FieldByName('Kein').AsInteger,
                                                                                 IBQuery1.FieldByName('Kei_id').AsInteger,
                                                                                 IBQuery1.FieldByName('Ksm_id').AsInteger),
-                                                                 tochn))
+                                                                 -6{tochn}))
               else
                 RaspSyrPrepOnm_nz.AsVariant := 0;
 
@@ -697,7 +697,7 @@ begin
                                                                      * dm1.Koef_per(IBQuery1.FieldByName('Kein').AsInteger,
                                                                                     IBQuery1.FieldByName('Kei_id').AsInteger,
                                                                                     IBQuery1.FieldByName('Ksm_id').AsInteger),
-                                                                     tochn))
+                                                                     -6{tochn}))
               else
                 RaspSyrPrepZag_period.AsVariant := 0;
 
@@ -707,7 +707,7 @@ begin
                                                                       * dm1.Koef_per(IBQuery1.FieldByName('Kein').AsInteger,
                                                                                      IBQuery1.FieldByName('Kei_id').AsInteger,
                                                                                      IBQuery1.FieldByName('Ksm_id').AsInteger),
-                                                                      tochn))
+                                                                      -6{tochn}))
               else
                 RaspSyrPrepprix_period.AsVariant := 0;
 
@@ -717,7 +717,7 @@ begin
                                                                             * dm1.Koef_per(IBQuery1.FieldByName('Kein').AsInteger,
                                                                                            IBQuery1.FieldByName('Kei_id').AsInteger,
                                                                                            IBQuery1.FieldByName('Ksm_id').AsInteger),
-                                                                            tochn))
+                                                                            -6{tochn}))
               else
                 RaspSyrPreprash_virab_period.AsVariant := 0;
 

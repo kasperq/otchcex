@@ -928,6 +928,9 @@ begin
   if (vTip_Doc_Id = 144) then
     q_specDocNDOK.AsString := 'мик.' + IntToStr(monthCombo.ItemIndex + 1)
                               + '.' + yearEdit.Text;
+  if (vTip_Doc_Id = 145) then
+    q_specDocNDOK.AsString := 'обор.' + IntToStr(monthCombo.ItemIndex + 1)
+                              + '.' + yearEdit.Text;
   if (vTip_Doc_Id = 209) then
     q_specDocNDOK.AsString := 'сиз.' + IntToStr(monthCombo.ItemIndex + 1)
                               + '.' + yearEdit.Text;
@@ -950,6 +953,10 @@ begin
   q_specDoc.Close;
   if (vTip_Doc_Id = 144) then
     q_specDoc.MacroByName('usl').AsString := ' document.ndok = ''мик.'
+                                                + IntToStr(monthCombo.ItemIndex + 1)
+                                                + '.' + yearEdit.Text + ''' ';
+  if (vTip_Doc_Id = 145) then
+    q_specDoc.MacroByName('usl').AsString := ' document.ndok = ''обор.'
                                                 + IntToStr(monthCombo.ItemIndex + 1)
                                                 + '.' + yearEdit.Text + ''' ';
   if (vTip_Doc_Id = 209) then
@@ -1009,8 +1016,12 @@ function TFAktRashoda.findSpecKart(strukId, ksmId : integer; date1, date2 : TDat
 begin
   result := false;
   q_specKart.Close;
-  if (vTip_Doc_Id = 144) then  
+  if (vTip_Doc_Id = 144) then
     q_specKart.MacroByName('usl').AsString := ' document.ndok = ''мик.'
+                                                + IntToStr(monthCombo.ItemIndex + 1)
+                                                + '.' + yearEdit.Text + ''' ';
+  if (vTip_Doc_Id = 145) then
+    q_specKart.MacroByName('usl').AsString := ' document.ndok = ''обор.'
                                                 + IntToStr(monthCombo.ItemIndex + 1)
                                                 + '.' + yearEdit.Text + ''' ';
   if (vTip_Doc_Id = 209) then
@@ -1344,7 +1355,7 @@ begin
     if (DM1.Kart.RecordCount > 0) then
       // Сначала удаляем из Карта все, чего нету в мемори таблице
       deleteKart();
-    if ((vTip_Doc_Id = 144) or (vTip_Doc_Id = 209)) and (yearEdit.Text >= '2015') then
+    if ((vTip_Doc_Id = 144) or (vTip_Doc_Id = 145) or (vTip_Doc_Id = 209)) and (yearEdit.Text >= '2015') then
       deleteSpecKart;
     deletePrixKart;
       // Затем переносим все изменения из мемори таблицы в Карт и сохраняем
@@ -1461,7 +1472,7 @@ begin
             if (not cb_saveNoSpec.Checked)
                and ((findSpecOstAllOr11(NormiMemDatKSM_ID.AsInteger, true)
                     or (isRecIsSpec(NormiMemDatKSM_ID.AsInteger)))
-                   and ((vTip_Doc_Id = 144) or (vTip_Doc_Id = 209))) then
+                   and ((vTip_Doc_Id = 144) or (vTip_Doc_Id = 145) or (vTip_Doc_Id = 209))) then
             begin
               if (findSpecOstAllOr11(NormiMemDatKSM_ID.AsInteger, false))
                  and (getCurOst11() >= NormiMemDatFACTRASHOD.AsFloat) then
@@ -1494,7 +1505,7 @@ begin
       end;
         NormiMemDat.Next;
     end;
-    if (vTip_Doc_Id = 144) or (vTip_Doc_Id = 209) then
+    if (vTip_Doc_Id = 144) or (vTip_Doc_Id = 145) or (vTip_Doc_Id = 209) then
       deleteSpecDoc;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //    add2Prixod();//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2471,7 +2482,7 @@ begin
 
 //    findAndSet10Account;
     addNormi2Mem();
-    if (vTip_Doc_id = 144) or (vTip_Doc_Id = 209) then
+    if (vTip_Doc_id = 144) or (vTip_Doc_Id = 145) or (vTip_Doc_Id = 209) then
       findAndSet10Account;
 //    NormiMemDat.SortOnFields('factrashod', true, true);
     NormiMemDat.SortOnFields('Razdel_Id', true, false);
