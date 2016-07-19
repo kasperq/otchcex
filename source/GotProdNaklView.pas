@@ -1806,7 +1806,7 @@ begin
 
     TempQuery.Active := False;
     TempQuery.SQL.Clear;
-    TempQuery.SQL.Add(' SELECT sum(KART.KOL_Rash) kol_rash, SPPROD.NMAT, KART.DOC_ID, KART.KSM_ID,');
+    TempQuery.SQL.Add(' SELECT sum(coalesce(KART.KOL_Rash,0)) kol_rash, SPPROD.NMAT, KART.DOC_ID, KART.KSM_ID,');
     TempQuery.SQL.Add(' OSTATKI.SERIA_ID, SERIA.SERIA, EDIZ.NEIS, region.nam ');
     TempQuery.SQL.Add(' FROM KART ');
     TempQuery.SQL.Add(' inner JOIN OSTATKI ON (KART.KART_ID = OSTATKI.KART_ID)');
@@ -2152,7 +2152,6 @@ var
   v_seria1 : string;
   kolRash, kolTrans, divRT, divRT1000 : double;
   truncDivRT, truncDivRT1000 : integer;
-  e_truncDivRT, e_truncDivRT1000 : extended;
 
 begin
   while (not MD_Nakl_s.Eof) do
@@ -2164,11 +2163,8 @@ begin
     divRT1000 := StrToFloat(FloatToStr(kolRash * 1000 / kolTrans));
     SetRoundMode(rmUp);
     truncDivRT := trunc(divRT);
-//    e_truncDivRT := int(divRT);
-//    truncDivRT := trunc(e_truncDivRT);
     truncDivRT1000 := trunc(StrToFloat(FloatToStr(divRT1000)));
-//    e_truncDivRT1000 := int(divRT1000);
-//    truncDivRT1000 := trunc(e_truncDivRT1000);
+
     MD_Nakl_s.Edit;
     MD_Nakl_s.FieldByName('kol_upak').AsInteger := MD_Nakl_s.FieldByName('kol_grp').AsInteger;
     st := SumToString(Round(MD_Nakl_s.FieldByName('kol_grp').AsInteger));
@@ -2224,8 +2220,11 @@ begin
       RMUpak.FieldByName('kol_upak').AsInteger := v_kol_upak1;
 
       vv := MyCeil(MD_Nakl_s.FieldByName('KOL_RASH').AsFloat * 1000);
+//
+//      RMUpak.FieldByName('kol_trans').AsFloat := vv - (MD_Nakl_s.FieldByName('KOL_trans').AsFloat * v_kol_upak);
+//      vv := Trunc(StrToFloat(FloatToStr(MD_Nakl_s.FieldByName('KOL_RASH').AsFloat * 1000)));
 
-      RMUpak.FieldByName('kol_trans').AsFloat := vv - (MD_Nakl_s.FieldByName('KOL_trans').AsFloat * v_kol_upak);
+      RMUpak.FieldByName('kol_trans').AsFloat := vv - StrToInt(FloatToStr((MD_Nakl_s.FieldByName('KOL_trans').AsFloat * v_kol_upak)));
 
       if (cbRF.Checked) then
       begin
@@ -2243,10 +2242,10 @@ begin
         RMUpak.FieldByName('ves_upak').AsFloat := MD_Nakl_s.FieldByName('Ves_upak').AsFloat;
       if (MD_Nakl_s.FieldByName('KOL_trans').AsInteger <> 0) then
         RMUpak.FieldByName('ves_trans').AsFloat := roundto(((vv
-                                                             - (MD_Nakl_s.FieldByName('KOL_trans').AsInteger
+                                                             - (MD_Nakl_s.FieldByName('KOL_trans').AsFloat
                                                              * v_kol_upak))
                                                              * MD_Nakl_s.FieldByName('Ves_trans').AsFloat)
-                                                             / MD_Nakl_s.FieldByName('KOL_trans').AsInteger,
+                                                             / MD_Nakl_s.FieldByName('KOL_trans').AsFloat,
                                                            -2)
       else
         RMUpak.FieldByName('ves_trans').AsFloat := 0;
@@ -2759,11 +2758,11 @@ begin
       st := AnsiUpperCase(FloatToText(MD_Naklad.FieldByName('KOL_RASH').AsFloat, 3))
     else
     begin
-      if (keiId = 660) then
+      if (keiId = 660) or (keiId = 800) then
         st := FloatToText(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000000,
                           KolZnakovPosleZap(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000000))
       else
-        st := FloatToText(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000,
+        st := FloatToText(StrToFloat(FloatToStr(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000)),
                           KolZnakovPosleZap(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000));
     end;
 
@@ -2827,7 +2826,7 @@ begin
   	docParamId := ' 542 ';
     if (vStruk_Id = 696) then
     begin
-      docParamId := ' 1364 ';
+//      docParamId := ' 1364 ';
       SdalEdit.Text := 'Нач. уч. упак. Ковалев А. И.';
     end;
   end
