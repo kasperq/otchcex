@@ -452,12 +452,8 @@ type
     procedure btn_delRecClick(Sender: TObject);
     procedure ToolButton1Click(Sender: TObject);
     procedure grid_zagrEditButtonClick(Sender: TObject);
-    procedure frReport2GetValue(const ParName: String;
-      var ParValue: Variant);
     procedure ToolButton5Click(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
-    procedure Edit16KeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
 
     procedure Seria_sBeforeInsert(DataSet: TDataSet);
     procedure Seria_sNewRecord(DataSet: TDataSet);
@@ -509,8 +505,8 @@ type
 
 //    function openZagrDoc(seria : string; strukId, ksmIdPrep : integer;
 //                         dateBegin, dateEnd : TDate) : boolean;
-    function findOrCreateZagrDocument(seria : string;dateDok : TDate; docId, strukId,
-                              ksmIdPrep : integer) : boolean;
+//    function findOrCreateZagrDocument(seria : string;dateDok : TDate; docId, strukId,
+//                              ksmIdPrep : integer) : boolean;
 
 //    procedure openZagrKart(docId : integer);
 //    procedure insertKartToTexGur(ksmIdPrep : integer);
@@ -524,26 +520,26 @@ type
 //    procedure convertKeiId(ksmIdPrep : integer);
 //    procedure convertRecord(var value : TFloatField; kart, ostPrep, ostCex : boolean;
 //                            tochn : integer);
-    procedure delTexGurRecord;
-    procedure delAllTexGurRecords;
+//    procedure delTexGurRecord;
+//    procedure delAllTexGurRecords;
     // ^^^ Загрузка загрузки :))
 
     // Сохранение загрузки
-    function saveZagrDocument() : boolean;
-    procedure deletePrih(ksmIdPrep, ksmId, strukId, razdelId : integer);
-    procedure delEmptyZagrDocuments(seria : string; year, month, ksmIdPrep, strukId : integer);
-    procedure saveExistingRecord(keiId : integer);
-    procedure saveNewRecord(keiId, kartId : integer);
-    function saveMemTexGur() : boolean;
-    function getCurKeiId() : integer;
-    procedure saveSeriaAndOstatki;
-    function findKsmIdAndRazdelIdAndKsmIdPrInOstatki(ksmId, razdelId, ksmIdPrep, strukId : integer) : boolean;
-    procedure createKartId(ksmId, razdelId, ksmIdPrep, strukId, keiId, seriaId : integer);
+//    function saveZagrDocument() : boolean;
+//    procedure deletePrih(ksmIdPrep, ksmId, strukId, razdelId : integer);
+//    procedure delEmptyZagrDocuments(seria : string; year, month, ksmIdPrep, strukId : integer);
+//    procedure saveExistingRecord(keiId : integer);
+//    procedure saveNewRecord(keiId, kartId : integer);
+//    function saveMemTexGur() : boolean;
+//    function getCurKeiId() : integer;
+//    procedure saveSeriaAndOstatki;
+//    function findKsmIdAndRazdelIdAndKsmIdPrInOstatki(ksmId, razdelId, ksmIdPrep, strukId : integer) : boolean;
+//    procedure createKartId(ksmId, razdelId, ksmIdPrep, strukId, keiId, seriaId : integer);
 
-    procedure addPrihod(kolRash : double; ksmId, keiId, klientId, razdelId : integer);
-    procedure deletePrixKart(ksmId, ksmIdPr, strukId, razdelId : integer);
-    procedure openPrixKart(ksmIdPr, strukId, ksmId, razdelId : integer);
-    procedure openPrihSum(ksmIdPr, strukId, ksmId, razdelId : integer);
+//    procedure addPrihod(kolRash : double; ksmId, keiId, klientId, razdelId : integer);
+//    procedure deletePrixKart(ksmId, ksmIdPr, strukId, razdelId : integer);
+//    procedure openPrixKart(ksmIdPr, strukId, ksmId, razdelId : integer);
+//    procedure openPrihSum(ksmIdPr, strukId, ksmId, razdelId : integer);
     // ^^^ Сохранение загрузки :))
 
     procedure openPrepSeries(dateBegin, dateEnd : TDate; strukId : integer);
@@ -588,370 +584,351 @@ implementation
   Unit21, OstSyr, Analit1, Komp_Tm, VybPrep;
 {$R *.dfm}
 
-procedure TFTexGur.saveSeriaAndOstatki;
-var
-  usl_ser : string;
-begin
-  if (not dm1.seria.Active) then
-  begin
-    Dm1.Seria.ParamByName('Ksm_id').AsInteger := S_KODP;
-    DM1.Seria.MacroByName('usl').AsString := 'SERIA.SERIA=' + '''' + S_SERIA + '''';
-    dm1.Seria.Active := true;
-    vSeria_id := dm1.SeriaSeria_id.AsInteger;
-  end;
-  s_seria_p := s_seria;
-  S_KSM := S_KODP;
-  DM1.Seria.Edit;
-  DM1.SeriaDate_ZAG.AsDateTime := DateEdit1.Date;
-  if (edit9.Text <> '') then
-    DM1.SeriaKol_seria.AsFloat := strtofloat(Edit9.Text)
-  else
-    DM1.SeriaKol_seria.AsFloat := 0;
-  DM1.Seria.Post;
-  DM1.Seria.ApplyUpdates;
-  if (dm1.Ostatki.Active) then
-  begin
-    if (DM1.Ostatki.UpdatesPending) then
-      DM1.Ostatki.ApplyUpdates;
-    dm1.Ostatki.Active := false;
-  end;
-  usl_ser := '  OST.KSM_ID=' + INTTOSTR(s_kodp) + ' and ost.seria_id=' + inttostr(vSeria_id);
-  DM1.Ostatki.ParamByName('struk_ID').AsInteger := vstruk_id;
-  DM1.Ostatki.MacroByName('usl').AsString := usl_ser;
-  DM1.Ostatki.Open;
-  if (not dm1.Ostatki.Eof) then
-    s_kart_id := DM1.OstatkiKart_id.AsInteger
-  else
-  begin
-    v_razdel := 0;
-    DM1.Ostatki.Insert;
-    DM1.Ostatki.Post;
-    dm1.Ostatki.ApplyUpdates;
-    s_kart_id := vKart_id;
-  end;
-  if (DM1.Seria.Modified) or (DM1.Seria.State = dsEdit)
-     or (DM1.Seria.State = dsInsert) then
-    DM1.Seria.Post;
-  if (DM1.Ostatki.Modified) or (DM1.Ostatki.State = dsEdit)
-     or (DM1.Ostatki.State = dsInsert) then
-    DM1.Ostatki.Post;
-  if (DM1.Seria.UpdatesPending) then
-    DM1.Seria.ApplyUpdates;
-  if (DM1.Ostatki.UpdatesPending) then
-    DM1.Ostatki.ApplyUpdates;
-end;
+//procedure TFTexGur.saveSeriaAndOstatki;
+//var
+//  usl_ser : string;
+//begin
+//  if (not dm1.seria.Active) then
+//  begin
+//    Dm1.Seria.ParamByName('Ksm_id').AsInteger := S_KODP;
+//    DM1.Seria.MacroByName('usl').AsString := 'SERIA.SERIA=' + '''' + S_SERIA + '''';
+//    dm1.Seria.Active := true;
+//    vSeria_id := dm1.SeriaSeria_id.AsInteger;
+//  end;
+//  s_seria_p := s_seria;
+//  S_KSM := S_KODP;
+//  DM1.Seria.Edit;
+//  DM1.SeriaDate_ZAG.AsDateTime := DateEdit1.Date;
+//  if (edit9.Text <> '') then
+//    DM1.SeriaKol_seria.AsFloat := strtofloat(Edit9.Text)
+//  else
+//    DM1.SeriaKol_seria.AsFloat := 0;
+//  DM1.Seria.Post;
+//  DM1.Seria.ApplyUpdates;
+//  if (dm1.Ostatki.Active) then
+//  begin
+//    if (DM1.Ostatki.UpdatesPending) then
+//      DM1.Ostatki.ApplyUpdates;
+//    dm1.Ostatki.Active := false;
+//  end;
+//  usl_ser := '  OST.KSM_ID=' + INTTOSTR(s_kodp) + ' and ost.seria_id=' + inttostr(vSeria_id);
+//  DM1.Ostatki.ParamByName('struk_ID').AsInteger := vstruk_id;
+//  DM1.Ostatki.MacroByName('usl').AsString := usl_ser;
+//  DM1.Ostatki.Open;
+//  if (not dm1.Ostatki.Eof) then
+//    s_kart_id := DM1.OstatkiKart_id.AsInteger
+//  else
+//  begin
+//    v_razdel := 0;
+//    DM1.Ostatki.Insert;
+//    DM1.Ostatki.Post;
+//    dm1.Ostatki.ApplyUpdates;
+//    s_kart_id := vKart_id;
+//  end;
+//  if (DM1.Seria.Modified) or (DM1.Seria.State = dsEdit)
+//     or (DM1.Seria.State = dsInsert) then
+//    DM1.Seria.Post;
+//  if (DM1.Ostatki.Modified) or (DM1.Ostatki.State = dsEdit)
+//     or (DM1.Ostatki.State = dsInsert) then
+//    DM1.Ostatki.Post;
+//  if (DM1.Seria.UpdatesPending) then
+//    DM1.Seria.ApplyUpdates;
+//  if (DM1.Ostatki.UpdatesPending) then
+//    DM1.Ostatki.ApplyUpdates;
+//end;
 
-procedure TFTexGur.delAllTexGurRecords;
-begin
-  mem_texGur.DisableControls;
-  mem_texGur.First;
-  while (not mem_texGur.Eof) do
-  begin
-    delTexGurRecord;
-    mem_texGur.Next;
-  end;
-  mem_texGur.EnableControls;
-end;
+//procedure TFTexGur.deletePrih(ksmIdPrep, ksmId, strukId, razdelId : integer);
+//begin
+//  openPrihSum(ksmIdPrep, strukId, ksmId, razdelId);
+//  if (q_prihSumPRIHSUM.AsFloat <> 0) then
+//  begin
+//    q_prihSum.Close;
+//    deletePrixKart(ksmId, ksmIdPrep, strukId, razdelId);
+//  end;
+//end;
 
-procedure TFTexGur.delTexGurRecord;
-begin
-  mem_texGur.Edit;
-  mem_texGurDELETE.AsBoolean := true;
-  mem_texGur.Post;
-end;
+//procedure TFTexGur.saveExistingRecord(keiId : integer);
+//begin
+//  if (mem_texGurKOL_RASH_EDIZ.AsFloat = 0) or (mem_texGurDELETE.AsBoolean)
+//     and (mem_texGurDATE_DOK.AsDateTime = mem_texGurOLD_DATE_DOK.AsDateTime) then
+//  begin
+//    q_kart.Delete;
+//  end;
+//  if (mem_texGurKOL_RASH_EDIZ.AsFloat <> 0) and (not mem_texGurDELETE.AsBoolean)
+//     and (mem_texGurDATE_DOK.AsDateTime = mem_texGurOLD_DATE_DOK.AsDateTime) then
+//  begin
+//    if ((mem_texGurKOL_RASH_EDIZ.AsFloat <> q_kartKOL_RASH_EDIZ.AsFloat)
+//        or (keiId <> q_kartKEI_ID.AsInteger))
+//       and (q_kartRAZDEL_ID.AsInteger = mem_texGurRAZDEL_ID.AsInteger) then
+//    begin
+//      q_kart.Edit;
+//      q_kartKOL_RASH_EDIZ.AsFloat := mem_texGurKOL_RASH_EDIZ.AsFloat;
+//      q_kartKEI_ID.AsInteger := keiId;
+//      q_kartKOL_PRIH_EDIZ.AsFloat := 0;
+//      q_kart.Post;
+//    end;
+//    if (q_kartRAZDEL_ID.AsInteger <> mem_texGurRAZDEL_ID.AsInteger) then
+//    begin
+//      deletePrih(mem_texGurKSM_ID_PREP.AsInteger, mem_texGurKSM_ID.AsInteger, vStruk_Id, q_kartRAZDEL_ID.AsInteger);
+//      q_kart.Delete;
+//      saveNewRecord(keiId, 0);
+//      delTexGurRecord;
+//    end;
+//  end;
+//  if (mem_texGurDATE_DOK.AsDateTime <> mem_texGurOLD_DATE_DOK.AsDateTime) then
+//  begin
+//    deletePrih(mem_texGurKSM_ID_PREP.AsInteger, mem_texGurKSM_ID.AsInteger, vStruk_Id, q_kartRAZDEL_ID.AsInteger);
+//    q_kart.Delete;
+//    if (findOrCreateZagrDocument(edit2.Text, mem_texGurDATE_DOK.AsDateTime,
+//                                 mem_texGurDOC_ID.AsInteger, vStruk_Id, s_kodp)) then
+//      saveNewRecord(keiId, mem_texGurKART_ID.AsInteger);
+//  end;
+//end;
 
-procedure TFTexGur.deletePrih(ksmIdPrep, ksmId, strukId, razdelId : integer);
-begin
-  openPrihSum(ksmIdPrep, strukId, ksmId, razdelId);
-  if (q_prihSumPRIHSUM.AsFloat <> 0) then
-  begin
-    q_prihSum.Close;
-    deletePrixKart(ksmId, ksmIdPrep, strukId, razdelId);
-  end;
-end;
+//procedure TFTexGur.saveNewRecord(keiId, kartId : integer);
+//begin
+//  if (kartId = 0) then
+//  begin
+//    if (not findKsmIdAndRazdelIdAndKsmIdPrInOstatki(mem_texGurKSM_ID.AsInteger,
+//                                                    mem_texGurRAZDEL_ID.AsInteger,
+//                                                    mem_texGurKSM_ID_PREP.AsInteger,
+//                                                    vStruk_Id)) then
+//    begin
+//      createKartId(mem_texGurKSM_ID.AsInteger, mem_texGurRAZDEL_ID.AsInteger,
+//                   mem_texGurKSM_ID_PREP.AsInteger, vStruk_Id,
+//                   keiId, 0);
+//    end;
+//    mem_texGur.Edit;
+//    mem_texGurKART_ID.AsInteger := q_ostatkiKART_ID.AsInteger;
+//    mem_texGur.Post;
+//  end;
+//  q_kart.Insert;
+//  q_kart.FieldByName('Ksm_Id').AsInteger := mem_texGurKsm_id.AsInteger;
+//  q_kartKol_rash_ediz.AsFloat := mem_texGurKol_Rash_Ediz.AsFloat;
+//  q_kart.FieldByName('razdel_Id').AsInteger := mem_texGurRazdel_id.AsInteger;
+//  q_kart.FieldByName('kei_Id').AsInteger := keiId;
+//  q_kart.FieldByName('Doc_Id').AsInteger := q_docDOC_ID.AsInteger;
+//  q_kart.FieldByName('KART_Id').AsInteger := mem_texGurKart_id.AsInteger;
+//  q_kart.FieldByName('TIP_OP_Id').AsInteger := 33;
+//  q_kart.FieldByName('TIP_DOK_Id').AsInteger := 34;
+//  q_kart.Post;
+//end;
 
-procedure TFTexGur.saveExistingRecord(keiId : integer);
-begin
-  if (mem_texGurKOL_RASH_EDIZ.AsFloat = 0) or (mem_texGurDELETE.AsBoolean)
-     and (mem_texGurDATE_DOK.AsDateTime = mem_texGurOLD_DATE_DOK.AsDateTime) then
-  begin
-    q_kart.Delete;
-  end;
-  if (mem_texGurKOL_RASH_EDIZ.AsFloat <> 0) and (not mem_texGurDELETE.AsBoolean)
-     and (mem_texGurDATE_DOK.AsDateTime = mem_texGurOLD_DATE_DOK.AsDateTime) then
-  begin
-    if ((mem_texGurKOL_RASH_EDIZ.AsFloat <> q_kartKOL_RASH_EDIZ.AsFloat)
-        or (keiId <> q_kartKEI_ID.AsInteger))
-       and (q_kartRAZDEL_ID.AsInteger = mem_texGurRAZDEL_ID.AsInteger) then
-    begin
-      q_kart.Edit;
-      q_kartKOL_RASH_EDIZ.AsFloat := mem_texGurKOL_RASH_EDIZ.AsFloat;
-      q_kartKEI_ID.AsInteger := keiId;
-      q_kartKOL_PRIH_EDIZ.AsFloat := 0;
-      q_kart.Post;
-    end;
-    if (q_kartRAZDEL_ID.AsInteger <> mem_texGurRAZDEL_ID.AsInteger) then
-    begin
-      deletePrih(mem_texGurKSM_ID_PREP.AsInteger, mem_texGurKSM_ID.AsInteger, vStruk_Id, q_kartRAZDEL_ID.AsInteger);
-      q_kart.Delete;
-      saveNewRecord(keiId, 0);
-      delTexGurRecord;
-    end;
-  end;
-  if (mem_texGurDATE_DOK.AsDateTime <> mem_texGurOLD_DATE_DOK.AsDateTime) then
-  begin
-    deletePrih(mem_texGurKSM_ID_PREP.AsInteger, mem_texGurKSM_ID.AsInteger, vStruk_Id, q_kartRAZDEL_ID.AsInteger);
-    q_kart.Delete;
-    if (findOrCreateZagrDocument(edit2.Text, mem_texGurDATE_DOK.AsDateTime,
-                                 mem_texGurDOC_ID.AsInteger, vStruk_Id, s_kodp)) then
-      saveNewRecord(keiId, mem_texGurKART_ID.AsInteger);
-  end;
-end;
+//function TFTexGur.getCurKeiId() : integer;
+//begin
+//  result := mem_texGurKEI_ID_OST_PREP.AsInteger;
+//  if (mem_texGurKEI_ID_NORM.AsInteger <> 0) then
+//    result := mem_texGurKEI_ID_NORM.AsInteger
+//  else
+//    if (mem_texGurKEI_ID_KART.AsInteger <> 0) then
+//      result := mem_texGurKEI_ID_KART.AsInteger;
+//end;
 
-procedure TFTexGur.saveNewRecord(keiId, kartId : integer);
-begin
-  if (kartId = 0) then
-  begin
-    if (not findKsmIdAndRazdelIdAndKsmIdPrInOstatki(mem_texGurKSM_ID.AsInteger,
-                                                    mem_texGurRAZDEL_ID.AsInteger,
-                                                    mem_texGurKSM_ID_PREP.AsInteger,
-                                                    vStruk_Id)) then
-    begin
-      createKartId(mem_texGurKSM_ID.AsInteger, mem_texGurRAZDEL_ID.AsInteger,
-                   mem_texGurKSM_ID_PREP.AsInteger, vStruk_Id,
-                   keiId, 0);
-    end;
-    mem_texGur.Edit;
-    mem_texGurKART_ID.AsInteger := q_ostatkiKART_ID.AsInteger;
-    mem_texGur.Post;
-  end;
-  q_kart.Insert;
-  q_kart.FieldByName('Ksm_Id').AsInteger := mem_texGurKsm_id.AsInteger;
-  q_kartKol_rash_ediz.AsFloat := mem_texGurKol_Rash_Ediz.AsFloat;
-  q_kart.FieldByName('razdel_Id').AsInteger := mem_texGurRazdel_id.AsInteger;
-  q_kart.FieldByName('kei_Id').AsInteger := keiId;
-  q_kart.FieldByName('Doc_Id').AsInteger := q_docDOC_ID.AsInteger;
-  q_kart.FieldByName('KART_Id').AsInteger := mem_texGurKart_id.AsInteger;
-  q_kart.FieldByName('TIP_OP_Id').AsInteger := 33;
-  q_kart.FieldByName('TIP_DOK_Id').AsInteger := 34;
-  q_kart.Post;
-end;
+//function TFTexGur.saveMemTexGur() : boolean;
+//var
+//  curKeiId : integer;
+//begin
+//  mem_texGur.First;
+//  while (not mem_texGur.Eof) do
+//  begin
+//    try
+//      curKeiId := getCurKeiId();
+//      if (mem_texGurDOC_ID.AsInteger <> 0) then
+//      begin
+//        openZagrKart(mem_texGurDOC_ID.AsInteger);
+//        if (q_kart.Locate('kart_id;doc_id;stroka_id',
+//                          VarArrayOf([mem_texGurKART_ID.AsInteger,
+//                                      mem_texGurDOC_ID.AsInteger,
+//                                      mem_texGurSTROKA_ID.AsInteger]),
+//                          [])) then
+//        begin
+//          saveExistingRecord(curKeiId);
+//        end;
+//      end
+//      else
+//      begin
+//        if (mem_texGurKOL_RASH_EDIZ.AsFloat <> 0) then
+//        begin
+//          if (findOrCreateZagrDocument(edit2.Text, mem_texGurDATE_DOK.AsDateTime,
+//                                       mem_texGurDOC_ID.AsInteger, vStruk_Id, s_kodp)) then
+//          begin
+//            openZagrKart(q_docDOC_ID.AsInteger);
+//            saveNewRecord(curKeiId, mem_texGurKART_ID.AsInteger);
+//          end;
+//        end;
+//      end;
+//
+//      if (q_kart.UpdatesPending) then
+//      begin
+//        q_kart.ApplyUpdates;
+//        addPrihod(mem_texGurKOL_RASH_EDIZ.AsFloat, mem_texGurKSM_ID.AsInteger,
+//                  curKeiId, mem_texGurKSM_ID_PREP.AsInteger, mem_texGurRAZDEL_ID.AsInteger);
+//        dm1.commitWriteTrans(true);
+//      end
+//      else
+//      begin
+//        if (mem_texGurOSTATOK_END_S.AsFloat < 0)
+//           or (mem_texGurPRIX_PERIOD.AsFloat <> mem_texGurZAG_PERIOD.AsFloat) then
+//        begin
+//          addPrihod(mem_texGurKOL_RASH_EDIZ.AsFloat, mem_texGurKSM_ID.AsInteger,
+//                  curKeiId, mem_texGurKSM_ID_PREP.AsInteger, mem_texGurRAZDEL_ID.AsInteger);
+//          dm1.commitWriteTrans(true);
+//        end;
+//      end;
+//    except
+//      on e : exception do
+//      begin
+//        MessageDlg('Произошла ошибка при сохранении сырья: ' + mem_texGurKSM_ID.AsString
+//                   + '. ' + e.Message, mtWarning, [mbOK], 0);
+//        dm1.IBT_Write.RollbackRetaining;
+//      end;
+//    end;
+//    mem_texGur.Next;
+//  end;
+////  q_kart.ApplyUpdates;
+//  result := true;
+//end;
 
-function TFTexGur.getCurKeiId() : integer;
-begin
-  result := mem_texGurKEI_ID_OST_PREP.AsInteger;
-  if (mem_texGurKEI_ID_NORM.AsInteger <> 0) then
-    result := mem_texGurKEI_ID_NORM.AsInteger
-  else
-    if (mem_texGurKEI_ID_KART.AsInteger <> 0) then
-      result := mem_texGurKEI_ID_KART.AsInteger;
-end;
+//procedure TFTexGur.addPrihod(kolRash : double; ksmId, keiId, klientId, razdelId : integer);
+//var
+//  curSDat1, curSDat2, str_month : string;
+//  curMes, curGod : integer;
+//  day, month, year : word;
+//begin
+//  v_raspred_dob := kolRash;
+//  s_ksm := ksmId;
+//  s_kei := keiId;
+//  v_kein := keiId;
+//  vklient_id := klientId;
+//  v_razdel := razdelId;
+//  tochn := -6;
+//  pr_kor := 0;
+//
+//  curSDat1 := '01.01.0001';
+//  curSDat2 := '01.01.0001';
+//  curMes := 1;
+//  curGod := 1;
+//  if (mem_texGurDATE_DOK.AsDateTime < StrToDate(s_dat1))
+//     or (mem_texGurDATE_DOK.AsDateTime > StrToDate(s_dat2)) then
+//  begin
+//    curSDat1 := s_dat1;
+//    curSDat2 := s_dat2;
+//    curMes := mes;
+//    curGod := god;
+//    DecodeDate(mem_texGurDATE_DOK.AsDateTime, year, month, day);
+//    if (month < 10) then
+//      str_month := '0' + IntToStr(month)
+//    else
+//      str_month := IntToStr(month);
+//    s_dat1 :=  '01.' + str_month + '.' + IntToStr(year);
+//    s_dat2 := datetostr(IncMonth(strtodate(s_dat1), 1) -1);
+//    mes := month;
+//    god := year;
+//  end;
+//
+//  dm1.DobPrixPrep;
+//
+//  if (curSDat1 <> '01.01.0001') then
+//    if (mem_texGurDATE_DOK.AsDateTime < StrToDate(curSDat1))
+//       or (mem_texGurDATE_DOK.AsDateTime > StrToDate(curSDat2)) then
+//    begin
+//      s_dat1 := curSDat1;
+//      s_dat2 := curSDat2;
+//      mes := curMes;
+//      god := curGod;
+//    end;
+////  dm1.commitWriteTrans(true);
+//end;
 
-function TFTexGur.saveMemTexGur() : boolean;
-var
-  curKeiId : integer;
-begin
-  mem_texGur.First;
-  while (not mem_texGur.Eof) do
-  begin
-    try
-      curKeiId := getCurKeiId();
-      if (mem_texGurDOC_ID.AsInteger <> 0) then
-      begin
-        openZagrKart(mem_texGurDOC_ID.AsInteger);
-        if (q_kart.Locate('kart_id;doc_id;stroka_id',
-                          VarArrayOf([mem_texGurKART_ID.AsInteger,
-                                      mem_texGurDOC_ID.AsInteger,
-                                      mem_texGurSTROKA_ID.AsInteger]),
-                          [])) then
-        begin
-          saveExistingRecord(curKeiId);
-        end;
-      end
-      else
-      begin
-        if (mem_texGurKOL_RASH_EDIZ.AsFloat <> 0) then
-        begin
-          if (findOrCreateZagrDocument(edit2.Text, mem_texGurDATE_DOK.AsDateTime,
-                                       mem_texGurDOC_ID.AsInteger, vStruk_Id, s_kodp)) then
-          begin
-            openZagrKart(q_docDOC_ID.AsInteger);
-            saveNewRecord(curKeiId, mem_texGurKART_ID.AsInteger);
-          end;
-        end;
-      end;
+//procedure TFTexGur.deletePrixKart(ksmId, ksmIdPr, strukId, razdelId : integer);
+//begin
+//  openPrixKart(ksmIdPr, strukId, ksmId, razdelId);
+//  if (q_prixKart.RecordCount > 0) then
+//  begin
+//    q_prixKart.First;
+//    while (not q_prixKart.Eof) do
+//      q_prixKart.Delete;
+//    q_prixKart.ApplyUpdates;
+//    dm1.commitWriteTrans(true);
+//  end;
+//end;
 
-      if (q_kart.UpdatesPending) then
-      begin
-        q_kart.ApplyUpdates;
-        addPrihod(mem_texGurKOL_RASH_EDIZ.AsFloat, mem_texGurKSM_ID.AsInteger,
-                  curKeiId, mem_texGurKSM_ID_PREP.AsInteger, mem_texGurRAZDEL_ID.AsInteger);
-        dm1.commitWriteTrans(true);
-      end
-      else
-      begin
-        if (mem_texGurOSTATOK_END_S.AsFloat < 0)
-           or (mem_texGurPRIX_PERIOD.AsFloat <> mem_texGurZAG_PERIOD.AsFloat) then
-        begin
-          addPrihod(mem_texGurKOL_RASH_EDIZ.AsFloat, mem_texGurKSM_ID.AsInteger,
-                  curKeiId, mem_texGurKSM_ID_PREP.AsInteger, mem_texGurRAZDEL_ID.AsInteger);
-          dm1.commitWriteTrans(true);
-        end;
-      end;
-    except
-      on e : exception do
-      begin
-        MessageDlg('Произошла ошибка при сохранении сырья: ' + mem_texGurKSM_ID.AsString
-                   + '. ' + e.Message, mtWarning, [mbOK], 0);
-        dm1.IBT_Write.RollbackRetaining;
-      end;
-    end;
-    mem_texGur.Next;
-  end;
-//  q_kart.ApplyUpdates;
-  result := true;
-end;
+//procedure TFTexGur.openPrixKart(ksmIdPr, strukId, ksmId, razdelId : integer);
+//begin
+//  q_prixKart.Close;
+//  q_prixKart.ParamByName('struk_id').AsInteger := strukId;
+//  q_prixKart.ParamByName('klient_id').AsInteger := ksmIdPr;
+//  q_prixKart.ParamByName('dat1').AsDate := StrToDate(s_dat1);
+//  q_prixKart.ParamByName('dat2').AsDate := StrToDate(s_dat2);
+//  q_prixKart.ParamByName('ksm_id').AsInteger := ksmId;
+//  q_prixKart.ParamByName('razdel_id').AsInteger := razdelId;
+//  q_prixKart.Open;
+//end;
 
-procedure TFTexGur.addPrihod(kolRash : double; ksmId, keiId, klientId, razdelId : integer);
-var
-  curSDat1, curSDat2, str_month : string;
-  curMes, curGod : integer;
-  day, month, year : word;
-begin
-  v_raspred_dob := kolRash;
-  s_ksm := ksmId;
-  s_kei := keiId;
-  v_kein := keiId;
-  vklient_id := klientId;
-  v_razdel := razdelId;
-  tochn := -6;
-  pr_kor := 0;
+//procedure TFTexGur.openPrihSum(ksmIdPr, strukId, ksmId, razdelId : integer);
+//begin
+//  q_prihSum.Close;
+//  q_prihSum.ParamByName('struk_id').AsInteger := strukId;
+//  q_prihSum.ParamByName('klient_id').AsInteger := ksmIdPr;
+//  q_prihSum.ParamByName('dat1').AsDate := StrToDate(s_dat1);
+//  q_prihSum.ParamByName('dat2').AsDate := StrToDate(s_dat2);
+//  q_prihSum.ParamByName('ksm_id').AsInteger := ksmId;
+//  q_prihSum.ParamByName('razdel_id').AsInteger := razdelId;
+//  q_prihSum.Open;
+//  q_prihSum.First;
+//end;
 
-  curSDat1 := '01.01.0001';
-  curSDat2 := '01.01.0001';
-  curMes := 1;
-  curGod := 1;
-  if (mem_texGurDATE_DOK.AsDateTime < StrToDate(s_dat1))
-     or (mem_texGurDATE_DOK.AsDateTime > StrToDate(s_dat2)) then
-  begin
-    curSDat1 := s_dat1;
-    curSDat2 := s_dat2;
-    curMes := mes;
-    curGod := god;
-    DecodeDate(mem_texGurDATE_DOK.AsDateTime, year, month, day);
-    if (month < 10) then
-      str_month := '0' + IntToStr(month)
-    else
-      str_month := IntToStr(month);
-    s_dat1 :=  '01.' + str_month + '.' + IntToStr(year);
-    s_dat2 := datetostr(IncMonth(strtodate(s_dat1), 1) -1);
-    mes := month;
-    god := year;
-  end;
+//function TFTexGur.findKsmIdAndRazdelIdAndKsmIdPrInOstatki(ksmId, razdelId, ksmIdPrep, strukId : integer) : boolean;
+//begin
+//  result := false;
+//  q_ostatki.Close;
+//  q_ostatki.MacroByName('usl').AsString := ' ostatki.struk_id = ' + IntToStr(strukId)
+//                                           + ' and ostatki.ksm_id = ' + IntToStr(ksmId)
+//                                           + ' and ostatki.razdel_id = ' + IntToStr(razdelId)
+//                                           + ' and coalesce(ostatki.ksm_idpr, 0) = '
+//                                           + IntToStr(ksmIdPrep) + ' ';
+//  q_ostatki.Open;
+//  q_ostatki.First;
+//  if (not q_ostatki.Eof) then
+//    result := true;
+//end;
 
-  dm1.DobPrixPrep;
-
-  if (curSDat1 <> '01.01.0001') then
-    if (mem_texGurDATE_DOK.AsDateTime < StrToDate(curSDat1))
-       or (mem_texGurDATE_DOK.AsDateTime > StrToDate(curSDat2)) then
-    begin
-      s_dat1 := curSDat1;
-      s_dat2 := curSDat2;
-      mes := curMes;
-      god := curGod;
-    end;
+//procedure TFTexGur.createKartId(ksmId, razdelId, ksmIdPrep, strukId, keiId, seriaId : integer);
+//begin
+//  DM1.Add_Ostatki.ExecProc;
+//  q_ostatki.Insert;
+//  q_ostatki.FieldByName('Kart_Id').AsInteger := DM1.Add_Ostatki.Params.Items[0].AsInteger;;
+//  q_ostatki.FieldByName('Ksm_Id').AsInteger := ksmId;
+//  IF (razdelId <> 0) then
+//    q_ostatki.FieldByName('razdel_id').AsInteger := razdelId;
+//  IF (ksmIdPrep <> 0) and (ksmIdPrep <> ksmId) then
+//    q_ostatki.FieldByName('ksm_idpr').AsInteger := ksmIdPrep;
+//  IF (seriaId <> 0) then
+//    q_ostatki.FieldByName('Seria_id').AsInteger := seriaId;
+//  q_ostatki.FieldByName('Kei_Id').AsInteger := keiId;
+//  q_ostatki.FieldByName('Struk_Id').AsInteger := strukId;
+//  q_ostatki.FieldByName('Mes').AsInteger := Mes_conf;
+//  q_ostatki.FieldByName('God').AsInteger := God_conf;
+//  q_ostatki.Post;
+//  q_ostatki.ApplyUpdates;
 //  dm1.commitWriteTrans(true);
-end;
+//end;
 
-procedure TFTexGur.deletePrixKart(ksmId, ksmIdPr, strukId, razdelId : integer);
-begin
-  openPrixKart(ksmIdPr, strukId, ksmId, razdelId);
-  if (q_prixKart.RecordCount > 0) then
-  begin
-    q_prixKart.First;
-    while (not q_prixKart.Eof) do
-      q_prixKart.Delete;
-    q_prixKart.ApplyUpdates;
-    dm1.commitWriteTrans(true);
-  end;
-end;
-
-procedure TFTexGur.openPrixKart(ksmIdPr, strukId, ksmId, razdelId : integer);
-begin
-  q_prixKart.Close;
-  q_prixKart.ParamByName('struk_id').AsInteger := strukId;
-  q_prixKart.ParamByName('klient_id').AsInteger := ksmIdPr;
-  q_prixKart.ParamByName('dat1').AsDate := StrToDate(s_dat1);
-  q_prixKart.ParamByName('dat2').AsDate := StrToDate(s_dat2);
-  q_prixKart.ParamByName('ksm_id').AsInteger := ksmId;
-  q_prixKart.ParamByName('razdel_id').AsInteger := razdelId;
-  q_prixKart.Open;
-end;
-
-procedure TFTexGur.openPrihSum(ksmIdPr, strukId, ksmId, razdelId : integer);
-begin
-  q_prihSum.Close;
-  q_prihSum.ParamByName('struk_id').AsInteger := strukId;
-  q_prihSum.ParamByName('klient_id').AsInteger := ksmIdPr;
-  q_prihSum.ParamByName('dat1').AsDate := StrToDate(s_dat1);
-  q_prihSum.ParamByName('dat2').AsDate := StrToDate(s_dat2);
-  q_prihSum.ParamByName('ksm_id').AsInteger := ksmId;
-  q_prihSum.ParamByName('razdel_id').AsInteger := razdelId;
-  q_prihSum.Open;
-  q_prihSum.First;
-end;
-
-function TFTexGur.findKsmIdAndRazdelIdAndKsmIdPrInOstatki(ksmId, razdelId, ksmIdPrep, strukId : integer) : boolean;
-begin
-  result := false;
-  q_ostatki.Close;
-  q_ostatki.MacroByName('usl').AsString := ' ostatki.struk_id = ' + IntToStr(strukId)
-                                           + ' and ostatki.ksm_id = ' + IntToStr(ksmId)
-                                           + ' and ostatki.razdel_id = ' + IntToStr(razdelId)
-                                           + ' and coalesce(ostatki.ksm_idpr, 0) = '
-                                           + IntToStr(ksmIdPrep) + ' ';
-  q_ostatki.Open;
-  q_ostatki.First;
-  if (not q_ostatki.Eof) then
-    result := true;
-end;
-
-procedure TFTexGur.createKartId(ksmId, razdelId, ksmIdPrep, strukId, keiId, seriaId : integer);
-begin
-  DM1.Add_Ostatki.ExecProc;
-  q_ostatki.Insert;
-  q_ostatki.FieldByName('Kart_Id').AsInteger := DM1.Add_Ostatki.Params.Items[0].AsInteger;;
-  q_ostatki.FieldByName('Ksm_Id').AsInteger := ksmId;
-  IF (razdelId <> 0) then
-    q_ostatki.FieldByName('razdel_id').AsInteger := razdelId;
-  IF (ksmIdPrep <> 0) and (ksmIdPrep <> ksmId) then
-    q_ostatki.FieldByName('ksm_idpr').AsInteger := ksmIdPrep;
-  IF (seriaId <> 0) then
-    q_ostatki.FieldByName('Seria_id').AsInteger := seriaId;
-  q_ostatki.FieldByName('Kei_Id').AsInteger := keiId;
-  q_ostatki.FieldByName('Struk_Id').AsInteger := strukId;
-  q_ostatki.FieldByName('Mes').AsInteger := Mes_conf;
-  q_ostatki.FieldByName('God').AsInteger := God_conf;
-  q_ostatki.Post;
-  q_ostatki.ApplyUpdates;
-  dm1.commitWriteTrans(true);
-end;
-
-function TFTexGur.saveZagrDocument() : boolean;
-begin
-  if (not openZagrDoc(s_seria, vStruk_Id, s_kodp, StrToDate(s_dat1_period), StrToDate(s_dat2_period))) then
-  begin
-    q_doc.Insert;
-  end;
-  q_doc.Edit;
-  q_docNDOK.AsString := vNDoc;
-  q_docDATE_DOK.AsDateTime := dateEdit1.Date;
-  q_docDATE_OP.AsDateTime := dateEdit1.Date;
-  if (q_doc.Modified) or (q_doc.State = dsInsert) or (q_doc.State = dsEdit) then
-    q_doc.Post;
-  q_doc.ApplyUpdates;
-  result := true;
-end;
+//function TFTexGur.saveZagrDocument() : boolean;
+//begin
+//  if (not openZagrDoc(s_seria, vStruk_Id, s_kodp, StrToDate(s_dat1_period), StrToDate(s_dat2_period))) then
+//  begin
+//    q_doc.Insert;
+//  end;
+//  q_doc.Edit;
+//  q_docNDOK.AsString := vNDoc;
+//  q_docDATE_DOK.AsDateTime := dateEdit1.Date;
+//  q_docDATE_OP.AsDateTime := dateEdit1.Date;
+//  if (q_doc.Modified) or (q_doc.State = dsInsert) or (q_doc.State = dsEdit) then
+//    q_doc.Post;
+//  q_doc.ApplyUpdates;
+//  result := true;
+//end;
 
 procedure TFTexGur.openZagSyr(strukId, ksmId, tipDokId, ksmIdPrep : integer;
                               dateBegin, dateEnd : TDate; uslSort : string);
@@ -1131,42 +1108,42 @@ begin
   q_prepSeries.First;
 end;
 
-procedure TFTexGur.delEmptyZagrDocuments(seria : string; year, month, ksmIdPrep, strukId : integer);
-var
-  dateBegin, dateEnd : TDate;
-  str_month : string;
-begin
-  if (month < 10) then
-    str_month := '0' + IntToStr(month)
-  else
-    str_month := IntToStr(month);
-  dateBegin := StrToDate('01.' + str_month + '.' + IntToStr(year));
-  dateEnd := IncMonth(dateBegin, 1) - 1;
-  if (openZagrDoc(seria, strukId, ksmIdPrep, dateBegin, dateEnd)) then
-  begin
-    q_doc.First;
-    while (not q_doc.Eof) do
-    begin
-      openZagrKart(q_docDOC_ID.AsInteger);
-      q_kart.FetchAll;
-      if (q_kart.RecordCount = 0) then
-        q_doc.Delete
-      else
-        q_doc.Next;
-    end;
-    if (q_doc.UpdatesPending) then
-    begin
-      q_doc.ApplyUpdates;
-      dm1.commitWriteTrans(true);
-    end;
-  end;
-end;
+//procedure TFTexGur.delEmptyZagrDocuments(seria : string; year, month, ksmIdPrep, strukId : integer);
+//var
+//  dateBegin, dateEnd : TDate;
+//  str_month : string;
+//begin
+//  if (month < 10) then
+//    str_month := '0' + IntToStr(month)
+//  else
+//    str_month := IntToStr(month);
+//  dateBegin := StrToDate('01.' + str_month + '.' + IntToStr(year));
+//  dateEnd := IncMonth(dateBegin, 1) - 1;
+//  if (openZagrDoc(seria, strukId, ksmIdPrep, dateBegin, dateEnd)) then
+//  begin
+//    q_doc.First;
+//    while (not q_doc.Eof) do
+//    begin
+//      openZagrKart(q_docDOC_ID.AsInteger);
+//      q_kart.FetchAll;
+//      if (q_kart.RecordCount = 0) then
+//        q_doc.Delete
+//      else
+//        q_doc.Next;
+//    end;
+//    if (q_doc.UpdatesPending) then
+//    begin
+//      q_doc.ApplyUpdates;
+//      dm1.commitWriteTrans(true);
+//    end;
+//  end;
+//end;
 
 procedure TFTexGur.loadTexGur(seria, prepNmat : string; year, month, ksmIdPrep, strukId : integer);
 begin
   if (drLoad = nil) then
     drLoad := TDrugLoad.Create(dm1.BELMED);
-  drLoad.createTexGur(seria, prepNmat, year, month, ksmIdPrep, strukId);
+  drLoad.createTexGur(seria, prepNmat, year, month, ksmIdPrep, strukId, s_kei);
   ds_texGur.DataSet := drLoad.texGurLoad;
 end;
 {
@@ -1254,22 +1231,22 @@ begin
     result := true;
 end;  }
 
-function TFTexGur.findOrCreateZagrDocument(seria : string; dateDok : TDate; docId,
-                                           strukId, ksmIdPrep : integer) : boolean;
-begin
-  result := openZagrDoc(seria, strukId, ksmIdPrep, dateDok, dateDok);
-  if (not result) or (q_docDOC_ID.AsInteger <> docId) then
-  begin
-    q_doc.Insert;
-    q_docNDOK.AsString := vNDoc;
-    q_docDATE_DOK.AsDateTime := dateDok;
-    q_docDATE_OP.AsDateTime := dateDok;
-    if (q_doc.Modified) or (q_doc.State = dsInsert) or (q_doc.State = dsEdit) then
-      q_doc.Post;
-    q_doc.ApplyUpdates;
-    result := true;
-  end;
-end;
+//function TFTexGur.findOrCreateZagrDocument(seria : string; dateDok : TDate; docId,
+//                                           strukId, ksmIdPrep : integer) : boolean;
+//begin
+//  result := openZagrDoc(seria, strukId, ksmIdPrep, dateDok, dateDok);
+//  if (not result) or (q_docDOC_ID.AsInteger <> docId) then
+//  begin
+//    q_doc.Insert;
+//    q_docNDOK.AsString := vNDoc;
+//    q_docDATE_DOK.AsDateTime := dateDok;
+//    q_docDATE_OP.AsDateTime := dateDok;
+//    if (q_doc.Modified) or (q_doc.State = dsInsert) or (q_doc.State = dsEdit) then
+//      q_doc.Post;
+//    q_doc.ApplyUpdates;
+//    result := true;
+//  end;
+//end;
 
 {procedure TFTexGur.openZagrKart(docId : integer);
 begin
@@ -1467,11 +1444,9 @@ begin
     mem_texGur.FieldByName('Nmat').AsString := dm1.Matrop.FieldByName('Nmat').AsString;
     mem_texGur.FieldByName('Kei_Id_kart').AsInteger := dm1.Matrop.FieldByName('Kei_id').AsInteger;
     mem_texGurNEIS.AsString := dm1.Matrop.FieldByName('Neis').AsString;
-//    mem_texGurRAZDEL_ID.AsInteger := curRazdelId;
-//    mem_texGurKRAZ.AsInteger := curKraz;
   end
   else
-    showMessage('Нет такого кода! Воспользуйтесь справочником!');   
+    showMessage('Нет такого кода! Воспользуйтесь справочником!');
 end;
 
 {function TFTexGur.openCexOst(dateBegin, dateEnd : TDate; strukId : integer) : boolean;
@@ -1761,38 +1736,7 @@ procedure TFTexGur.btn_saveSeriaClick(Sender: TObject);
 var
   curSeria : string;
 begin
-  if (mem_texGur.Modified)
-     or (mem_texGur.State = dsEdit)
-     or (mem_texGur.State = dsInsert) then
-    mem_texGur.Post;
-  s_seria := edit2.Text;
-  curSeria := s_seria;
-  if (s_seria <> '') then
-  begin
-    Splash := ShowSplashWindow(AniBmp1,
-                               'Сохранение данных. Подождите, пожалуйста...', True, nil);
-    try
-      mem_texGur.DisableControls;
-
-      saveSeriaAndOstatki;
-      saveMemTexGur;
-      s_seria := edit2.Text;
-      delEmptyZagrDocuments(s_seria, god, mes, s_kodp, vStruk_Id);
-      dm1.commitWriteTrans(true);
-      Splash.Free;
-
-      createTexGur(curSeria, god, mes, s_kodp, vStruk_id);
-      mem_texGur.EnableControls;
-    except
-      on E : exception do
-      begin
-        MessageDlg('Произошла ошибка при записи!', mtWarning, [mbOK], 0);
-        mem_texGur.EnableControls;
-        DM1.IBT_Read.RollbackRetaining;
-        Splash.Free;
-      end;
-    end;
-  end;
+  drLoad.saveTexGur(StrToFloat(edit9.Text), dateEdit1.Date)
 end;
 
 procedure TFTexGur.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -1801,7 +1745,7 @@ begin
   mem_texGur.EmptyTable;
   mem_texGur.Close;
 
-//  FreeAndNil(drLoad);
+  FreeAndNil(drLoad);
   DM1.Seria.Close;
   DM1.Ostatki.Close;
   vseria_id := 0;
@@ -2337,30 +2281,17 @@ end;
 
 procedure TFTexGur.btn_delAllClick(Sender: TObject);
 begin
-  delAllTexGurRecords;
+  drLoad.delAllTexGurRecords;
 end;
 
 procedure TFTexGur.btn_delRecClick(Sender: TObject);
 begin
-  delTexGurRecord;
+  drLoad.delTexGurRecord;
 end;
 
 procedure TFTexGur.ToolButton1Click(Sender: TObject);
 begin
-  s_seria_p := s_seria;
-//  curRazdelId := mem_texGurRAZDEL_ID.AsInteger;
-//  curKraz := mem_texGurKRAZ.AsInteger;
-  curKsmIdPrep := mem_texGurKSM_ID_PREP.AsInteger;
-
-  mem_texGur.BeforePost := nil;
-  mem_texGur.Insert;
-  mem_texGurADD.AsBoolean := true;
-//  mem_texGurRAZDEL_ID.AsInteger := curRazdelId;
-//  mem_texGurKRAZ.AsInteger := curKraz;
-  mem_texGurKSM_ID_PREP.AsInteger := curKsmIdPrep;
-  setDefaultDateDok;
-  mem_texGur.BeforePost := mem_texGurBeforePost;
-  s_seria := s_seria_p;
+  drLoad.addTexGurLine;
 end;
 
 procedure TFTexGur.grid_seriesDblClick(Sender: TObject);

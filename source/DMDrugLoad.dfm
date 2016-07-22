@@ -1177,8 +1177,8 @@ object FDMDrugLoad: TFDMDrugLoad
       'from Matrop'
       'inner join ediz on (matrop.kei_id=ediz.kei_id)'
       'where matrop.ksm_id=:ksm')
-    Left = 56
-    Top = 352
+    Left = 32
+    Top = 368
     ParamData = <
       item
         DataType = ftInteger
@@ -1224,11 +1224,11 @@ object FDMDrugLoad: TFDMDrugLoad
       Size = 60
     end
   end
-  object Seria: TRxIBQuery
+  object q_seria: TRxIBQuery
     Database = db
     Transaction = trans_read
-    BeforeInsert = SeriaBeforeInsert
-    OnNewRecord = SeriaNewRecord
+    BeforeInsert = q_seriaBeforeInsert
+    OnNewRecord = q_seriaNewRecord
     CachedUpdates = True
     SQL.Strings = (
       
@@ -1260,117 +1260,117 @@ object FDMDrugLoad: TFDMDrugLoad
         Name = 'KSM_ID'
         ParamType = ptInput
       end>
-    object SeriaSERIA_ID: TIntegerField
+    object q_seriaSERIA_ID: TIntegerField
       FieldName = 'SERIA_ID'
       Origin = '"SERIA"."SERIA_ID"'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object SeriaKSM_ID: TIntegerField
+    object q_seriaKSM_ID: TIntegerField
       FieldName = 'KSM_ID'
       Origin = '"SERIA"."KSM_ID"'
       Required = True
     end
-    object SeriaSERIA: TIBStringField
+    object q_seriaSERIA: TIBStringField
       FieldName = 'SERIA'
       Origin = '"SERIA"."SERIA"'
     end
-    object SeriaSROK_GODN: TDateField
+    object q_seriaSROK_GODN: TDateField
       FieldName = 'SROK_GODN'
       Origin = '"SERIA"."SROK_GODN"'
     end
-    object SeriaSERTIF: TIBStringField
+    object q_seriaSERTIF: TIBStringField
       FieldName = 'SERTIF'
       Origin = '"SERIA"."SERTIF"'
       Size = 25
     end
-    object SeriaDATE_SERTIF: TDateField
+    object q_seriaDATE_SERTIF: TDateField
       FieldName = 'DATE_SERTIF'
       Origin = '"SERIA"."DATE_SERTIF"'
     end
-    object SeriaPASPORT: TIBStringField
+    object q_seriaPASPORT: TIBStringField
       FieldName = 'PASPORT'
       Origin = '"SERIA"."PASPORT"'
       FixedChar = True
       Size = 10
     end
-    object SeriaDATE_PASPORT: TDateField
+    object q_seriaDATE_PASPORT: TDateField
       FieldName = 'DATE_PASPORT'
       Origin = '"SERIA"."DATE_PASPORT"'
     end
-    object SeriaKOL_SERIA: TFMTBCDField
+    object q_seriaKOL_SERIA: TFMTBCDField
       FieldName = 'KOL_SERIA'
       Origin = '"SERIA"."KOL_SERIA"'
       Precision = 18
       Size = 6
     end
-    object SeriaDATE_VIPUSK: TDateField
+    object q_seriaDATE_VIPUSK: TDateField
       FieldName = 'DATE_VIPUSK'
       Origin = '"SERIA"."DATE_VIPUSK"'
     end
-    object SeriaFORMA_VIPUSK: TIBStringField
+    object q_seriaFORMA_VIPUSK: TIBStringField
       FieldName = 'FORMA_VIPUSK'
       Origin = '"SERIA"."FORMA_VIPUSK"'
       Size = 100
     end
-    object SeriaKEI_ID: TSmallintField
+    object q_seriaKEI_ID: TSmallintField
       FieldName = 'KEI_ID'
       Origin = '"SERIA"."KEI_ID"'
     end
-    object SeriaDATE_TIME_UPDATE: TDateTimeField
+    object q_seriaDATE_TIME_UPDATE: TDateTimeField
       FieldName = 'DATE_TIME_UPDATE'
       Origin = '"SERIA"."DATE_TIME_UPDATE"'
     end
-    object SeriaUSER_NAME: TIBStringField
+    object q_seriaUSER_NAME: TIBStringField
       FieldName = 'USER_NAME'
       Origin = '"SERIA"."USER_NAME"'
       FixedChar = True
       Size = 10
     end
-    object SeriaSHEMA: TIBStringField
+    object q_seriaSHEMA: TIBStringField
       FieldName = 'SHEMA'
       Origin = '"SERIA"."SHEMA"'
       FixedChar = True
       Size = 3
     end
-    object SeriaKODTN: TIBStringField
+    object q_seriaKODTN: TIBStringField
       FieldName = 'KODTN'
       Origin = '"SERIA"."KODTN"'
       FixedChar = True
       Size = 10
     end
-    object SeriaDATE_ZAG: TDateField
+    object q_seriaDATE_ZAG: TDateField
       FieldName = 'DATE_ZAG'
       Origin = '"SERIA"."DATE_ZAG"'
     end
-    object SeriaFIO_RASH: TIBStringField
+    object q_seriaFIO_RASH: TIBStringField
       FieldName = 'FIO_RASH'
       Origin = '"SERIA"."FIO_RASH"'
       Size = 30
     end
-    object SeriaFIO_MASTER: TIBStringField
+    object q_seriaFIO_MASTER: TIBStringField
       FieldName = 'FIO_MASTER'
       Origin = '"SERIA"."FIO_MASTER"'
       Size = 30
     end
-    object SeriaCOMMENT: TIBStringField
+    object q_seriaCOMMENT: TIBStringField
       FieldName = 'COMMENT'
       Origin = '"SERIA"."COMMENT"'
       Size = 120
     end
-    object SeriaOB_ZAG: TFloatField
+    object q_seriaOB_ZAG: TFloatField
       FieldName = 'OB_ZAG'
       Origin = '"SERIA"."OB_ZAG"'
     end
-    object SeriaVLAG_TM: TFloatField
+    object q_seriaVLAG_TM: TFloatField
       FieldName = 'VLAG_TM'
       Origin = '"SERIA"."VLAG_TM"'
     end
-    object SeriaKOD_TM: TIntegerField
+    object q_seriaKOD_TM: TIntegerField
       FieldName = 'KOD_TM'
       Origin = '"SERIA"."KOD_TM"'
     end
-    object SeriaKOL_TM: TFloatField
+    object q_seriaKOL_TM: TFloatField
       FieldName = 'KOL_TM'
       Origin = '"SERIA"."KOL_TM"'
       DisplayFormat = '########0.0#####'
@@ -1440,11 +1440,11 @@ object FDMDrugLoad: TFDMDrugLoad
     Left = 192
     Top = 371
   end
-  object Ostatki: TRxIBQuery
+  object ql_ostatki: TRxIBQuery
     Database = db
     Transaction = trans_read
-    BeforeInsert = OstatkiBeforeInsert
-    OnNewRecord = OstatkiNewRecord
+    BeforeInsert = ql_ostatkiBeforeInsert
+    OnNewRecord = ql_ostatkiNewRecord
     CachedUpdates = True
     SQL.Strings = (
       'SELECT Ost.KART_ID, matrop.KEI_ID, Ost.RAZDEL_ID,'
@@ -1479,123 +1479,123 @@ object FDMDrugLoad: TFDMDrugLoad
         Name = 'STRUK_ID'
         ParamType = ptInput
       end>
-    object OstatkiKEI_ID: TSmallintField
+    object ql_ostatkiKEI_ID: TSmallintField
       FieldName = 'KEI_ID'
       Origin = '"MATROP"."KEI_ID"'
     end
-    object OstatkiRAZDEL_ID: TSmallintField
+    object ql_ostatkiRAZDEL_ID: TSmallintField
       FieldName = 'RAZDEL_ID'
       Origin = '"OSTATKI"."RAZDEL_ID"'
     end
-    object OstatkiKSM_ID: TIntegerField
+    object ql_ostatkiKSM_ID: TIntegerField
       FieldName = 'KSM_ID'
       Origin = '"OSTATKI"."KSM_ID"'
       Required = True
     end
-    object OstatkiKSM_IDPR: TIntegerField
+    object ql_ostatkiKSM_IDPR: TIntegerField
       FieldName = 'KSM_IDPR'
       Origin = '"OSTATKI"."KSM_IDPR"'
     end
-    object OstatkiMES: TSmallintField
+    object ql_ostatkiMES: TSmallintField
       FieldName = 'MES'
       Origin = '"OSTATKI"."MES"'
       Required = True
     end
-    object OstatkiGOD: TSmallintField
+    object ql_ostatkiGOD: TSmallintField
       FieldName = 'GOD'
       Origin = '"OSTATKI"."GOD"'
       Required = True
     end
-    object OstatkiONM_FD: TFMTBCDField
+    object ql_ostatkiONM_FD: TFMTBCDField
       FieldName = 'ONM_FD'
       Origin = '"OSTATKI"."ONM_FD"'
       Precision = 18
       Size = 6
     end
-    object OstatkiONM_NZ: TFMTBCDField
+    object ql_ostatkiONM_NZ: TFMTBCDField
       FieldName = 'ONM_NZ'
       Origin = '"OSTATKI"."ONM_NZ"'
       Precision = 18
       Size = 6
     end
-    object OstatkiONM_S: TFMTBCDField
+    object ql_ostatkiONM_S: TFMTBCDField
       FieldName = 'ONM_S'
       Origin = '"OSTATKI"."ONM_S"'
       Precision = 18
       Size = 6
     end
-    object OstatkiOT_FD: TFMTBCDField
+    object ql_ostatkiOT_FD: TFMTBCDField
       FieldName = 'OT_FD'
       Origin = '"OSTATKI"."OT_FD"'
       Precision = 18
       Size = 6
     end
-    object OstatkiOT_NZ: TFMTBCDField
+    object ql_ostatkiOT_NZ: TFMTBCDField
       FieldName = 'OT_NZ'
       Origin = '"OSTATKI"."OT_NZ"'
       Precision = 18
       Size = 6
     end
-    object OstatkiOT_S: TFMTBCDField
+    object ql_ostatkiOT_S: TFMTBCDField
       FieldName = 'OT_S'
       Origin = '"OSTATKI"."OT_S"'
       Precision = 18
       Size = 6
     end
-    object OstatkiSERIA_ID: TIntegerField
+    object ql_ostatkiSERIA_ID: TIntegerField
       FieldName = 'SERIA_ID'
       Origin = '"OSTATKI"."SERIA_ID"'
     end
-    object OstatkiSTRUK_ID: TIntegerField
+    object ql_ostatkiSTRUK_ID: TIntegerField
       FieldName = 'STRUK_ID'
       Origin = '"OSTATKI"."STRUK_ID"'
       Required = True
     end
-    object OstatkiUSER_NAME: TIBStringField
+    object ql_ostatkiUSER_NAME: TIBStringField
       FieldName = 'USER_NAME'
       Origin = '"OSTATKI"."USER_NAME"'
       FixedChar = True
       Size = 10
     end
-    object OstatkiKOL_TRANS: TFloatField
+    object ql_ostatkiKOL_TRANS: TFloatField
       FieldName = 'KOL_TRANS'
       Origin = '"OSTATKI"."KOL_TRANS"'
     end
-    object OstatkiKOL_GRP: TFloatField
+    object ql_ostatkiKOL_GRP: TFloatField
       FieldName = 'KOL_GRP'
       Origin = '"OSTATKI"."KOL_GRP"'
     end
-    object OstatkiVES_TRANS: TIBBCDField
+    object ql_ostatkiVES_TRANS: TIBBCDField
       FieldName = 'VES_TRANS'
       Origin = '"OSTATKI"."VES_TRANS"'
       Precision = 9
       Size = 2
     end
-    object OstatkiNMAT: TIBStringField
+    object ql_ostatkiNMAT: TIBStringField
       FieldName = 'NMAT'
       Origin = '"MATROP"."NMAT"'
       Size = 60
     end
-    object OstatkiNEIS: TIBStringField
+    object ql_ostatkiNEIS: TIBStringField
       FieldName = 'NEIS'
       Origin = '"EDIZ"."NEIS"'
       FixedChar = True
       Size = 10
     end
-    object OstatkiKART_ID: TIntegerField
+    object ql_ostatkiKART_ID: TIntegerField
       FieldName = 'KART_ID'
       Origin = '"OSTATKI"."KART_ID"'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object OstatkiOT_DOKUM: TFloatField
+    object ql_ostatkiOT_DOKUM: TFloatField
       FieldKind = fkInternalCalc
       FieldName = 'OT_DOKUM'
       Origin = '"OSTATKI"."OT_DOKUM"'
       ProviderFlags = []
       ReadOnly = True
     end
-    object OstatkiONM_DOKUM: TFMTBCDField
+    object ql_ostatkiONM_DOKUM: TFMTBCDField
       FieldKind = fkInternalCalc
       FieldName = 'ONM_DOKUM'
       Origin = '"OSTATKI"."ONM_DOKUM"'
@@ -1604,15 +1604,15 @@ object FDMDrugLoad: TFDMDrugLoad
       Precision = 18
       Size = 6
     end
-    object OstatkiNOMU_ID_TRANS: TSmallintField
+    object ql_ostatkiNOMU_ID_TRANS: TSmallintField
       FieldName = 'NOMU_ID_TRANS'
       Origin = '"OSTATKI"."NOMU_ID_TRANS"'
     end
-    object OstatkiNOMU_ID_GRP: TSmallintField
+    object ql_ostatkiNOMU_ID_GRP: TSmallintField
       FieldName = 'NOMU_ID_GRP'
       Origin = '"OSTATKI"."NOMU_ID_GRP"'
     end
-    object OstatkiVOL_TRANS: TFMTBCDField
+    object ql_ostatkiVOL_TRANS: TFMTBCDField
       FieldName = 'VOL_TRANS'
       Origin = '"OSTATKI"."VOL_TRANS"'
       Precision = 18
@@ -1812,6 +1812,7 @@ object FDMDrugLoad: TFDMDrugLoad
     end
     object mem_texGurKRAZ: TIntegerField
       FieldName = 'KRAZ'
+      OnValidate = mem_texGurKRAZValidate
     end
     object mem_texGurZAG_ALL: TFloatField
       DefaultExpression = '0'
@@ -2187,5 +2188,36 @@ object FDMDrugLoad: TFDMDrugLoad
     UpdateTransaction = trans_write
     Left = 384
     Top = 16
+  end
+  object razdel: TIBQuery
+    Database = db
+    Transaction = trans_read
+    SQL.Strings = (
+      'select *'
+      'from Razdel'
+      'order by Razdel.kraz')
+    Left = 32
+    Top = 416
+    object razdelRAZDEL_ID: TSmallintField
+      FieldName = 'RAZDEL_ID'
+      Origin = '"RAZDEL"."RAZDEL_ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object razdelKODRAZ: TIBStringField
+      FieldName = 'KODRAZ'
+      Origin = '"RAZDEL"."KODRAZ"'
+      FixedChar = True
+      Size = 2
+    end
+    object razdelNAMRAZ: TIBStringField
+      FieldName = 'NAMRAZ'
+      Origin = '"RAZDEL"."NAMRAZ"'
+      Size = 60
+    end
+    object razdelKRAZ: TSmallintField
+      FieldName = 'KRAZ'
+      Origin = '"RAZDEL"."KRAZ"'
+    end
   end
 end

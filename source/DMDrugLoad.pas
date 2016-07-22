@@ -4,7 +4,8 @@ interface
 
 uses SprFormul,
   SysUtils, Classes, kbmMemTable, DB, IBCustomDataSet, IBQuery, RxIBQuery,
-  IBDatabase, Dialogs, IBStoredProc, IBUpdateSQL, IBUpdSQLW, Variants, UtilRIB;
+  IBDatabase, Dialogs, IBStoredProc, IBUpdateSQL, IBUpdSQLW, Variants, UtilRIB,
+  Controls;
 
 type
   TFDMDrugLoad = class(TDataModule)
@@ -164,59 +165,59 @@ type
     MatropNEIS: TIBStringField;
     MatropPRMAT: TIBStringField;
     MatropGOST: TIBStringField;
-    Seria: TRxIBQuery;
-    SeriaSERIA_ID: TIntegerField;
-    SeriaKSM_ID: TIntegerField;
-    SeriaSERIA: TIBStringField;
-    SeriaSROK_GODN: TDateField;
-    SeriaSERTIF: TIBStringField;
-    SeriaDATE_SERTIF: TDateField;
-    SeriaPASPORT: TIBStringField;
-    SeriaDATE_PASPORT: TDateField;
-    SeriaKOL_SERIA: TFMTBCDField;
-    SeriaDATE_VIPUSK: TDateField;
-    SeriaFORMA_VIPUSK: TIBStringField;
-    SeriaKEI_ID: TSmallintField;
-    SeriaDATE_TIME_UPDATE: TDateTimeField;
-    SeriaUSER_NAME: TIBStringField;
-    SeriaSHEMA: TIBStringField;
-    SeriaKODTN: TIBStringField;
-    SeriaDATE_ZAG: TDateField;
-    SeriaFIO_RASH: TIBStringField;
-    SeriaFIO_MASTER: TIBStringField;
-    SeriaCOMMENT: TIBStringField;
-    SeriaOB_ZAG: TFloatField;
-    SeriaVLAG_TM: TFloatField;
-    SeriaKOD_TM: TIntegerField;
-    SeriaKOL_TM: TFloatField;
+    q_seria: TRxIBQuery;
+    q_seriaSERIA_ID: TIntegerField;
+    q_seriaKSM_ID: TIntegerField;
+    q_seriaSERIA: TIBStringField;
+    q_seriaSROK_GODN: TDateField;
+    q_seriaSERTIF: TIBStringField;
+    q_seriaDATE_SERTIF: TDateField;
+    q_seriaPASPORT: TIBStringField;
+    q_seriaDATE_PASPORT: TDateField;
+    q_seriaKOL_SERIA: TFMTBCDField;
+    q_seriaDATE_VIPUSK: TDateField;
+    q_seriaFORMA_VIPUSK: TIBStringField;
+    q_seriaKEI_ID: TSmallintField;
+    q_seriaDATE_TIME_UPDATE: TDateTimeField;
+    q_seriaUSER_NAME: TIBStringField;
+    q_seriaSHEMA: TIBStringField;
+    q_seriaKODTN: TIBStringField;
+    q_seriaDATE_ZAG: TDateField;
+    q_seriaFIO_RASH: TIBStringField;
+    q_seriaFIO_MASTER: TIBStringField;
+    q_seriaCOMMENT: TIBStringField;
+    q_seriaOB_ZAG: TFloatField;
+    q_seriaVLAG_TM: TFloatField;
+    q_seriaKOD_TM: TIntegerField;
+    q_seriaKOL_TM: TFloatField;
     IBUpdateSeria: TIBUpdateSQLW;
-    Ostatki: TRxIBQuery;
-    OstatkiKEI_ID: TSmallintField;
-    OstatkiRAZDEL_ID: TSmallintField;
-    OstatkiKSM_ID: TIntegerField;
-    OstatkiKSM_IDPR: TIntegerField;
-    OstatkiMES: TSmallintField;
-    OstatkiGOD: TSmallintField;
-    OstatkiONM_FD: TFMTBCDField;
-    OstatkiONM_NZ: TFMTBCDField;
-    OstatkiONM_S: TFMTBCDField;
-    OstatkiOT_FD: TFMTBCDField;
-    OstatkiOT_NZ: TFMTBCDField;
-    OstatkiOT_S: TFMTBCDField;
-    OstatkiSERIA_ID: TIntegerField;
-    OstatkiSTRUK_ID: TIntegerField;
-    OstatkiUSER_NAME: TIBStringField;
-    OstatkiKOL_TRANS: TFloatField;
-    OstatkiKOL_GRP: TFloatField;
-    OstatkiVES_TRANS: TIBBCDField;
-    OstatkiNMAT: TIBStringField;
-    OstatkiNEIS: TIBStringField;
-    OstatkiKART_ID: TIntegerField;
-    OstatkiOT_DOKUM: TFloatField;
-    OstatkiONM_DOKUM: TFMTBCDField;
-    OstatkiNOMU_ID_TRANS: TSmallintField;
-    OstatkiNOMU_ID_GRP: TSmallintField;
-    OstatkiVOL_TRANS: TFMTBCDField;
+    ql_ostatki: TRxIBQuery;
+    ql_ostatkiKEI_ID: TSmallintField;
+    ql_ostatkiRAZDEL_ID: TSmallintField;
+    ql_ostatkiKSM_ID: TIntegerField;
+    ql_ostatkiKSM_IDPR: TIntegerField;
+    ql_ostatkiMES: TSmallintField;
+    ql_ostatkiGOD: TSmallintField;
+    ql_ostatkiONM_FD: TFMTBCDField;
+    ql_ostatkiONM_NZ: TFMTBCDField;
+    ql_ostatkiONM_S: TFMTBCDField;
+    ql_ostatkiOT_FD: TFMTBCDField;
+    ql_ostatkiOT_NZ: TFMTBCDField;
+    ql_ostatkiOT_S: TFMTBCDField;
+    ql_ostatkiSERIA_ID: TIntegerField;
+    ql_ostatkiSTRUK_ID: TIntegerField;
+    ql_ostatkiUSER_NAME: TIBStringField;
+    ql_ostatkiKOL_TRANS: TFloatField;
+    ql_ostatkiKOL_GRP: TFloatField;
+    ql_ostatkiVES_TRANS: TIBBCDField;
+    ql_ostatkiNMAT: TIBStringField;
+    ql_ostatkiNEIS: TIBStringField;
+    ql_ostatkiKART_ID: TIntegerField;
+    ql_ostatkiOT_DOKUM: TFloatField;
+    ql_ostatkiONM_DOKUM: TFMTBCDField;
+    ql_ostatkiNOMU_ID_TRANS: TSmallintField;
+    ql_ostatkiNOMU_ID_GRP: TSmallintField;
+    ql_ostatkiVOL_TRANS: TFMTBCDField;
     OstatkiUpdate: TIBUpdateSQLW;
     AddSeria: TIBStoredProc;
     Add_Ostatki: TIBStoredProc;
@@ -290,19 +291,29 @@ type
     q_docTIP_OP_ID: TSmallintField;
     q_docTIP_DOK_ID: TSmallintField;
     upd_doc: TIBUpdateSQLW;
+    razdel: TIBQuery;
+    razdelRAZDEL_ID: TSmallintField;
+    razdelKODRAZ: TIBStringField;
+    razdelNAMRAZ: TIBStringField;
+    razdelKRAZ: TSmallintField;
     procedure mem_texGurBeforePost(DataSet: TDataSet);
     procedure mem_texGurKSM_IDValidate(Sender: TField);
-    procedure SeriaBeforeInsert(DataSet: TDataSet);
-    procedure SeriaNewRecord(DataSet: TDataSet);
-    procedure OstatkiBeforeInsert(DataSet: TDataSet);
-    procedure OstatkiNewRecord(DataSet: TDataSet);
+    procedure q_seriaBeforeInsert(DataSet: TDataSet);
+    procedure q_seriaNewRecord(DataSet: TDataSet);
+    procedure ql_ostatkiBeforeInsert(DataSet: TDataSet);
+    procedure ql_ostatkiNewRecord(DataSet: TDataSet);
     procedure q_kartBeforeInsert(DataSet: TDataSet);
     procedure q_kartNewRecord(DataSet: TDataSet);
     procedure q_docBeforeInsert(DataSet: TDataSet);
     procedure q_docNewRecord(DataSet: TDataSet);
+    procedure mem_texGurKRAZValidate(Sender: TField);
 
   private
     login, password, serverAddr, role : string;
+    m_seriaId, m_ksmId, m_kartId, m_ksmIdPrep, m_keiId, m_year, m_month,
+    m_razdelId, m_strukId : integer;
+    seria : string;
+
     procedure startReadTrans;
 
   public
@@ -314,6 +325,19 @@ type
     procedure startWriteTrans;
     function getTochn(ksmIdPrep, ksm_id : integer) : integer;
     function Koef_per(kei_in : integer; kei_from : integer; ksm : integer) : double;
+    procedure delTexGurRecord;
+    procedure delAllTexGurRecords;
+    procedure addTexGurRecord(month : integer; dateEnd : TDate);
+    procedure setDefaultDateDok(curMonth : integer; dateEnd : TDate);
+
+    property ksmId : integer read m_ksmId write m_ksmId;
+    property ksmIdPrep : integer read m_ksmIdPrep write m_ksmIdPrep;
+    property keiId : integer read m_keiId write m_keiId;
+    property razdelId : integer read m_razdelId write m_razdelId;
+    property year : integer read m_year write m_year;
+    property month : integer read m_month write m_month;
+    property strukId : integer read m_strukId write m_strukId;
+    property seriaId : integer read m_seriaId write m_seriaId;
 
   end;
 
@@ -454,43 +478,50 @@ begin
   end;
 end;
 
+procedure TFDMDrugLoad.mem_texGurKRAZValidate(Sender: TField);
+begin
+  razdel.Active := true;
+  if (razdel.Locate('kraz', mem_texGurKraz.AsInteger,[])) then
+    mem_texGurRazdel_id.AsInteger := razdelRazdel_id.AsInteger
+  else
+    showMessage('Нет такого кода! Воспользуйтесь справочником!');
+end;
+
 procedure TFDMDrugLoad.mem_texGurKSM_IDValidate(Sender: TField);
 begin
-  Matrop.Active := false;
+  Matrop.close;
   Matrop.ParamByName('ksm').AsInteger := mem_texGur.FieldByName('Ksm_Id').AsInteger;
-  Matrop.Active := TRUE;
+  Matrop.open;
   if (not Matrop.eof) then
   begin
     mem_texGur.FieldByName('Nmat').AsString := Matrop.FieldByName('Nmat').AsString;
     mem_texGur.FieldByName('Kei_Id_kart').AsInteger := Matrop.FieldByName('Kei_id').AsInteger;
     mem_texGurNEIS.AsString := Matrop.FieldByName('Neis').AsString;
-//    mem_texGurRAZDEL_ID.AsInteger := curRazdelId;
-//    mem_texGurKRAZ.AsInteger := curKraz;
   end
   else
     showMessage('Нет такого кода! Воспользуйтесь справочником!');
 end;
 
-procedure TFDMDrugLoad.OstatkiBeforeInsert(DataSet: TDataSet);
+procedure TFDMDrugLoad.ql_ostatkiBeforeInsert(DataSet: TDataSet);
 begin
   Add_Ostatki.ExecProc;
-//  vkart_Id := Add_Ostatki.Params.Items[0].AsInteger;
+  m_kartId := Add_Ostatki.Params.Items[0].AsInteger;
 end;
 
-procedure TFDMDrugLoad.OstatkiNewRecord(DataSet: TDataSet);
+procedure TFDMDrugLoad.ql_ostatkiNewRecord(DataSet: TDataSet);
 begin
-//  Ostatki.FieldByName('Kart_Id').AsInteger := vKart_Id;
-//  Ostatki.FieldByName('Ksm_Id').AsInteger := s_KSM;
-//  IF (v_razdel <> 0) then
-//    Ostatki.FieldByName('razdel_id').AsInteger := v_razdel;
-//  IF (s_kodp <> 0) and (s_kodp <> s_ksm) then
-//    Ostatki.FieldByName('ksm_idpr').AsInteger := s_kodp;
-//  IF (vSeria_id <> 0) then
-//    Ostatki.FieldByName('Seria_id').AsInteger := vseria_id;
-//  Ostatki.FieldByName('Kei_Id').AsInteger := s_KEI;
-//  Ostatki.FieldByName('Struk_Id').AsInteger := vstruk_id;
-//  Ostatki.FieldByName('Mes').AsInteger := Mes_conf;
-//  Ostatki.FieldByName('God').AsInteger := God_conf;
+  ql_ostatki.FieldByName('Kart_Id').AsInteger := m_kartId;
+  ql_ostatki.FieldByName('Ksm_Id').AsInteger := m_ksmId;
+  IF (m_razdelId <> 0) then
+    ql_ostatki.FieldByName('razdel_id').AsInteger := m_razdelId;
+  IF (m_ksmIdPrep <> 0) and (m_ksmIdPrep <> m_ksmId) then
+    ql_ostatki.FieldByName('ksm_idpr').AsInteger := m_ksmIdPrep;
+  IF (m_seriaId <> 0) then
+    ql_ostatki.FieldByName('Seria_id').AsInteger := m_seriaId;
+  ql_ostatki.FieldByName('Kei_Id').AsInteger := m_keiId;
+  ql_ostatki.FieldByName('Struk_Id').AsInteger := m_strukId;
+  ql_ostatki.FieldByName('Mes').AsInteger := m_month;
+  ql_ostatki.FieldByName('God').AsInteger := m_year;
 end;
 
 procedure TFDMDrugLoad.q_docBeforeInsert(DataSet: TDataSet);
@@ -530,26 +561,75 @@ begin
   q_kartKOL_PRIH_EDIZ.AsFloat := 0.0;
 end;
 
-procedure TFDMDrugLoad.SeriaBeforeInsert(DataSet: TDataSet);
+procedure TFDMDrugLoad.q_seriaBeforeInsert(DataSet: TDataSet);
 begin
   AddSeria.ExecProc;
-//  vSERIA_ID := AddSeria.Params.Items[0].AsInteger;
+  m_seriaId := AddSeria.Params.Items[0].AsInteger;
 end;
 
-procedure TFDMDrugLoad.SeriaNewRecord(DataSet: TDataSet);
+procedure TFDMDrugLoad.q_seriaNewRecord(DataSet: TDataSet);
 begin
-//  SeriaSERIA_ID.AsInteger := vSeria_Id;
-//  SeriaKSM_ID.AsInteger := S_KSM;
-////  DM1.SeriaSrok_Godn.AsDateTime:=S_Srok_Godn;
-//  SeriaSERIA.AsString := s_SERIA;
-  if (SeriaKol_Seria.AsVariant = '') then
-    SeriaKol_Seria.AsFloat := 0;
+  q_seriaSERIA_ID.AsInteger := m_seriaId;
+  q_seriaKSM_ID.AsInteger := ksmId;
+  q_seriaSERIA.AsString := seria;
+  if (q_seriaKol_Seria.AsVariant = '') then
+    q_seriaKol_Seria.AsFloat := 0;
 end;
 
 procedure TFDMDrugLoad.startReadTrans;
 begin
   if (not trans_read.Active) then
     trans_read.StartTransaction;
+end;
+
+procedure TFDMDrugLoad.delTexGurRecord;
+begin
+  mem_texGur.Edit;
+  mem_texGurDELETE.AsBoolean := true;
+  mem_texGur.Post;
+end;
+
+procedure TFDMDrugLoad.addTexGurRecord(month : integer; dateEnd : TDate);
+var
+  curKsmIdPrep : integer;
+begin
+  curKsmIdPrep := mem_texGurKSM_ID_PREP.AsInteger;
+
+  mem_texGur.BeforePost := nil;
+  mem_texGur.Insert;
+  mem_texGurADD.AsBoolean := true;
+  mem_texGurKSM_ID_PREP.AsInteger := curKsmIdPrep;
+  setDefaultDateDok(month, dateEnd);
+  mem_texGur.BeforePost := mem_texGurBeforePost;
+end;
+
+procedure TFDMDrugLoad.setDefaultDateDok(curMonth : integer; dateEnd : TDate);
+var
+  day, month, year : word;
+begin
+  DecodeDate(now, year, month, day);
+  if (month > curMonth) then
+  begin
+    mem_texGurDATE_DOK.AsDateTime := dateEnd;
+    mem_texGurOLD_DATE_DOK.AsDateTime := dateEnd;
+  end
+  else
+  begin
+    mem_texGurDATE_DOK.AsDateTime := now;
+    mem_texGurOLD_DATE_DOK.AsDateTime := now;
+  end;
+end;
+
+procedure TFDMDrugLoad.delAllTexGurRecords;
+begin
+  mem_texGur.DisableControls;
+  mem_texGur.First;
+  while (not mem_texGur.Eof) do
+  begin
+    delTexGurRecord;
+    mem_texGur.Next;
+  end;
+  mem_texGur.EnableControls;
 end;
 
 end.
