@@ -2150,7 +2150,7 @@ var
   v_kol_upak : integer;
   v_kol_upak1 : integer;
   v_seria1 : string;
-  kolRash, kolTrans, divRT, divRT1000 : double;
+  kolRash, kolTrans, divRT, divRT1000, fracRash, rash1000 : double;
   truncDivRT, truncDivRT1000 : integer;
 
 begin
@@ -2185,8 +2185,13 @@ begin
       v_kol_upak1 := 1;
 
     if (cbRF.Checked) then
-      if (frac(StrToFloat(MD_Nakl_s.FieldByName('KOL_RASH').AsString) * 1000) > 0) then
+    begin
+      rash1000 := kolRash * 1000;
+      fracRash := frac(StrToFloat(FloatToStr(rash1000)));
+//      if (frac(StrToFloat(MD_Nakl_s.FieldByName('KOL_RASH').AsString) * 1000) > 0) then
+      if (fracRash > 0) then
         v_kol_upak1 := 1;
+    end;
 
     GetUpak.Close;
     GetUpak.ParamByName('name_upak').AsString := MD_Nakl_s.FieldByName('upak_trans').AsString;
