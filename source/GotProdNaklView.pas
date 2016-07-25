@@ -2233,8 +2233,7 @@ begin
 
       if (cbRF.Checked) then
       begin
-        RMUpak.FieldByName('kol_trans').AsInteger := trunc(SimpleRoundTo(frac(MD_Nakl_s.FieldByName('KOL_RASH').AsFloat
-                                                                              * 1000)
+        RMUpak.FieldByName('kol_trans').AsInteger := trunc(SimpleRoundTo(fracRash
                                                       * MD_Nakl_s.FieldByName('KOL_trans').AsInteger, 0));
       end;
 
@@ -2772,7 +2771,7 @@ begin
     end;
 
     if (cbRF.Checked) then
-      st := FloatToText(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000,
+      st := FloatToText(StrToFloat(FloatToStr(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000)),
                         KolZnakovPosleZap(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000));
     MD_Naklad.FieldByName('SUM_PROP').AsString := st;
     MD_Naklad.Post;
