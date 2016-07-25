@@ -186,6 +186,10 @@ object FKorOtchet: TFKorOtchet
     OnChange = PageControl1Change
     object TabSheet1: TTabSheet
       Caption = #1055#1088#1080#1093#1086#1076
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object DBGridEh1: TDBGridEh
         Left = 0
         Top = 0
@@ -309,6 +313,10 @@ object FKorOtchet: TFKorOtchet
     object TabSheet3: TTabSheet
       Caption = #1047#1072#1075#1088#1091#1079#1082#1072
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object DBGridEh3: TDBGridEh
         Left = 0
         Top = 0
@@ -483,6 +491,10 @@ object FKorOtchet: TFKorOtchet
     object TabSheet2: TTabSheet
       Caption = #1056#1072#1089#1093#1086#1076
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object DBGridEh2: TDBGridEh
         Left = 0
         Top = 0
@@ -624,6 +636,10 @@ object FKorOtchet: TFKorOtchet
     object TabSheet4: TTabSheet
       Caption = #1055#1077#1088#1077#1076#1072#1085#1086
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object DBGridEh4: TDBGridEh
         Left = 0
         Top = 41
@@ -1032,7 +1048,7 @@ object FKorOtchet: TFKorOtchet
       Left = 59
       Top = 9
       Width = 133
-      Height = 22
+      Height = 19
       Color = clWhite
       Ctl3D = False
       Font.Charset = DEFAULT_CHARSET
@@ -1190,7 +1206,7 @@ object FKorOtchet: TFKorOtchet
     Left = 776
     Top = 212
     Bitmap = {
-      494C010108000900700018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010108000900740018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

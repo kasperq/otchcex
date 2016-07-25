@@ -4,15 +4,21 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ImgList, ComCtrls, ToolWin, Grids, DBGrids, Buttons, ExtCtrls;
+  Dialogs, ImgList, ComCtrls, ToolWin, Grids, DBGrids, Buttons, ExtCtrls, DB,
+  IBCustomDataSet, IBQuery, FindDlgEh, DBGridEh;
 
 type
   TFEdiz = class(TForm)
-    DBGrid1: TDBGrid;
     ImageList1: TImageList;
     Panel2: TPanel;
     SpeedButton1: TSpeedButton;
     SpeedButton2: TSpeedButton;
+    Ediz: TIBQuery;
+    EdizKEI_ID: TSmallintField;
+    EdizNEIS: TIBStringField;
+    DSediz: TDataSource;
+    DBGridEh1: TDBGridEh;
+    FindDlgEh1: TFindDlgEh;
     procedure FormActivate(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
     procedure SpeedButton2Click(Sender: TObject);
@@ -32,23 +38,22 @@ implementation
 
 procedure TFEdiz.DBGrid1DblClick(Sender: TObject);
 begin
-  ModalResult:=DM1.EdizKei_ID.AsInteger+50;
+  ModalResult := EdizKei_ID.AsInteger+50;
 end;
 
 procedure TFEdiz.FormActivate(Sender: TObject);
 begin
-dm1.Ediz.Active:=true;
+  Ediz.Open;
 end;
 
 procedure TFEdiz.SpeedButton1Click(Sender: TObject);
 begin
- ModalResult:=DM1.EdizKei_ID.AsInteger+50;
- 
+  ModalResult := EdizKei_ID.AsInteger + 50;
 end;
 
 procedure TFEdiz.SpeedButton2Click(Sender: TObject);
 begin
-close;
+  close;
 end;
 
 end.

@@ -50,9 +50,8 @@ type
     procedure saveSeriaAndOstatki;
     function saveMemTexGur() : boolean;
     function getCurKeiId() : integer;
-//
+
 //     Сохранение загрузки
-//    function saveZagrDocument() : boolean;
     procedure deletePrih(ksmIdPrep, ksmId, strukId, razdelId : integer);
     procedure saveExistingRecord(keiId : integer);
     procedure saveNewRecord(keiId, kartId : integer);
@@ -61,13 +60,12 @@ type
 
     function findKsmIdAndRazdelIdAndKsmIdPrInOstatki(ksmId, razdelId, ksmIdPrep, strukId : integer) : boolean;
     procedure createKartId(ksmId, razdelId, ksmIdPrep, strukId, keiId, seriaId : integer);
-//
+
     procedure addPrihod(kolRash : double; ksmId, keiId, klientId, razdelId : integer);
     procedure deletePrixKart(ksmId, ksmIdPr, strukId, razdelId : integer);
     procedure openPrixKart(ksmIdPr, strukId, ksmId, razdelId : integer);
     procedure openPrihSum(ksmIdPr, strukId, ksmId, razdelId : integer);
     // ^^^ Сохранение загрузки :))
-//    procedure setSeriaDateZag(ksmIdPrep : integer; seria, dateZag : string);
 
   public
     constructor Create; overload;
@@ -80,6 +78,7 @@ type
     procedure addTexGurLine;
     procedure delTexGurRecord;
     procedure delAllTexGurRecords;
+    procedure changeKeiId;
 
     property texGurLoad : TkbmMemTable read getMemTexGur;
 
@@ -857,6 +856,11 @@ end;
 procedure TDrugLoad.delAllTexGurRecords;
 begin
   dm.delAllTexGurRecords;
+end;
+
+procedure TDrugLoad.changeKeiId;
+begin
+
 end;
 
 procedure TDrugLoad.addPrihod(kolRash : double; ksmId, keiId, klientId, razdelId : integer);

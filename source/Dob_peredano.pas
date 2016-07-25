@@ -691,8 +691,8 @@ if FEdiz=nil then FEdiz:=TFEdiz.Create(Application);
     FEdiz.ShowModal;
     if FEdiz.ModalResult > 50 then
     begin
-     edit1.Text:=DM1.EdizNeis.AsString;;
-     ot_kei_id:=DM1.EdizKei_id.AsInteger;
+     edit1.Text:=FEdiz.EdizNeis.AsString;;
+     ot_kei_id:=FEdiz.EdizKei_id.AsInteger;
     end;
 end;
 

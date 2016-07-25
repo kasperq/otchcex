@@ -2,7 +2,7 @@ unit DMDrugLoad;
 
 interface
 
-uses SprFormul,
+uses SprFormul, ediz,
   SysUtils, Classes, kbmMemTable, DB, IBCustomDataSet, IBQuery, RxIBQuery,
   IBDatabase, Dialogs, IBStoredProc, IBUpdateSQL, IBUpdSQLW, Variants, UtilRIB,
   Controls;
@@ -329,6 +329,7 @@ type
     procedure delAllTexGurRecords;
     procedure addTexGurRecord(month : integer; dateEnd : TDate);
     procedure setDefaultDateDok(curMonth : integer; dateEnd : TDate);
+    procedure changeKeiId;
 
     property ksmId : integer read m_ksmId write m_ksmId;
     property ksmIdPrep : integer read m_ksmIdPrep write m_ksmIdPrep;
@@ -630,6 +631,25 @@ begin
     mem_texGur.Next;
   end;
   mem_texGur.EnableControls;
+end;
+
+procedure TFDMDrugLoad.changeKeiId;
+begin
+  if (mem_texGurPLNORM.AsFloat <> 0) then
+    MessageDlg('Нельзя менять единицу измерения на занормированном сырье!',
+               mtWarning, [mbOK], 0)
+  else
+  begin
+    if (FEdiz = nil) then
+      FEdiz := TFEdiz.Create(self);
+    FEdiz.ShowModal;
+    if (FEdiz.ModalResult > 50) then
+    begin
+      mem_texGurKEI_ID_KART.AsInteger := FEdiz.EdizKei_id.AsInteger;
+      mem_texGurKEI_ID_NORM.AsInteger := FEdiz.EdizKei_id.AsInteger;
+      mem_texGurNEIS.AsString := FEdiz.EdizNeis.AsString;
+    end;
+  end;
 end;
 
 end.

@@ -709,8 +709,8 @@ begin
       if FEdiz.ModalResult > 50 then
       begin
        s_kei:=FEdiz.ModalResult-50;
-       SyrieZagPl.FieldByName('Kei_Id').AsInteger :=DM1.EdizKei_id.AsInteger;
-       SyrieZagPl.FieldByName('neis').AsString :=DM1.EdizNeis.AsString;
+       SyrieZagPl.FieldByName('Kei_Id').AsInteger :=FEdiz.EdizKei_id.AsInteger;
+       SyrieZagPl.FieldByName('neis').AsString :=FEdiz.EdizNeis.AsString;
       end;
      end;
   2: begin

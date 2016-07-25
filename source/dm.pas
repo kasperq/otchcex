@@ -17,7 +17,6 @@ uses
     IBT_Read: TIBTransaction;
     AddSeria: TIBStoredProc;
     Prod_Rab: TIBQuery;
-    Ediz: TIBQuery;
     IBQuery1: TIBQuery;
     PrixRasx: TRxIBQuery;
     DSPrixRasx: TDataSource;
@@ -154,9 +153,6 @@ uses
     Ceh_OtchetGOD: TIntegerField;
     CehOtchetUpdate: TIBUpdateSQLW;
     DS_Ceh_Otchet: TDataSource;
-    DSediz: TDataSource;
-    EdizKEI_ID: TSmallintField;
-    EdizNEIS: TIBStringField;
     IBMatr_pr: TIBQuery;
     IBMatr_prPRMAT: TIBStringField;
     IBMatr_prNAMPR: TIBStringField;

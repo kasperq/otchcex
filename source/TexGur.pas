@@ -546,7 +546,7 @@ type
     procedure loadPrepInfo(kodProd : string);
     function loadSeriaInfo(ksmIdPrep : integer; seria : string) : boolean;
 
-    procedure setSeriaDateZag(ksmIdPrep : integer; seria, dateZag : string);
+//    procedure setSeriaDateZag(ksmIdPrep : integer; seria, dateZag : string);
     procedure openViborSeriesAndLoadTexGur;
     procedure openZagrSeriaTab(kodProd, seria, prepNmat : string; ksmIdPrep, month, year, strukId : integer);
     procedure initToolButtons;
@@ -993,24 +993,24 @@ begin
   end;
 end;
 
-procedure TFTexGur.setSeriaDateZag(ksmIdPrep : integer; seria , dateZag : string);
-begin
-  dm1.Seria.Close;
-  Dm1.Seria.ParamByName('Ksm_id').AsInteger := ksmIdPrep;
-  DM1.Seria.MacroByName('usl').AsString := '0=0';
-  dm1.Seria.Open;
-
-  if (dm1.Seria.Locate('seria;ksm_id', VarArrayOf([seria, ksmIdPrep]), [])) then
-  begin
-    dm1.Seria.Edit;
-    if (dateZag = '') then
-      dm1.SeriaDATE_ZAG.Clear
-    else
-      dm1.SeriaDATE_ZAG.AsDateTime := StrToDate(dateZag);
-    dm1.Seria.Post;
-    dm1.Seria.ApplyUpdates;
-  end;
-end;
+//procedure TFTexGur.setSeriaDateZag(ksmIdPrep : integer; seria , dateZag : string);
+//begin
+//  dm1.Seria.Close;
+//  Dm1.Seria.ParamByName('Ksm_id').AsInteger := ksmIdPrep;
+//  DM1.Seria.MacroByName('usl').AsString := '0=0';
+//  dm1.Seria.Open;
+//
+//  if (dm1.Seria.Locate('seria;ksm_id', VarArrayOf([seria, ksmIdPrep]), [])) then
+//  begin
+//    dm1.Seria.Edit;
+//    if (dateZag = '') then
+//      dm1.SeriaDATE_ZAG.Clear
+//    else
+//      dm1.SeriaDATE_ZAG.AsDateTime := StrToDate(dateZag);
+//    dm1.Seria.Post;
+//    dm1.Seria.ApplyUpdates;
+//  end;
+//end;
 
 procedure TFTexGur.loadPrepInfo(kodProd : string);
 begin
@@ -2343,10 +2343,10 @@ begin
     nm := 2;
   if (grid_zagr.SelectedField.FieldName = 'KRAZ') then
     nm := 3;
-  mem_texGur.Edit;
+//  mem_texGur.Edit;
   case nm of
   1: begin
-      if (mem_texGurPLNORM.AsFloat <> 0) then
+      if (drLoad.texGurLoad.FieldByName('plnorm').AsFloat <> 0) then
         MessageDlg('Нельзя менять единицу измерения на занормированном сырье!',
                    mtWarning, [mbOK], 0)
       else
@@ -2356,7 +2356,7 @@ begin
         FEdiz.ShowModal;
         if (FEdiz.ModalResult > 50) then
         begin
-          s_kei := FEdiz.ModalResult - 50;
+          drLoad.changeKeiId();
           mem_texGurKEI_ID_KART.AsInteger := DM1.EdizKei_id.AsInteger;
           mem_texGurKEI_ID_NORM.AsInteger := DM1.EdizKei_id.AsInteger;
           mem_texGurNEIS.AsString := DM1.EdizNeis.AsString;

@@ -861,7 +861,7 @@ case nm of
     begin
      s_kei:=FEdiz.ModalResult-50;
      RaspSyrKei_idn.AsInteger:=s_kei;
-     RaspSyrNeizn.AsString:=DM1.EdizNeis.AsString;
+     RaspSyrNeizn.AsString:=FEdiz.EdizNeis.AsString;
     end;
    end;
 1: begin
@@ -991,8 +991,8 @@ case nm of
     if FEdiz.ModalResult > 50 then
     begin
      s_kei:=FEdiz.ModalResult-50;
-     RaspSyrKei_IDn.AsInteger:=DM1.EdizKei_id.AsInteger;
-     RaspSyrNeizn.AsString:=DM1.EdizNeis.AsString;
+     RaspSyrKei_IDn.AsInteger:=FEdiz.EdizKei_id.AsInteger;
+     RaspSyrNeizn.AsString:=FEdiz.EdizNeis.AsString;
     end;
    end;
 1: begin
@@ -1051,8 +1051,8 @@ case nm of
     if FEdiz.ModalResult > 50 then
     begin
      s_kei:=FEdiz.ModalResult-50;
-     RaspSyrKei_IDn.AsInteger:=DM1.EdizKei_id.AsInteger;
-     RaspSyrNeiZN.AsString:=DM1.EdizNeis.AsString;
+     RaspSyrKei_IDn.AsInteger:=FEdiz.EdizKei_id.AsInteger;
+     RaspSyrNeiZN.AsString:=FEdiz.EdizNeis.AsString;
     end;
    end;
 1: begin

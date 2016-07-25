@@ -2132,7 +2132,7 @@ begin
           begin
             s_kei := FEdiz.ModalResult - 50;
             RaspSyrPrepKei_ID.AsInteger := s_kei;
-            RaspSyrPrepNeis.AsString := DM1.EdizNeis.AsString;
+            RaspSyrPrepNeis.AsString := FEdiz.EdizNeis.AsString;
           end;
         end;
     1 : begin
@@ -2208,7 +2208,7 @@ begin
       begin
        s_kei:=FEdiz.ModalResult-50;
        RaspSyrPrepKei_id.AsInteger:=s_kei;
-       RaspSyrPrepNeis.AsString:=DM1.EdizNeis.AsString;
+       RaspSyrPrepNeis.AsString:=FEdiz.EdizNeis.AsString;
       end;
      end;
   1: begin
@@ -2295,7 +2295,7 @@ begin
       begin
        s_kei:=FEdiz.ModalResult-50;
        RaspSyrPrepKei_id.AsInteger:=s_kei;
-       RaspSyrPrepNeis.AsString:=DM1.EdizNeis.AsString;
+       RaspSyrPrepNeis.AsString:=FEdiz.EdizNeis.AsString;
       end;
      end;
   1: begin
@@ -2492,7 +2492,7 @@ begin
       if FEdiz.ModalResult > 50 then
       begin
        PeredanoSyrKei_id_Syr.AsInteger:=FEdiz.ModalResult-50;
-       PeredanoSyrNeis.AsString:=DM1.EdizNeis.AsString;
+       PeredanoSyrNeis.AsString:=FEdiz.EdizNeis.AsString;
       end;
      end;
   1: begin

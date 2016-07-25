@@ -1664,8 +1664,8 @@ begin
       if FEdiz.ModalResult > 50 then
       begin
        s_kei:=FEdiz.ModalResult-50;
-       TexGurKein.AsInteger:=DM1.EdizKei_id.AsInteger;
-       TexGurNeis.AsString:=DM1.EdizNeis.AsString;
+       TexGurKein.AsInteger:=FEdiz.EdizKei_id.AsInteger;
+       TexGurNeis.AsString:=FEdiz.EdizNeis.AsString;
       end;
      end;
   2: begin
