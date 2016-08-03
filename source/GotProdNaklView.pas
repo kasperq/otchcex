@@ -2830,8 +2830,9 @@ begin
   	docParamId := ' 542 ';
     if (vStruk_Id = 696) then
     begin
-//      docParamId := ' 1364 ';
-      SdalEdit.Text := 'Нач. уч. упак. Ковалев А. И.';
+      docParamId := ' 1364 ';
+//      SdalEdit.Text := 'Нач. уч. упак. Ковалев А. И.';
+      SdalEdit.Text := 'Ст. мастер уч. упак. Ерёменко Е.Ю.';
     end;
   end
   else
