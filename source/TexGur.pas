@@ -1146,53 +1146,53 @@ begin
   drLoad.createTexGur(seria, prepNmat, year, month, ksmIdPrep, strukId, s_kei);
   ds_texGur.DataSet := drLoad.texGurLoad;
 end;
-{
-procedure TFTexGur.createTexGur(seria : string; year, month, ksmIdPrep, strukId : integer);
-var
-  dateBegin, dateEnd : TDate;
-begin
-  Splash := ShowSplashWindow(AniBmp1,
-                                 'Загрузка данных. Подождите, пожалуйста...', True, nil);
-  dm1.Seria.Close;
-  dm1.IBT_WRITE.Active := FALSE;
-  dm1.IBT_READ.Active := FALSE;
-  StartWait;
-  if (seria <> '') then
-  begin
-    mem_texGur.EmptyTable;
-    mem_texGur.Open;
-    mem_texGur.DisableControls;
-    mem_texGurKSM_ID.OnValidate := nil;
-    mem_texGur.BeforePost := nil;
-    dateBegin := StrToDate('01.' + IntToStr(month) + '.' + IntToStr(year));
-    dateEnd := IncMonth(dateBegin, 1) - 1;
-    if (openNorms(year, month, ksmIdPrep, strukId)) then
-      insertNormsToTexGur(ksmIdPrep);
-    if (openZagrDoc(seria, strukId, ksmIdPrep, dateBegin, dateEnd)) then
-    begin
-      q_doc.First;
-      while (not q_doc.Eof) do
-      begin
-        openZagrKart(q_docDOC_ID.AsInteger);
-        insertKartToTexGur(ksmIdPrep);
-        q_doc.Next;
-      end;
-    end;
-    if (openPrepOst(strukId, ksmIdPrep, dateBegin, dateEnd)) then
-      insertPrepOstToTexGur(ksmIdPrep);
-    if (openCexOst(dateBegin, dateEnd, strukId)) then
-      insertCexOstToTexGur;
-    convertKeiId(ksmIdPrep);
-    mem_texGur.SortOn('kraz;nmat', []);
-    mem_texGur.First;
-    mem_texGur.BeforePost := mem_texGurBeforePost;
-    mem_texGurKSM_ID.OnValidate := mem_texGurKSM_IDValidate;
-    mem_texGur.EnableControls;
-  end;
-  StopWait;
-  Splash.Free;
-end;
-}
+
+//procedure TFTexGur.createTexGur(seria : string; year, month, ksmIdPrep, strukId : integer);
+//var
+//  dateBegin, dateEnd : TDate;
+//begin
+//  Splash := ShowSplashWindow(AniBmp1,
+//                                 'Загрузка данных. Подождите, пожалуйста...', True, nil);
+//  dm1.Seria.Close;
+//  dm1.IBT_WRITE.Active := FALSE;
+//  dm1.IBT_READ.Active := FALSE;
+//  StartWait;
+//  if (seria <> '') then
+//  begin
+//    mem_texGur.EmptyTable;
+//    mem_texGur.Open;
+//    mem_texGur.DisableControls;
+//    mem_texGurKSM_ID.OnValidate := nil;
+//    mem_texGur.BeforePost := nil;
+//    dateBegin := StrToDate('01.' + IntToStr(month) + '.' + IntToStr(year));
+//    dateEnd := IncMonth(dateBegin, 1) - 1;
+//    if (openNorms(year, month, ksmIdPrep, strukId)) then
+//      insertNormsToTexGur(ksmIdPrep);
+//    if (openZagrDoc(seria, strukId, ksmIdPrep, dateBegin, dateEnd)) then
+//    begin
+//      q_doc.First;
+//      while (not q_doc.Eof) do
+//      begin
+//        openZagrKart(q_docDOC_ID.AsInteger);
+//        insertKartToTexGur(ksmIdPrep);
+//        q_doc.Next;
+//      end;
+//    end;
+//    if (openPrepOst(strukId, ksmIdPrep, dateBegin, dateEnd)) then
+//      insertPrepOstToTexGur(ksmIdPrep);
+//    if (openCexOst(dateBegin, dateEnd, strukId)) then
+//      insertCexOstToTexGur;
+//    convertKeiId(ksmIdPrep);
+//    mem_texGur.SortOn('kraz;nmat', []);
+//    mem_texGur.First;
+//    mem_texGur.BeforePost := mem_texGurBeforePost;
+//    mem_texGurKSM_ID.OnValidate := mem_texGurKSM_IDValidate;
+//    mem_texGur.EnableControls;
+//  end;
+//  StopWait;
+//  Splash.Free;
+//end;
+
 {
 function TFTexGur.openNorms(year, month, ksmIdPrep, strukId : integer) : boolean;
 begin
@@ -1662,48 +1662,52 @@ end;
 procedure TFTexGur.acceptSeria(Sender: TObject);
 begin
   if (edit2.text <> '') then
+  begin
+    if (edit9.Text <> '') and (edit9.Text <> '0') then
+      s_vip := strtofloat(edit9.Text)
+    else
+      s_vip := 0;
+    s_seria := edit2.Text;
+    s_ksm := s_kodp;
+
+    dm1.Seria.Close;
+    Dm1.Seria.ParamByName('Ksm_id').AsInteger := S_KODP;
+    dm1.Seria.Open;
+
+    if (dm1.Seria.Locate('seria;ksm_id', VarArrayOf([s_seria,s_kodp]), [])) then
     begin
-      if (edit9.Text <> '') and (edit9.Text <> '0') then
-        s_vip := strtofloat(edit9.Text)
-      else
-        s_vip := 0;
-      s_seria := edit2.Text;
-      s_ksm := s_kodp;
-      dm1.Seria.Close;
-      Dm1.Seria.ParamByName('Ksm_id').AsInteger := S_KODP;
-      dm1.Seria.Open;
-      if (dm1.Seria.Locate('seria;ksm_id', VarArrayOf([s_seria,s_kodp]), [])) then
+
+      vseria_id := dm1.SeriaSeria_id.AsInteger;
+      s_kol_seria := DM1.SeriaKol_Seria.AsFloat;
+      edit9.Text := floattostr(s_kol_seria);
+
+      if (dm1.SeriaDATE_ZAG.AsVariant <> null) then
       begin
-        vseria_id := dm1.SeriaSeria_id.AsInteger;
-        s_kol_seria := DM1.SeriaKol_Seria.AsFloat;
-        edit9.Text := floattostr(s_kol_seria);
-        if (dm1.SeriaDATE_ZAG.AsVariant <> null) then
-        begin
-          DateEdit1.Date := dm1.SeriaDATE_ZAG.AsDateTime;
-          DateEdit1.ReadOnly := false;
-          loadTexGur(s_seria, label19.Caption, god, mes, s_kodp, vStruk_Id);
+        DateEdit1.Date := dm1.SeriaDATE_ZAG.AsDateTime;
+        DateEdit1.ReadOnly := true;
+        loadTexGur(s_seria, label19.Caption, god, mes, s_kodp, vStruk_Id);
 //          createTexGur(s_seria, god, mes, s_kodp, vStruk_id);
-        end
-        else
-        begin
-          DateEdit1.ReadOnly := false;
-          DateEdit1.SetFocus;
-        end;
       end
       else
       begin
-        dm1.Seria.Insert;
-        dm1.Seria.Post;
         DateEdit1.ReadOnly := false;
         DateEdit1.SetFocus;
       end;
-      if (dm1.Seria.Active) then
-      begin
-        dm1.Seria.Edit;
-        dm1.SeriaFORMA_VIPUSK.AsString := s_Formv;
-        DM1.Seria.Post;
-      end;
+    end
+    else
+    begin
+      dm1.Seria.Insert;
+      dm1.Seria.Post;
+      DateEdit1.ReadOnly := false;
+      DateEdit1.SetFocus;
     end;
+    if (dm1.Seria.Active) then
+    begin
+      dm1.Seria.Edit;
+      dm1.SeriaFORMA_VIPUSK.AsString := s_Formv;
+      DM1.Seria.Post;
+    end;
+  end;
 end;
 
 procedure TFTexGur.Edit9Click(Sender: TObject);
@@ -1733,9 +1737,11 @@ begin
 end;
 
 procedure TFTexGur.btn_saveSeriaClick(Sender: TObject);
-var
-  curSeria : string;
+//var
+//  curSeria : string;
 begin
+  if (edit9.Text = '') then
+    edit9.Text := '0';
   drLoad.saveTexGur(StrToFloat(edit9.Text), dateEdit1.Date)
 end;
 
@@ -2268,7 +2274,7 @@ begin
     if (DateEdit1.text <> '' )and (DateEdit1.text <= s_dat2_period)  then
     begin
       acceptSeria(sender);
-      loadTexGur(s_seria, label19.Caption, god, mes, s_kodp, vStruk_Id);
+//      loadTexGur(s_seria, label19.Caption, god, mes, s_kodp, vStruk_Id);
 //      createTexGur(s_seria, god, mes, s_kodp, vStruk_id);
     end;
 end;
@@ -2343,31 +2349,24 @@ begin
     nm := 2;
   if (grid_zagr.SelectedField.FieldName = 'KRAZ') then
     nm := 3;
-//  mem_texGur.Edit;
+
   case nm of
   1: begin
-      if (drLoad.texGurLoad.FieldByName('plnorm').AsFloat <> 0) then
-        MessageDlg('Нельзя менять единицу измерения на занормированном сырье!',
-                   mtWarning, [mbOK], 0)
-      else
+      if (drLoad.isKeiIdChangeable()) then
       begin
         if (FEdiz = nil) then
           FEdiz := TFEdiz.Create(Application);
         FEdiz.ShowModal;
         if (FEdiz.ModalResult > 50) then
-        begin
-          drLoad.changeKeiId();
-          mem_texGurKEI_ID_KART.AsInteger := DM1.EdizKei_id.AsInteger;
-          mem_texGurKEI_ID_NORM.AsInteger := DM1.EdizKei_id.AsInteger;
-          mem_texGurNEIS.AsString := DM1.EdizNeis.AsString;
-        end;
-      end;
-     end;
-  2: begin
-      if (mem_texGurPLNORM.AsFloat <> 0) then
-        MessageDlg('Нельзя менять код занормированного сырья! Вставьте новую строку в отчет.',
-                   mtWarning, [mbOK], 0)
+          drLoad.changeKeiId(FEdiz.EdizKei_id.AsInteger, FEdiz.EdizNeis.AsString);
+      end
       else
+        MessageDlg('Нельзя менять единицу измерения на занормированном сырье!',
+                   mtWarning, [mbOK], 0);
+     end;
+
+  2: begin
+      if (drLoad.isKeiIdChangeable()) then
       begin
         if (FindMatrop = nil) then
           FindMatrop := TfindMatrop.Create(Application);
@@ -2376,29 +2375,27 @@ begin
         FindMatrop.ShowModal;
         if (FindMatrop.ModalResult > 50) then
         begin
-          mem_texGur.FieldByName('Ksm_Id').AsInteger := FindMatrop.ModalResult - 50;
-          mem_texGur.FieldByName('Nmat').AsString := FindMatrop.IBMatropNMAT.AsString;
-          mem_texGur.FieldByName('Kei_Id_kart').AsInteger := FindMatrop.IBMatropKei_id.AsInteger;
-          mem_texGur.FieldByName('Kei_Id_NORM').AsInteger := FindMatrop.IBMatropKei_id.AsInteger;
-          mem_texGur.FieldByName('NEIS').AsString := FindMatrop.IBMatropNEIS.AsString;
+          drLoad.changeKsmId(FindMatrop.ModalResult - 50, FindMatrop.IBMatropNMAT.AsString);
+          drLoad.changeKeiId(FindMatrop.IBMatropKei_id.AsInteger, FindMatrop.IBMatropNEIS.AsString);
         end;
-      end;
-     end;
-  3: begin
-      if (mem_texGurPLNORM.AsFloat <> 0) then
-        MessageDlg('Нельзя менять код занормированного сырья! Вставьте новую строку в отчет.',
-                   mtWarning, [mbOK], 0)
+      end
       else
+         MessageDlg('Нельзя менять код занормированного сырья! Вставьте новую строку в отчет.',
+                    mtWarning, [mbOK], 0);
+     end;
+
+  3: begin
+      if (drLoad.isKeiIdChangeable()) then
       begin
         if (FRazdel = nil) then
           FRazdel := TFRazdel.Create(Application);
         FRazdel.ShowModal;
         if (FRazdel.ModalResult > 50) then
-        begin
-         mem_texGurRazdel_id.AsInteger := FRazdel.ModalResult - 50;
-         mem_texGurKraz.AsInteger := s_Razdel;
-        end;
-      end;
+          drLoad.changeRazdel(FRazdel.ModalResult - 50, s_Razdel);
+      end
+      else
+        MessageDlg('Нельзя менять раздел занормированного сырья! Вставьте новую строку в отчет.',
+                    mtWarning, [mbOK], 0);
     end;
   end;
 end;
@@ -2456,26 +2453,23 @@ end;
 
 procedure TFTexGur.ToolButton8Click(Sender: TObject);
 begin
- if  not dm1.Seria.Eof then
- begin
-
- end
- else
- begin
-  DM1.Seria.Active :=False;
-  DM1.Seria.ParamByName('ksm_id').AsInteger:=s_kodp;
-  DM1.Seria.MacroByName('usl').AsString:=' 0=0';
-  dm1.Seria.Active:=true;
-  if  not dm1.Seria.Eof then
-  begin
-   if FSer=nil then FSer:=TFSer.Create(Application);
-   FSer.ShowModal;
-   if FSer.ModalResult > 50 then
-   begin
-    vSeria_id:=FSer.ModalResult-50;
-   end;
-  end;
-end;
+//  if (dm1.Seria.Eof) then
+//  begin
+//    DM1.Seria.Close;
+//    DM1.Seria.ParamByName('ksm_id').AsInteger := s_kodp;
+//    DM1.Seria.MacroByName('usl').AsString := ' 0=0';
+//    dm1.Seria.Open;
+//    if (not dm1.Seria.Eof) then
+//    begin
+//      if (FSer = nil) then
+//        FSer := TFSer.Create(Application);
+//      FSer.ShowModal;
+//      if (FSer.ModalResult > 50) then
+//      begin
+//        vSeria_id := FSer.ModalResult - 50;
+//      end;
+//    end;
+//  end;
 end;
 
 procedure TFTexGur.SpeedButton1Click(Sender: TObject);
@@ -2488,10 +2482,10 @@ begin
              + ' or seria.date_zag between ''' + s_dat1 + ''' and ''' + s_dat2 + ''') '
              + 'or (seria.date_vipusk is null and seria.date_pasport is null '
              + 'and seria.date_zag is null)) ';
-  DM1.Seria.Active := False;
+  DM1.Seria.Close;
   DM1.Seria.ParamByName('ksm_id').AsInteger := s_kodp;
   DM1.Seria.MacroByName('usl').AsString := usl_dat;
-  dm1.Seria.Active := true;
+  dm1.Seria.Open;
   if (not dm1.Seria.Eof) then
   begin
     dm1.Seria.Last;
@@ -2499,10 +2493,10 @@ begin
   end
   else
   begin
-    DM1.Seria.Active := False;
+    DM1.Seria.Close;
     DM1.Seria.ParamByName('ksm_id').AsInteger := s_kodp;
     DM1.Seria.MacroByName('usl').AsString := ' 0=0';
-    dm1.Seria.Active := true;
+    dm1.Seria.Open;
     dm1.Seria.Last;
     if (not dm1.Seria.Eof) then
     begin
@@ -2567,7 +2561,7 @@ begin
   begin
     acceptSeria(sender);
 //    createTexGur(s_seria, god, mes, s_kodp, vStruk_id);
-    loadTexGur(s_seria, label19.Caption, god, mes, s_kodp, vStruk_Id);
+//    loadTexGur(s_seria, label19.Caption, god, mes, s_kodp, vStruk_Id);
   end;
 end;
 

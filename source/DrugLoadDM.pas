@@ -1,4 +1,4 @@
-unit DMDrugLoad;
+unit DrugLoadDM;
 
 interface
 
@@ -311,8 +311,9 @@ type
   private
     login, password, serverAddr, role : string;
     m_seriaId, m_ksmId, m_kartId, m_ksmIdPrep, m_keiId, m_year, m_month,
-    m_razdelId, m_strukId : integer;
+    m_razdelId, m_strukId, m_strokaId, m_docId : integer;
     seria : string;
+    m_dateDok : TDate;
 
     procedure startReadTrans;
 
@@ -329,7 +330,9 @@ type
     procedure delAllTexGurRecords;
     procedure addTexGurRecord(month : integer; dateEnd : TDate);
     procedure setDefaultDateDok(curMonth : integer; dateEnd : TDate);
-    procedure changeKeiId;
+    procedure changeKeiId(keiId : integer; neis : string);
+    procedure changeKsmId(ksmId : integer; nmat : string);
+    procedure changeRazdel(razdelId, kraz : integer);
 
     property ksmId : integer read m_ksmId write m_ksmId;
     property ksmIdPrep : integer read m_ksmIdPrep write m_ksmIdPrep;
@@ -339,6 +342,7 @@ type
     property month : integer read m_month write m_month;
     property strukId : integer read m_strukId write m_strukId;
     property seriaId : integer read m_seriaId write m_seriaId;
+    property dateDok : TDate read m_dateDok write m_dateDok;
 
   end;
 
@@ -529,34 +533,31 @@ procedure TFDMDrugLoad.q_docBeforeInsert(DataSet: TDataSet);
 begin
   Add_KartDok.StoredProcName := 'ADD_DOCUMENT';
   Add_KartDok.ExecProc;
-//  vDocument_Id := Add_KartDok.Params.Items[0].AsInteger;
-//  curDocId := vDocument_Id;
+  m_docId := Add_KartDok.Params.Items[0].AsInteger;
 end;
 
 procedure TFDMDrugLoad.q_docNewRecord(DataSet: TDataSet);
 begin
-//  q_docDOC_ID.AsInteger := vDocument_Id;
-//  curDocId := vDocument_Id;
+  q_docDOC_ID.AsInteger := m_docId;
   q_docTIP_OP_ID.AsInteger := 33;
   q_docTIP_DOK_ID.AsInteger := 34;
-//  q_docSTRUK_ID.AsInteger := vStruk_Id;
-//  q_docDATE_DOK.AsDateTime := dateEdit1.Date;
-//  q_docDATE_OP.AsDateTime := dateEdit1.Date;
-//  q_docKLIENT_ID.AsInteger := s_kodp;
+  q_docSTRUK_ID.AsInteger := m_strukId;
+  q_docDATE_DOK.AsDateTime := m_dateDok;
+  q_docDATE_OP.AsDateTime := m_dateDok;
+  q_docKLIENT_ID.AsInteger := m_ksmIdPrep;
 end;
 
 procedure TFDMDrugLoad.q_kartBeforeInsert(DataSet: TDataSet);
 begin
-//  DM1.Add_KartDok.StoredProcName := 'ADD_KART';
-//  DM1.Add_KartDok.ExecProc;
-//  vStroka_Id := DM1.Add_KartDok.Params.Items[0].AsInteger;
-//  curStrokaId := vStroka_Id;
+  Add_KartDok.StoredProcName := 'ADD_KART';
+  Add_KartDok.ExecProc;
+  m_strokaId := Add_KartDok.Params.Items[0].AsInteger;
 end;
 
 procedure TFDMDrugLoad.q_kartNewRecord(DataSet: TDataSet);
 begin
   q_kartDOC_ID.AsInteger := q_docDOC_ID.AsInteger;
-//  q_kartSTROKA_ID.AsInteger := curStrokaId;
+  q_kartSTROKA_ID.AsInteger := m_strokaId;
   q_kartTIP_OP_ID.AsInteger := 33;
   q_kartTIP_DOK_ID.AsInteger := 34;
   q_kartKOL_PRIH_EDIZ.AsFloat := 0.0;
@@ -633,23 +634,29 @@ begin
   mem_texGur.EnableControls;
 end;
 
-procedure TFDMDrugLoad.changeKeiId;
+procedure TFDMDrugLoad.changeKeiId(keiId : integer; neis : string);
 begin
-  if (mem_texGurPLNORM.AsFloat <> 0) then
-    MessageDlg('Нельзя менять единицу измерения на занормированном сырье!',
-               mtWarning, [mbOK], 0)
-  else
-  begin
-    if (FEdiz = nil) then
-      FEdiz := TFEdiz.Create(self);
-    FEdiz.ShowModal;
-    if (FEdiz.ModalResult > 50) then
-    begin
-      mem_texGurKEI_ID_KART.AsInteger := FEdiz.EdizKei_id.AsInteger;
-      mem_texGurKEI_ID_NORM.AsInteger := FEdiz.EdizKei_id.AsInteger;
-      mem_texGurNEIS.AsString := FEdiz.EdizNeis.AsString;
-    end;
-  end;
+  mem_texGur.Edit;
+  mem_texGurKEI_ID_KART.AsInteger := keiId;
+  mem_texGurKEI_ID_NORM.AsInteger := keiId;
+  mem_texGurNEIS.AsString := neis;
+  mem_texGur.Post;
+end;
+
+procedure TFDMDrugLoad.changeKsmId(ksmId : integer; nmat : string);
+begin
+  mem_texGur.Edit;
+  mem_texGurKSM_ID.AsInteger := ksmId;
+  mem_texGurNMAT.AsString := nmat;
+  mem_texGur.Post;
+end;
+
+procedure TFDMDrugLoad.changeRazdel(razdelId, kraz : integer);
+begin
+  mem_texGur.Edit;
+  mem_texGurRAZDEL_ID.AsInteger := razdelId;
+  mem_texGurKRAZ.AsInteger := kraz;
+  mem_texGur.Post;
 end;
 
 end.

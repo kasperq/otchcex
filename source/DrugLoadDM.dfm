@@ -1460,7 +1460,7 @@ object FDMDrugLoad: TFDMDrugLoad
       'INNER JOIN Ediz ON Matrop.KEI_ID = Ediz.KEI_ID'
       'LEFT JOIN Seria ON Ost.SERIA_ID = Seria.SERIA_ID'
       'WHERE Ost.STRUK_ID = :STRUK_ID'
-      ' %usl')
+      'and %usl')
     UpdateObject = OstatkiUpdate
     GeneratorField.Field = 'KART_ID'
     GeneratorField.Generator = 'G_OSTATKI'

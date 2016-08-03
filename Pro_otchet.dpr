@@ -99,7 +99,7 @@ uses
   TechJournPrep in 'Source\TechJournPrep.pas' {FTechJournPrep},
   TechJourn in 'Source\TechJourn.pas' {FTechJourn},
   DrugLoad in 'Source\DrugLoad.pas',
-  DMDrugLoad in 'Source\DMDrugLoad.pas' {FDMDrugLoad: TDataModule},
+  DrugLoadDM in 'Source\DrugLoadDM.pas' {FDMDrugLoad: TDataModule},
   TexGurOld in 'Source\TexGurOld.pas' {FTexGurOld},
   SelectOstKsm in 'Source\SelectOstKsm.pas',
   DMSelectOstKsm in 'Source\DMSelectOstKsm.pas' {dmSelOstKsm: TDataModule},
@@ -108,7 +108,9 @@ uses
   OtdelDropDown in 'Source\OtdelDropDown.pas' {FOtdelDropDown},
   UnderSign in 'Source\UnderSign.pas',
   UnderSignDM in 'Source\UnderSignDM.pas' {dmUnd: TDataModule},
-  ChooseKart in 'Source\ChooseKart.pas' {FChooseKart};
+  ChooseKart in 'Source\ChooseKart.pas' {FChooseKart},
+  SeriaOstatki in 'Source\SeriaOstatki.pas',
+  SeriaOstatkiDM in 'Source\SeriaOstatkiDM.pas' {SerOstDM: TDataModule};
 
 {$R *.res}
 

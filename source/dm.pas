@@ -1180,6 +1180,7 @@ end;
 procedure TDM1.DataModuleCreate(Sender: TObject);
 var
   IniUMC : TIniFile;
+  local : boolean;
 begin
   star_kod := 0;
   st_kart := 0;
@@ -1194,6 +1195,15 @@ begin
   UserName := AnsiUpperCase(GetCurrentUserName);
   vZadacha_Id := 'OTCHCEX';
 //   UserName :='EPC1';
+  local := false;
+  if (local) then
+  begin
+    dm1.belmed.close;
+    dm1.BELMED.DatabaseName := '127.0.0.1:D:\IBDATA\BELMED.GDB';
+  end
+  else
+    dm1.BELMED.DatabaseName := '192.168.13.13:D:\IBDATA\BELMED.GDB';
+  
   DM1.BELMED.Close;
   DM1.BELMED.Params.Clear;
   DM1.BELMED.Params.Add('lc_ctype=WIN1251');

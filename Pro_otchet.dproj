@@ -469,7 +469,8 @@
       
       
       
-      <Excluded_Packages Name="$(BDS)\bin\xhStd110.bpl">HierCube Library Runtime package</Excluded_Packages>
+      
+        <Excluded_Packages Name="$(BDS)\bin\xhStd110.bpl">HierCube Library Runtime package</Excluded_Packages>
       <Excluded_Packages Name="C:\Documents and Settings\All Users\Документы\RAD Studio\5.0\Bpl\xhCntrls100.bpl">HierCube Library Controls</Excluded_Packages>
       <Excluded_Packages Name="C:\Delphi11\Projects\BPL\dclfs11.bpl">FastScript 1.9 Components</Excluded_Packages>
       <Excluded_Packages Name="C:\Delphi11\Projects\BPL\dclfsADO11.bpl">FastScript 1.9 ADO Components</Excluded_Packages>
@@ -517,10 +518,6 @@
     <DCCReference Include="Source\Dm1Ost.pas">
       <Form>DmOst</Form>
     </DCCReference>
-    <DCCReference Include="Source\DMDrugLoad.pas">
-      <Form>FDMDrugLoad</Form>
-      <DesignClass>TDataModule</DesignClass>
-    </DCCReference>
     <DCCReference Include="Source\DMSelectOstKsm.pas">
       <Form>dmSelOstKsm</Form>
       <DesignClass>TDataModule</DesignClass>
@@ -532,6 +529,10 @@
       <Form>FdocP</Form>
     </DCCReference>
     <DCCReference Include="Source\DrugLoad.pas" />
+    <DCCReference Include="Source\DrugLoadDM.pas">
+      <Form>FDMDrugLoad</Form>
+      <DesignClass>TDataModule</DesignClass>
+    </DCCReference>
     <DCCReference Include="Source\ediz.pas">
       <Form>FEdiz</Form>
     </DCCReference>
@@ -667,6 +668,11 @@
     <DCCReference Include="Source\SelectOstKsm.pas" />
     <DCCReference Include="Source\Ser.pas">
       <Form>FSer</Form>
+    </DCCReference>
+    <DCCReference Include="Source\SeriaOstatki.pas" />
+    <DCCReference Include="Source\SeriaOstatkiDM.pas">
+      <Form>SerOstDM</Form>
+      <DesignClass>TDataModule</DesignClass>
     </DCCReference>
     <DCCReference Include="Source\SprFormul.pas">
       <Form>FSprFormul</Form>

@@ -2,7 +2,7 @@ unit DrugLoad;
 
 interface
 
-uses DMDrugLoad,
+uses DrugLoadDM,
   kbmMemTable, IBDatabase, Forms, SysUtils, Controls, DB, SplshWnd, Windows,
   VCLUtils, Variants, Math, Dialogs, Graphics;
 
@@ -78,7 +78,10 @@ type
     procedure addTexGurLine;
     procedure delTexGurRecord;
     procedure delAllTexGurRecords;
-    procedure changeKeiId;
+    procedure changeKeiId(keiId : integer; neis : string);
+    procedure changeKsmId(ksmId : integer; nmat : string);
+    procedure changeRazdel(razdelId, kraz : integer);
+    function isKeiIdChangeable() : boolean;
 
     property texGurLoad : TkbmMemTable read getMemTexGur;
 
@@ -135,6 +138,10 @@ begin
   dm.trans_read.Active := FALSE;
   curMonth := month;
   curYear := year;
+  self.ksmIdPrep := ksmIdPrep;
+  self.seria := seria;
+  self.strukId := strukId;
+  self.keiId := keiId;
   StartWait;
   if (seria <> '') then
   begin
@@ -171,7 +178,8 @@ begin
     dm.mem_texGur.EnableControls;
   end;
   StopWait;
-  Splash.Free;
+  if (Splash <> nil) and (Splash.Active) then  
+    Splash.Free;
 end;
 
 function TDrugLoad.openNorms(year, month, ksmIdPrep, strukId : integer) : boolean;
@@ -504,6 +512,7 @@ begin
     dm.commitWriteTrans(true);
     Splash.Free;
 
+    Splash := ShowSplashWindow(bmpBook, 'Загрузка данных. Подождите, пожалуйста...', True, nil);
     createTexGur(seria, prepNmat, curYear, curMonth, ksmIdPrep, strukId, keiId);
     dm.mem_texGur.EnableControls;
   except
@@ -512,7 +521,8 @@ begin
       MessageDlg('Произошла ошибка при записи!', mtWarning, [mbOK], 0);
       dm.mem_texGur.EnableControls;
       dm.trans_read.RollbackRetaining;
-      Splash.Free;
+      if (Splash.Active) then
+        Splash.Free;
     end;
   end;
 end;
@@ -565,6 +575,7 @@ begin
   dm.q_seriaKol_seria.AsFloat := kolSeria;
   dm.q_seria.Post;
   dm.q_seria.ApplyUpdates;
+
   if (dm.ql_ostatki.Active) then
   begin
     if (dm.ql_ostatki.UpdatesPending) then
@@ -591,6 +602,7 @@ begin
     dm.ql_ostatki.Post;
     dm.ql_ostatki.ApplyUpdates;
   end;
+
   if (dm.q_seria.Modified) or (dm.q_seria.State = dsEdit)
      or (dm.q_seria.State = dsInsert) then
     dm.q_seria.Post;
@@ -757,6 +769,9 @@ begin
   result := openZagrDoc(seria, strukId, ksmIdPrep, dateDok, dateDok);
   if (not result) or (dm.q_docDOC_ID.AsInteger <> docId) then
   begin
+    dm.dateDok := dateDok;
+    dm.strukId := strukId;
+    dm.ksmIdPrep := ksmIdPrep;
     dm.q_doc.Insert;
     dm.q_docNDOK.AsString := docName;
     dm.q_docDATE_DOK.AsDateTime := dateDok;
@@ -858,9 +873,26 @@ begin
   dm.delAllTexGurRecords;
 end;
 
-procedure TDrugLoad.changeKeiId;
+procedure TDrugLoad.changeKeiId(keiId : integer; neis : string);
 begin
+  dm.changeKeiId(keiId, neis);
+end;
 
+procedure TDrugLoad.changeKsmId(ksmId : integer; nmat : string);
+begin
+  dm.changeKsmId(ksmId, nmat);
+end;
+
+procedure TDrugLoad.changeRazdel(razdelId, kraz : integer);
+begin
+  dm.changeRazdel(razdelId, kraz);
+end;
+
+function TDrugLoad.isKeiIdChangeable() : boolean;
+begin
+  result := false;
+  if (dm.mem_texGur.FieldByName('plnorm').AsFloat = 0) then
+    result := true;
 end;
 
 procedure TDrugLoad.addPrihod(kolRash : double; ksmId, keiId, klientId, razdelId : integer);
