@@ -2,7 +2,7 @@ unit AktRashoda;
 
 interface
 
-uses UnderSign,
+uses UnderSign, AktRashodaDetail,
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, frxClass, frxDBSet, frxDCtrl, DB, IBCustomDataSet, IBQuery, RxIBQuery,
   Grids, DBGridEh, StdCtrls, RxMemDS, Buttons, RxStrUtils, VCLUtils, Menus,
@@ -457,6 +457,18 @@ type
     mem_printSPEC: TIntegerField;
     mem_printACCOUNT: TStringField;
     mem_printPRINTNULL: TBooleanField;
+    mem_specKart: TkbmMemTable;
+    mem_specKartKSM_ID: TIntegerField;
+    mem_specKartFACTRASHOD: TFloatField;
+    mem_specKartRAZDEL_ID: TSmallintField;
+    mem_specKartKEI_ID: TSmallintField;
+    mem_specKartACCOUNT: TStringField;
+    mem_specKartSTROKA_ID: TIntegerField;
+    mem_specKartKART_ID: TIntegerField;
+    mem_specKartDOC_ID: TIntegerField;
+    mem_specKartKOL_RASH: TFloatField;
+    ds_specKart: TDataSource;
+    btn_details: TToolButton;
     function GetCehNum(cehName : string) : integer;
     function SetMonthCombo(month : integer) : boolean;
     function activateNormQuery() : boolean;
@@ -984,7 +996,10 @@ end;
 
 procedure TFAktRashoda.findAndSet10Account;
 begin
+//  mem_specKart.EmptyTable;
+//  mem_specKart.Open;
   findSpecKart(vStruk_Id, 0, StrToDate(s_dat1), StrToDate(s_dat2));
+//  mem_specKart.LoadFromDataSet(q_specKart, [mtcpoAppend]);
   q_specKart.First;
   while (not q_specKart.Eof) do
   begin
@@ -1653,7 +1668,6 @@ begin
     frxReport1.Script.Variables['ceh'] := 'экспер.-произв. цех';
   frxReport1.Script.Variables['nDoc'] := nDocEdit.Text;
   i := 0;
-  j := 0;
   underS.underSign.First;
   while (not underS.underSign.Eof) do
   begin
@@ -2517,22 +2531,8 @@ begin
   while (not dm1.Document.Eof) do
   begin
     loadKart(vStruk_Id, DM1.DocumentDOC_ID.AsInteger);
-//    if (dm1.Kart.RecordCount > 0) then
-//    begin
-      addKart2Mem();
-      dm1.Document.Next;
-//    end;
-//    else
-//    begin
-//      try
-//        dm1.Document.Delete;
-//        DM1.Document.ApplyUpdates;
-//        dm1.commitWriteTrans(true);
-//      except
-//        on e : exception do
-//          dm1.IBT_Write.RollbackRetaining;
-//      end;
-//    end;
+    addKart2Mem();
+    dm1.Document.Next;
   end;
   
 end;

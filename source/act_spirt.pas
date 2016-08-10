@@ -403,15 +403,28 @@ begin
       Spirt_Otchet.Next;
     end;
 // списано
-    v_sp := SelectToVarIB(' SELECT sum(cast(iif(KART.KOL_RASH_EDIZ is null, '
-                          + 'kart.kol_rash, kart.kol_rash_ediz) as numeric(15,6))) as kol_rash '
-                          + 'FROM kart  inner JOIN DOCUMENT ON (KART.DOC_ID = DOCUMENT.DOC_ID)'
-                          + ' WHERE (DOCUMENT.TIP_OP_ID=32 or DOCUMENT.TIP_OP_ID=8 '
-                          + 'or DOCUMENT.TIP_OP_ID=85) and DOCUMENT.STRUK_ID='
-                          + inttostr(vstruk_id) + ' AND Document.Date_op between '
-                          + '''' + s_dat1 + '''' + ' and ' + '''' + s_dat2 + ''''
-                          + ' AND KART.Ksm_id=' + INTTOSTR(S_Ksm),
-                          dm1.belmed, dm1.ibt_read);
+    if (vStruk_id = 760) then
+      v_sp := SelectToVarIB(' SELECT sum(cast(iif(KART.KOL_RASH_EDIZ is null, '
+                            + 'kart.kol_rash, kart.kol_rash_ediz) as numeric(15,6))) as kol_rash '
+                            + 'FROM kart  inner JOIN DOCUMENT ON (KART.DOC_ID = DOCUMENT.DOC_ID)'
+                            + ' inner join ostatki on ostatki.kart_id = kart.kart_id '
+                            + ' WHERE (DOCUMENT.TIP_OP_ID=32 or DOCUMENT.TIP_OP_ID=8 '
+                            + 'or DOCUMENT.TIP_OP_ID=85) and ostatki.STRUK_ID_Rela='
+                            + inttostr(vstruk_id) + 'and document.klient_id <> '
+                            + inttostr(vstruk_id) + ' AND Document.Date_op between '
+                            + '''' + s_dat1 + '''' + ' and ' + '''' + s_dat2 + ''''
+                            + ' AND KART.Ksm_id=' + INTTOSTR(S_Ksm),
+                            dm1.belmed, dm1.ibt_read)
+    else
+      v_sp := SelectToVarIB(' SELECT sum(cast(iif(KART.KOL_RASH_EDIZ is null, '
+                            + 'kart.kol_rash, kart.kol_rash_ediz) as numeric(15,6))) as kol_rash '
+                            + 'FROM kart  inner JOIN DOCUMENT ON (KART.DOC_ID = DOCUMENT.DOC_ID)'
+                            + ' WHERE (DOCUMENT.TIP_OP_ID=32 or DOCUMENT.TIP_OP_ID=8 '
+                            + 'or DOCUMENT.TIP_OP_ID=85) and DOCUMENT.STRUK_ID='
+                            + inttostr(vstruk_id) + ' AND Document.Date_op between '
+                            + '''' + s_dat1 + '''' + ' and ' + '''' + s_dat2 + ''''
+                            + ' AND KART.Ksm_id=' + INTTOSTR(S_Ksm),
+                            dm1.belmed, dm1.ibt_read);
     If (v_sp <> Null) then
       spisano := v_sp
     else
