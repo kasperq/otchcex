@@ -100,6 +100,13 @@ object FAktRashoda: TFAktRashoda
       ShowHint = True
       OnClick = btn_notAddedClick
     end
+    object btn_details: TToolButton
+      Left = 287
+      Top = 0
+      Hint = #1054#1090#1082#1088#1099#1090#1100' '#1072#1082#1090' '#1085#1072' '#1089#1087#1080#1089#1072#1085#1080#1077' '#1089#1087#1077#1094#1086#1076#1077#1078#1076#1099' '#1087#1086' '#1083#1102#1076#1103#1084
+      ImageIndex = 11
+      Visible = False
+    end
   end
   object DBGridEh1: TDBGridEh
     Left = 0
@@ -245,13 +252,11 @@ object FAktRashoda: TFAktRashoda
         EditButtons = <>
         FieldName = 'SPEC'
         Footers = <>
-        Visible = False
       end
       item
         EditButtons = <>
         FieldName = 'ACCOUNT'
         Footers = <>
-        Visible = False
       end>
   end
   object Panel1: TPanel
@@ -2550,7 +2555,7 @@ object FAktRashoda: TFAktRashoda
     Width = 24
     Left = 808
     Bitmap = {
-      494C01010B001C00D40018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010B001C00D80018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       000000000000000000000000000000000000000000000000000000000000A87D
       7800B7818300B7818300B7818300B7818300B7818300B7818300B7818300B781
@@ -5929,5 +5934,67 @@ object FAktRashoda: TFAktRashoda
     object mem_printPRINTNULL: TBooleanField
       FieldName = 'PRINTNULL'
     end
+  end
+  object mem_specKart: TkbmMemTable
+    DesignActivation = True
+    AttachedAutoRefresh = True
+    AttachMaxCount = 1
+    FieldDefs = <>
+    IndexDefs = <>
+    SortOptions = []
+    AllDataOptions = [mtfSaveData, mtfSaveNonVisible, mtfSaveBlobs, mtfSaveFiltered, mtfSaveIgnoreRange, mtfSaveIgnoreMasterDetail, mtfSaveDeltas]
+    CommaTextOptions = [mtfSaveData]
+    CSVQuote = '"'
+    CSVFieldDelimiter = ','
+    CSVRecordDelimiter = ','
+    CSVTrueString = 'True'
+    CSVFalseString = 'False'
+    PersistentSaveOptions = [mtfSaveData, mtfSaveNonVisible, mtfSaveIgnoreRange, mtfSaveIgnoreMasterDetail]
+    PersistentBackup = False
+    ProgressFlags = [mtpcLoad, mtpcSave, mtpcCopy]
+    FilterOptions = []
+    Version = '2.53g'
+    LanguageID = 0
+    SortID = 0
+    SubLanguageID = 1
+    LocaleID = 1024
+    Left = 856
+    Top = 432
+    object mem_specKartKSM_ID: TIntegerField
+      FieldName = 'KSM_ID'
+    end
+    object mem_specKartFACTRASHOD: TFloatField
+      DisplayWidth = 19
+      FieldName = 'FACTRASHOD'
+      OnChange = NormiMemDatFACTRASHODChange
+      DisplayFormat = '0.######'
+    end
+    object mem_specKartRAZDEL_ID: TSmallintField
+      FieldName = 'RAZDEL_ID'
+    end
+    object mem_specKartKEI_ID: TSmallintField
+      FieldName = 'KEI_ID'
+    end
+    object mem_specKartACCOUNT: TStringField
+      FieldName = 'ACCOUNT'
+      Size = 5
+    end
+    object mem_specKartSTROKA_ID: TIntegerField
+      FieldName = 'STROKA_ID'
+    end
+    object mem_specKartKART_ID: TIntegerField
+      FieldName = 'KART_ID'
+    end
+    object mem_specKartDOC_ID: TIntegerField
+      FieldName = 'DOC_ID'
+    end
+    object mem_specKartKOL_RASH: TFloatField
+      FieldName = 'KOL_RASH'
+    end
+  end
+  object ds_specKart: TDataSource
+    DataSet = mem_specKart
+    Left = 904
+    Top = 440
   end
 end

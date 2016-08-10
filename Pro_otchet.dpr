@@ -108,7 +108,8 @@ uses
   OtdelDropDown in 'Source\OtdelDropDown.pas' {FOtdelDropDown},
   UnderSign in 'Source\UnderSign.pas',
   UnderSignDM in 'Source\UnderSignDM.pas' {dmUnd: TDataModule},
-  ChooseKart in 'Source\ChooseKart.pas' {FChooseKart};
+  ChooseKart in 'Source\ChooseKart.pas' {FChooseKart},
+  AktRashodaDetail in 'Source\AktRashodaDetail.pas' {FAktRashDet};
 
 {$R *.res}
 
@@ -187,5 +188,6 @@ begin
   Application.CreateForm(TForm3, Form3);
   Application.CreateForm(TFPererasFolga, FPererasFolga);
   Application.CreateForm(TFTexGurOld, FTexGurOld);
+  Application.CreateForm(TFAktRashDet, FAktRashDet);
   Application.Run;
 end.
