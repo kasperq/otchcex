@@ -1,0 +1,104 @@
+object FSeriaForm: TFSeriaForm
+  Left = 0
+  Top = 0
+  BorderStyle = bsNone
+  Caption = 'FSeriaForm'
+  ClientHeight = 376
+  ClientWidth = 174
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 174
+    Height = 341
+    Align = alClient
+    TabOrder = 0
+    ExplicitLeft = 296
+    ExplicitTop = 56
+    ExplicitWidth = 185
+    ExplicitHeight = 41
+    object grid_seria: TDBGridEh
+      Left = 1
+      Top = 1
+      Width = 172
+      Height = 339
+      Align = alClient
+      FooterColor = clWindow
+      FooterFont.Charset = DEFAULT_CHARSET
+      FooterFont.Color = clWindowText
+      FooterFont.Height = -11
+      FooterFont.Name = 'Tahoma'
+      FooterFont.Style = []
+      STFilter.Visible = True
+      TabOrder = 0
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'Tahoma'
+      TitleFont.Style = []
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 341
+    Width = 174
+    Height = 35
+    Align = alBottom
+    TabOrder = 1
+    ExplicitTop = 338
+    ExplicitWidth = 210
+    object btn_ok: TBitBtn
+      Left = 1
+      Top = 1
+      Width = 75
+      Height = 33
+      Hint = #1055#1086#1076#1074#1077#1088#1076#1080#1090#1100' '#1074#1099#1073#1086#1088' '#1089#1077#1088#1080#1080' '#1080' '#1074#1099#1081#1090#1080
+      Align = alLeft
+      Caption = #1042#1099#1073#1088#1072#1090#1100
+      ModalResult = 1
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 0
+      Layout = blGlyphTop
+      ExplicitLeft = 168
+      ExplicitTop = 6
+      ExplicitHeight = 25
+    end
+    object btn_cancel: TBitBtn
+      Left = 98
+      Top = 1
+      Width = 75
+      Height = 33
+      Hint = #1054#1090#1082#1072#1079#1072#1090#1100#1089#1103' '#1086#1090' '#1074#1099#1073#1086#1088#1072' '#1080' '#1074#1099#1081#1090#1080
+      Align = alRight
+      Caption = #1054#1090#1084#1077#1085#1072
+      ModalResult = 2
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 1
+      ExplicitLeft = 392
+      ExplicitTop = 8
+      ExplicitHeight = 25
+    end
+  end
+  object FindDlgEh1: TFindDlgEh
+    DBGrid = grid_seria
+    FindFont.Charset = DEFAULT_CHARSET
+    FindFont.Color = clWindowText
+    FindFont.Height = -11
+    FindFont.Name = 'Tahoma'
+    FindFont.Style = []
+    ShowFilterPanel = True
+    SimpleSeek = True
+    Left = 80
+    Top = 144
+  end
+end

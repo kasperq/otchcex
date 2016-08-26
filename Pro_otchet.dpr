@@ -110,7 +110,8 @@ uses
   UnderSignDM in 'Source\UnderSignDM.pas' {dmUnd: TDataModule},
   ChooseKart in 'Source\ChooseKart.pas' {FChooseKart},
   SeriaOstatki in 'Source\SeriaOstatki.pas',
-  SeriaOstatkiDM in 'Source\SeriaOstatkiDM.pas' {SerOstDM: TDataModule};
+  SeriaOstatkiDM in 'Source\SeriaOstatkiDM.pas' {SerOstDM: TDataModule},
+  SeriaForm in 'Source\SeriaForm.pas' {FSeriaForm};
 
 {$R *.res}
 
