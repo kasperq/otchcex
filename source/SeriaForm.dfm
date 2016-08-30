@@ -21,22 +21,21 @@ object FSeriaForm: TFSeriaForm
     Height = 341
     Align = alClient
     TabOrder = 0
-    ExplicitLeft = 296
-    ExplicitTop = 56
-    ExplicitWidth = 185
-    ExplicitHeight = 41
     object grid_seria: TDBGridEh
       Left = 1
       Top = 1
       Width = 172
       Height = 339
       Align = alClient
+      AutoFitColWidths = True
+      DataSource = ds_seria
       FooterColor = clWindow
       FooterFont.Charset = DEFAULT_CHARSET
       FooterFont.Color = clWindowText
       FooterFont.Height = -11
       FooterFont.Name = 'Tahoma'
       FooterFont.Style = []
+      ReadOnly = True
       STFilter.Visible = True
       TabOrder = 0
       TitleFont.Charset = DEFAULT_CHARSET
@@ -44,6 +43,22 @@ object FSeriaForm: TFSeriaForm
       TitleFont.Height = -11
       TitleFont.Name = 'Tahoma'
       TitleFont.Style = []
+      VertScrollBar.Tracking = True
+      OnDblClick = grid_seriaDblClick
+      Columns = <
+        item
+          EditButtons = <>
+          FieldName = 'SERIA'
+          Footers = <>
+          Title.Caption = #1057#1077#1088#1080#1103
+          Width = 85
+        end
+        item
+          EditButtons = <>
+          FieldName = 'DATE_ZAG'
+          Footers = <>
+          Title.Caption = #1044#1072#1090#1072' '#1079#1072#1075#1088'.'
+        end>
     end
   end
   object Panel2: TPanel
@@ -53,8 +68,6 @@ object FSeriaForm: TFSeriaForm
     Height = 35
     Align = alBottom
     TabOrder = 1
-    ExplicitTop = 338
-    ExplicitWidth = 210
     object btn_ok: TBitBtn
       Left = 1
       Top = 1
@@ -67,10 +80,8 @@ object FSeriaForm: TFSeriaForm
       ParentShowHint = False
       ShowHint = True
       TabOrder = 0
+      OnClick = btn_okClick
       Layout = blGlyphTop
-      ExplicitLeft = 168
-      ExplicitTop = 6
-      ExplicitHeight = 25
     end
     object btn_cancel: TBitBtn
       Left = 98
@@ -84,9 +95,7 @@ object FSeriaForm: TFSeriaForm
       ParentShowHint = False
       ShowHint = True
       TabOrder = 1
-      ExplicitLeft = 392
-      ExplicitTop = 8
-      ExplicitHeight = 25
+      OnClick = btn_cancelClick
     end
   end
   object FindDlgEh1: TFindDlgEh
@@ -100,5 +109,49 @@ object FSeriaForm: TFSeriaForm
     SimpleSeek = True
     Left = 80
     Top = 144
+  end
+  object mem_seria: TkbmMemTable
+    DesignActivation = True
+    AttachedAutoRefresh = True
+    AttachMaxCount = 1
+    FieldDefs = <>
+    IndexDefs = <>
+    SortOptions = []
+    ReadOnly = True
+    AllDataOptions = [mtfSaveData, mtfSaveNonVisible, mtfSaveBlobs, mtfSaveFiltered, mtfSaveIgnoreRange, mtfSaveIgnoreMasterDetail, mtfSaveDeltas]
+    CommaTextOptions = [mtfSaveData]
+    CSVQuote = '"'
+    CSVFieldDelimiter = ','
+    CSVRecordDelimiter = ','
+    CSVTrueString = 'True'
+    CSVFalseString = 'False'
+    PersistentSaveOptions = [mtfSaveData, mtfSaveNonVisible, mtfSaveIgnoreRange, mtfSaveIgnoreMasterDetail]
+    PersistentBackup = False
+    ProgressFlags = [mtpcLoad, mtpcSave, mtpcCopy]
+    FilterOptions = []
+    Version = '2.53g'
+    LanguageID = 0
+    SortID = 0
+    SubLanguageID = 1
+    LocaleID = 1024
+    Left = 96
+    Top = 224
+    object mem_seriaSERIA: TStringField
+      FieldName = 'SERIA'
+    end
+    object mem_seriaSERIA_ID: TIntegerField
+      FieldName = 'SERIA_ID'
+    end
+    object mem_seriaDATE_ZAG: TDateField
+      FieldName = 'DATE_ZAG'
+    end
+    object mem_seriaKOL_SERIA: TFloatField
+      FieldName = 'KOL_SERIA'
+    end
+  end
+  object ds_seria: TDataSource
+    DataSet = mem_seria
+    Left = 96
+    Top = 184
   end
 end

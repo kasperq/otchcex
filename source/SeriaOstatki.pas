@@ -2,29 +2,42 @@ unit SeriaOstatki;
 
 interface
 
-uses SeriaOstatkiDM,
-  IBDatabase, Forms, Controls, SysUtils, DB;
+uses SeriaOstatkiDM, SeriaForm, CopyFiles,
+  IBDatabase, Forms, Controls, SysUtils, DB, Variants;
 
 type
   TSeriaOstatki = class
   private
     dm : TSerOstDM;
+    serForm : TFSeriaForm;
+    m_seriaId, m_ksmId : integer;
+    m_seria : string;
+    m_kolSeria : double;
+    m_dateZag : TDate;
+
 
   public
     Constructor Create(db : TIBDatabase);
     Destructor Destroy; override;
 
-    function openSeria(ksmId, strukId : integer; seria : string) : boolean;
+    function openSeria(ksmId : integer; seria : string) : boolean;
     function insertSeria(ksmId : integer; seria : string) : integer;
     procedure setFormaVipusk(value : string);
     procedure setDateZagAndKolSeria(dateZag : TDate; kolSeria : double);
     procedure saveSeria;
+
+    function showViborSeria(parentControl : TControl) : boolean;
 
     function openOstatki(ksmId, seriaId, strukId : integer) : boolean;
     procedure insertOstatki(ksmId, ksmIdPrep, razdelId, seriaId, keiId, strukId,
                             month, year : integer);
     procedure saveOstatki;
 
+    property seriaId : integer read m_seriaId write m_seriaId;
+    property ksmId : integer read m_ksmId write m_ksmId;
+    property seria : string read m_seria write m_seria;
+    property kolSeria : double read m_kolSeria write m_kolSeria;
+    property dateZag : TDate read m_dateZag write m_dateZag;
   end;
 
 implementation
@@ -45,23 +58,32 @@ begin
   inherited Destroy;
 end;
 
-function TSeriaOstatki.openSeria(ksmId, strukId : integer; seria : string) : boolean;
+function TSeriaOstatki.openSeria(ksmId : integer; seria : string) : boolean;
 begin
+  self.ksmId := ksmId;
+  self.seria := seria;
   dm.q_seria.close;
   dm.q_seria.ParamByName('ksm_id').AsInteger := ksmId;
-  dm.q_seria.ParamByName('struk_id').AsInteger := strukId;
   dm.q_seria.Open;
   result := true;
   if (seria <> '') and (not dm.q_seria.Locate('seria', seria, [])) then
-    result := false;
+    result := false
+  else
+  begin
+    self.seria := dm.q_seriaSERIA.AsString;
+    self.seriaId := dm.q_seriaSERIA_ID.AsInteger;
+    self.kolSeria := dm.q_seriaKOL_SERIA.AsFloat;
+    self.dateZag := dm.q_seriaDATE_ZAG.AsDateTime;
+  end;
 end;
 
-function TSeriaOstatki.insertSeria(ksmId : integer; seria : string) : integer;
+function TSeriaOstatki.insertSeria(ksmId : integer; seria : string) : integer;  // returns SERIA_ID of a new SERIA
 begin
   dm.ksmId := ksmId;
   dm.seria := seria;
   dm.q_seria.Insert;
   dm.q_seria.Post;
+  result := dm.q_seriaSERIA_ID.AsInteger;
 end;
 
 procedure TSeriaOstatki.setFormaVipusk(value : string);
@@ -82,6 +104,7 @@ end;
 function TSeriaOstatki.openOstatki(ksmId, seriaId, strukId : integer) : boolean;
 begin
   result := false;
+  self.ksmId := ksmId;
   dm.q_ostatki.Close;
   dm.q_ostatki.ParamByName('struk_id').AsInteger := strukId;
   dm.q_ostatki.MacroByName('usl').AsString := ' OST.KSM_ID=' + IntToStr(ksmId)
@@ -123,6 +146,24 @@ begin
     dm.q_ostatki.Post;
   if (dm.q_ostatki.UpdatesPending) then
     dm.q_ostatki.ApplyUpdates;
+end;
+
+function TSeriaOstatki.showViborSeria(parentControl : TControl) : boolean;
+begin
+  result := false;
+  if (serForm = nil) then
+    serForm := TFSeriaForm.Create(Application);
+  FormToObject(serForm, parentControl, 0, 0);
+  serForm.loadSeriaDS(dm.q_seria);
+  serForm.ShowModal;
+  if (serForm.ModalResult > 50) then
+  begin
+    self.seria := serForm.mem_seriaSERIA.AsString;
+    self.seriaId := serForm.mem_seriaSERIA_ID.AsInteger;
+    self.kolSeria := serForm.mem_seriaKOL_SERIA.AsFloat;
+    self.dateZag := serForm.mem_seriaDATE_ZAG.AsDateTime;
+    result := true;
+  end;
 end;
 
 end.

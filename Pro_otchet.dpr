@@ -111,7 +111,8 @@ uses
   ChooseKart in 'Source\ChooseKart.pas' {FChooseKart},
   SeriaOstatki in 'Source\SeriaOstatki.pas',
   SeriaOstatkiDM in 'Source\SeriaOstatkiDM.pas' {SerOstDM: TDataModule},
-  SeriaForm in 'Source\SeriaForm.pas' {FSeriaForm};
+  SeriaForm in 'Source\SeriaForm.pas' {FSeriaForm},
+  DrugReportEdit in 'Source\DrugReportEdit.pas';
 
 {$R *.res}
 

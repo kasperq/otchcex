@@ -116,7 +116,7 @@ begin
     if (db.Connected) and (trans_read.Active) then
       result := true;
   except
-    ShowMessage('” пользовател€ ' + login + ' нет доступа к базе данных');
+    ShowMessage('” пользовател€ нет доступа к базе данных');
   end;
 end;
 

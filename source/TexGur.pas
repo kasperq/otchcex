@@ -2,7 +2,7 @@ unit TexGur;
 
 interface
 
-uses DrugLoad,
+uses DrugLoad, SeriaOstatki,
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, Mask, ToolEdit, StdCtrls, ImgList, ComCtrls, ToolWin, Grids,
   DBGridEh, FindDlgEh, Buttons, DB, IBCustomDataSet, IBQuery, DBCtrls,
@@ -493,6 +493,7 @@ type
   private
     { Private declarations }
     drLoad : TDrugLoad;
+    seriaOst : TSeriaOstatki;
     curRazdelId, curKraz, curDocId, curStrokaId, curKsmIdPrep : integer;
 
     procedure loadTexGur(seria, prepNmat : string; year, month, ksmIdPrep, strukId : integer);
@@ -964,7 +965,6 @@ begin
     PageControl1.ActivePage := tab_zagr;
     PageControl1Change(self);
     loadTexGur(seria, prepNmat, year, month, ksmIdPrep, vStruk_Id);
-//    createTexGur(seria, year, month, ksmIdPrep, strukId);
   end;
 end;
 
@@ -1670,23 +1670,18 @@ begin
     s_seria := edit2.Text;
     s_ksm := s_kodp;
 
-    dm1.Seria.Close;
-    Dm1.Seria.ParamByName('Ksm_id').AsInteger := S_KODP;
-    dm1.Seria.Open;
-
-    if (dm1.Seria.Locate('seria;ksm_id', VarArrayOf([s_seria,s_kodp]), [])) then
+    if (seriaOst = nil) then
+      seriaOst := TSeriaOstatki.Create(dm1.BELMED);
+    if (seriaOst.openSeria(s_ksm, s_seria)) then
     begin
-
-      vseria_id := dm1.SeriaSeria_id.AsInteger;
-      s_kol_seria := DM1.SeriaKol_Seria.AsFloat;
+      vseria_id := seriaOst.seriaId;
+      s_kol_seria := seriaOst.kolSeria;
       edit9.Text := floattostr(s_kol_seria);
-
-      if (dm1.SeriaDATE_ZAG.AsVariant <> null) then
+      if (seriaOst.dateZag <> null) then
       begin
-        DateEdit1.Date := dm1.SeriaDATE_ZAG.AsDateTime;
+        DateEdit1.Date := seriaOst.dateZag;
         DateEdit1.ReadOnly := true;
         loadTexGur(s_seria, label19.Caption, god, mes, s_kodp, vStruk_Id);
-//          createTexGur(s_seria, god, mes, s_kodp, vStruk_id);
       end
       else
       begin
@@ -1696,17 +1691,11 @@ begin
     end
     else
     begin
-      dm1.Seria.Insert;
-      dm1.Seria.Post;
+      seriaOst.insertSeria(s_ksm, s_seria);
       DateEdit1.ReadOnly := false;
       DateEdit1.SetFocus;
     end;
-    if (dm1.Seria.Active) then
-    begin
-      dm1.Seria.Edit;
-      dm1.SeriaFORMA_VIPUSK.AsString := s_Formv;
-      DM1.Seria.Post;
-    end;
+    seriaOst.setFormaVipusk(s_formv);
   end;
 end;
 
@@ -2274,8 +2263,6 @@ begin
     if (DateEdit1.text <> '' )and (DateEdit1.text <= s_dat2_period)  then
     begin
       acceptSeria(sender);
-//      loadTexGur(s_seria, label19.Caption, god, mes, s_kodp, vStruk_Id);
-//      createTexGur(s_seria, god, mes, s_kodp, vStruk_id);
     end;
 end;
 
@@ -2476,39 +2463,68 @@ procedure TFTexGur.SpeedButton1Click(Sender: TObject);
 var
   usl_dat_s : string;
 begin
-  usl_dat_s := usl_dat;
-  usl_dat := ' ((seria.date_vipusk between ''' + s_dat1 + ''' and ''' + s_dat2 + ''' '
-             + ' or seria.date_pasport between ''' + s_dat1 + ''' and ''' + s_dat2 + ''' '
-             + ' or seria.date_zag between ''' + s_dat1 + ''' and ''' + s_dat2 + ''') '
-             + 'or (seria.date_vipusk is null and seria.date_pasport is null '
-             + 'and seria.date_zag is null)) ';
-  DM1.Seria.Close;
-  DM1.Seria.ParamByName('ksm_id').AsInteger := s_kodp;
-  DM1.Seria.MacroByName('usl').AsString := usl_dat;
-  dm1.Seria.Open;
-  if (not dm1.Seria.Eof) then
+  if (seriaOst = nil) then
+    seriaOst := TSeriaOstatki.Create(dm1.BELMED);
+  if (seriaOst.openSeria(s_kodp, '')) then
   begin
-    dm1.Seria.Last;
-    openViborSeriesAndLoadTexGur;
+    if (seriaOst.showViborSeria(edit2)) then
+    begin
+      vSeria_id := seriaOst.seriaId;
+      s_seria := seriaOst.seria;
+      s_kol_seria := seriaOst.kolSeria;
+      edit9.Text := floattostr(s_kol_seria);
+      Edit2.Text := s_Seria;
+      if (seriaOst.dateZag <> null) then
+      begin
+        DateEdit1.Date := seriaOst.dateZag;
+        loadTexGur(s_seria, label19.Caption, god, mes, s_kodp, vStruk_Id);
+      end
+      else
+      begin
+        DateEdit1.ReadOnly := false;
+        DateEdit1.SetFocus;
+      end;
+    end;
   end
   else
   begin
-    DM1.Seria.Close;
-    DM1.Seria.ParamByName('ksm_id').AsInteger := s_kodp;
-    DM1.Seria.MacroByName('usl').AsString := ' 0=0';
-    dm1.Seria.Open;
-    dm1.Seria.Last;
-    if (not dm1.Seria.Eof) then
-    begin
-      openViborSeriesAndLoadTexGur;
-    end
-    else
-    begin
-      MessageDlg('Нет серии заданного препарата!', mtWarning, [mbOK], 0);
-      vseria_id := 0;
-    end;
+    MessageDlg('Нет серии заданного препарата!', mtWarning, [mbOK], 0);
+    vseria_id := 0;
   end;
-  usl_dat := usl_dat_s;
+
+//  usl_dat_s := usl_dat;
+//  usl_dat := ' ((seria.date_vipusk between ''' + s_dat1 + ''' and ''' + s_dat2 + ''' '
+//             + ' or seria.date_pasport between ''' + s_dat1 + ''' and ''' + s_dat2 + ''' '
+//             + ' or seria.date_zag between ''' + s_dat1 + ''' and ''' + s_dat2 + ''') '
+//             + 'or (seria.date_vipusk is null and seria.date_pasport is null '
+//             + 'and seria.date_zag is null)) ';
+//  DM1.Seria.Close;
+//  DM1.Seria.ParamByName('ksm_id').AsInteger := s_kodp;
+//  DM1.Seria.MacroByName('usl').AsString := usl_dat;
+//  dm1.Seria.Open;
+//  if (not dm1.Seria.Eof) then
+//  begin
+//    dm1.Seria.Last;
+//    openViborSeriesAndLoadTexGur;
+//  end
+//  else
+//  begin
+//    DM1.Seria.Close;
+//    DM1.Seria.ParamByName('ksm_id').AsInteger := s_kodp;
+//    DM1.Seria.MacroByName('usl').AsString := ' 0=0';
+//    dm1.Seria.Open;
+//    dm1.Seria.Last;
+//    if (not dm1.Seria.Eof) then
+//    begin
+//      openViborSeriesAndLoadTexGur;
+//    end
+//    else
+//    begin
+//      MessageDlg('Нет серии заданного препарата!', mtWarning, [mbOK], 0);
+//      vseria_id := 0;
+//    end;
+//  end;
+//  usl_dat := usl_dat_s;
 end;
 
 procedure TFTexGur.openViborSeriesAndLoadTexGur;

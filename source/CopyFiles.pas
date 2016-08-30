@@ -2,7 +2,7 @@ unit CopyFiles;
 
 interface
 uses
-  Windows, Messages, SysUtils, Math;
+  Windows, Messages, SysUtils, Math, Forms, Controls;
 
   Procedure FileCopy(Const SourceFileName, TargetFileName: String);
   function WindowsCopyFile(FromFile, ToDir : string) : boolean;
@@ -14,6 +14,8 @@ uses
 	function MyFrac(value : double) : double;
 	function MyCeil(const X: Extended): Integer;
   function getCurZnak(value : double; znak : integer) : integer;
+  procedure FormToObject(PopupForm : TForm; ControlObject : TControl; HTop:Integer = 0;
+                         YesWidth:Integer = 1);
 
 implementation
 
@@ -358,6 +360,29 @@ begin
   if (znak < curZnak) then
     znak := curZnak;
   result := znak;
+end;
+
+procedure FormToObject(PopupForm : TForm; ControlObject : TControl; HTop:Integer = 0;
+                       YesWidth:Integer = 1);
+var
+  xy : TPoint;
+begin
+  xy.Y := 0;
+  xy.X := 0;
+  xy:= ControlObject.ClientToScreen(xy);
+  PopupForm.Position := poDesigned;
+  PopupForm.BorderStyle := bsNone;
+  PopupForm.Top := xy.Y+ControlObject.Height;
+  if PopupForm.Top+PopupForm.Height > Screen.Height then
+    PopupForm.Top := PopupForm.Top-PopupForm.Height-ControlObject.Height;
+  if PopupForm.Top < 0 then
+  begin
+    PopupForm.Height := PopupForm.Height+PopupForm.Top-HTop;
+    PopupForm.Top := HTop;
+  end;
+  PopupForm.Left := xy.X;
+  if YesWidth = 1 then
+    PopupForm.Width := ControlObject.Width;
 end;
 
 
