@@ -814,7 +814,7 @@ end;
 procedure TFTexGur.addPrihod(kolRash : double; ksmId, keiId, klientId, razdelId : integer);
 var
   curSDat1, curSDat2, str_month : string;
-  curMes, curGod : integer;
+  curMes, curGod, curVSeriaId : integer;
   day, month, year : word;
 begin
   v_raspred_dob := kolRash;
@@ -823,6 +823,8 @@ begin
   v_kein := keiId;
   vklient_id := klientId;
   v_razdel := razdelId;
+  curVSeriaId := vSeria_id;
+  vSeria_id := 0;
   tochn := -6;
   pr_kor := 0;
 
@@ -859,6 +861,9 @@ begin
       mes := curMes;
       god := curGod;
     end;
+
+  vSeria_id := curVSeriaId;
+  curVSeriaId := 0;
 //  dm1.commitWriteTrans(true);
 end;
 
