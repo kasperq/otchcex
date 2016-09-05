@@ -47,7 +47,6 @@ type
     // saving
 
     procedure delEmptyZagrDocuments(seria : string; year, month, ksmIdPrep, strukId : integer);
-    procedure saveSeriaAndOstatki;
     function saveMemTexGur() : boolean;
     function getCurKeiId() : integer;
 
@@ -73,8 +72,8 @@ type
     constructor Create(db : TIBDatabase); overload;
     destructor Destroy; override;
 
-    procedure createTexGur(seria, prepNmat : string; year, month, ksmIdPrep, strukId, keiId : integer);
-    function saveTexGur(kolSeria : double; dateLoadSeria : TDate) : boolean;
+    procedure createTexGur(seria, prepNmat : string; year, month, ksmIdPrep, strukId, keiId : integer; full : boolean);
+    function saveTexGur() : boolean;
     procedure addTexGurLine;
     procedure delTexGurRecord;
     procedure delAllTexGurRecords;
@@ -129,10 +128,10 @@ begin
 end;
 
 procedure TDrugLoad.createTexGur(seria, prepNmat : string; year, month, ksmIdPrep,
-                                 strukId, keiId : integer);
+                                 strukId, keiId : integer; full : boolean);
 begin
-//  Splash := ShowSplashWindow(AniBmp1,
-//                                 'Загрузка данных. Подождите, пожалуйста...', True, nil);
+  Splash := ShowSplashWindow(bmpBook,
+                                 'Загрузка данных. Подождите, пожалуйста...', True, nil);
   dm.q_seria.Close;
   dm.trans_write.Active := FALSE;
   dm.trans_read.Active := FALSE;
@@ -492,7 +491,7 @@ begin
   end;
 end;
 
-function TDrugLoad.saveTexGur(kolSeria : double; dateLoadSeria : TDate) : boolean;
+function TDrugLoad.saveTexGur() : boolean;
 begin
   result := false;
   if (dm.mem_texGur.Modified)
@@ -503,18 +502,14 @@ begin
   Splash := ShowSplashWindow(bmpBook, 'Сохранение данных. Подождите, пожалуйста...', True, nil);
   try
     dm.mem_texGur.DisableControls;
-    self.kolSeria := kolSeria;
-    self.dateLoadSeria := dateLoadSeria;
-    saveSeriaAndOstatki;
     saveMemTexGur;
+    result := true;
 
     delEmptyZagrDocuments(seria, curYear, curMonth, ksmIdPrep, strukId);
     dm.commitWriteTrans(true);
     Splash.Free;
-
-    Splash := ShowSplashWindow(bmpBook, 'Загрузка данных. Подождите, пожалуйста...', True, nil);
-    createTexGur(seria, prepNmat, curYear, curMonth, ksmIdPrep, strukId, keiId);
     dm.mem_texGur.EnableControls;
+
   except
     on E : exception do
     begin
@@ -556,63 +551,6 @@ begin
       dm.commitWriteTrans(true);
     end;
   end;
-end;
-
-procedure TDrugLoad.saveSeriaAndOstatki;
-var
-  usl_ser : string;
-begin
-  if (not dm.q_seria.Active) then
-  begin
-    dm.q_seria.ParamByName('Ksm_id').AsInteger := ksmIdPrep;
-    dm.q_seria.MacroByName('usl').AsString := 'SERIA.SERIA=' + '''' + seria + '''';
-    dm.q_seria.Open;
-    dm.q_seria.First;
-    seriaId := dm.q_seriaSeria_id.AsInteger;
-  end;
-  dm.q_seria.Edit;
-  dm.q_seriaDate_ZAG.AsDateTime := dateLoadSeria;
-  dm.q_seriaKol_seria.AsFloat := kolSeria;
-  dm.q_seria.Post;
-  dm.q_seria.ApplyUpdates;
-
-  if (dm.ql_ostatki.Active) then
-  begin
-    if (dm.ql_ostatki.UpdatesPending) then
-      dm.ql_ostatki.ApplyUpdates;
-    dm.ql_ostatki.close;
-  end;
-  usl_ser := '  OST.KSM_ID=' + INTTOSTR(ksmIdPrep) + ' and ost.seria_id=' + inttostr(seriaId);
-  dm.ql_ostatki.ParamByName('struk_ID').AsInteger := strukId;
-  dm.ql_ostatki.MacroByName('usl').AsString := usl_ser;
-  dm.ql_ostatki.Open;
-  if (not dm.ql_ostatki.Eof) then
-    kartId := dm.ql_ostatkiKart_id.AsInteger
-  else
-  begin
-    dm.ksmId := ksmIdPrep;
-    dm.ksmIdPrep := ksmIdPrep;
-    dm.keiId := keiId;
-    dm.strukId := strukId;
-    dm.seriaId := seriaId;
-    dm.month := curMonth;
-    dm.year := curYear;
-    dm.razdelId := 0;
-    dm.ql_ostatki.Insert;
-    dm.ql_ostatki.Post;
-    dm.ql_ostatki.ApplyUpdates;
-  end;
-
-  if (dm.q_seria.Modified) or (dm.q_seria.State = dsEdit)
-     or (dm.q_seria.State = dsInsert) then
-    dm.q_seria.Post;
-  if (dm.ql_ostatki.Modified) or (dm.ql_ostatki.State = dsEdit)
-     or (dm.ql_ostatki.State = dsInsert) then
-    dm.ql_ostatki.Post;
-  if (dm.q_seria.UpdatesPending) then
-    dm.q_seria.ApplyUpdates;
-  if (dm.ql_ostatki.UpdatesPending) then
-    dm.ql_ostatki.ApplyUpdates;
 end;
 
 procedure TDrugLoad.saveExistingRecord(keiId : integer);
@@ -757,9 +695,16 @@ begin
   dm.keiId := keiId;
   dm.razdelId := razdelId;
 
-  dm.ql_ostatki.Insert;
-  dm.ql_ostatki.Post;
-  dm.ql_ostatki.ApplyUpdates;
+//  if (dm.ql_ostatki.Active) then
+//    if (dm.ql_ostatki.ParamByName('struk_id').AsInteger <> strukId) then
+//    begin
+//      dm.ql_ostatki.Close;
+//      dm.ql_ostatki.ParamByName('struk_ID').AsInteger := strukId;
+//      dm.ql_ostatki.Open;
+//    end;
+  dm.q_ostatki.Insert;
+  dm.q_ostatki.Post;
+  dm.q_ostatki.ApplyUpdates;
   dm.commitWriteTrans(true);
 end;
 
@@ -779,6 +724,7 @@ begin
     if (dm.q_doc.Modified) or (dm.q_doc.State = dsInsert) or (dm.q_doc.State = dsEdit) then
       dm.q_doc.Post;
     dm.q_doc.ApplyUpdates;
+    dm.commitWriteTrans(true);
     result := true;
   end;
 end;
@@ -909,7 +855,7 @@ begin
 //  v_razdel := razdelId;
 //  tochn := -6;
 //  pr_kor := 0;
-//
+
 //  curSDat1 := '01.01.0001';
 //  curSDat2 := '01.01.0001';
 //  curMes := 1;

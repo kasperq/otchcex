@@ -191,33 +191,33 @@ type
     q_seriaKOD_TM: TIntegerField;
     q_seriaKOL_TM: TFloatField;
     IBUpdateSeria: TIBUpdateSQLW;
-    ql_ostatki: TRxIBQuery;
-    ql_ostatkiKEI_ID: TSmallintField;
-    ql_ostatkiRAZDEL_ID: TSmallintField;
-    ql_ostatkiKSM_ID: TIntegerField;
-    ql_ostatkiKSM_IDPR: TIntegerField;
-    ql_ostatkiMES: TSmallintField;
-    ql_ostatkiGOD: TSmallintField;
-    ql_ostatkiONM_FD: TFMTBCDField;
-    ql_ostatkiONM_NZ: TFMTBCDField;
-    ql_ostatkiONM_S: TFMTBCDField;
-    ql_ostatkiOT_FD: TFMTBCDField;
-    ql_ostatkiOT_NZ: TFMTBCDField;
-    ql_ostatkiOT_S: TFMTBCDField;
-    ql_ostatkiSERIA_ID: TIntegerField;
-    ql_ostatkiSTRUK_ID: TIntegerField;
-    ql_ostatkiUSER_NAME: TIBStringField;
-    ql_ostatkiKOL_TRANS: TFloatField;
-    ql_ostatkiKOL_GRP: TFloatField;
-    ql_ostatkiVES_TRANS: TIBBCDField;
-    ql_ostatkiNMAT: TIBStringField;
-    ql_ostatkiNEIS: TIBStringField;
-    ql_ostatkiKART_ID: TIntegerField;
-    ql_ostatkiOT_DOKUM: TFloatField;
-    ql_ostatkiONM_DOKUM: TFMTBCDField;
-    ql_ostatkiNOMU_ID_TRANS: TSmallintField;
-    ql_ostatkiNOMU_ID_GRP: TSmallintField;
-    ql_ostatkiVOL_TRANS: TFMTBCDField;
+    q_ostatki11: TRxIBQuery;
+    q_ostatki11KEI_ID: TSmallintField;
+    q_ostatki11RAZDEL_ID: TSmallintField;
+    q_ostatki11KSM_ID: TIntegerField;
+    q_ostatki11KSM_IDPR: TIntegerField;
+    q_ostatki11MES: TSmallintField;
+    q_ostatki11GOD: TSmallintField;
+    q_ostatki11ONM_FD: TFMTBCDField;
+    q_ostatki11ONM_NZ: TFMTBCDField;
+    q_ostatki11ONM_S: TFMTBCDField;
+    q_ostatki11OT_FD: TFMTBCDField;
+    q_ostatki11OT_NZ: TFMTBCDField;
+    q_ostatki11OT_S: TFMTBCDField;
+    q_ostatki11SERIA_ID: TIntegerField;
+    q_ostatki11STRUK_ID: TIntegerField;
+    q_ostatki11USER_NAME: TIBStringField;
+    q_ostatki11KOL_TRANS: TFloatField;
+    q_ostatki11KOL_GRP: TFloatField;
+    q_ostatki11VES_TRANS: TIBBCDField;
+    q_ostatki11NMAT: TIBStringField;
+    q_ostatki11NEIS: TIBStringField;
+    q_ostatki11KART_ID: TIntegerField;
+    q_ostatki11OT_DOKUM: TFloatField;
+    q_ostatki11ONM_DOKUM: TFMTBCDField;
+    q_ostatki11NOMU_ID_TRANS: TSmallintField;
+    q_ostatki11NOMU_ID_GRP: TSmallintField;
+    q_ostatki11VOL_TRANS: TFMTBCDField;
     OstatkiUpdate: TIBUpdateSQLW;
     AddSeria: TIBStoredProc;
     Add_Ostatki: TIBStoredProc;
@@ -300,13 +300,14 @@ type
     procedure mem_texGurKSM_IDValidate(Sender: TField);
     procedure q_seriaBeforeInsert(DataSet: TDataSet);
     procedure q_seriaNewRecord(DataSet: TDataSet);
-    procedure ql_ostatkiBeforeInsert(DataSet: TDataSet);
-    procedure ql_ostatkiNewRecord(DataSet: TDataSet);
+    procedure q_ostatkiBeforeInsert(DataSet: TDataSet);
+    procedure q_ostatkiNewRecord(DataSet: TDataSet);
     procedure q_kartBeforeInsert(DataSet: TDataSet);
     procedure q_kartNewRecord(DataSet: TDataSet);
     procedure q_docBeforeInsert(DataSet: TDataSet);
     procedure q_docNewRecord(DataSet: TDataSet);
     procedure mem_texGurKRAZValidate(Sender: TField);
+    procedure q_ostatki1BeforeInsert(DataSet: TDataSet);
 
   private
     login, password, serverAddr, role : string;
@@ -507,26 +508,26 @@ begin
     showMessage('Нет такого кода! Воспользуйтесь справочником!');
 end;
 
-procedure TFDMDrugLoad.ql_ostatkiBeforeInsert(DataSet: TDataSet);
+procedure TFDMDrugLoad.q_ostatkiBeforeInsert(DataSet: TDataSet);
 begin
   Add_Ostatki.ExecProc;
   m_kartId := Add_Ostatki.Params.Items[0].AsInteger;
 end;
 
-procedure TFDMDrugLoad.ql_ostatkiNewRecord(DataSet: TDataSet);
+procedure TFDMDrugLoad.q_ostatkiNewRecord(DataSet: TDataSet);
 begin
-  ql_ostatki.FieldByName('Kart_Id').AsInteger := m_kartId;
-  ql_ostatki.FieldByName('Ksm_Id').AsInteger := m_ksmId;
+  q_ostatki.FieldByName('Kart_Id').AsInteger := m_kartId;
+  q_ostatki.FieldByName('Ksm_Id').AsInteger := m_ksmId;
   IF (m_razdelId <> 0) then
-    ql_ostatki.FieldByName('razdel_id').AsInteger := m_razdelId;
+    q_ostatki.FieldByName('razdel_id').AsInteger := m_razdelId;
   IF (m_ksmIdPrep <> 0) and (m_ksmIdPrep <> m_ksmId) then
-    ql_ostatki.FieldByName('ksm_idpr').AsInteger := m_ksmIdPrep;
+    q_ostatki.FieldByName('ksm_idpr').AsInteger := m_ksmIdPrep;
   IF (m_seriaId <> 0) then
-    ql_ostatki.FieldByName('Seria_id').AsInteger := m_seriaId;
-  ql_ostatki.FieldByName('Kei_Id').AsInteger := m_keiId;
-  ql_ostatki.FieldByName('Struk_Id').AsInteger := m_strukId;
-  ql_ostatki.FieldByName('Mes').AsInteger := m_month;
-  ql_ostatki.FieldByName('God').AsInteger := m_year;
+    q_ostatki.FieldByName('Seria_id').AsInteger := m_seriaId;
+  q_ostatki.FieldByName('Kei_Id').AsInteger := m_keiId;
+  q_ostatki.FieldByName('Struk_Id').AsInteger := m_strukId;
+  q_ostatki.FieldByName('Mes').AsInteger := m_month;
+  q_ostatki.FieldByName('God').AsInteger := m_year;
 end;
 
 procedure TFDMDrugLoad.q_docBeforeInsert(DataSet: TDataSet);
@@ -561,6 +562,12 @@ begin
   q_kartTIP_OP_ID.AsInteger := 33;
   q_kartTIP_DOK_ID.AsInteger := 34;
   q_kartKOL_PRIH_EDIZ.AsFloat := 0.0;
+end;
+
+procedure TFDMDrugLoad.q_ostatki1BeforeInsert(DataSet: TDataSet);
+begin
+  Add_Ostatki.ExecProc;
+  m_kartId := Add_Ostatki.Params.Items[0].AsInteger;
 end;
 
 procedure TFDMDrugLoad.q_seriaBeforeInsert(DataSet: TDataSet);

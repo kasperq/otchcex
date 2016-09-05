@@ -2,7 +2,7 @@ unit TexGur;
 
 interface
 
-uses DrugLoad, SeriaOstatki,
+uses DrugReportEdit, Referance, SeriaOstatki,
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, Mask, ToolEdit, StdCtrls, ImgList, ComCtrls, ToolWin, Grids,
   DBGridEh, FindDlgEh, Buttons, DB, IBCustomDataSet, IBQuery, DBCtrls,
@@ -80,8 +80,8 @@ type
     Label59: TLabel;
     Label3: TLabel;
     Label11: TLabel;
-    Edit1: TEdit;
-    Edit2: TEdit;
+    edit_kodProd: TEdit;
+    edit_seria: TEdit;
     DateEdit1: TDateEdit;
     GroupBox3: TGroupBox;
     Label68: TLabel;
@@ -100,7 +100,7 @@ type
     Label7: TLabel;
     Label45: TLabel;
     Label38: TLabel;
-    Edit9: TEdit;
+    edit_kolSeria: TEdit;
     ToolButton8: TToolButton;
     FormStorage1: TFormStorage;
     Splitter1: TSplitter;
@@ -432,13 +432,13 @@ type
     q_allZagrsKSM_ID: TIntegerField;
     procedure MyGetValue(const s: String; var v: Variant);
     procedure MyGetValue1(const s: String; var v: Variant);
-    procedure Edit1Change(Sender: TObject);
-    procedure Edit1KeyDown(Sender: TObject; var Key: Word;
+    procedure edit_kodProdChange(Sender: TObject);
+    procedure edit_kodProdKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
-    procedure Edit2KeyDown(Sender: TObject; var Key: Word;
+    procedure edit_seriaKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
-    procedure Edit1Click(Sender: TObject);
+    procedure edit_kodProdClick(Sender: TObject);
     procedure btn_saveSeriaClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure ToolButton9Click(Sender: TObject);
@@ -448,7 +448,7 @@ type
     procedure DBGridEh4SortMarkingChanged(Sender: TObject);
     procedure DateEdit1KeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
-    procedure Edit2Click(Sender: TObject);
+    procedure edit_seriaClick(Sender: TObject);
     procedure btn_delRecClick(Sender: TObject);
     procedure ToolButton1Click(Sender: TObject);
     procedure grid_zagrEditButtonClick(Sender: TObject);
@@ -463,8 +463,8 @@ type
     procedure ToolButton4Click(Sender: TObject);
     procedure ToolButton6Click(Sender: TObject);
     procedure SpeedButton2Click(Sender: TObject);
-    procedure Edit9KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure Edit9Click(Sender: TObject);
+    procedure edit_kolSeriaKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure edit_kolSeriaClick(Sender: TObject);
     procedure N1Click(Sender: TObject);
     procedure N3Click(Sender: TObject);
     procedure N4Click(Sender: TObject);
@@ -488,15 +488,18 @@ type
     procedure q_kartBeforeInsert(DataSet: TDataSet);
     procedure q_kartNewRecord(DataSet: TDataSet);
     procedure btn_delAllClick(Sender: TObject);
-    procedure acceptSeria(Sender: TObject);
     procedure q_prepSeriesAfterScroll(DataSet: TDataSet);
+    procedure SpeedButton4Click(Sender: TObject);
   private
     { Private declarations }
-    drLoad : TDrugLoad;
-    seriaOst : TSeriaOstatki;
-    curRazdelId, curKraz, curDocId, curStrokaId, curKsmIdPrep : integer;
+    drugEdit : TDrugReportEdit;
+    refer : TReferance;
+    serOstDrug : TSeriaOstatki;
+    curDocId, curStrokaId : integer;
 
     procedure loadTexGur(seria, prepNmat : string; year, month, ksmIdPrep, strukId : integer);
+    procedure setDateLoad;
+    procedure acceptAndLoadSeria;
     // Загрузка загрузки :))
 //    procedure createTexGur(seria : string; year, month, ksmIdPrep, strukId : integer);
 
@@ -548,7 +551,6 @@ type
     function loadSeriaInfo(ksmIdPrep : integer; seria : string) : boolean;
 
 //    procedure setSeriaDateZag(ksmIdPrep : integer; seria, dateZag : string);
-    procedure openViborSeriesAndLoadTexGur;
     procedure openZagrSeriaTab(kodProd, seria, prepNmat : string; ksmIdPrep, month, year, strukId : integer);
     procedure initToolButtons;
 
@@ -980,9 +982,9 @@ begin
   begin
     vseria_id := dm1.SeriaSeria_id.AsInteger;
     s_kol_seria := DM1.SeriaKol_Seria.AsFloat;
-    edit9.Text := floattostr(s_kol_seria);
-    s_vip := strtofloat(edit9.Text);
-    edit2.Text := seria;
+    edit_kolSeria.Text := floattostr(s_kol_seria);
+    s_vip := strtofloat(edit_kolSeria.Text);
+    edit_seria.Text := seria;
     DateEdit1.ReadOnly := false;
     if (dm1.SeriaDATE_ZAG.AsVariant <> null) then
       DateEdit1.Date := dm1.SeriaDATE_ZAG.AsDateTime
@@ -1014,25 +1016,28 @@ end;
 
 procedure TFTexGur.loadPrepInfo(kodProd : string);
 begin
-  EDIT1.OnChange := nil;
-  edit1.text := kodProd;
-  EDIT1.OnChange := Edit1Change;
-  edit9.text := '';
-  q_spprod.Close;
-  q_spprod.ParamByName('kod_prod').AsString := kodProd;
-  q_spprod.Open;
-  s_kodp := q_spprod.FieldByName('ksm_id').value;
-  s_gost := q_spprod.FieldByName('GOST').AsString;
-  s_xarkt := q_spprod.FieldByName('XARKT').AsString;
-  s_nmat := q_spprod.FieldByName('NMAT').AsString;
-  s_kei := q_spprod.FieldByName('KEI_ID').VALUE;
-  s_korg := q_spprod.FieldByName('KORG').VALUE;
-  s_kodProd := q_spprod.FieldByName('kod_prod').AsString;
-  s_Lek_id := q_spprod.FieldByName('Lek_Id').VALUE;
-  s_namorg := q_spprod.FieldByName('NAM').AsString;
-  s_neiz := q_spprod.FieldByName('NEIS').AsString;
-  s_Formv := q_spprod.FieldByName('NAMEFV').AsString;
-  s_Sprod_id := q_spprod.FieldByName('Sprod_Id').VALUE;
+  edit_kodProd.OnChange := nil;
+  edit_kodProd.text := kodProd;
+  edit_kodProd.OnChange := edit_kodProdChange;
+  edit_kolSeria.text := '0';
+  if (refer = nil) then
+    refer := TReferance.Create(dm1.BELMED);
+  if (refer.spprod = nil)
+     or (refer.spprod.FieldByName('kod_prod').AsString <> kodProd) then
+    refer.findDrug(kodProd, vStruk_Id);
+  s_kodp := refer.spprod.FieldByName('ksm_id').AsInteger;
+  s_gost := refer.spprod.FieldByName('GOST').AsString;
+  s_xarkt := refer.spprod.FieldByName('XARKT').AsString;
+  s_nmat := refer.spprod.FieldByName('NMAT').AsString;
+  s_kei := refer.spprod.FieldByName('KEI_ID').AsInteger;
+  s_korg := refer.spprod.FieldByName('KORG').AsInteger;
+  s_kodProd := refer.spprod.FieldByName('kod_prod').AsString;
+  s_Lek_id := refer.spprod.FieldByName('Lek_Id').AsInteger;
+  s_namorg := refer.spprod.FieldByName('NAM').AsString;
+  s_neiz := refer.spprod.FieldByName('NEIS').AsString;
+  s_Formv := refer.spprod.FieldByName('NAMEFV').AsString;
+  s_Sprod_id := refer.spprod.FieldByName('Sprod_Id').AsInteger;
+
   label19.caption := s_NMAT;
   Label28.caption := Inttostr(s_KORG);
   label29.caption := s_namorg;
@@ -1085,12 +1090,10 @@ begin
   q_sdano.First;
   if (not q_sdano.Eof) then
   begin
-//     Label36.Caption:=floattostr(q_sdano.FieldByName('SDANO').AsFloat);
     s_SDANO := q_sdano.FieldByName('SDANO').AsFloat;
   end
   else
   begin
-//   Label36.Caption:='0';
     s_SDANO := 0;
   end;
 end;
@@ -1141,10 +1144,21 @@ end;
 
 procedure TFTexGur.loadTexGur(seria, prepNmat : string; year, month, ksmIdPrep, strukId : integer);
 begin
-  if (drLoad = nil) then
-    drLoad := TDrugLoad.Create(dm1.BELMED);
-  drLoad.createTexGur(seria, prepNmat, year, month, ksmIdPrep, strukId, s_kei);
-  ds_texGur.DataSet := drLoad.texGurLoad;
+  if (serOstDrug = nil) then
+    serOstDrug := TSeriaOstatki.Create(dm1.BELMED);
+  if (serOstDrug.seria <> seria) or (drugEdit.month <> month)
+     or (drugEdit.year <> year) or (serOstDrug.ksmId <> ksmIdPrep) then
+  begin
+    if (serOstDrug.openSeria(ksmIdPrep, seria)) then
+    begin
+      if (drugEdit = nil) then
+        drugEdit := TDrugReportEdit.Create(dm1.BELMED, vStruk_Id);
+      drugEdit.loadTexGurLoad(true, month, year, refer.spprod.FieldByName('ksm_id').AsInteger,
+                              refer.spprod.FieldByName('kei_id').AsInteger,
+                              refer.spprod.FieldByName('nmat').AsString, seria);
+      ds_texGur.DataSet := drugEdit.texGurLoad;
+    end;
+  end;
 end;
 
 //procedure TFTexGur.createTexGur(seria : string; year, month, ksmIdPrep, strukId : integer);
@@ -1526,14 +1540,17 @@ end;   }
 
 procedure TFTexGur.cb_allSyrClick(Sender: TObject);
 begin
-  if (cb_allSyr.Checked) then
+  if (drugEdit <> nil) then
   begin
-    openZagSyr(vStruk_Id, 0, 0, 0, StrToDate(s_dat1_period), StrToDate(s_dat2_period), Usl_SORT)
-  end
-  else
-  begin
-    openZagSyr(vStruk_Id, mem_texGurKSM_ID.AsInteger, 34, 0,
-                 StrToDate(s_dat1_period), StrToDate(s_dat2_period), Usl_SORT);
+    if (cb_allSyr.Checked) then
+    begin
+      openZagSyr(vStruk_Id, 0, 0, 0, StrToDate(s_dat1_period), StrToDate(s_dat2_period), Usl_SORT)
+    end
+    else
+    begin
+      openZagSyr(vStruk_Id, drugEdit.texGurLoad.FieldByName('ksm_id').AsInteger, 34, 0,
+                   StrToDate(s_dat1_period), StrToDate(s_dat2_period), Usl_SORT);
+    end;
   end;
 end;
 
@@ -1589,51 +1606,44 @@ begin
   end;
 end;   }
 
-procedure TFTexGur.Edit1Change(Sender: TObject);
+procedure TFTexGur.edit_kodProdChange(Sender: TObject);
 begin
-if edit1.text<>''   then begin
- skod:=replacestr(edit1.text,',','.')+'%';
- DM1.IBQuery1.Active := False;
- DM1.IBQuery1.SQL.Clear;
- DM1.IBQuery1.SQL.Add('SELECT SPPROD.STRUK_ID,SPPROD.NMAT, SPPROD.KOD_PROD, SPPROD.KEI_ID,SPPROD.KSM_ID,SPPROD.SPROD_ID,SPPROD.VOL_ov,SPPROD.VOLumf,');
- DM1.IBQuery1.SQL.Add('SPPROD.GOST,EDIZ.NEIS,SPPROD.KORG,SPPROD.XARKT,SPPROD.ACTIVP,SPRORG.NAM,SPPROD.LEK_ID,SPFORMV.NAMEFv,region.nam nam_reg');
- DM1.IBQuery1.SQL.Add(' FROM SPPROD');
- DM1.IBQuery1.SQL.Add('  INNER JOIN EDIZ ON (SPPROD.KEI_ID = EDIZ.KEI_ID)');
- DM1.IBQuery1.SQL.Add('  LEFT JOIN SPRORG ON (SPPROD.KORG = SPRORG.KOD)');
- DM1.IBQuery1.SQL.Add('  LEFT JOIN SPFORMV ON (SPPROD.SPFV = SPFORMV.SPFV)');
- DM1.IBQuery1.SQL.Add('  LEFT JOIN region ON (SPPROD.reg = region.reg)');
- DM1.IBQuery1.SQL.Add(' WHERE SPPROD.KOD_PROD like '+''''+skod+''''+' AND SPPROD.STRUK_ID='+INTTOSTR(vStruk_Id));
- DM1.IBQuery1.Active := True;
- if not dm1.IBQuery1.Eof then
+  if (edit_kodProd.text <> '') then
   begin
-   Label19.Caption:=DM1.IBQuery1.FieldByName('kod_PROD').Asstring+DM1.IBQuery1.FieldByName('nmat').AsString;
-   Label11.Caption:=DM1.IBQuery1.FieldByName('Xarkt').AsString;
-   Label3.Caption:=DM1.IBQuery1.FieldByName('Nam_reg').AsString;
-  end
-  else
-  begin
-   Label19.Caption:='';
-   Label11.Caption:='';
-   Label3.Caption:='';
+    skod := replacestr(edit_kodProd.text,',','.')+'%';
+    if (refer = nil) then
+      refer := TReferance.Create(dm1.BELMED);
+    if (refer.findDrug(skod, vStruk_Id)) then
+    begin
+      Label19.Caption := refer.spprod.FieldByName('kod_PROD').Asstring
+                         + refer.spprod.FieldByName('nmat').AsString;
+      Label11.Caption := refer.spprod.FieldByName('Xarkt').AsString;
+      Label3.Caption := refer.spprod.FieldByName('Nam_reg').AsString;
+    end
+    else
+    begin
+      Label19.Caption := '';
+      Label11.Caption := '';
+      Label3.Caption := '';
+    end;
+    Label19.Refresh;
+    Label11.Refresh;
   end;
- Label19.Refresh;
- Label11.Refresh;
- end;
 end;
 
-procedure TFTexGur.Edit1KeyDown(Sender: TObject; var Key: Word;
+procedure TFTexGur.edit_kodProdKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   if (key = vk_return) then
   begin
     StartWait;
-    if (edit1.text <> '') and (not dm1.IBQuery1.Eof)  then
+    if (edit_kodProd.text <> '') and (refer.spprod.RecordCount > 0) then
     begin
-      edit9.text := '';
-      EDIT1.OnChange := nil;
-      edit1.text := DM1.IBQuery1.FieldByName('kod_PROD').Asstring;
-      EDIT1.OnChange := Edit1Change;
-      loadPrepInfo(DM1.IBQuery1.FieldByName('kod_PROD').Asstring);
+      edit_kolSeria.text := '0';
+      edit_kodProd.OnChange := nil;
+      edit_kodProd.text := refer.spprod.FieldByName('kod_PROD').Asstring;
+      edit_kodProd.OnChange := edit_kodProdChange;
+      loadPrepInfo(refer.spprod.FieldByName('kod_PROD').Asstring);
     end;
     StopWait;
   end;
@@ -1647,91 +1657,96 @@ end;
 
 procedure TFTexGur.FormDestroy(Sender: TObject);
 begin
-  FreeAndNil(drLoad);
+  FreeAndNil(drugEdit);
 end;
 
-procedure TFTexGur.Edit2KeyDown(Sender: TObject; var Key: Word;
+procedure TFTexGur.edit_seriaKeyDown(Sender: TObject; var Key: Word;
                                 Shift: TShiftState);
 begin
   if (key = vk_return) then
   begin
-    acceptSeria(sender);
+    acceptAndLoadSeria;
   end;
 end;
 
-procedure TFTexGur.acceptSeria(Sender: TObject);
+procedure TFTexGur.acceptAndLoadSeria;
 begin
-  if (edit2.text <> '') then
+  if (refer <> nil) and (refer.spprod.FieldByName('ksm_id').AsInteger <> 0)
+     and (edit_seria.text <> '') then
   begin
-    if (edit9.Text <> '') and (edit9.Text <> '0') then
-      s_vip := strtofloat(edit9.Text)
+    loadPrepInfo(refer.spprod.FieldByName('kod_prod').AsString);
+    if (edit_kolSeria.Text <> '') and (edit_kolSeria.Text <> '0') then
+      s_vip := strtofloat(edit_kolSeria.Text)
     else
       s_vip := 0;
-    s_seria := edit2.Text;
+    s_seria := edit_seria.Text;
     s_ksm := s_kodp;
 
-    if (seriaOst = nil) then
-      seriaOst := TSeriaOstatki.Create(dm1.BELMED);
-    if (seriaOst.openSeria(s_ksm, s_seria)) then
+    if (serOstDrug = nil) then
+      serOstDrug := TSeriaOstatki.Create(dm1.BELMED);
+    if (serOstDrug.openSeria(refer.spprod.FieldByName('ksm_id').AsInteger, s_seria)) then
     begin
-      vseria_id := seriaOst.seriaId;
-      s_kol_seria := seriaOst.kolSeria;
-      edit9.Text := floattostr(s_kol_seria);
-      if (seriaOst.dateZag <> null) then
-      begin
-        DateEdit1.Date := seriaOst.dateZag;
-        DateEdit1.ReadOnly := true;
-        loadTexGur(s_seria, label19.Caption, god, mes, s_kodp, vStruk_Id);
-      end
-      else
-      begin
-        DateEdit1.ReadOnly := false;
-        DateEdit1.SetFocus;
-      end;
+      vSeria_id := serOstDrug.seriaId;
+      s_seria := serOstDrug.seria;
+      s_kol_seria := serOstDrug.kolSeria;
+      edit_kolSeria.Text := FloatToStr(serOstDrug.kolSeria);
+      edit_seria.Text := serOstDrug.seria;
+    end
+    else
+      serOstDrug.insertSeria(refer.spprod.FieldByName('ksm_id').AsInteger, s_seria);
+    serOstDrug.setFormaVipusk(refer.spprod.FieldByName('NAMEFV').AsString);
+    if (drugEdit = nil) then
+        drugEdit := TDrugReportEdit.Create(dm1.BELMED, vStruk_Id);
+    drugEdit.loadTexGurLoad(true, mes, god, refer.spprod.FieldByName('ksm_id').AsInteger,
+                            refer.spprod.FieldByName('kei_id').AsInteger,
+                            refer.spprod.FieldByName('nmat').AsString, s_seria);
+    ds_texGur.DataSet := drugEdit.texGurLoad;
+    if (serOstDrug.dateLoad <> 0) then
+    begin
+      DateEdit1.Date := serOstDrug.dateLoad;
     end
     else
     begin
-      seriaOst.insertSeria(s_ksm, s_seria);
+      dateEdit1.Date := StrToDate(s_dat2_period);
       DateEdit1.ReadOnly := false;
       DateEdit1.SetFocus;
     end;
-    seriaOst.setFormaVipusk(s_formv);
   end;
 end;
 
-procedure TFTexGur.Edit9Click(Sender: TObject);
+procedure TFTexGur.edit_kolSeriaClick(Sender: TObject);
 begin
-  edit9.Text := ''
+  edit_kolSeria.Text := ''
 end;
 
-procedure TFTexGur.Edit9KeyDown(Sender: TObject; var Key: Word;
+procedure TFTexGur.edit_kolSeriaKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   if (key = vk_return) then
   begin
-    if (edit9.Text <> '') then
+    if (edit_kolSeria.Text <> '') then
     begin
-      s_vip := strtofloat(edit9.Text);
+      s_vip := strtofloat(edit_kolSeria.Text);
     end;
   end;
 end;
 
-procedure TFTexGur.Edit1Click(Sender: TObject);
+procedure TFTexGur.edit_kodProdClick(Sender: TObject);
 begin
- edit1.text:='';
- edit2.text:='';
- vSeria_id:=0;
- IF  fSprFormul.CEH_NormZ.Active THEN
-  fSprFormul.CEH_NormZ.Active:=FALSE;
+  edit_kodProd.text := '';
+  edit_seria.text := '';
 end;
 
 procedure TFTexGur.btn_saveSeriaClick(Sender: TObject);
-//var
-//  curSeria : string;
 begin
-  if (edit9.Text = '') then
-    edit9.Text := '0';
-  drLoad.saveTexGur(StrToFloat(edit9.Text), dateEdit1.Date)
+  if (edit_kolSeria.Text = '') then
+    edit_kolSeria.Text := '0';
+  if (serOstDrug <> nil) then
+  begin
+    serOstDrug.setDateZagAndKolSeria(dateEdit1.Date, StrToFloat(edit_kolSeria.Text));
+    serOstDrug.saveSeria;
+  end;
+  drugEdit.saveTexGurLoad();
 end;
 
 procedure TFTexGur.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -1739,8 +1754,11 @@ begin
   q_norm.Close;
   mem_texGur.EmptyTable;
   mem_texGur.Close;
+  dm1.IBT_Write.RollbackRetaining;
 
-  FreeAndNil(drLoad);
+  FreeAndNil(drugEdit);
+  FreeAndNil(serOstDrug);
+  FreeAndNil(refer);
   DM1.Seria.Close;
   DM1.Ostatki.Close;
   vseria_id := 0;
@@ -1748,12 +1766,12 @@ end;
 
 procedure TFTexGur.MyGetValue(const s: String; var v: Variant);
 begin
- if UpperCase(S)='V2' then if FTexGur.Edit9.Text<>'' then v:=strtofloat(FTexGur.Edit9.Text) else v:=0;
+ if UpperCase(S)='V2' then if FTexGur.edit_kolSeria.Text<>'' then v:=strtofloat(FTexGur.edit_kolSeria.Text) else v:=0;
 end;
 
 procedure TFTexGur.MyGetValue1(const s: String; var v: Variant);
 begin
- if UpperCase(S)='V2' then if FTexGur.Edit9.Text<>'' then v:=strtofloat(FTexGur.Edit9.Text) else v:=0;
+ if UpperCase(S)='V2' then if FTexGur.edit_kolSeria.Text<>'' then v:=strtofloat(FTexGur.edit_kolSeria.Text) else v:=0;
 end;
 
 
@@ -1817,12 +1835,9 @@ begin
   FVybPrep.ShowModal;
   if (FVybPrep.ModalResult = mrOk) then
   begin
-    StartWait;
     s_kodp := FVybPrep.mem_vipuskKsm_id.AsInteger;
-
     loadPrepInfo(FVybPrep.mem_vipuskKOD_PROD.AsString);
   end;
-  StopWait;
 end;
 
 procedure TFTexGur.Button1Click(Sender: TObject);
@@ -1871,7 +1886,7 @@ begin
   if (PageControl1.ActivePage = tabsheet2) then
   begin
     cb_allSyr.OnClick := nil;
-    if (mem_texGurKSM_ID.AsInteger = 0) then
+    if (drugEdit <> nil) and (drugEdit.texGurLoad.FieldByName('ksm_id').AsInteger = 0) then
     begin
       cb_allSyr.Checked := true
     end
@@ -2044,108 +2059,10 @@ begin
   DM1.ConfigUMC.close;
   if (s_kodp <> 0) then
   begin
-    DM1.IBQuery1.Active := False;
-    DM1.IBQuery1.SQL.Clear;
-    DM1.IBQuery1.SQL.Add('SELECT SPPROD.STRUK_ID, SPPROD.NMAT, SPPROD.KOD_PROD, '
-                         + 'SPPROD.KEI_ID, SPPROD.KSM_ID, SPPROD.SPROD_ID, '
-                         + 'SPPROD.VOL_ov, SPPROD.VOLumf,');
-    DM1.IBQuery1.SQL.Add('SPPROD.GOST, EDIZ.NEIS, SPPROD.KORG, SPPROD.XARKT, '
-                         + 'SPPROD.ACTIVP, SPRORG.NAM, SPPROD.LEK_ID, SPFORMV.NAMEFv, region.nam nam_reg');
-    DM1.IBQuery1.SQL.Add(' FROM SPPROD');
-    DM1.IBQuery1.SQL.Add('  INNER JOIN EDIZ ON (SPPROD.KEI_ID = EDIZ.KEI_ID)');
-    DM1.IBQuery1.SQL.Add('  LEFT JOIN SPRORG ON (SPPROD.KORG = SPRORG.KOD)');
-    DM1.IBQuery1.SQL.Add('  LEFT JOIN SPFORMV ON (SPPROD.SPFV = SPFORMV.SPFV)');
-    DM1.IBQuery1.SQL.Add('  LEFT JOIN region ON (SPPROD.reg = region.reg)');
-    DM1.IBQuery1.SQL.Add(' WHERE SPPROD.Ksm_id=' + inttostr(s_kodp)
-                         + ' AND SPPROD.STRUK_ID=' + INTTOSTR(vStruk_Id));
-    DM1.IBQuery1.Active := True;
-    if (not dm1.IBQuery1.Eof) then
-    begin
-      EDIT1.OnChange := nil;
-      edit1.text := DM1.IBQuery1.FieldByName('kod_PROD').Asstring;
-      EDIT1.OnChange := Edit1Change;
-//  edit17.text:=floattostr(DM1.IBQuery1.FieldByName('vol_ov').Asfloat);
-      s_kodp := DM1.IBQuery1.FieldByName('KSM_ID').value;
-      s_gost := DM1.IBQuery1.FieldByName('GOST').AsString;
-      s_xarkt := DM1.IBQuery1.FieldByName('XARKT').AsString;
-      s_nmat := DM1.IBQuery1.FieldByName('NMAT').AsString;
-      s_kei := DM1.IBQuery1.FieldByName('KEI_ID').VALUE;
-      s_korg := DM1.IBQuery1.FieldByName('KORG').VALUE;
-      s_kodProd := DM1.IBQuery1.FieldByName('KOD_PROD').AsString;
-      s_Lek_id := DM1.IBQuery1.FieldByName('Lek_Id').VALUE;
-      s_namorg := DM1.IBQuery1.FieldByName('NAM').AsString;
-      s_neiz := DM1.IBQuery1.FieldByName('NEIS').AsString;
-      s_Formv := DM1.IBQuery1.FieldByName('NAMEFV').AsString;
-      s_Sprod_id := DM1.IBQuery1.FieldByName('Sprod_Id').VALUE;
-      s_namREG := DM1.IBQuery1.FieldByName('NAM_ReG').AsString;
-      DM1.IBQuery1.Active := False;
-      DM1.IBQuery1.SQL.Clear;
-      DM1.IBQuery1.SQL.Add('SELECT *');
-      DM1.IBQuery1.SQL.Add(' FROM UTPLAN');
-      DM1.IBQuery1.SQL.Add(' WHERE UTPLAN.MES=' + inttostr(mes)
-                           + ' AND UTPLAN.GOD=' + inttostr(god)
-                           + ' AND UTPLAN.SPROD_ID=' + inttostr(s_sprod_id));
-      DM1.IBQuery1.Active := True;
-      if (not dm1.IBQuery1.Eof) then
-      begin
-        Label26.Caption := floattostr(DM1.IBQuery1.FieldByName('PLAN').AsFloat);
-        s_plan := DM1.IBQuery1.FieldByName('PLAN').AsFloat;
-      end
-      else
-      begin
-        Label26.Caption := '0';
-        s_plan := 0;
-      end;
-      DM1.IBQuery1.Active := False;
-      DM1.IBQuery1.SQL.Clear;
-      DM1.IBQuery1.SQL.Add('SELECT kartv.kol_prih');
-      DM1.IBQuery1.SQL.Add(' FROM KARTV ');
-      DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTV.DOC_ID = DOCUMENT.DOC_ID)');
-      DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID=' + INTTOSTR(VsTRUK_ID)
-                           + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
-                           + ' AND KARTV.KSM_ID=' + INTTOSTR(s_KODP)
-                           + ' AND Document.Date_op between ' + '''' + s_dat1_period
-                           + '''' + ' and ' + '''' + s_dat2_period + '''');
-      DM1.IBQuery1.Active := True;
-      if (not dm1.IBQuery1.Eof) then
-      begin
-        Label34.Caption := floattostr(DM1.IBQuery1.FieldByName('kol_prih').AsFloat);
-        s_OPLan := DM1.IBQuery1.FieldByName('kol_prih').AsFloat;
-      end
-      else
-      begin
-        Label34.Caption := '0';
-        s_Oplan := 0;
-      end;
-      DM1.IBQuery1.Active := False;
-      DM1.IBQuery1.SQL.Clear;
-      DM1.IBQuery1.SQL.Add('SELECT SUM(kart.kol_prih) SDANO');
-      DM1.IBQuery1.SQL.Add(' FROM KART ');
-      DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KART.DOC_ID = DOCUMENT.DOC_ID)');
-      DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.KLIENT_ID=' + INTTOSTR(VsTRUK_ID)
-                           + ' AND DOCUMENT.TIP_OP_ID=2' + ' AND KART.KSM_ID='
-                           + INTTOSTR(s_KODP) + ' AND Document.Date_op between '
-                           + '''' + s_dat1_period + '''' + ' and ' + '''' + s_dat2_period + '''');
-      DM1.IBQuery1.Active := True;
-      if (not dm1.IBQuery1.Eof) then
-      begin
-    //     Label36.Caption:=floattostr(DM1.IBQuery1.FieldByName('SDANO').AsFloat);
-        s_SDANO := DM1.IBQuery1.FieldByName('SDANO').AsFloat;
-      end
-      else
-      begin
-    //     Label36.Caption:='0';
-        s_SDANO := 0;
-      end;
-      label19.caption := s_NMAT;
-      label28.caption := Inttostr(s_KORG);
-      label29.caption := s_namorg;
-      label21.caption := s_Neiz;
-      label22.caption := s_GOST;
-      label11.caption := s_Xarkt;
-      label45.caption := s_Formv;
-      label3.caption := s_namREG;
-    end
+    if (refer = nil) then
+      refer := TReferance.Create(dm1.BELMED);
+    if (refer.findDrug(s_kodp)) then
+      loadPrepInfo(refer.spprod.FieldByName('kod_prod').AsString)
     else
     begin
       Label3.Caption := '';
@@ -2161,7 +2078,7 @@ begin
       label28.Caption := '';
       label45.Caption := '';
       DateEdit1.Date := date;
-      Edit1.Text := '';
+      edit_kodProd.Text := '';
   //   Edit17.Text:='';
     end;
   end
@@ -2180,20 +2097,13 @@ begin
     label28.Caption := '';
     label45.Caption := '';
     DateEdit1.Date := date;
-    Edit1.Text := '';
+    edit_kodProd.Text := '';
 //  Edit17.Text:='';
   end;
-  Edit2.Text := '';
-  Edit9.Text := '';
+  edit_seria.Text := '';
+  edit_kolSeria.Text := '0';
   pr_button9 := true;
   prov := false;
-//  Edit1.SetFocus;
-
-//  drLoad := TDrugLoad.Create(DM1.BELMED);
-//  drLoad := TDrugLoad.Create(dm1.BELMED.DatabaseName,
-//                             dm1.BELMED.Params.Values['user_name'],
-//                             dm1.BELMED.Params.Values['password'],
-//                             dm1.BELMED.Params.Values['sql_role_name']);
 end;
 
 procedure TFTexGur.DBGridEh4DblClick(Sender: TObject);
@@ -2260,31 +2170,47 @@ procedure TFTexGur.DateEdit1KeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   if (key = vk_return) then
-    if (DateEdit1.text <> '' )and (DateEdit1.text <= s_dat2_period)  then
-    begin
-      acceptSeria(sender);
-    end;
+    setDateLoad;
 end;
 
-procedure TFTexGur.Edit2Click(Sender: TObject);
+procedure TFTexGur.setDateLoad;
 begin
-  edit2.text := '';
-  edit9.text := '';
+  if (DateEdit1.text <> '' )and (DateEdit1.text <= s_dat2_period)  then
+  begin
+    if (serOstDrug = nil) or (serOstDrug.seria <> edit_seria.Text) then
+      acceptAndLoadSeria;
+    if (serOstDrug <> nil) and (serOstDrug.seria = edit_seria.Text) then
+      serOstDrug.setDateZagAndKolSeria(dateEdit1.Date, StrToFloat(edit_kolSeria.Text));
+  end;
+end;
+
+procedure TFTexGur.edit_seriaClick(Sender: TObject);
+begin
+  if (edit_kodProd.text <> '') and (refer.spprod.RecordCount > 0) then
+  begin
+    edit_kolSeria.text := '0';
+    edit_kodProd.OnChange := nil;
+    edit_kodProd.text := refer.spprod.FieldByName('kod_PROD').Asstring;
+    edit_kodProd.OnChange := edit_kodProdChange;
+    loadPrepInfo(refer.spprod.FieldByName('kod_PROD').Asstring);
+  end;
+  edit_seria.text := '';
+  edit_kolSeria.text := '0';
 end;
 
 procedure TFTexGur.btn_delAllClick(Sender: TObject);
 begin
-  drLoad.delAllTexGurRecords;
+  drugEdit.delTexGurLoadAllLines;
 end;
 
 procedure TFTexGur.btn_delRecClick(Sender: TObject);
 begin
-  drLoad.delTexGurRecord;
+  drugEdit.delTexGurLoadLine;
 end;
 
 procedure TFTexGur.ToolButton1Click(Sender: TObject);
 begin
-  drLoad.addTexGurLine;
+  drugEdit.addTexGurLoadLine;
 end;
 
 procedure TFTexGur.grid_seriesDblClick(Sender: TObject);
@@ -2304,20 +2230,20 @@ end;
 procedure TFTexGur.grid_zagrDrawColumnCell(Sender: TObject; const Rect: TRect;
   DataCol: Integer; Column: TColumnEh; State: TGridDrawState);
 begin
-  if ((drLoad.texGurLoad.fieldbyname('KOL_RASH_EDIZ').AsFloat = 0) and (Column.FieldName = 'KOL_RASH_EDIZ'))
-     or ((drLoad.texGurLoad.fieldbyname('ZAG_PERIOD').AsFloat = 0) and (Column.FieldName = 'ZAG_PERIOD')) then
+  if ((drugEdit.texGurLoad.fieldbyname('KOL_RASH_EDIZ').AsFloat = 0) and (Column.FieldName = 'KOL_RASH_EDIZ'))
+     or ((drugEdit.texGurLoad.fieldbyname('ZAG_PERIOD').AsFloat = 0) and (Column.FieldName = 'ZAG_PERIOD')) then
     grid_zagr.Canvas.Font.Style := [fsItalic];
-  if (drLoad.texGurLoad.fieldbyname('DELETE').AsBoolean = true) then
+  if (drugEdit.texGurLoad.fieldbyname('DELETE').AsBoolean = true) then
   begin
-    if (drLoad.texGurLoad.fieldbyname('ADD').AsBoolean = true) then
+    if (drugEdit.texGurLoad.fieldbyname('ADD').AsBoolean = true) then
       grid_zagr.Canvas.Brush.Color := clYellow
     else
       grid_zagr.Canvas.Brush.Color := clRed;
   end;
 
-  if (drLoad.texGurLoad.fieldbyname('ADD').AsBoolean = true) then
+  if (drugEdit.texGurLoad.fieldbyname('ADD').AsBoolean = true) then
   begin
-    if (drLoad.texGurLoad.fieldbyname('DELETE').AsBoolean = true) then
+    if (drugEdit.texGurLoad.fieldbyname('DELETE').AsBoolean = true) then
       grid_zagr.Canvas.Brush.Color := clYellow
     else
       grid_zagr.Canvas.Brush.Color := clMoneyGreen;
@@ -2339,13 +2265,13 @@ begin
 
   case nm of
   1: begin
-      if (drLoad.isKeiIdChangeable()) then
+      if (drugEdit.isKeiIdChangeable()) then
       begin
         if (FEdiz = nil) then
           FEdiz := TFEdiz.Create(Application);
         FEdiz.ShowModal;
         if (FEdiz.ModalResult > 50) then
-          drLoad.changeKeiId(FEdiz.EdizKei_id.AsInteger, FEdiz.EdizNeis.AsString);
+          drugEdit.changeKeiId(FEdiz.EdizKei_id.AsInteger, FEdiz.EdizNeis.AsString);
       end
       else
         MessageDlg('Нельзя менять единицу измерения на занормированном сырье!',
@@ -2353,7 +2279,7 @@ begin
      end;
 
   2: begin
-      if (drLoad.isKeiIdChangeable()) then
+      if (drugEdit.isKeiIdChangeable()) then
       begin
         if (FindMatrop = nil) then
           FindMatrop := TfindMatrop.Create(Application);
@@ -2362,8 +2288,8 @@ begin
         FindMatrop.ShowModal;
         if (FindMatrop.ModalResult > 50) then
         begin
-          drLoad.changeKsmId(FindMatrop.ModalResult - 50, FindMatrop.IBMatropNMAT.AsString);
-          drLoad.changeKeiId(FindMatrop.IBMatropKei_id.AsInteger, FindMatrop.IBMatropNEIS.AsString);
+          drugEdit.changeKsmId(FindMatrop.ModalResult - 50, FindMatrop.IBMatropNMAT.AsString);
+          drugEdit.changeKeiId(FindMatrop.IBMatropKei_id.AsInteger, FindMatrop.IBMatropNEIS.AsString);
         end;
       end
       else
@@ -2372,13 +2298,13 @@ begin
      end;
 
   3: begin
-      if (drLoad.isKeiIdChangeable()) then
+      if (drugEdit.isKeiIdChangeable()) then
       begin
         if (FRazdel = nil) then
           FRazdel := TFRazdel.Create(Application);
         FRazdel.ShowModal;
         if (FRazdel.ModalResult > 50) then
-          drLoad.changeRazdel(FRazdel.ModalResult - 50, s_Razdel);
+          drugEdit.changeRazdel(FRazdel.ModalResult - 50, s_Razdel);
       end
       else
         MessageDlg('Нельзя менять раздел занормированного сырья! Вставьте новую строку в отчет.',
@@ -2390,7 +2316,7 @@ end;
 procedure TFTexGur.ToolButton5Click(Sender: TObject);
 begin
  dm1.PechTexGur.EmptyTable;
- s_kodprod:=edit1.Text;
+ s_kodprod := edit_kodProd.Text;
  s_gost:=label22.Caption;
  s_nmat:=label19.Caption;
  s_neiz:=label21.Caption;
@@ -2430,7 +2356,7 @@ end;
 
 procedure TFTexGur.ToolButton6Click(Sender: TObject);
 begin
-  S_ksm := drLoad.texGurLoad.FieldByName('Ksm_id').AsInteger;
+  S_ksm := drugEdit.texGurLoad.FieldByName('Ksm_id').AsInteger;
   if (FOstSyr = nil) then
     FOstSyr := TFOstSyr.Create(Application);
   FOstSyr.DateEdit3.Date := strtodate(s_dat1);
@@ -2460,125 +2386,66 @@ begin
 end;
 
 procedure TFTexGur.SpeedButton1Click(Sender: TObject);
-var
-  usl_dat_s : string;
 begin
-  if (seriaOst = nil) then
-    seriaOst := TSeriaOstatki.Create(dm1.BELMED);
-  if (seriaOst.openSeria(s_kodp, '')) then
+  if (refer <> nil) and (refer.spprod.FieldByName('ksm_id').AsInteger <> 0) then
   begin
-    if (seriaOst.showViborSeria(edit2)) then
+    if (serOstDrug = nil) then
+      serOstDrug := TSeriaOstatki.Create(dm1.BELMED);
+    if (serOstDrug.openSeria(refer.spprod.FieldByName('ksm_id').AsInteger, '')) then
     begin
-      vSeria_id := seriaOst.seriaId;
-      s_seria := seriaOst.seria;
-      s_kol_seria := seriaOst.kolSeria;
-      edit9.Text := floattostr(s_kol_seria);
-      Edit2.Text := s_Seria;
-      if (seriaOst.dateZag <> null) then
+      if (serOstDrug.showViborSeria(edit_seria)) then
       begin
-        DateEdit1.Date := seriaOst.dateZag;
-        loadTexGur(s_seria, label19.Caption, god, mes, s_kodp, vStruk_Id);
-      end
-      else
-      begin
-        DateEdit1.ReadOnly := false;
-        DateEdit1.SetFocus;
+        vSeria_id := serOstDrug.seriaId;
+        s_seria := serOstDrug.seria;
+        s_kol_seria := serOstDrug.kolSeria;
+        edit_kolSeria.Text := FloatToStr(serOstDrug.kolSeria);
+        edit_seria.Text := serOstDrug.seria;
+        if (serOstDrug.dateLoad <> 0) then
+        begin
+          DateEdit1.Date := serOstDrug.dateLoad;
+          if (drugEdit = nil) then
+            drugEdit := TDrugReportEdit.Create(dm1.BELMED, vStruk_Id);
+          drugEdit.loadTexGurLoad(true, mes, god, refer.spprod.FieldByName('ksm_id').AsInteger,
+                                  refer.spprod.FieldByName('kei_id').AsInteger,
+                                  refer.spprod.FieldByName('nmat').AsString, s_seria);
+          ds_texGur.DataSet := drugEdit.texGurLoad;
+        end
+        else
+        begin
+          DateEdit1.ReadOnly := false;
+          DateEdit1.SetFocus;
+        end;
       end;
-    end;
-  end
-  else
-  begin
-    MessageDlg('Нет серии заданного препарата!', mtWarning, [mbOK], 0);
-    vseria_id := 0;
+    end
+    else
+      MessageDlg('Нет серий заданного препарата!', mtWarning, [mbOK], 0);
   end;
-
-//  usl_dat_s := usl_dat;
 //  usl_dat := ' ((seria.date_vipusk between ''' + s_dat1 + ''' and ''' + s_dat2 + ''' '
 //             + ' or seria.date_pasport between ''' + s_dat1 + ''' and ''' + s_dat2 + ''' '
 //             + ' or seria.date_zag between ''' + s_dat1 + ''' and ''' + s_dat2 + ''') '
 //             + 'or (seria.date_vipusk is null and seria.date_pasport is null '
 //             + 'and seria.date_zag is null)) ';
-//  DM1.Seria.Close;
-//  DM1.Seria.ParamByName('ksm_id').AsInteger := s_kodp;
 //  DM1.Seria.MacroByName('usl').AsString := usl_dat;
-//  dm1.Seria.Open;
-//  if (not dm1.Seria.Eof) then
-//  begin
-//    dm1.Seria.Last;
-//    openViborSeriesAndLoadTexGur;
-//  end
-//  else
-//  begin
-//    DM1.Seria.Close;
-//    DM1.Seria.ParamByName('ksm_id').AsInteger := s_kodp;
-//    DM1.Seria.MacroByName('usl').AsString := ' 0=0';
-//    dm1.Seria.Open;
-//    dm1.Seria.Last;
-//    if (not dm1.Seria.Eof) then
-//    begin
-//      openViborSeriesAndLoadTexGur;
-//    end
-//    else
-//    begin
-//      MessageDlg('Нет серии заданного препарата!', mtWarning, [mbOK], 0);
-//      vseria_id := 0;
-//    end;
-//  end;
-//  usl_dat := usl_dat_s;
-end;
-
-procedure TFTexGur.openViborSeriesAndLoadTexGur;
-begin
-  if (FSer = nil) then
-    FSer := TFSer.Create(Application);
-  DM1.FormToObject(FSER, Edit2, 0, 0);
-  FSer.ShowModal;
-  if (FSer.ModalResult > 50) then
-  begin
-    vSeria_id := FSer.ModalResult - 50;
-    s_seria := DM1.SeriaSeria.AsString;
-    s_kol_seria := DM1.SeriaKol_Seria.AsFloat;
-    edit9.Text := floattostr(s_kol_seria);
-    Edit2.Text := s_Seria;
-    if (dm1.SeriaDATE_ZAG.AsVariant <> null) then
-    begin
-      DateEdit1.Date := dm1.SeriaDATE_ZAG.AsDateTime;
-      loadTexGur(s_seria, label19.Caption, god, mes, s_kodp, vStruk_Id);
-//      createTexGur(s_seria, god, mes, s_kodp, vStruk_id);;
-    end
-    else
-    begin
-      DateEdit1.ReadOnly := false;
-      DateEdit1.SetFocus;
-    end;
-  end;
 end;
 
 procedure TFTexGur.SpeedButton2Click(Sender: TObject);
 begin
-  if (FindSpprod = nil) then
-    FindSpprod := TfindSpprod.Create(Application);
-  FindSpprod.DataBaseName := dm1.BELMED;
-  FindSpprod.ReadOnly := true;
-  FindSpprod.Usl_Struk := 'spprod.struk_id=' + inttostr(vStruk_id);
-  FindSpprod.ShowModal;
-  if (FindSpprod.ModalResult > 50) then
+  if (refer = nil) then
+    refer := TReferance.Create(dm1.BELMED);
+  if (refer.openSpprodSpr(vStruk_Id)) then
   begin
-    StartWait;
-    loadPrepInfo(FindSpprod.IBSpprodKOD_PROD.AsString);
+    loadPrepInfo(refer.spprod.FieldByName('kod_prod').AsString);
   end;
-  FreeAndNil(FindSpprod);
-  StopWait;
 end;
 
 procedure TFTexGur.SpeedButton3Click(Sender: TObject);
 begin
-  if (DateEdit1.text <> '' )and (DateEdit1.text <= s_dat2_period)  then
-  begin
-    acceptSeria(sender);
-//    createTexGur(s_seria, god, mes, s_kodp, vStruk_id);
-//    loadTexGur(s_seria, label19.Caption, god, mes, s_kodp, vStruk_Id);
-  end;
+  setDateLoad;
+end;
+
+procedure TFTexGur.SpeedButton4Click(Sender: TObject);
+begin
+  acceptAndLoadSeria;
 end;
 
 procedure TFTexGur.Seria_sBeforeInsert(DataSet: TDataSet);
@@ -2605,12 +2472,11 @@ begin
   S_DAT2_period := datetostr(IncMonth(strtodate(s_dat1_period), 1) - 1);
   S_DAT1 := '01.' + S_MES + '.' + copy(INTTOSTR(GOD), 3, 2);
   S_DAT2 := datetostr(IncMonth(strtodate(s_dat1_period), 1) -1);
-  s_seria := edit2.Text;
+  s_seria := edit_seria.Text;
 
   initToolButtons;
-  if (Edit1.Text <> '') then
+  if (edit_kodProd.Text <> '') then
     loadTexGur(s_seria, label19.Caption, god, mes, s_kodp, vStruk_Id);
-//    createTexGur(s_seria, god, mes, s_kodp, vStruk_id);
 
   PageControl1Change(sender);
 end;
@@ -2628,9 +2494,8 @@ begin
   S_DAT2 := datetostr(IncMonth(strtodate(s_dat1_period), 1) -1);
 
   initToolButtons;
-  if (Edit1.Text <> '') then
+  if (edit_kodProd.Text <> '') then
     loadTexGur(s_seria, label19.Caption, god, mes, s_kodp, vStruk_Id);
-//    createTexGur(s_seria, god, mes, s_kodp, vStruk_id)
 end;
 
 procedure TFTexGur.ToolButton4Click(Sender: TObject);

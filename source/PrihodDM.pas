@@ -2,14 +2,12 @@ unit PrihodDM;
 
 interface
 
-uses
+uses TemplateDM,
   SysUtils, Classes, IBDatabase, RxIBQuery, DB, IBCustomDataSet, IBQuery, Dialogs,
   IBStoredProc, IBUpdateSQL, IBUpdSQLW, Variants, Controls, UtilRIB;
 
 type
-  TPrihDM = class(TDataModule)
-    db: TIBDatabase;
-    trans_read: TIBTransaction;
+  TPrihDM = class(TTempDM)
     IBQuery1: TRxIBQuery;
     Kart: TRxIBQuery;
     KartKSM_ID: TIntegerField;
@@ -55,64 +53,7 @@ type
     KartOST_STRUK_ID: TIntegerField;
     KartCENA_UCH: TFloatField;
     IBUpdateKart: TIBUpdateSQLW;
-    trans_write: TIBTransaction;
     ADD_KartDok: TIBStoredProc;
-    Seria: TRxIBQuery;
-    SeriaSERIA_ID: TIntegerField;
-    SeriaKSM_ID: TIntegerField;
-    SeriaSERIA: TIBStringField;
-    SeriaSROK_GODN: TDateField;
-    SeriaSERTIF: TIBStringField;
-    SeriaDATE_SERTIF: TDateField;
-    SeriaPASPORT: TIBStringField;
-    SeriaDATE_PASPORT: TDateField;
-    SeriaKOL_SERIA: TFMTBCDField;
-    SeriaDATE_VIPUSK: TDateField;
-    SeriaFORMA_VIPUSK: TIBStringField;
-    SeriaKEI_ID: TSmallintField;
-    SeriaDATE_TIME_UPDATE: TDateTimeField;
-    SeriaUSER_NAME: TIBStringField;
-    SeriaSHEMA: TIBStringField;
-    SeriaKODTN: TIBStringField;
-    SeriaDATE_ZAG: TDateField;
-    SeriaFIO_RASH: TIBStringField;
-    SeriaFIO_MASTER: TIBStringField;
-    SeriaCOMMENT: TIBStringField;
-    SeriaOB_ZAG: TFloatField;
-    SeriaVLAG_TM: TFloatField;
-    SeriaKOD_TM: TIntegerField;
-    SeriaKOL_TM: TFloatField;
-    IBUpdateSeria: TIBUpdateSQLW;
-    Ostatki: TRxIBQuery;
-    OstatkiKEI_ID: TSmallintField;
-    OstatkiRAZDEL_ID: TSmallintField;
-    OstatkiKSM_ID: TIntegerField;
-    OstatkiKSM_IDPR: TIntegerField;
-    OstatkiMES: TSmallintField;
-    OstatkiGOD: TSmallintField;
-    OstatkiONM_FD: TFMTBCDField;
-    OstatkiONM_NZ: TFMTBCDField;
-    OstatkiONM_S: TFMTBCDField;
-    OstatkiOT_FD: TFMTBCDField;
-    OstatkiOT_NZ: TFMTBCDField;
-    OstatkiOT_S: TFMTBCDField;
-    OstatkiSERIA_ID: TIntegerField;
-    OstatkiSTRUK_ID: TIntegerField;
-    OstatkiUSER_NAME: TIBStringField;
-    OstatkiKOL_TRANS: TFloatField;
-    OstatkiKOL_GRP: TFloatField;
-    OstatkiVES_TRANS: TIBBCDField;
-    OstatkiNMAT: TIBStringField;
-    OstatkiNEIS: TIBStringField;
-    OstatkiKART_ID: TIntegerField;
-    OstatkiOT_DOKUM: TFloatField;
-    OstatkiONM_DOKUM: TFMTBCDField;
-    OstatkiNOMU_ID_TRANS: TSmallintField;
-    OstatkiNOMU_ID_GRP: TSmallintField;
-    OstatkiVOL_TRANS: TFMTBCDField;
-    OstatkiUpdate: TIBUpdateSQLW;
-    AddSeria: TIBStoredProc;
-    Add_Ostatki: TIBStoredProc;
     IBdel: TIBQuery;
     Document: TRxIBQuery;
     DocumentTIP_DOK_ID: TSmallintField;
@@ -132,10 +73,7 @@ type
     procedure KartBeforePost(DataSet: TDataSet);
     procedure KartBeforeInsert(DataSet: TDataSet);
     procedure KartNewRecord(DataSet: TDataSet);
-    procedure SeriaBeforeInsert(DataSet: TDataSet);
-    procedure SeriaNewRecord(DataSet: TDataSet);
-    procedure OstatkiBeforeInsert(DataSet: TDataSet);
-    procedure OstatkiNewRecord(DataSet: TDataSet);
+
     procedure DocumentBeforeDelete(DataSet: TDataSet);
     procedure DocumentBeforeInsert(DataSet: TDataSet);
     procedure DocumentNewRecord(DataSet: TDataSet);
@@ -163,13 +101,7 @@ type
 
 
   public
-    procedure setDB(db : TIBDatabase);
-    function connectToDB() : boolean;
-    function disconnectFromDB() : boolean;
-    procedure commitReadTrans(retaining : boolean);
-    procedure commitWriteTrans(retaining : boolean);
-    procedure startWriteTrans;
-    procedure startReadTrans;
+    procedure setDB(var db : TIBDatabase);
 
     procedure setValues2Kart(ksmId, klientId, razdelId, keiId, docId, kartId,
                              tipOpId, tipDokId : integer; kolRashEdiz, kolPrihEdiz,
@@ -185,7 +117,8 @@ implementation
 
 procedure TPrihDM.setDB(db : TIBDatabase);
 begin
-  self.db := db;
+  inherited setDB(db);
+  
 end;
 
 function TPrihDM.connectToDB() : boolean;
@@ -397,44 +330,6 @@ begin
     Kart.FieldByName('kol_prih_ediz').AsFloat := 0;
   if (Kart.FieldByName('kol_rash_ediz').AsVariant = null) then
     Kart.FieldByName('kol_rash_ediz').AsFloat := 0;
-end;
-
-procedure TPrihDM.OstatkiBeforeInsert(DataSet: TDataSet);
-begin
-  Add_Ostatki.ExecProc;
-  vkart_Id := Add_Ostatki.Params.Items[0].AsInteger;
-end;
-
-procedure TPrihDM.OstatkiNewRecord(DataSet: TDataSet);
-begin
-  Ostatki.FieldByName('Kart_Id').AsInteger := vKart_Id;
-  Ostatki.FieldByName('Ksm_Id').AsInteger := s_KSM;
-  IF (v_razdel <> 0) then
-    Ostatki.FieldByName('razdel_id').AsInteger := v_razdel;
-  IF (s_kodp <> 0) and (s_kodp <> s_ksm) then
-    Ostatki.FieldByName('ksm_idpr').AsInteger := s_kodp;
-  IF (vSeria_id <> 0) then
-    Ostatki.FieldByName('Seria_id').AsInteger := vseria_id;
-  Ostatki.FieldByName('Kei_Id').AsInteger := s_KEI;
-  Ostatki.FieldByName('Struk_Id').AsInteger := vstruk_id;
-  Ostatki.FieldByName('Mes').AsInteger := Mes_conf;
-  Ostatki.FieldByName('God').AsInteger := God_conf;
-end;
-
-procedure TPrihDM.SeriaBeforeInsert(DataSet: TDataSet);
-begin
-  AddSeria.ExecProc;
-  vSERIA_ID := AddSeria.Params.Items[0].AsInteger;
-end;
-
-procedure TPrihDM.SeriaNewRecord(DataSet: TDataSet);
-begin
-  SeriaSERIA_ID.AsInteger := vSeria_Id;
-  SeriaKSM_ID.AsInteger := S_KSM;
-//  DM1.SeriaSrok_Godn.AsDateTime:=S_Srok_Godn;
-  SeriaSERIA.AsString := s_SERIA;
-  if (SeriaKol_Seria.AsVariant = '') then
-    SeriaKol_Seria.AsFloat := 0;
 end;
 
 procedure TPrihDM.setValues2Kart(ksmId, klientId, razdelId, keiId, docId, kartId,

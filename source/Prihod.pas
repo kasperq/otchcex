@@ -2,14 +2,20 @@ unit Prihod;
 
 interface
 
-uses PrihodDm,
+uses PrihodDm, SeriaOstatki,
 Controls, IBDatabase, Forms, SysUtils, Variants, UtilRIB, Math;
 
 type
   TPrihod = class
   private
     dm : TPrihDM;
-    v_raspred_dob, v_raspred : double;
+    serOst : TSeriaOstatki;
+
+    ksmId, keiId, ksmIdPrep, strukId, razdelId, month, year : integer;
+    dateBegin, dateEnd : TDate;
+    kolRashNorm, kolRashMatrop : double;
+
+
     v_kein : integer;
     s_dat1, s_dat2 : string;
     vSTRUK_ID : integer;
@@ -39,10 +45,11 @@ type
 
   public
     Constructor Create; overload;
-    constructor Create(db : TIBDatabase); overload;
+    constructor Create(var db : TIBDatabase); overload;
     Destructor Destroy; override;
 
-    procedure DobPrixPrep(spec : boolean);
+    procedure DobPrixPrep(spec : boolean; ksmId, keiId, ksmIdPrep, strukId : integer;
+                          kolRash : double);
   
   end;
 
@@ -54,12 +61,12 @@ begin
   //
 end;
 
-constructor TPrihod.Create(db : TIBDatabase);
+constructor TPrihod.Create(var db : TIBDatabase);
 begin
   inherited Create;
   dm := TPrihDm.Create(Application);
   dm.setDB(db);
-  dm.connectToDB;
+
 end;
 
 Destructor TPrihod.Destroy;
@@ -68,41 +75,60 @@ begin
   inherited Destroy;
 end;
 
-procedure TPrihod.DobPrixPrep(spec : boolean);
+procedure TPrihod.DobPrixPrep(spec : boolean; ksmId, keiId, ksmIdPrep, strukId,
+                              razdelId, month, year : integer; kolRash : double);
 var
-  v_docSt : integer;
-  v_tipSt : integer;
-  v_kartSt : integer;
+  s_month : string;
+  ostCexKartId : integer;
+//  v_docSt : integer;
+//  v_tipSt : integer;
+//  v_kartSt : integer;
 begin
-  v_docSt := vDocument_id;
-  v_tipSt := vTip_op_id;
-  v_kartSt := vKart_id;
+//  v_docSt := vDocument_id;
+//  v_tipSt := vTip_op_id;
+//  v_kartSt := vKart_id;
+  self.ksmId := ksmId;
+  self.keiId := keiId;
+  self.ksmIdPrep := ksmIdPrep;
+  self.strukId := strukId;
+  self.razdelId := razdelId;
+  self.kolRashMatrop := kolRash;
+  self.month := month;
+  self.year := year;
+
+  IF (month < 10) THEN
+    s_month := '0' + IntToStr(month)
+  ELSE
+    s_month := IntToStr(month);
+  dateBegin := StrToDate('01.' + s_month + '.' + IntToStr(year));
+  dateEnd := IncMonth(dateBegin, 1) - 1;
+
  // расчет необходимого кол-ва прихода на препарат с учетом остатков
   if (not spec) then
-    v_raspred := getNeededPrixInMatropEdiz();    // v_raspred- в ед.изм.справочника (табл.Matrop)
-  v_raspred_dob := getNeededPrixInNormnEdiz();   // v_raspred_dob - в ед.изм. норм (табл.Normn)
+    kolRashMatrop := getNeededPrixInMatropEdiz();    // v_raspred- в ед.изм.справочника (табл.Matrop)
+  kolRashNorm := getNeededPrixInNormnEdiz();   // v_raspred_dob - в ед.изм. норм (табл.Normn)
 // поиск карточки сырья цеха, ели нет-создать
   if (spec) then
-    v_dok_kart := SelectToVarIB('select Ostatki.kart_id '
-                                + 'FROM Ostatki WHERE Ostatki.STRUK_ID = ' + INTTOSTR(VsTRUK_ID)
-                                + ' AND ostatki.ksm_id = ' + inttostr(s_Ksm)
+    ostCexKartId := SelectToVarIB('select Ostatki.kart_id '
+                                + 'FROM Ostatki WHERE Ostatki.STRUK_ID = ' + IntToStr(strukId)
+                                + ' AND ostatki.ksm_id = ' + IntToStr(ksmId)
                                 + ' AND (coalesce(Ostatki.Ksm_idpr, 0) = 0) '
                                 + ' and ostatki.account = ''10/11'' '
                                 + ' and ostatki.ot_s <> 0 ',
                                 dm.db, dm.trans_read)
   else
-    v_dok_kart := SelectToVarIB('select Ostatki.kart_id '
-                                + 'FROM Ostatki WHERE Ostatki.STRUK_ID = ' + INTTOSTR(VsTRUK_ID)
-                                + ' AND ostatki.ksm_id = ' + inttostr(s_Ksm)
+    ostCexKartId := SelectToVarIB('select Ostatki.kart_id '
+                                + 'FROM Ostatki WHERE Ostatki.STRUK_ID = ' + IntToStr(strukId)
+                                + ' AND ostatki.ksm_id = ' + IntToStr(ksmId)
                                 + ' AND (coalesce(Ostatki.Ksm_idpr, 0) = 0)',
                                 dm.db, dm.trans_read);
 
-  If (v_dok_kart = Null) then
+  If (ostCexKartId = Null) then
     createKartIdInOstatki   //  карточки нету, создаем ее
   else
     st_kart := v_dok_kart;  // карточка сырья цеха есть, получаем сумму остатка в сырье
   createPrixodDocumOnPrep;  //                 создаем документ прихода сырья  на препарат
-  if (v_raspred_dob > 0) then
+  if (kolRashNorm > 0) then
   begin
     if (not dm.Kart.Active) then
     begin
@@ -125,47 +151,46 @@ end;
 
 function TPrihod.getNeededPrixInMatropEdiz() : double;   // расчет необходимого кол-ва прихода на препарат с учетом остатков
 begin
-  dm.IBQuery1.Active := False;
+  result := 0;
+  dm.IBQuery1.Close;
   dm.IBQuery1.SQL.Clear;
   dm.IBQuery1.SQL.Add('SELECT ost.kei_id, ost.OSTATOK_begin_S, ost.zag_period, '
                        + 'ost.peredano_rash_s, ost.peredano_prih_s, ost.razdel_id ');
-  dm.IBQuery1.SQL.Add(' FROM  SELECT_OST_KSM (' + '''' + s_dat1 + '''' + ','
-                       + '''' + s_dat2 + '''' + ',' + inttostr(s_kodp) + ','
-                       + inttostr(vSTRUK_ID) + ',' + inttostr(s_KSM)
-                       + ') ost where ost.razdel_id = ' + inttostr(v_razdel));
-  dm.IBQuery1.Active := True;
+  dm.IBQuery1.SQL.Add(' FROM  SELECT_OST_KSM (' + '''' + DateToStr(dateBegin) + '''' + ','
+                       + '''' + DateToStr(dateEnd) + '''' + ',' + IntToStr(ksmIdPrep) + ','
+                       + IntToStr(strukId) + ',' + IntToStr(ksmId)
+                       + ') ost where ost.razdel_id = ' + IntToStr(razdelId));
+  dm.IBQuery1.Open;
   if (dm.IBQuery1.RecordCount > 0) then
     result := dm.IBQuery1.FieldByName('zag_period').AsFloat
               + dm.IBQuery1.FieldByName('peredano_rash_s').AsFloat
               - dm.IBQuery1.FieldByName('OSTATOK_begin_S').AsFloat
-              - dm.IBQuery1.FieldByName('peredano_prih_s').AsFloat
-  else
-    result := 0;
+              - dm.IBQuery1.FieldByName('peredano_prih_s').AsFloat;
 end;
 
 function TPrihod.getNeededPrixInNormnEdiz() : double;   // расчет необходимого кол-ва прихода на препарат с учетом остатков
 begin
-  dm.IBQuery1.Active := False;
+  dm.IBQuery1.Close;
   dm.IBQuery1.SQL.Clear;
   dm.IBQuery1.SQL.Add('SELECT ost.kei_id, ost.OSTATOK_begin_S, ost.zag_period, '
                        + 'ost.peredano_rash_s, ost.peredano_prih_s, ost.razdel_id ');
-  dm.IBQuery1.SQL.Add(' FROM  SELECT_OST_KSM (' + '''' + s_dat1 + '''' + ','
-                       + '''' + s_dat2 + '''' + ',' + inttostr(s_kodp) + ','
-                       + inttostr(vSTRUK_ID) + ',' + inttostr(s_KSM)
-                       + ') ost where ost.razdel_id = ' + inttostr(v_razdel));
-  dm.IBQuery1.Active := True;
+  dm.IBQuery1.SQL.Add(' FROM  SELECT_OST_KSM (' + '''' + DateToStr(dateBegin) + '''' + ','
+                       + '''' + DateToStr(dateEnd) + '''' + ',' + IntToStr(ksmIdPrep) + ','
+                       + IntToStr(strukId) + ',' + IntToStr(ksmId)
+                       + ') ost where ost.razdel_id = ' + IntToStr(razdelId);
+  dm.IBQuery1.Open;
   if (dm.IBQuery1.RecordCount > 0) then
   begin
-    if (v_kein <> dm.IBQuery1.FieldByName('kei_id').asinteger) then
-      result := roundto(v_raspred * dm.Koef_per(v_Kein,
-                                                dm.IBQuery1.FieldByName('Kei_id').AsInteger,
-                                                s_Ksm),
-                        tochn)
+    if (keiId <> dm.IBQuery1.FieldByName('kei_id').asinteger) then
+      result := RoundTo(kolRashMatrop * dm.Koef_per(keiId,
+                                                    dm.IBQuery1.FieldByName('Kei_id').AsInteger,
+                                                    ksmId),
+                        -6)
     else
-      result := v_raspred;
+      result := kolRashMatrop;
   end
   else
-    result := v_raspred;
+    result := kolRashMatrop;
 end;
 
 procedure TPrihod.createKartIdInOstatki;   // создание карточки сырья в остатках
@@ -275,7 +300,7 @@ begin
  pr_vxod := 1;
   if (dm.IBQuery1.RecordCount > 0) then
   begin
-    v_ost_razn := v_raspred_dob;
+    v_ost_razn := kolRashNorm;
     while (not dm.IBQuery1.eof) and ((v_ost_razn > 0) or (pr_vxod = 1))  do
     begin
       pr_vxod := pr_vxod + 1;
@@ -286,7 +311,7 @@ begin
       else
       begin
         if (dm.IBQuery1.eof) then
-          v_raspred_dob := v_ost_razn
+          kolRashNorm := v_ost_razn
         else
         begin
           if (v_ost <> 0) and (not dm.IBQuery1.eof) then
@@ -294,12 +319,12 @@ begin
             dm.IBQuery1.Prior;
             if (v_ost_razn - v_ost >= 0){ and (v_ost >= 0)} then
             begin
-              v_raspred_dob := v_ost;
+              kolRashNorm := v_ost;
               v_ost_razn := v_ost_razn - v_ost;
             end
             else
             begin
-              v_raspred_dob := v_ost_razn;
+              kolRashNorm := v_ost_razn;
               v_ost_razn := v_ost_razn - v_ost;
             end;
           end;
@@ -307,7 +332,7 @@ begin
         dm.Kart.Insert;
         dm.setValues2Kart(s_ksm, vklient_id, v_razdel, v_kein, vdocument_id,
                        dm.IBQuery1.FieldByName('Kart_id').AsInteger,
-                       30, 37, v_raspred_dob, 0, 0, 0);
+                       30, 37, kolRashNorm, 0, 0, 0);
         dm.Kart.Post;
       end;
       dm.IBQuery1.Next;
@@ -317,7 +342,7 @@ begin
   begin
     dm.Kart.Insert;
     dm.setValues2Kart(s_ksm, vklient_id, v_razdel, v_kein, vdocument_id, st_Kart,
-                   30, 37, v_raspred_dob, 0, 0, 0);
+                   30, 37, kolRashNorm, 0, 0, 0);
     dm.Kart.Post
   end;
   dm.Kart.BeforePost := dm.KartBeforePost;

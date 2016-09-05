@@ -112,7 +112,10 @@ uses
   SeriaOstatki in 'Source\SeriaOstatki.pas',
   SeriaOstatkiDM in 'Source\SeriaOstatkiDM.pas' {SerOstDM: TDataModule},
   SeriaForm in 'Source\SeriaForm.pas' {FSeriaForm},
-  DrugReportEdit in 'Source\DrugReportEdit.pas';
+  DrugReportEdit in 'Source\DrugReportEdit.pas',
+  ReferanceDM in 'Source\ReferanceDM.pas' {RefDM: TDataModule},
+  Referance in 'Source\Referance.pas',
+  TemplateDM in 'Source\TemplateDM.pas' {TempDM: TDataModule};
 
 {$R *.res}
 

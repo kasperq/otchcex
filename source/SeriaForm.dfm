@@ -117,7 +117,6 @@ object FSeriaForm: TFSeriaForm
     FieldDefs = <>
     IndexDefs = <>
     SortOptions = []
-    ReadOnly = True
     AllDataOptions = [mtfSaveData, mtfSaveNonVisible, mtfSaveBlobs, mtfSaveFiltered, mtfSaveIgnoreRange, mtfSaveIgnoreMasterDetail, mtfSaveDeltas]
     CommaTextOptions = [mtfSaveData]
     CSVQuote = '"'
