@@ -2767,30 +2767,41 @@ end;
 procedure TFGotProdNaklView.loadAndInitMDNaklad;
 var
   st : string;
+  kolRash1000000, kolRash, kolRash1000 : double;
 begin
   MD_Naklad.Close;
   MD_Naklad.Open;
   MD_Naklad.LoadFromDataSet(TempQuery, 0, lmAppend);
   MD_Naklad.First;
+  kolRash1000000 := MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000000;
+  kolRash1000 := MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000;
+  kolRash := MD_Naklad.FieldByName('KOL_RASH').AsFloat;
   while (not MD_Naklad.Eof) do
   begin
     MD_Naklad.edit;
     st := '';
     if ((keiId = 166) or (keiId = 170) or (keiId = 163) or (keiId = 122)) then
-      st := AnsiUpperCase(FloatToText(MD_Naklad.FieldByName('KOL_RASH').AsFloat, 3))
+//      st := AnsiUpperCase(FloatToText(MD_Naklad.FieldByName('KOL_RASH').AsFloat, 3))
+      st := AnsiUpperCase(FloatToText(StrToFloat(FloatToStr(kolRash)), 3))
     else
     begin
       if (keiId = 660) or (keiId = 800) then
-        st := FloatToText(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000000,
-                          KolZnakovPosleZap(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000000))
+        st := FloatToText(StrToFloat(FloatToStr(kolRash1000000)),
+                          KolZnakovPosleZap(kolRash1000000))
+//        st := FloatToText(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000000,
+//                          KolZnakovPosleZap(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000000))
       else
-        st := FloatToText(StrToFloat(FloatToStr(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000)),
-                          KolZnakovPosleZap(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000));
+        st := FloatToText(StrToFloat(FloatToStr(kolRash1000)),
+                          KolZnakovPosleZap(kolRash1000))
+//        st := FloatToText(StrToFloat(FloatToStr(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000)),
+//                          KolZnakovPosleZap(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000));
     end;
 
     if (cbRF.Checked) then
-      st := FloatToText(StrToFloat(FloatToStr(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000)),
-                        KolZnakovPosleZap(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000));
+      st := FloatToText(StrToFloat(FloatToStr(kolRash1000)),
+                          KolZnakovPosleZap(kolRash1000));
+//      st := FloatToText(StrToFloat(FloatToStr(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000)),
+//                        KolZnakovPosleZap(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000));
     MD_Naklad.FieldByName('SUM_PROP').AsString := st;
     MD_Naklad.Post;
     MD_Naklad.next;
