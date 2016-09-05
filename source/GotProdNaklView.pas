@@ -1847,19 +1847,39 @@ var
   v_kol_upak : integer;
   v_kol_upak1 : integer;
   v_seria1 : string;
+
+  kolRash, kolTrans, divRT : double;
+  truncDivRT : integer;
+
 begin
   while (not MD_Nakl_s.Eof) do
   begin
     v_kol_upak1 := 0;
+
+    kolRash := MD_Nakl_s.FieldByName('KOL_RASH').AsFloat;
+    kolTrans := MD_Nakl_s.FieldByName('kol_trans').AsFloat;
+    divRT := StrToFloat(FloatToStr(kolRash / kolTrans));
+    SetRoundMode(rmUp);
+    truncDivRT := trunc(StrToFloat(FloatToStr(divRT)));
+
+
     MD_Nakl_s.Edit;
     MD_Nakl_s.FieldByName('kol_upak').AsInteger := MD_Nakl_s.FieldByName('kol_grp').AsInteger;
     st := SumToString(Round(MD_Nakl_s.FieldByName('kol_grp').AsInteger));
     MD_Nakl_s.FieldByName('kol_upak_prop').AsString := st;
-    v_kol_upak := Trunc(StrToFloat(MD_Nakl_s.FieldByName('KOL_RASH').AsString)
-                        / StrToFloat(MD_Nakl_s.FieldByName('kol_trans').AsString));
-    if (v_kol_upak < MD_Nakl_s.FieldByName('KOL_RASH').AsFloat
-                    / MD_Nakl_s.FieldByName('kol_trans').AsFloat) then
+
+    v_kol_upak := truncDivRT;
+
+//    v_kol_upak := Trunc(StrToFloat(MD_Nakl_s.FieldByName('KOL_RASH').AsString)
+//                        / StrToFloat(MD_Nakl_s.FieldByName('kol_trans').AsString));
+
+    if (v_kol_upak < divRT) then
+
+//    if (v_kol_upak < MD_Nakl_s.FieldByName('KOL_RASH').AsFloat
+//                    / MD_Nakl_s.FieldByName('kol_trans').AsFloat) then
       v_kol_upak1 := 1;
+
+
     GetUpak.Close;
     GetUpak.ParamByName('name_upak').AsString := MD_Nakl_s.FieldByName('upak_trans').AsString;
     GetUpak.Open;
@@ -2150,8 +2170,8 @@ var
   v_kol_upak : integer;
   v_kol_upak1 : integer;
   v_seria1 : string;
-  kolRash, kolTrans, divRT, divRT1000, fracRash, rash1000 : double;
-  truncDivRT, truncDivRT1000 : integer;
+  kolRash, kolTrans, divRT1000, fracRash, rash1000 : double;
+  truncDivRT1000 : integer;
 
 begin
   while (not MD_Nakl_s.Eof) do
@@ -2159,10 +2179,8 @@ begin
     v_kol_upak1 := 0;
     kolRash := MD_Nakl_s.FieldByName('KOL_RASH').AsFloat;
     kolTrans := MD_Nakl_s.FieldByName('kol_trans').AsFloat;
-    divRT := kolRash / kolTrans;
     divRT1000 := StrToFloat(FloatToStr(kolRash * 1000 / kolTrans));
     SetRoundMode(rmUp);
-    truncDivRT := trunc(divRT);
     truncDivRT1000 := trunc(StrToFloat(FloatToStr(divRT1000)));
 
     MD_Nakl_s.Edit;
