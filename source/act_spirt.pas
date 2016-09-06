@@ -536,8 +536,8 @@ begin
 //        mem_spirtOSTATOK_BEGIN_S.AsFloat := mem_spirtOSTATOK_BEGIN_S.AsFloat + spirtOSTATOK_BEGIN_S.AsFloat;
 //        mem_spirtOSTATOK_END_NZ.AsFloat := mem_spirtOSTATOK_END_NZ.AsFloat + spirtOSTATOK_END_NZ.AsFloat;
 //        mem_spirtOSTATOK_END_S.AsFloat := mem_spirtOSTATOK_END_S.AsFloat + spirtOSTATOK_END_S.AsFloat;
-        mem_spirtOST_NN.AsFloat := mem_spirtOST_NN.AsFloat + spirtOST_NN.AsFloat;
-        mem_spirtOST_NK.AsFloat := mem_spirtOST_NK.AsFloat + spirtOST_NK.AsFloat;
+//        mem_spirtOST_NN.AsFloat := mem_spirtOST_NN.AsFloat + spirtOST_NN.AsFloat;
+//        mem_spirtOST_NK.AsFloat := mem_spirtOST_NK.AsFloat + spirtOST_NK.AsFloat;
         if (mem_spirtZNAK.AsInteger < spirtZNAK.AsInteger) then
           mem_spirtZNAK.AsInteger := spirtZNAK.AsInteger;
       end;
