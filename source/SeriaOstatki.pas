@@ -28,7 +28,7 @@ type
 
     function showViborSeria(parentControl : TControl) : boolean;
 
-    function openOstatki(ksmId, seriaId, strukId : integer) : boolean;
+    function openOstatki(ksmId, seriaId, strukId, ksmIdPrep : integer) : boolean;
     procedure insertOstatki(ksmId, ksmIdPrep, razdelId, seriaId, keiId, strukId,
                             month, year : integer);
     procedure saveSeriaAndOstatki(dateLoad : TDate; kolSeria : double; month, year : integer);
@@ -42,6 +42,7 @@ type
     property seria : string read m_seria write m_seria;
     property kolSeria : double read m_kolSeria write m_kolSeria;
     property dateLoad : TDate read m_dateZag write m_dateZag;
+    property kartId : integer read m_kartId write m_kartId;
   end;
 
 implementation
@@ -112,18 +113,30 @@ begin
   end;
 end;
 
-function TSeriaOstatki.openOstatki(ksmId, seriaId, strukId : integer) : boolean;
+function TSeriaOstatki.openOstatki(ksmId, seriaId, strukId, ksmIdPrep : integer) : boolean;
 begin
   result := false;
   self.ksmId := ksmId;
   dm.q_ostatki.Close;
   dm.q_ostatki.ParamByName('struk_id').AsInteger := strukId;
-  dm.q_ostatki.MacroByName('usl').AsString := ' OST.KSM_ID=' + IntToStr(ksmId)
-                                              + ' and ost.seria_id=' + IntToStr(seriaId);
+  dm.q_ostatki.MacroByName('usl').AsString := ' OST.KSM_ID=' + IntToStr(ksmId);
+  if (seriaId <> -1) then
+    dm.q_ostatki.MacroByName('usl').AsString := dm.q_ostatki.MacroByName('usl').AsString
+                                                + ' and coalesce(ost.seria_id, 0) = '
+                                                + IntToStr(seriaId);
+  if (ksmIdPrep <> -1) then
+    dm.q_ostatki.MacroByName('usl').AsString := dm.q_ostatki.MacroByName('usl').AsString
+                                                + ' and coalesce(ost.ksm_idpr, 0) = '
+                                                + IntToStr(ksmIdPrep);
+
+
   dm.q_ostatki.Open;
   dm.q_ostatki.First;
   if (not dm.q_ostatki.Eof) then
+  begin
+    kartId := dm.q_ostatki.FieldByName('kart_id').AsInteger;
     result := true;
+  end;
 end;
 
 procedure TSeriaOstatki.insertOstatki(ksmId, ksmIdPrep, razdelId, seriaId, keiId,

@@ -80,14 +80,11 @@ type
 
   private
     vSERIA_ID : integer;
-    S_KSM : integer;
+    m_ksmId : integer;
     vStroka_Id : integer;
-    vStruk_Id : integer;
+
     vKart_Id : integer;
-    VDOCUMENT_ID : integer;
-    vTip_op_id : integer;
-    vTip_doc_id : integer;
-    vKlient_Id : integer;
+
     st_kart : integer;
     s_kei : integer;
     v_Razdel : integer;
@@ -95,18 +92,31 @@ type
     Mes_conf : integer;
     God_conf : integer;
     s_SERIA : string;
-    vNdoc : string;
-    vDate_dok, vDate_op : TDate;
 
-
+    m_vNdoc : string;
+    m_dateDok, m_dateOp : TDate;
+    m_strukId : integer;
+    m_newDocId : integer;
+    m_tipOpId : integer;
+    m_tipDokId : integer;
+    m_ksmIdPrep : integer;
 
   public
-    procedure setDB(var db : TIBDatabase);
+//    procedure setDB(var db : TIBDatabase);
 
     procedure setValues2Kart(ksmId, klientId, razdelId, keiId, docId, kartId,
                              tipOpId, tipDokId : integer; kolRashEdiz, kolPrihEdiz,
                              kolRash, kolPrih : double);
     function Koef_per(kei_in : integer; kei_from : integer; ksm : integer) : double;
+
+    property dateDok : TDate read m_dateDok write m_dateDok;
+    property dateOp : TDate read m_dateOp write m_dateOp;
+    property strukId : integer read m_strukId write m_strukId;
+    property newDocId : integer read m_newDocId write m_newDocId;
+    property tipOpId : integer read m_tipOpId write m_tipOpId;
+    property tipDokId : integer read m_tipDokId write m_tipDokId;
+    property ksmIdPrep : integer read m_ksmIdPrep write m_ksmIdPrep;
+    property vNdoc : integer read m_vNdoc write m_vNdoc;
 
   end;
 
@@ -114,39 +124,6 @@ type
 implementation
 
 {$R *.dfm}
-
-procedure TPrihDM.setDB(db : TIBDatabase);
-begin
-  inherited setDB(db);
-  
-end;
-
-function TPrihDM.connectToDB() : boolean;
-begin
-  result := false;
-  try
-    db.Open;
-    startReadTrans;
-    if (db.Connected) and (trans_read.Active) then
-      result := true;
-  except
-//    ShowMessage('У пользователя ' + login + ' нет доступа к базе данных');
-  end;
-end;
-
-function TPrihDM.disconnectFromDB() : boolean;
-begin
-  result := false;
-  try
-    if (trans_read.InTransaction) then
-      trans_read.CommitRetaining;
-    trans_read.Active := false;
-    db.Close;
-    result := not db.Connected;
-  except
-
-  end;
-end;
 
 procedure TPrihDM.DocumentBeforeDelete(DataSet: TDataSet);
 begin
@@ -162,52 +139,22 @@ procedure TPrihDM.DocumentBeforeInsert(DataSet: TDataSet);
 begin
   Add_KartDok.StoredProcName := 'ADD_DOCUMENT';
   Add_KartDok.ExecProc;
-  vDocument_Id := Add_KartDok.Params.Items[0].AsInteger;
+  m_newDocId := Add_KartDok.Params.Items[0].AsInteger;
 end;
 
 procedure TPrihDM.DocumentNewRecord(DataSet: TDataSet);
 begin
-  Document.FieldByName('Doc_Id').AsInteger := vDocument_Id;
-  Document.FieldByName('Tip_Op_Id').AsInteger := vTip_Op_Id;
-  Document.FieldByName('Struk_Id').AsInteger := vStruk_Id;
+  Document.FieldByName('Doc_Id').AsInteger := m_newDocId;
+  Document.FieldByName('Tip_Op_Id').AsInteger := m_tipOpId;
+  Document.FieldByName('Struk_Id').AsInteger := m_strukId;
 //  Document.FieldByName('Zadacha_Id').AsString := vZadacha_Id;
-  Document.FieldByName('Tip_Dok_Id').AsInteger := vTip_Doc_Id;
+  Document.FieldByName('Tip_Dok_Id').AsInteger := m_tipDokId;
   if (copy(vNdoc, 1, 5) = 'Старт') then
-    vNdoc := vndoc + inttostr(vDocument_id);
-  Document.FieldByName('NDok').AsString := vNDoc;
-  Document.FieldByName('Klient_Id').AsInteger := vKlient_Id;
-  Document.FieldByName('Date_Dok').AsDateTime := vDate_dok;
-  Document.FieldByName('Date_Op').AsDateTime := vDate_op;
-end;
-
-procedure TPrihDM.startWriteTrans;
-begin
-  if (not trans_write.Active) then
-    trans_write.StartTransaction;
-end;
-
-procedure TPrihDM.startReadTrans;
-begin
-  if (not trans_read.Active) then
-    trans_read.StartTransaction;
-end;
-
-procedure TPrihDM.commitWriteTrans(retaining : boolean);
-begin
-  startWriteTrans;
-  if (retaining) then
-    trans_write.CommitRetaining
-  else
-    trans_write.Commit;
-end;
-
-procedure TPrihDM.commitReadTrans(retaining : boolean);
-begin
-  startReadTrans;
-  if (retaining) then
-    trans_read.CommitRetaining
-  else
-    trans_read.Commit;
+    vNdoc := vndoc + IntToStr(m_newDocId);
+  Document.FieldByName('NDok').AsString := m_vNDoc;
+  Document.FieldByName('Klient_Id').AsInteger := m_ksmIdPrep;
+  Document.FieldByName('Date_Dok').AsDateTime := m_dateDok;
+  Document.FieldByName('Date_Op').AsDateTime := m_dateOp;
 end;
 
 procedure TPrihDM.KartBeforeInsert(DataSet: TDataSet);
@@ -224,7 +171,7 @@ end;
 
 procedure TPrihDM.KartBeforePost(DataSet: TDataSet);
 begin
-  s_ksm := KartKSM_ID.AsInteger;
+  m_ksmId := KartKSM_ID.AsInteger;
   s_kei := KartKei_ID.AsInteger;
   v_Razdel := KartRazdel_ID.AsInteger;
   If Kart.FieldByName('Ksm_id').AsInteger = 0 then
@@ -265,7 +212,7 @@ begin
     begin
       if Ostatki.Active then
         Ostatki.Active := false;
-      Ostatki.ParamByName('struk_ID').AsInteger := vstruk_id;
+      Ostatki.ParamByName('struk_ID').AsInteger := m_strukId;
       if v_Razdel = 0 then
         Ostatki.MacroByName('usl').AsString := ' ((ost.razdel_id is null) OR (ost.razdel_id = 0))'
                                                + ' AND OST.KSM_ID = ' + INTTOSTR(KartKSM_ID.AsInteger)
@@ -306,7 +253,7 @@ begin
       Ostatki.ApplyUpdates;
     end;
     Kart.FieldByName('Kart_Id').AsInteger := vKart_Id;
-    Kart.FieldByName('Doc_Id').AsInteger := VDOCUMENT_ID;
+    Kart.FieldByName('Doc_Id').AsInteger := m_newDocId;
   except
     MessageDlg('Произошла ошибка при добавлении нового сырья в документ.', mtWarning, [mbOK], 0);
     Abort;
@@ -316,12 +263,12 @@ end;
 procedure TPrihDM.KartNewRecord(DataSet: TDataSet);
 begin
   Kart.FieldByName('Stroka_Id').AsInteger := vStroka_Id;
-  Kart.FieldByName('Struk_Id').AsInteger := vStruk_Id;
+  Kart.FieldByName('Struk_Id').AsInteger := m_strukId;
   Kart.FieldByName('Kart_Id').AsInteger := vKart_Id;
-  Kart.FieldByName('Doc_Id').AsInteger := VDOCUMENT_ID;
-  Kart.FieldByName('tip_op_id').AsInteger := vTip_op_id;
-  Kart.FieldByName('tip_dok_id').AsInteger := vTip_doc_id;
-  Kart.FieldByName('Klient_Id').AsInteger := vKlient_Id;
+  Kart.FieldByName('Doc_Id').AsInteger := m_newDocId;
+  Kart.FieldByName('tip_op_id').AsInteger := m_tipOpId;
+  Kart.FieldByName('tip_dok_id').AsInteger := m_tipDokId;
+  Kart.FieldByName('Klient_Id').AsInteger := m_ksmIdPrep;
   if (Kart.FieldByName('kol_prih').AsVariant = null) then
     Kart.FieldByName('kol_prih').AsVariant := 0;
   if (Kart.FieldByName('kol_rash').AsVariant = null) then

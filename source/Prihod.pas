@@ -14,7 +14,7 @@ type
     ksmId, keiId, ksmIdPrep, strukId, razdelId, month, year : integer;
     dateBegin, dateEnd : TDate;
     kolRashNorm, kolRashMatrop : double;
-
+    prihDocId : integer;
 
     v_kein : integer;
     s_dat1, s_dat2 : string;
@@ -22,7 +22,7 @@ type
     s_KSM : integer;
     vklient_id : integer;
     v_razdel : integer;
-    vdocument_id : integer;
+
     st_Kart : integer;
     v_dok_Kart : integer;
     S_KODP : integer;
@@ -87,6 +87,8 @@ begin
 //  v_docSt := vDocument_id;
 //  v_tipSt := vTip_op_id;
 //  v_kartSt := vKart_id;
+  if (serOst = nil) then
+    serOst := TSeriaOstatki.Create(dm.db);
   self.ksmId := ksmId;
   self.keiId := keiId;
   self.ksmIdPrep := ksmIdPrep;
@@ -108,25 +110,29 @@ begin
     kolRashMatrop := getNeededPrixInMatropEdiz();    // v_raspred- в ед.изм.справочника (табл.Matrop)
   kolRashNorm := getNeededPrixInNormnEdiz();   // v_raspred_dob - в ед.изм. норм (табл.Normn)
 // поиск карточки сырья цеха, ели нет-создать
-  if (spec) then
-    ostCexKartId := SelectToVarIB('select Ostatki.kart_id '
-                                + 'FROM Ostatki WHERE Ostatki.STRUK_ID = ' + IntToStr(strukId)
-                                + ' AND ostatki.ksm_id = ' + IntToStr(ksmId)
-                                + ' AND (coalesce(Ostatki.Ksm_idpr, 0) = 0) '
-                                + ' and ostatki.account = ''10/11'' '
-                                + ' and ostatki.ot_s <> 0 ',
-                                dm.db, dm.trans_read)
+  if (serOst.openOstatki(ksmId, -1, strukId, 0)) then
+    ostCexKartId := serOst.kartId
   else
-    ostCexKartId := SelectToVarIB('select Ostatki.kart_id '
-                                + 'FROM Ostatki WHERE Ostatki.STRUK_ID = ' + IntToStr(strukId)
-                                + ' AND ostatki.ksm_id = ' + IntToStr(ksmId)
-                                + ' AND (coalesce(Ostatki.Ksm_idpr, 0) = 0)',
-                                dm.db, dm.trans_read);
-
-  If (ostCexKartId = Null) then
-    createKartIdInOstatki   //  карточки нету, создаем ее
-  else
-    st_kart := v_dok_kart;  // карточка сырья цеха есть, получаем сумму остатка в сырье
+    serOst.insertOstatki();
+  
+//  if (spec) then
+//    ostCexKartId := SelectToVarIB('select Ostatki.kart_id '
+//                                + 'FROM Ostatki WHERE Ostatki.STRUK_ID = ' + IntToStr(strukId)
+//                                + ' AND ostatki.ksm_id = ' + IntToStr(ksmId)
+//                                + ' AND (coalesce(Ostatki.Ksm_idpr, 0) = 0) '
+//                                + ' and ostatki.account = ''10/11'' '
+//                                + ' and ostatki.ot_s <> 0 ',
+//                                dm.db, dm.trans_read)
+//  else
+//    ostCexKartId := SelectToVarIB('select Ostatki.kart_id '
+//                                + 'FROM Ostatki WHERE Ostatki.STRUK_ID = ' + IntToStr(strukId)
+//                                + ' AND ostatki.ksm_id = ' + IntToStr(ksmId)
+//                                + ' AND (coalesce(Ostatki.Ksm_idpr, 0) = 0)',
+//                                dm.db, dm.trans_read);
+//  If (ostCexKartId = Null) then
+    createKartIdInOstatki;   //  карточки нету, создаем ее
+//  else
+//    st_kart := v_dok_kart;  // карточка сырья цеха есть, получаем сумму остатка в сырье
   createPrixodDocumOnPrep;  //                 создаем документ прихода сырья  на препарат
   if (kolRashNorm > 0) then
   begin
@@ -144,9 +150,9 @@ begin
     findOstatkiSyrInCex(spec);
     createKartInPrixodDocumOnPrep;    // запись необходимого прихода на препарат в Kart
   end;
-  vdocument_id := v_docSt;
-  vTip_Op_Id := v_tipSt;
-  vKart_id := v_kartSt;
+//  prihDocId := v_docSt;
+//  vTip_Op_Id := v_tipSt;
+//  vKart_id := v_kartSt;
 end;
 
 function TPrihod.getNeededPrixInMatropEdiz() : double;   // расчет необходимого кол-ва прихода на препарат с учетом остатков
@@ -199,7 +205,7 @@ begin
   begin
     dm.Ostatki.MacroByName('usl').AsString := '0=0';
     dm.Ostatki.ParamByName('struk_id').AsInteger := vStruk_Id;
-    dm.Ostatki.Active := TRUE
+    dm.Ostatki.Open
   end
   else
     dm.Ostatki.First;
@@ -213,38 +219,35 @@ begin
 end;
 
 procedure TPrihod.createPrixodDocumOnPrep;  // создание приходного документа на препарат
-var
-  dat : TDate;
 begin
-  dat := strtodate(s_dat1);
-  vDocument_id := -1;
+  prihDocId := -1;
   if (dm.Document.Active) then
     if (dm.Document.Locate('struk_id;tip_op_id;klient_id;date_op',
-                            VarArrayOf([vStruk_id, 30, vKlient_id, dat]), [])) then
-      vDocument_id := dm.DocumentDoc_id.AsInteger;
-  if (vDocument_id = -1) then  
+                            VarArrayOf([strukId, 30, ksmIdPrep, dateBegin]), [])) then
+      prihDocId := dm.DocumentDoc_id.AsInteger;
+  if (prihDocId = -1) then
   begin
-    v_dok_Kart := SelectToVarIB('select DOcUMENT.doc_id FROM document '
-                                + ' WHERE DOcUMENT.STRUK_ID = ' + INTTOSTR(VsTRUK_ID)
+    prihDocId := SelectToVarIB('select DOcUMENT.doc_id FROM document '
+                                + ' WHERE DOcUMENT.STRUK_ID = ' + IntToStr(strukId)
                                 + ' AND DOCUMENT.TIP_OP_ID = 30'
                                 + ' AND Document.Date_op between ' + ''''
-                                + s_dat1 + '''' + ' and ' + '''' + s_dat2 + ''''
-                                + ' AND DOCUMENT.KLIENT_ID = ' + INTTOSTR(S_KODP),
+                                + DateToStr(dateBegin) + '''' + ' and ' + ''''
+                                + DateToStr(dateEnd) + ''''
+                                + ' AND DOCUMENT.KLIENT_ID = ' + IntToStr(ksmIdPrep),
                                 dm.db, dm.trans_read);
-    if (v_dok_Kart <> Null) then
+    if (prihDocId <> Null) then
     begin
-      vDocument_id := V_DOK_KART;
 //                         Удаление данных из KART
-      removeKartByDocidKsmidRazdelid(vDocument_id, s_ksm, v_razdel);
+      removeKartByDocidKsmidRazdelid(prihDocId, ksmId, razdelId);
     end
     ELSE
     BEGIN
-      vTip_Op_Id := 30;
-      vTip_Doc_Id := 37;
-      vNDoc := 'Рп-' + inttostr(S_Kodp) + '-' + inttostr(mes) + '.' + inttostr(god);
-      vKlient_Id := S_KODP;
-      vDate_op := strtodate(s_dat1);
-      vDate_dok := strtodate(s_dat1);
+      dm.tipOpId := 30;
+      dm.tipDokId := 37;
+      dm.vNDoc := 'Рп-' + IntToStr(ksmIdPrep) + '-' + IntToStr(month) + '.' + IntToStr(year);
+      dm.ksmIdPrep := ksmIdPrep;
+      dm.dateOp := dateBegin;
+      dm.dateDok := dateBegin;
       dm.Document.open;
       dm.Document.Insert;
       dm.Document.Post;
@@ -258,12 +261,12 @@ end;
 procedure TPrihod.removeKartByDocidKsmidRazdelid(docId, ksmId, razdelId: Integer);
 begin
   dm.startWriteTrans;
-  dm.IbDel.Active := false;
+  dm.IbDel.Close;
   dm.IbDel.SQL.Clear;
-  dm.IbDel.SQL.Add('delete from kart where doc_id = ' + inttostr(vDocument_id)
-                + ' and ksm_id = ' + inttostr(s_ksm) + ' and razdel_id = '
-                + inttostr(v_razdel) + ' and parent is null ');
-  dm.IbDel.Active := true;
+  dm.IbDel.SQL.Add('delete from kart where doc_id = ' + inttostr(prihDocId)
+                + ' and ksm_id = ' + IntTostr(ksmId) + ' and razdel_id = '
+                + IntToStr(razdelId) + ' and parent is null ');
+  dm.IbDel.Open;
   dm.commitWriteTrans(true);
 end;
 
@@ -330,7 +333,7 @@ begin
           end;
         end;
         dm.Kart.Insert;
-        dm.setValues2Kart(s_ksm, vklient_id, v_razdel, v_kein, vdocument_id,
+        dm.setValues2Kart(s_ksm, vklient_id, v_razdel, v_kein, prihDocId,
                        dm.IBQuery1.FieldByName('Kart_id').AsInteger,
                        30, 37, kolRashNorm, 0, 0, 0);
         dm.Kart.Post;
@@ -341,7 +344,7 @@ begin
   else
   begin
     dm.Kart.Insert;
-    dm.setValues2Kart(s_ksm, vklient_id, v_razdel, v_kein, vdocument_id, st_Kart,
+    dm.setValues2Kart(s_ksm, vklient_id, v_razdel, v_kein, prihDocId, st_Kart,
                    30, 37, kolRashNorm, 0, 0, 0);
     dm.Kart.Post
   end;
