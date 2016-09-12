@@ -2,7 +2,7 @@ unit DrugLoad;
 
 interface
 
-uses DrugLoadDM,
+uses DrugLoadDM, Prihod,
   kbmMemTable, IBDatabase, Forms, SysUtils, Controls, DB, SplshWnd, Windows,
   VCLUtils, Variants, Math, Dialogs, Graphics;
 
@@ -10,6 +10,7 @@ type
   TDrugLoad = class
   private
     dm : TFDMDrugLoad;
+    prih : TPrihod;
     Splash : TForm;
     bmpBook: TBitmap;
     curMonth, curYear : integer;
@@ -69,7 +70,7 @@ type
   public
     constructor Create; overload;
     constructor Create(serverAddr, login, password, role  : string); overload;
-    constructor Create(db : TIBDatabase); overload;
+    constructor Create(var db : TIBDatabase); overload;
     destructor Destroy; override;
 
     procedure createTexGur(seria, prepNmat : string; year, month, ksmIdPrep, strukId, keiId : integer; full : boolean);
@@ -104,19 +105,18 @@ begin
   bmpBook.LoadFromResourceName(HInstance,'booka');
 end;
 
-constructor TDrugLoad.Create(db : TIBDatabase);
+constructor TDrugLoad.Create(var db : TIBDatabase);
 begin
   inherited Create;
   dm := TFDMDrugLoad.Create(Application);
   dm.setDB(db);
-  dm.connectToDB;
+//  dm.connectToDB;
   bmpBook := TBitmap.Create;
   bmpBook.LoadFromResourceName(HInstance,'booka');
 end;
 
 destructor TDrugLoad.Destroy;
 begin
-  dm.disconnectFromDB;
   dm := nil;
   dm.Free;
   inherited Destroy;
@@ -766,18 +766,20 @@ begin
       if (dm.q_kart.UpdatesPending) then
       begin
         dm.q_kart.ApplyUpdates;
+        dm.commitWriteTrans(true);
         addPrihod(dm.mem_texGurKOL_RASH_EDIZ.AsFloat, dm.mem_texGurKSM_ID.AsInteger,
                   curKeiId, dm.mem_texGurKSM_ID_PREP.AsInteger, dm.mem_texGurRAZDEL_ID.AsInteger);
-        dm.commitWriteTrans(true);
+//        dm.commitWriteTrans(true);
       end
       else
       begin
         if (dm.mem_texGurOSTATOK_END_S.AsFloat < 0)
            or (dm.mem_texGurPRIX_PERIOD.AsFloat <> dm.mem_texGurZAG_PERIOD.AsFloat) then
         begin
+          dm.commitWriteTrans(true);
           addPrihod(dm.mem_texGurKOL_RASH_EDIZ.AsFloat, dm.mem_texGurKSM_ID.AsInteger,
                   curKeiId, dm.mem_texGurKSM_ID_PREP.AsInteger, dm.mem_texGurRAZDEL_ID.AsInteger);
-          dm.commitWriteTrans(true);
+//          dm.commitWriteTrans(true);
         end;
       end;
     except
@@ -843,10 +845,23 @@ end;
 
 procedure TDrugLoad.addPrihod(kolRash : double; ksmId, keiId, klientId, razdelId : integer);
 var
-  curSDat1, curSDat2, str_month : string;
+//  curSDat1, curSDat2, str_month : string;
   curMes, curGod : integer;
-  day, month, year : word;
+//  day, month, year : word;
 begin
+  if (prih = nil) then
+    prih := TPrihod.Create(dm.db);
+  curMes := self.curMonth;
+  curGod := self.curYear;
+  if (dm.mem_texGurDATE_DOK.AsDateTime < dateBegin)
+     or (dm.mem_texGurDATE_DOK.AsDateTime > dateEnd) then
+  begin
+    curMes := StrToInt(copy(dm.mem_texGurDATE_DOK.AsString, 4, 2));
+    curGod := StrToInt(copy(dm.mem_texGurDATE_DOK.AsString, 7, 2));
+  end;
+  prih.DobPrixPrep(false, ksmId, keiId, ksmIdPrep, strukId, razdelId, curMes,
+                   curGod, kolRash);
+
 //  v_raspred_dob := kolRash;
 //  s_ksm := ksmId;
 //  s_kei := keiId;

@@ -55,7 +55,7 @@ type
     PageControl1: TPageControl;
     tab_zagr: TTabSheet;
     grid_zagr: TDBGridEh;
-    TabSheet2: TTabSheet;
+    tab_allZagr: TTabSheet;
     DBGridEh4: TDBGridEh;
     Panel3: TPanel;
     Label8: TLabel;
@@ -226,7 +226,7 @@ type
     ostcehKEI_ID: TSmallintField;
     ostcehNMAT: TIBStringField;
     ostcehNEIS: TIBStringField;
-    tab_series: TTabSheet;
+    tab_prepSeries: TTabSheet;
     Panel1: TPanel;
     btn_openSeria: TSpeedButton;
     grid_series: TDBGridEh;
@@ -1879,11 +1879,11 @@ end;
 procedure TFTexGur.PageControl1Change(Sender: TObject);
 begin
   initToolButtons;
-  if (PageControl1.ActivePage = tab_zagr) then
-  BEGIN
-    USL_SORT := '7,9';
-  end;
-  if (PageControl1.ActivePage = tabsheet2) then
+//  if (PageControl1.ActivePage = tab_zagr) then
+//  BEGIN
+//    USL_SORT := '7,9';
+//  end;
+  if (PageControl1.ActivePage = tab_allZagr) then
   begin
     cb_allSyr.OnClick := nil;
     if (drugEdit <> nil) and (drugEdit.texGurLoad.FieldByName('ksm_id').AsInteger = 0) then
@@ -1897,7 +1897,7 @@ begin
     cb_allSyrClick(sender);
     cb_allSyr.OnClick := cb_allSyrClick;
   end;
-  if (PageControl1.ActivePage = tab_series) then
+  if (PageControl1.ActivePage = tab_prepSeries) then
   begin
     openPrepSeries(StrToDate(s_dat1), StrToDate(s_dat2), vStruk_Id);
   end;
@@ -1920,8 +1920,8 @@ begin
     btn_saveSeria.Visible := false;
     btn_vipuskList.Visible := false;    
   end;
-  if (PageControl1.ActivePage = tabsheet2)
-     or (PageControl1.ActivePage = tab_series) then
+  if (PageControl1.ActivePage = tab_allZagr)
+     or (PageControl1.ActivePage = tab_prepSeries) then
   begin
     {ToolButton1.Visible := false;
     btn_delRec.Visible := false;
@@ -2036,7 +2036,9 @@ procedure TFTexGur.FormShow(Sender: TObject);
 begin
   if (FSprFormul = nil) then
     FSprFormul := TfSprFormul.Create(Application);
+  SpinEdit3.OnChange := nil;
   SpinEdit3.Value := mes;
+  SpinEdit3.OnChange := SpinEdit3Change;
   SpinEdit4.Value := god;
   IF (MES < 10) THEN
     S_MES := '0' + INTTOSTR(MES)
@@ -2046,7 +2048,7 @@ begin
   S_DAT2_period := datetostr(IncMonth(strtodate(s_dat1_period), 1) -1);
 
 //  PageControl1.ActivePage := tab_zagr;
-  PageControl1.ActivePage := tab_series;
+  PageControl1.ActivePage := tab_prepSeries;
   PageControl1Change(sender);
 
   USL_SORT := '7,9';
@@ -2055,7 +2057,7 @@ begin
   DM1.ConfigUMC.close;
   DM1.ConfigUMC.MacroByName('USL').AsString := 'configumc.STRUK_ID = ' + IntToStr(vSTRUK_ID);
   DM1.ConfigUMC.Open;
-  initToolButtons;
+//  initToolButtons;
   DM1.ConfigUMC.close;
   if (s_kodp <> 0) then
   begin
@@ -2230,23 +2232,26 @@ end;
 procedure TFTexGur.grid_zagrDrawColumnCell(Sender: TObject; const Rect: TRect;
   DataCol: Integer; Column: TColumnEh; State: TGridDrawState);
 begin
-  if ((drugEdit.texGurLoad.fieldbyname('KOL_RASH_EDIZ').AsFloat = 0) and (Column.FieldName = 'KOL_RASH_EDIZ'))
-     or ((drugEdit.texGurLoad.fieldbyname('ZAG_PERIOD').AsFloat = 0) and (Column.FieldName = 'ZAG_PERIOD')) then
-    grid_zagr.Canvas.Font.Style := [fsItalic];
-  if (drugEdit.texGurLoad.fieldbyname('DELETE').AsBoolean = true) then
+  if (drugEdit <> nil) and (drugEdit.texGurLoad.RecordCount > 0) then
   begin
-    if (drugEdit.texGurLoad.fieldbyname('ADD').AsBoolean = true) then
-      grid_zagr.Canvas.Brush.Color := clYellow
-    else
-      grid_zagr.Canvas.Brush.Color := clRed;
-  end;
-
-  if (drugEdit.texGurLoad.fieldbyname('ADD').AsBoolean = true) then
-  begin
+    if ((drugEdit.texGurLoad.fieldbyname('KOL_RASH_EDIZ').AsFloat = 0) and (Column.FieldName = 'KOL_RASH_EDIZ'))
+       or ((drugEdit.texGurLoad.fieldbyname('ZAG_PERIOD').AsFloat = 0) and (Column.FieldName = 'ZAG_PERIOD')) then
+      grid_zagr.Canvas.Font.Style := [fsItalic];
     if (drugEdit.texGurLoad.fieldbyname('DELETE').AsBoolean = true) then
-      grid_zagr.Canvas.Brush.Color := clYellow
-    else
-      grid_zagr.Canvas.Brush.Color := clMoneyGreen;
+    begin
+      if (drugEdit.texGurLoad.fieldbyname('ADD').AsBoolean = true) then
+        grid_zagr.Canvas.Brush.Color := clYellow
+      else
+        grid_zagr.Canvas.Brush.Color := clRed;
+    end;
+
+    if (drugEdit.texGurLoad.fieldbyname('ADD').AsBoolean = true) then
+    begin
+      if (drugEdit.texGurLoad.fieldbyname('DELETE').AsBoolean = true) then
+        grid_zagr.Canvas.Brush.Color := clYellow
+      else
+        grid_zagr.Canvas.Brush.Color := clMoneyGreen;
+    end;
   end;
   grid_zagr.DefaultDrawColumnCell(Rect, DataCol, Column, State);
 end;

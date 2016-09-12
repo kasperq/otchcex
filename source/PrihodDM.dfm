@@ -1,17 +1,7 @@
 object PrihDM: TPrihDM
-  Left = 0
-  Top = 0
-  ClientHeight = 777
-  ClientWidth = 1001
-  Color = clBtnFace
-  Font.Charset = DEFAULT_CHARSET
-  Font.Color = clWindowText
-  Font.Height = -11
-  Font.Name = 'Tahoma'
-  Font.Style = []
   OldCreateOrder = False
-  PixelsPerInch = 96
-  TextHeight = 13
+  Height = 683
+  Width = 965
   object IBQuery1: TRxIBQuery
     Database = TempDM.db
     Transaction = TempDM.trans_read

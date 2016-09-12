@@ -80,7 +80,7 @@ type
 
   public
     { Public declarations }
-    procedure setDB(db : TIBDatabase); overload;
+    procedure setDB(var db : TIBDatabase); overload;
     function connectToDB() : boolean;
     function disconnectFromDB() : boolean;
     procedure commitWriteTrans(retaining : boolean);
@@ -102,7 +102,7 @@ implementation
 
 {$R *.dfm}
 
-procedure TSerOstDM.setDB(db : TIBDatabase);
+procedure TSerOstDM.setDB(var db : TIBDatabase);
 begin
   self.db := db;
 end;

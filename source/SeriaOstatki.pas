@@ -17,7 +17,7 @@ type
 
 
   public
-    Constructor Create(db : TIBDatabase);
+    Constructor Create(var db : TIBDatabase);
     Destructor Destroy; override;
 
     function openSeria(ksmId : integer; seria : string) : boolean;
@@ -29,8 +29,8 @@ type
     function showViborSeria(parentControl : TControl) : boolean;
 
     function openOstatki(ksmId, seriaId, strukId, ksmIdPrep : integer) : boolean;
-    procedure insertOstatki(ksmId, ksmIdPrep, razdelId, seriaId, keiId, strukId,
-                            month, year : integer);
+    function insertOstatki(ksmId, ksmIdPrep, razdelId, seriaId, keiId, strukId,
+                           month, year : integer) : integer;
     procedure saveSeriaAndOstatki(dateLoad : TDate; kolSeria : double; month, year : integer);
     procedure saveOstatki;
 
@@ -47,17 +47,17 @@ type
 
 implementation
 
-Constructor TSeriaOstatki.Create(db : TIBDatabase);
+Constructor TSeriaOstatki.Create(var db : TIBDatabase);
 begin
   inherited Create;
   dm := TSerOstDM.Create(Application);
   dm.setDB(db);
-  dm.connectToDB;
+//  dm.connectToDB;
 end;
 
 Destructor TSeriaOstatki.Destroy;
 begin
-  dm.disconnectFromDB;
+//  dm.disconnectFromDB;
   dm := nil;
   dm.Free;
   inherited Destroy;
@@ -113,7 +113,7 @@ begin
   end;
 end;
 
-function TSeriaOstatki.openOstatki(ksmId, seriaId, strukId, ksmIdPrep : integer) : boolean;
+function TSeriaOstatki.openOstatki(ksmId, seriaId, strukId, ksmIdPrep : integer) : boolean; // seriaId=-1 it's seria is null
 begin
   result := false;
   self.ksmId := ksmId;
@@ -139,8 +139,8 @@ begin
   end;
 end;
 
-procedure TSeriaOstatki.insertOstatki(ksmId, ksmIdPrep, razdelId, seriaId, keiId,
-                                      strukId, month, year : integer);
+function TSeriaOstatki.insertOstatki(ksmId, ksmIdPrep, razdelId, seriaId, keiId,
+                                     strukId, month, year : integer) : integer;
 begin
   dm.ksmId := ksmIdPrep;
   dm.ksmIdPrep := ksmIdPrep;
@@ -152,6 +152,7 @@ begin
   dm.razdelId := razdelId;
   dm.q_ostatki.Insert;
   dm.q_ostatki.Post;
+  result := dm.q_ostatki.FieldByName('kart_id').AsInteger;
 end;
 
 procedure TSeriaOstatki.saveSeriaAndOstatki(dateLoad : TDate; kolSeria : double; month, year : integer);

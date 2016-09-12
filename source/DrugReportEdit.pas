@@ -18,7 +18,7 @@ type
     db : TIBDatabase;
 
   public
-    Constructor Create(db : TIBDatabase; strukId : integer);
+    Constructor Create(var db : TIBDatabase; strukId : integer);
     Destructor Destroy; override;
 
     function getMemTexGur() : TkbmMemTable;
@@ -54,7 +54,7 @@ type
 
 implementation
 
-Constructor TDrugReportEdit.Create(db : TIBDatabase; strukId : integer);
+Constructor TDrugReportEdit.Create(var db : TIBDatabase; strukId : integer);
 begin
   inherited Create;
   self.db := db;

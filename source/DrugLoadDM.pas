@@ -308,6 +308,7 @@ type
     procedure q_docNewRecord(DataSet: TDataSet);
     procedure mem_texGurKRAZValidate(Sender: TField);
     procedure q_ostatki1BeforeInsert(DataSet: TDataSet);
+    procedure DataModuleDestroy(Sender: TObject);
 
   private
     login, password, serverAddr, role : string;
@@ -320,7 +321,7 @@ type
 
   public
     procedure setDB(serverAddr, login, password, role : string); overload;
-    procedure setDB(db : TIBDatabase); overload;
+    procedure setDB(var db : TIBDatabase); overload;
     function connectToDB() : boolean;
     function disconnectFromDB() : boolean;
     procedure commitWriteTrans(retaining : boolean);
@@ -367,7 +368,7 @@ begin
   self.role := role;
 end;
 
-procedure TFDMDrugLoad.setDB(db : TIBDatabase);
+procedure TFDMDrugLoad.setDB(var db : TIBDatabase);
 begin
   self.db := db;
 end;
@@ -383,6 +384,12 @@ begin
   except
     ShowMessage('” пользовател€ ' + login + ' нет доступа к базе данных');
   end;
+end;
+
+procedure TFDMDrugLoad.DataModuleDestroy(Sender: TObject);
+begin
+  mem_texGur.EmptyTable;
+  mem_texGur.Close;
 end;
 
 function TFDMDrugLoad.disconnectFromDB() : boolean;

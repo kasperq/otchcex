@@ -1,5 +1,6 @@
 object FDMDrugLoad: TFDMDrugLoad
   OldCreateOrder = False
+  OnDestroy = DataModuleDestroy
   Height = 783
   Width = 1013
   object db: TIBDatabase

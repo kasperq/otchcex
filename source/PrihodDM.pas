@@ -7,7 +7,7 @@ uses TemplateDM,
   IBStoredProc, IBUpdateSQL, IBUpdSQLW, Variants, Controls, UtilRIB;
 
 type
-  TPrihDM = class(TTempDM)
+  TPrihDM = class({TDataModule{,} TTempDM)
     IBQuery1: TRxIBQuery;
     Kart: TRxIBQuery;
     KartKSM_ID: TIntegerField;
@@ -81,7 +81,7 @@ type
   private
     vSERIA_ID : integer;
     m_ksmId : integer;
-    vStroka_Id : integer;
+    newStrokaId : integer;
 
     vKart_Id : integer;
 
@@ -102,8 +102,6 @@ type
     m_ksmIdPrep : integer;
 
   public
-//    procedure setDB(var db : TIBDatabase);
-
     procedure setValues2Kart(ksmId, klientId, razdelId, keiId, docId, kartId,
                              tipOpId, tipDokId : integer; kolRashEdiz, kolPrihEdiz,
                              kolRash, kolPrih : double);
@@ -116,7 +114,7 @@ type
     property tipOpId : integer read m_tipOpId write m_tipOpId;
     property tipDokId : integer read m_tipDokId write m_tipDokId;
     property ksmIdPrep : integer read m_ksmIdPrep write m_ksmIdPrep;
-    property vNdoc : integer read m_vNdoc write m_vNdoc;
+    property vNdoc : string read m_vNdoc write m_vNdoc;
 
   end;
 
@@ -159,19 +157,14 @@ end;
 
 procedure TPrihDM.KartBeforeInsert(DataSet: TDataSet);
 begin
-  if st_kart = 0 then
-    vKart_Id := 0
-  else
-    vkart_id := st_kart;
-  s_seria := '';
   Add_KartDok.StoredProcName := 'ADD_KART';
   Add_KartDok.ExecProc;
-  vStroka_Id := Add_KartDok.Params.Items[0].AsInteger;
+  newStrokaId := Add_KartDok.Params.Items[0].AsInteger;
 end;
 
 procedure TPrihDM.KartBeforePost(DataSet: TDataSet);
 begin
-  m_ksmId := KartKSM_ID.AsInteger;
+{  m_ksmId := KartKSM_ID.AsInteger;
   s_kei := KartKei_ID.AsInteger;
   v_Razdel := KartRazdel_ID.AsInteger;
   If Kart.FieldByName('Ksm_id').AsInteger = 0 then
@@ -257,12 +250,12 @@ begin
   except
     MessageDlg('Произошла ошибка при добавлении нового сырья в документ.', mtWarning, [mbOK], 0);
     Abort;
-  end;
+  end;  }
 end;
 
 procedure TPrihDM.KartNewRecord(DataSet: TDataSet);
 begin
-  Kart.FieldByName('Stroka_Id').AsInteger := vStroka_Id;
+  Kart.FieldByName('Stroka_Id').AsInteger := newStrokaId;
   Kart.FieldByName('Struk_Id').AsInteger := m_strukId;
   Kart.FieldByName('Kart_Id').AsInteger := vKart_Id;
   Kart.FieldByName('Doc_Id').AsInteger := m_newDocId;
