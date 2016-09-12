@@ -238,7 +238,8 @@ begin
     n_int := Round(R);
 
   // Дробная часть
-  n_frac := Round((R - n_int) * TenIn[Precision]);
+//  n_frac := Round((R - n_int) * TenIn[Precision]);
+  n_frac := Round((StrToFloat(FloatToStr(R)) - StrToFloat(FloatToStr(n_int))) * TenIn[Precision]);
 
   // Отбрасывание нулей в дробной части
   // опция ntoNotReduceFrac не работает при n_frac = 0 (т.е. не будет "ноль сотых")

@@ -2773,11 +2773,11 @@ begin
   MD_Naklad.Open;
   MD_Naklad.LoadFromDataSet(TempQuery, 0, lmAppend);
   MD_Naklad.First;
-  kolRash1000000 := MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000000;
-  kolRash1000 := MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000;
-  kolRash := MD_Naklad.FieldByName('KOL_RASH').AsFloat;
   while (not MD_Naklad.Eof) do
   begin
+    kolRash1000000 := StrToFloat(MD_Naklad.FieldByName('KOL_RASH').AsString) * 1000000;
+    kolRash1000 := StrToFloat(MD_Naklad.FieldByName('KOL_RASH').AsString) * 1000;
+    kolRash := StrToFloat(MD_Naklad.FieldByName('KOL_RASH').AsString);
     MD_Naklad.edit;
     st := '';
     if ((keiId = 166) or (keiId = 170) or (keiId = 163) or (keiId = 122)) then
