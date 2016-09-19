@@ -2,11 +2,11 @@ unit ReferanceDM;
 
 interface
 
-uses TemplateDM,
+uses DBDM,
   SysUtils, Classes, DB, IBCustomDataSet, IBQuery, RxIBQuery, kbmMemTable;
 
 type
-  TRefDM = class(TTempDM)
+  TRefDM = class({TTempDM}TDataModule)
     q_spprod: TRxIBQuery;
     q_spprodSTRUK_ID: TSmallintField;
     q_spprodNMAT: TIBStringField;

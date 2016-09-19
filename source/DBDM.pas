@@ -1,4 +1,4 @@
-unit TemplateDM;
+unit DBDM;
 
 interface
 
@@ -6,14 +6,16 @@ uses
   SysUtils, Classes, IBDatabase, DB, Dialogs;
 
 type
-  TTempDM = class(TDataModule)
+  TdDM = class(TDataModule)
     db: TIBDatabase;
     trans_read: TIBTransaction;
     trans_write: TIBTransaction;
   private
-    { Private declarations }
+    login, password, serverAddr, role : string;
+
   public
-    procedure setDB(var db : TIBDatabase);
+    procedure setDB(var db : TIBDatabase); overload;
+    procedure setDB(serverAddr, login, password, role : string); overload;
     function connectToDB() : boolean;
     function disconnectFromDB() : boolean;
     procedure commitWriteTrans(retaining : boolean);
@@ -28,7 +30,7 @@ implementation
 
 { TTempDM }
 
-procedure TTempDM.commitWriteTrans(retaining: boolean);
+procedure TdDM.commitWriteTrans(retaining: boolean);
 begin
   startWriteTrans;
   if (retaining) then
@@ -37,7 +39,7 @@ begin
     trans_write.Commit;
 end;
 
-function TTempDM.connectToDB(): boolean;
+function TdDM.connectToDB(): boolean;
 begin
   result := false;
   try
@@ -46,11 +48,11 @@ begin
     if (db.Connected) and (trans_read.Active) then
       result := true;
   except
-    ShowMessage('” пользовател€ нет доступа к базе данных');
+    ShowMessage('” пользовател€ ' + login + ' нет доступа к базе данных.');
   end;
 end;
 
-function TTempDM.disconnectFromDB(): boolean;
+function TdDM.disconnectFromDB(): boolean;
 begin
   result := false;
   try
@@ -64,18 +66,34 @@ begin
   end;
 end;
 
-procedure TTempDM.setDB(var db: TIBDatabase);
+procedure TdDM.setDB(var db: TIBDatabase);
 begin
   self.db := db;
 end;
 
-procedure TTempDM.startReadTrans;
+procedure TdDM.setDB(serverAddr, login, password, role : string);
+begin
+  db.Close;
+  db.Params.Clear;
+  db.Params.Add('lc_ctype=WIN1251');
+  db.Params.Add('sql_role_name=' + role);
+  db.Params.Add('user_name=' + login);
+  db.Params.Add('password=' + AnsiLowerCase(password));
+  db.LoginPrompt := false;
+  db.DatabaseName := serverAddr;
+  self.login := login;
+  self.password := password;
+  self.serverAddr := serverAddr;
+  self.role := role;
+end;
+
+procedure TdDM.startReadTrans;
 begin
   if (not trans_read.Active) then
     trans_read.StartTransaction;
 end;
 
-procedure TTempDM.startWriteTrans;
+procedure TdDM.startWriteTrans;
 begin
   if (not trans_write.Active) then
     trans_write.StartTransaction;

@@ -1,17 +1,17 @@
 object PrihDM: TPrihDM
   OldCreateOrder = False
-  Height = 683
-  Width = 965
+  Height = 722
+  Width = 921
   object IBQuery1: TRxIBQuery
-    Database = TempDM.db
-    Transaction = TempDM.trans_read
+    Database = dDM.db
+    Transaction = dDM.trans_read
     Macros = <>
     Left = 168
     Top = 24
   end
   object Kart: TRxIBQuery
-    Database = TempDM.db
-    Transaction = TempDM.trans_read
+    Database = dDM.db
+    Transaction = dDM.trans_read
     BeforeInsert = KartBeforeInsert
     BeforePost = KartBeforePost
     OnNewRecord = KartNewRecord
@@ -339,13 +339,13 @@ object PrihDM: TPrihDM
       'where'
       '  STROKA_ID = :OLD_STROKA_ID')
     AutoCommit = False
-    UpdateTransaction = TempDM.trans_write
+    UpdateTransaction = dDM.trans_write
     Left = 304
     Top = 72
   end
   object ADD_KartDok: TIBStoredProc
-    Database = TempDM.db
-    Transaction = TempDM.trans_read
+    Database = dDM.db
+    Transaction = dDM.trans_read
     StoredProcName = 'ADD_KART'
     Left = 32
     Top = 192
@@ -357,14 +357,14 @@ object PrihDM: TPrihDM
       end>
   end
   object IBdel: TIBQuery
-    Database = TempDM.db
-    Transaction = TempDM.trans_read
+    Database = dDM.db
+    Transaction = dDM.trans_read
     Left = 392
     Top = 24
   end
   object Document: TRxIBQuery
-    Database = TempDM.db
-    Transaction = TempDM.trans_read
+    Database = dDM.db
+    Transaction = dDM.trans_read
     BeforeDelete = DocumentBeforeDelete
     BeforeInsert = DocumentBeforeInsert
     OnNewRecord = DocumentNewRecord
@@ -520,7 +520,7 @@ object PrihDM: TPrihDM
       'where'
       '  DOC_ID = :OLD_DOC_ID')
     AutoCommit = False
-    UpdateTransaction = TempDM.trans_write
+    UpdateTransaction = dDM.trans_write
     Left = 232
     Top = 72
   end

@@ -2,12 +2,12 @@ unit PrihodDM;
 
 interface
 
-uses TemplateDM,
+uses DBDM,
   SysUtils, Classes, IBDatabase, RxIBQuery, DB, IBCustomDataSet, IBQuery, Dialogs,
   IBStoredProc, IBUpdateSQL, IBUpdSQLW, Variants, Controls, UtilRIB;
 
 type
-  TPrihDM = class({TDataModule{,} TTempDM)
+  TPrihDM = class(TDataModule)
     IBQuery1: TRxIBQuery;
     Kart: TRxIBQuery;
     KartKSM_ID: TIntegerField;
@@ -105,7 +105,7 @@ type
     procedure setValues2Kart(ksmId, klientId, razdelId, keiId, docId, kartId,
                              tipOpId, tipDokId : integer; kolRashEdiz, kolPrihEdiz,
                              kolRash, kolPrih : double);
-    function Koef_per(kei_in : integer; kei_from : integer; ksm : integer) : double;
+    function Koef_per(kei_in : integer; kei_from : integer; ksm : integer; var db : TdDM) : double;
 
     property dateDok : TDate read m_dateDok write m_dateDok;
     property dateOp : TDate read m_dateOp write m_dateOp;
@@ -290,7 +290,7 @@ begin
   Kart.FieldByName('TIP_DOK_Id').AsInteger := tipDokId;
 end;
 
-function TPrihDM.Koef_per(kei_in : integer; kei_from : integer; ksm : integer) : double;
+function TPrihDM.Koef_per(kei_in : integer; kei_from : integer; ksm : integer; var db : TdDM) : double;
 var
   vKoef : variant;
 begin
@@ -300,14 +300,14 @@ begin
     vKoef := SelectToVarIB('SELECT KOEFPR.KOEF FROM KOEFPR WHERE KOEFPR.KEIR = '
                            + IntToStr(kei_in) + ' AND KOEFPR.KEI_ID = '
                            + IntToStr(kei_from) + ' AND KOEFPR.KSM_ID = 0 AND KOEFPR.KOEF <> 0 ',
-                           db, trans_read);
+                           db.db, db.trans_read);
     if (vKoef = NULL) then
     begin
       vKoef := SelectToVarIB('SELECT KOEFPR.KOEF FROM KOEFPR WHERE KOEFPR.KEIR = '
                              + IntToStr(kei_in) + ' AND KOEFPR.KEI_ID = '
                              + IntToStr(kei_from) + ' AND KOEFPR.KSM_ID =' + IntToStr(Ksm)
                              + ' AND KOEFPR.KOEF <> 0 ',
-                             db, trans_read);
+                             db.db, db.trans_read);
       if (vKoef = NULL) then
         vKoef := 1;
     end;

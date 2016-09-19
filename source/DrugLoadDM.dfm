@@ -3,36 +3,14 @@ object FDMDrugLoad: TFDMDrugLoad
   OnDestroy = DataModuleDestroy
   Height = 783
   Width = 1013
-  object db: TIBDatabase
-    Connected = True
-    DatabaseName = '192.168.13.13:D:\IBDATA\BELMED.GDB'
-    Params.Strings = (
-      'user_name=IGOR'
-      'password=igor'
-      'sql_role_name=SKLAD_CEH'
-      'lc_ctype=WIN1251')
-    LoginPrompt = False
-    DefaultTransaction = trans_read
-    Left = 32
-    Top = 24
-  end
-  object trans_read: TIBTransaction
-    DefaultDatabase = db
-    Params.Strings = (
-      'read_committed'
-      'rec_version'
-      'nowait')
-    Left = 32
-    Top = 80
-  end
   object ds_texGur: TDataSource
     DataSet = mem_texGur
     Left = 112
     Top = 80
   end
   object ostceh: TIBQuery
-    Database = db
-    Transaction = trans_read
+    Database = dDM.db
+    Transaction = dDM.trans_read
     SQL.Strings = (
       
         'select ost.ksm_id, sum(ost.ostatok_end_s) ostatok_end_s, ost.kei' +
@@ -102,8 +80,8 @@ object FDMDrugLoad: TFDMDrugLoad
     end
   end
   object q_ost: TRxIBQuery
-    Database = db
-    Transaction = trans_read
+    Database = dDM.db
+    Transaction = dDM.trans_read
     SQL.Strings = (
       
         'SELECT DISTINCT ost.KART_ID, ost.kei_id, ost.KSM_ID, ost.KSM_IDp' +
@@ -274,8 +252,8 @@ object FDMDrugLoad: TFDMDrugLoad
     end
   end
   object q_norm: TRxIBQuery
-    Database = db
-    Transaction = trans_read
+    Database = dDM.db
+    Transaction = dDM.trans_read
     SQL.Strings = (
       'SELECT distinct norm.plnorm, norm.KODP, '
       'NORM.KEI_ID KEIN, NORM.KSM_ID, NORM.KRAZ, NORM.MES, '
@@ -376,8 +354,8 @@ object FDMDrugLoad: TFDMDrugLoad
     end
   end
   object q_prixKart: TRxIBQuery
-    Database = db
-    Transaction = trans_read
+    Database = dDM.db
+    Transaction = dDM.trans_read
     CachedUpdates = True
     SQL.Strings = (
       'select kart.*'
@@ -760,13 +738,13 @@ object FDMDrugLoad: TFDMDrugLoad
       'where'
       '  STROKA_ID = :OLD_STROKA_ID')
     AutoCommit = False
-    UpdateTransaction = trans_write
+    UpdateTransaction = dDM.trans_write
     Left = 248
     Top = 80
   end
   object q_prixDoc: TRxIBQuery
-    Database = db
-    Transaction = trans_read
+    Database = dDM.db
+    Transaction = dDM.trans_read
     CachedUpdates = True
     SQL.Strings = (
       'select document.*'
@@ -955,8 +933,8 @@ object FDMDrugLoad: TFDMDrugLoad
     end
   end
   object q_prihSum: TRxIBQuery
-    Database = db
-    Transaction = trans_read
+    Database = dDM.db
+    Transaction = dDM.trans_read
     CachedUpdates = True
     SQL.Strings = (
       
@@ -1021,8 +999,8 @@ object FDMDrugLoad: TFDMDrugLoad
     end
   end
   object q_ostatki: TRxIBQuery
-    Database = db
-    Transaction = trans_read
+    Database = dDM.db
+    Transaction = dDM.trans_read
     BeforeInsert = q_ostatkiBeforeInsert
     OnNewRecord = q_ostatkiNewRecord
     CachedUpdates = True
@@ -1157,22 +1135,13 @@ object FDMDrugLoad: TFDMDrugLoad
       'where'
       '  KART_ID = :OLD_KART_ID')
     AutoCommit = False
-    UpdateTransaction = trans_write
+    UpdateTransaction = dDM.trans_write
     Left = 520
     Top = 24
   end
-  object trans_write: TIBTransaction
-    DefaultDatabase = db
-    Params.Strings = (
-      'read_committed'
-      'rec_version'
-      'nowait')
-    Left = 32
-    Top = 136
-  end
   object Matrop: TIBQuery
-    Database = db
-    Transaction = trans_read
+    Database = dDM.db
+    Transaction = dDM.trans_read
     SQL.Strings = (
       
         'select MATROP.NMAT,matrop.prmat, MATROP.GOST,MATROP.XARKT,MATROP' +
@@ -1228,8 +1197,8 @@ object FDMDrugLoad: TFDMDrugLoad
     end
   end
   object q_seria: TRxIBQuery
-    Database = db
-    Transaction = trans_read
+    Database = dDM.db
+    Transaction = dDM.trans_read
     BeforeInsert = q_seriaBeforeInsert
     OnNewRecord = q_seriaNewRecord
     CachedUpdates = True
@@ -1439,13 +1408,13 @@ object FDMDrugLoad: TFDMDrugLoad
       'where'
       '  SERIA_ID = :OLD_SERIA_ID')
     AutoCommit = False
-    UpdateTransaction = trans_write
+    UpdateTransaction = dDM.trans_write
     Left = 192
     Top = 371
   end
   object q_ostatki11: TRxIBQuery
-    Database = db
-    Transaction = trans_read
+    Database = dDM.db
+    Transaction = dDM.trans_read
     BeforeInsert = q_ostatkiBeforeInsert
     OnNewRecord = q_ostatkiNewRecord
     CachedUpdates = True
@@ -1682,27 +1651,27 @@ object FDMDrugLoad: TFDMDrugLoad
       'where'
       '  KART_ID = :OLD_KART_ID')
     AutoCommit = False
-    UpdateTransaction = trans_write
+    UpdateTransaction = dDM.trans_write
     Left = 365
     Top = 372
   end
   object AddSeria: TIBStoredProc
-    Database = db
-    Transaction = trans_read
+    Database = dDM.db
+    Transaction = dDM.trans_read
     StoredProcName = 'ADD_SERIA'
     Left = 40
     Top = 200
   end
   object Add_Ostatki: TIBStoredProc
-    Database = db
-    Transaction = trans_read
+    Database = dDM.db
+    Transaction = dDM.trans_read
     StoredProcName = 'ADD_OSTATKI'
     Left = 40
     Top = 256
   end
   object ADD_KartDok: TIBStoredProc
-    Database = db
-    Transaction = trans_read
+    Database = dDM.db
+    Transaction = dDM.trans_read
     StoredProcName = 'ADD_KART'
     Left = 40
     Top = 304
@@ -1891,8 +1860,8 @@ object FDMDrugLoad: TFDMDrugLoad
     end
   end
   object q_kart: TRxIBQuery
-    Database = db
-    Transaction = trans_read
+    Database = dDM.db
+    Transaction = dDM.trans_read
     BeforeInsert = q_kartBeforeInsert
     OnNewRecord = q_kartNewRecord
     CachedUpdates = True
@@ -2056,13 +2025,13 @@ object FDMDrugLoad: TFDMDrugLoad
       'where'
       '  STROKA_ID = :OLD_STROKA_ID')
     AutoCommit = False
-    UpdateTransaction = trans_write
+    UpdateTransaction = dDM.trans_write
     Left = 248
     Top = 16
   end
   object q_doc: TRxIBQuery
-    Database = db
-    Transaction = trans_read
+    Database = dDM.db
+    Transaction = dDM.trans_read
     BeforeInsert = q_docBeforeInsert
     OnNewRecord = q_docNewRecord
     CachedUpdates = True
@@ -2188,13 +2157,13 @@ object FDMDrugLoad: TFDMDrugLoad
       'where'
       '  DOC_ID = :OLD_DOC_ID')
     AutoCommit = False
-    UpdateTransaction = trans_write
+    UpdateTransaction = dDM.trans_write
     Left = 384
     Top = 16
   end
   object razdel: TIBQuery
-    Database = db
-    Transaction = trans_read
+    Database = dDM.db
+    Transaction = dDM.trans_read
     SQL.Strings = (
       'select *'
       'from Razdel'

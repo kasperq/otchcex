@@ -115,7 +115,7 @@ uses
   DrugReportEdit in 'Source\DrugReportEdit.pas',
   ReferanceDM in 'Source\ReferanceDM.pas' {RefDM: TDataModule},
   Referance in 'Source\Referance.pas',
-  TemplateDM in 'Source\TemplateDM.pas' {TempDM: TDataModule};
+  DBDM in 'Source\DBDM.pas' {dDM: TDataModule};
 
 {$R *.res}
 

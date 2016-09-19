@@ -1,16 +1,17 @@
 unit Referance;
 
 interface
-uses ReferanceDM, Find_Spprod,
+uses ReferanceDM, Find_Spprod, DBDM,
   IBDatabase, Forms, SysUtils, kbmMemTable, Variants, Dialogs;
 
 type
   TReferance = class
   private
     dm : TRefDM;
+    db : TdDM;
 
   public
-    Constructor Create(var db : TIBDatabase);
+    Constructor Create(var db : TdDM);
     Destructor Destroy; override;
 
     function findDrug(kodProd : string; strukId : integer) : boolean; overload;
@@ -25,13 +26,15 @@ implementation
 
 { TReferance }
 
-constructor TReferance.Create(var db: TIBDatabase);
+constructor TReferance.Create(var db: TdDM);
 begin
   inherited Create;
   dm := TRefDM.Create(Application);
-  dm.setDB(db);
+//  dm.setDB(db);
 //  dm.connectToDB;
-  dm.q_spprod.Database := db;
+  self.db := db;
+  dm.q_spprod.Database := db.db;
+  dm.q_spprod.Transaction := db.trans_read;
 end;
 
 destructor TReferance.Destroy;
@@ -86,7 +89,7 @@ begin
   result := false;
   if (FindSpprod = nil) then
     FindSpprod := TfindSpprod.Create(Application);
-  FindSpprod.DataBaseName := dm.db;
+  FindSpprod.DataBaseName := db.db;
   FindSpprod.ReadOnly := true;
   FindSpprod.Usl_Struk := 'spprod.struk_id=' + IntToStr(strukId);
   FindSpprod.ShowModal;

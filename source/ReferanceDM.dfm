@@ -1,10 +1,10 @@
 object RefDM: TRefDM
   OldCreateOrder = False
-  Height = 665
-  Width = 934
+  Height = 776
+  Width = 945
   object q_spprod: TRxIBQuery
-    Database = TempDM.db
-    Transaction = TempDM.trans_read
+    Database = dDM.db
+    Transaction = dDM.trans_read
     SQL.Strings = (
       
         'select spprod.struk_id, spprod.nmat, spprod.kod_prod, spprod.kei' +

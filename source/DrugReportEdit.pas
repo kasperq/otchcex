@@ -2,23 +2,24 @@ unit DrugReportEdit;
 
 interface
 
-uses SeriaOstatki, DrugLoad,
+uses SeriaOstatki, DrugLoad, DBDM,
   IBDatabase, Controls, SysUtils, Dialogs, kbmMemTable;
 
 type
   TDrugReportEdit = class
   private
     drSeriaLoad : TDrugLoad;
+    db : TdDM;
     m_strukId, m_ksmIdDrug, m_seriaIdDrug, m_year, m_month, m_keiId : integer;
     m_seria, m_drugNmat : string;
     m_fullDrLoad : boolean;
     m_kolSeria : double;
     m_dateLoad : TDate;
 
-    db : TIBDatabase;
+//    db : TIBDatabase;
 
   public
-    Constructor Create(var db : TIBDatabase; strukId : integer);
+    Constructor Create(var db : TdDM; strukId : integer);
     Destructor Destroy; override;
 
     function getMemTexGur() : TkbmMemTable;
@@ -54,7 +55,7 @@ type
 
 implementation
 
-Constructor TDrugReportEdit.Create(var db : TIBDatabase; strukId : integer);
+Constructor TDrugReportEdit.Create(var db : TdDM; strukId : integer);
 begin
   inherited Create;
   self.db := db;

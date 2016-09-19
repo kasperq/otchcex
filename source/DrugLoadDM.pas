@@ -2,15 +2,13 @@ unit DrugLoadDM;
 
 interface
 
-uses SprFormul, ediz,
+uses SprFormul, ediz, DBDM,
   SysUtils, Classes, kbmMemTable, DB, IBCustomDataSet, IBQuery, RxIBQuery,
   IBDatabase, Dialogs, IBStoredProc, IBUpdateSQL, IBUpdSQLW, Variants, UtilRIB,
   Controls;
 
 type
   TFDMDrugLoad = class(TDataModule)
-    db: TIBDatabase;
-    trans_read: TIBTransaction;
     ds_texGur: TDataSource;
     ostceh: TIBQuery;
     ostcehKSM_ID: TIntegerField;
@@ -156,7 +154,6 @@ type
     q_ostatkiMES: TSmallintField;
     q_ostatkiGOD: TSmallintField;
     upd_ostatki: TIBUpdateSQLW;
-    trans_write: TIBTransaction;
     Matrop: TIBQuery;
     MatropNMAT: TIBStringField;
     MatropXARKT: TIBStringField;
@@ -311,23 +308,23 @@ type
     procedure DataModuleDestroy(Sender: TObject);
 
   private
-    login, password, serverAddr, role : string;
+//    login, password, serverAddr, role : string;
     m_seriaId, m_ksmId, m_kartId, m_ksmIdPrep, m_keiId, m_year, m_month,
     m_razdelId, m_strukId, m_strokaId, m_docId : integer;
     seria : string;
     m_dateDok : TDate;
 
-    procedure startReadTrans;
+//    procedure startReadTrans;
 
   public
-    procedure setDB(serverAddr, login, password, role : string); overload;
-    procedure setDB(var db : TIBDatabase); overload;
-    function connectToDB() : boolean;
-    function disconnectFromDB() : boolean;
-    procedure commitWriteTrans(retaining : boolean);
-    procedure startWriteTrans;
+//    procedure setDB(serverAddr, login, password, role : string); overload;
+//    procedure setDB(var db : TIBDatabase);
+//    function connectToDB() : boolean;
+//    function disconnectFromDB() : boolean;
+//    procedure commitWriteTrans(retaining : boolean);
+//    procedure startWriteTrans;
     function getTochn(ksmIdPrep, ksm_id : integer) : integer;
-    function Koef_per(kei_in : integer; kei_from : integer; ksm : integer) : double;
+    function Koef_per(kei_in : integer; kei_from : integer; ksm : integer; var db : TdDM) : double;
     procedure delTexGurRecord;
     procedure delAllTexGurRecords;
     procedure addTexGurRecord(month : integer; dateEnd : TDate);
@@ -352,39 +349,39 @@ implementation
 
 {$R *.dfm}
 
-procedure TFDMDrugLoad.setDB(serverAddr, login, password, role : string);
-begin
-  db.Close;
-  db.Params.Clear;
-  db.Params.Add('lc_ctype=WIN1251');
-  db.Params.Add('sql_role_name=' + role);
-  db.Params.Add('user_name=' + login);
-  db.Params.Add('password=' + AnsiLowerCase(password));
-  db.LoginPrompt := false;
-  db.DatabaseName := serverAddr;
-  self.login := login;
-  self.password := password;
-  self.serverAddr := serverAddr;
-  self.role := role;
-end;
+//procedure TFDMDrugLoad.setDB(serverAddr, login, password, role : string);
+//begin
+//  db.Close;
+//  db.Params.Clear;
+//  db.Params.Add('lc_ctype=WIN1251');
+//  db.Params.Add('sql_role_name=' + role);
+//  db.Params.Add('user_name=' + login);
+//  db.Params.Add('password=' + AnsiLowerCase(password));
+//  db.LoginPrompt := false;
+//  db.DatabaseName := serverAddr;
+//  self.login := login;
+//  self.password := password;
+//  self.serverAddr := serverAddr;
+//  self.role := role;
+//end;
 
-procedure TFDMDrugLoad.setDB(var db : TIBDatabase);
-begin
-  self.db := db;
-end;
+//procedure TFDMDrugLoad.setDB(var db : TIBDatabase);
+//begin
+//  self.db := db;
+//end;
 
-function TFDMDrugLoad.connectToDB() : boolean;
-begin
-  result := false;
-  try
-    db.Open;
-    startReadTrans;
-    if (db.Connected) and (trans_read.Active) then
-      result := true;
-  except
-    ShowMessage('” пользовател€ ' + login + ' нет доступа к базе данных');
-  end;
-end;
+//function TFDMDrugLoad.connectToDB() : boolean;
+//begin
+//  result := false;
+//  try
+//    db.Open;
+//    startReadTrans;
+//    if (db.Connected) and (trans_read.Active) then
+//      result := true;
+//  except
+//    ShowMessage('” пользовател€ ' + login + ' нет доступа к базе данных');
+//  end;
+//end;
 
 procedure TFDMDrugLoad.DataModuleDestroy(Sender: TObject);
 begin
@@ -392,34 +389,34 @@ begin
   mem_texGur.Close;
 end;
 
-function TFDMDrugLoad.disconnectFromDB() : boolean;
-begin
-  result := false;
-  try
-    if (trans_read.InTransaction) then
-      trans_read.CommitRetaining;
-    trans_read.Active := false;
-    db.Close;
-    result := not db.Connected;
-  except
+//function TFDMDrugLoad.disconnectFromDB() : boolean;
+//begin
+//  result := false;
+//  try
+//    if (trans_read.InTransaction) then
+//      trans_read.CommitRetaining;
+//    trans_read.Active := false;
+//    db.Close;
+//    result := not db.Connected;
+//  except
+//
+//  end;
+//end;
 
-  end;
-end;
+//procedure TFDMDrugLoad.commitWriteTrans(retaining : boolean);
+//begin
+//  startWriteTrans;
+//  if (retaining) then
+//    trans_write.CommitRetaining
+//  else
+//    trans_write.Commit;
+//end;
 
-procedure TFDMDrugLoad.commitWriteTrans(retaining : boolean);
-begin
-  startWriteTrans;
-  if (retaining) then
-    trans_write.CommitRetaining
-  else
-    trans_write.Commit;
-end;
-
-procedure TFDMDrugLoad.startWriteTrans;
-begin
-  if (not trans_write.Active) then
-    trans_write.StartTransaction;
-end;
+//procedure TFDMDrugLoad.startWriteTrans;
+//begin
+//  if (not trans_write.Active) then
+//    trans_write.StartTransaction;
+//end;
 
 function TFDMDrugLoad.getTochn(ksmIdPrep, ksm_id : integer) : integer;
 begin
@@ -442,7 +439,7 @@ begin
       result := -3;
 end;
 
-function TFDMDrugLoad.Koef_per(kei_in : integer; kei_from : integer; ksm : integer) : double;
+function TFDMDrugLoad.Koef_per(kei_in : integer; kei_from : integer; ksm : integer; var db : TdDM) : double;
 var
   vKoef : variant;
 begin
@@ -452,14 +449,14 @@ begin
     vKoef := SelectToVarIB('SELECT KOEFPR.KOEF FROM KOEFPR WHERE KOEFPR.KEIR = '
                            + IntToStr(kei_in) + ' AND KOEFPR.KEI_ID = '
                            + IntToStr(kei_from) + ' AND KOEFPR.KSM_ID = 0 AND KOEFPR.KOEF <> 0 ',
-                           db, trans_read);
+                           db.db, db.trans_read);
     if (vKoef = NULL) then
     begin
       vKoef := SelectToVarIB('SELECT KOEFPR.KOEF FROM KOEFPR WHERE KOEFPR.KEIR = '
                              + IntToStr(kei_in) + ' AND KOEFPR.KEI_ID = '
                              + IntToStr(kei_from) + ' AND KOEFPR.KSM_ID =' + IntToStr(Ksm)
                              + ' AND KOEFPR.KOEF <> 0 ',
-                             db, trans_read);
+                             db.db, db.trans_read);
       if (vKoef = NULL) then
         vKoef := 1;
     end;
@@ -592,11 +589,11 @@ begin
     q_seriaKol_Seria.AsFloat := 0;
 end;
 
-procedure TFDMDrugLoad.startReadTrans;
-begin
-  if (not trans_read.Active) then
-    trans_read.StartTransaction;
-end;
+//procedure TFDMDrugLoad.startReadTrans;
+//begin
+//  if (not trans_read.Active) then
+//    trans_read.StartTransaction;
+//end;
 
 procedure TFDMDrugLoad.delTexGurRecord;
 begin

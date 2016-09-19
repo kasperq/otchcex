@@ -2,7 +2,7 @@ unit DrugLoad;
 
 interface
 
-uses DrugLoadDM, Prihod,
+uses DrugLoadDM, Prihod, DBDM,
   kbmMemTable, IBDatabase, Forms, SysUtils, Controls, DB, SplshWnd, Windows,
   VCLUtils, Variants, Math, Dialogs, Graphics;
 
@@ -11,6 +11,7 @@ type
   private
     dm : TFDMDrugLoad;
     prih : TPrihod;
+    db : TdDM;
     Splash : TForm;
     bmpBook: TBitmap;
     curMonth, curYear : integer;
@@ -69,8 +70,8 @@ type
 
   public
     constructor Create; overload;
-    constructor Create(serverAddr, login, password, role  : string); overload;
-    constructor Create(var db : TIBDatabase); overload;
+//    constructor Create(serverAddr, login, password, role  : string); overload;
+    constructor Create(var db : TdDM); overload;
     destructor Destroy; override;
 
     procedure createTexGur(seria, prepNmat : string; year, month, ksmIdPrep, strukId, keiId : integer; full : boolean);
@@ -95,28 +96,69 @@ begin
   //
 end;
 
-constructor TDrugLoad.Create(serverAddr, login, password, role  : string);
-begin
-  inherited Create;
-  dm := TFDMDrugLoad.Create(Application);
-  dm.setDB(serverAddr, login, password, role);
-  dm.connectToDB;
-  bmpBook := TBitmap.Create;
-  bmpBook.LoadFromResourceName(HInstance,'booka');
-end;
+//constructor TDrugLoad.Create(serverAddr, login, password, role  : string);
+//begin
+//  inherited Create;
+//  dm := TFDMDrugLoad.Create(Application);
+//  dm.setDB(serverAddr, login, password, role);
+//  dm.connectToDB;
+//  bmpBook := TBitmap.Create;
+//  bmpBook.LoadFromResourceName(HInstance,'booka');
+//end;
 
-constructor TDrugLoad.Create(var db : TIBDatabase);
+constructor TDrugLoad.Create(var db : TdDM);
 begin
   inherited Create;
   dm := TFDMDrugLoad.Create(Application);
-  dm.setDB(db);
+  self.db := db;
+//  dm.setDB(db);
 //  dm.connectToDB;
   bmpBook := TBitmap.Create;
   bmpBook.LoadFromResourceName(HInstance,'booka');
+  dm.AddSeria.Database := db.db;
+  dm.AddSeria.Transaction := db.trans_read;
+  dm.Add_Ostatki.Database := db.db;
+  dm.Add_Ostatki.Transaction := db.trans_read;
+  dm.Add_KartDok.Database := db.db;
+  dm.Add_KartDok.Transaction := db.trans_read;
+  dm.Matrop.Database := db.db;
+  dm.Matrop.Transaction := db.trans_read;
+  dm.razdel.Database := db.db;
+  dm.razdel.Transaction := db.trans_read;
+  dm.q_kart.Database := db.db;
+  dm.q_kart.Transaction := db.trans_read;
+  dm.q_prixKart.Database := db.db;
+  dm.q_prixKart.Transaction := db.trans_read;
+  dm.q_norm.Database := db.db;
+  dm.q_norm.Transaction := db.trans_read;
+  dm.q_ost.Database := db.db;
+  dm.q_ost.Transaction := db.trans_read;
+  dm.ostceh.Database := db.db;
+  dm.ostceh.Transaction := db.trans_read;
+  dm.q_seria.Database := db.db;
+  dm.q_seria.Transaction := db.trans_read;
+  dm.q_ostatki11.Database := db.db;
+  dm.q_ostatki11.Transaction := db.trans_read;
+  dm.q_ostatki.Database := db.db;
+  dm.q_ostatki.Transaction := db.trans_read;
+  dm.q_prihSum.Database := db.db;
+  dm.q_prihSum.Transaction := db.trans_read;
+  dm.q_prixDoc.Database := db.db;
+  dm.q_prixDoc.Transaction := db.trans_read;
+  dm.q_doc.Database := db.db;
+  dm.q_doc.Transaction := db.trans_read;
+  dm.upd_prixKart.UpdateTransaction := db.trans_write;
+  dm.upd_ostatki.UpdateTransaction := db.trans_write;
+  dm.upd_kart.UpdateTransaction := db.trans_write;
+  dm.upd_doc.UpdateTransaction := db.trans_write;
+  dm.IBUpdateSeria.UpdateTransaction := db.trans_write;
+  dm.OstatkiUpdate.UpdateTransaction := db.trans_write;
 end;
 
 destructor TDrugLoad.Destroy;
 begin
+//  dm.mem_texGur.EmptyTable;
+//  dm.mem_texGur.Close;
   dm := nil;
   dm.Free;
   inherited Destroy;
@@ -133,8 +175,8 @@ begin
   Splash := ShowSplashWindow(bmpBook,
                                  'Загрузка данных. Подождите, пожалуйста...', True, nil);
   dm.q_seria.Close;
-  dm.trans_write.Active := FALSE;
-  dm.trans_read.Active := FALSE;
+//  db.trans_write.Active := FALSE;
+//  db.trans_read.Active := FALSE;
   curMonth := month;
   curYear := year;
   self.ksmIdPrep := ksmIdPrep;
@@ -486,7 +528,7 @@ begin
     if (keiFrom <> keiTo) then
       value.AsFloat := RoundTo(value.AsFloat * dm.Koef_per(keiTo,
                                                            keiFrom,
-                                                           dm.mem_texGurKSM_ID.AsInteger),
+                                                           dm.mem_texGurKSM_ID.AsInteger, db),
                                tochn);
   end;
 end;
@@ -506,7 +548,7 @@ begin
     result := true;
 
     delEmptyZagrDocuments(seria, curYear, curMonth, ksmIdPrep, strukId);
-    dm.commitWriteTrans(true);
+//    db.commitWriteTrans(true);
     Splash.Free;
     dm.mem_texGur.EnableControls;
 
@@ -515,7 +557,7 @@ begin
     begin
       MessageDlg('Произошла ошибка при записи!', mtWarning, [mbOK], 0);
       dm.mem_texGur.EnableControls;
-      dm.trans_read.RollbackRetaining;
+      db.trans_read.RollbackRetaining;
       if (Splash.Active) then
         Splash.Free;
     end;
@@ -548,7 +590,7 @@ begin
     if (dm.q_doc.UpdatesPending) then
     begin
       dm.q_doc.ApplyUpdates;
-      dm.commitWriteTrans(true);
+      db.commitWriteTrans(true);
     end;
   end;
 end;
@@ -558,6 +600,8 @@ begin
   if (dm.mem_texGurKOL_RASH_EDIZ.AsFloat = 0) or (dm.mem_texGurDELETE.AsBoolean)
      and (dm.mem_texGurDATE_DOK.AsDateTime = dm.mem_texGurOLD_DATE_DOK.AsDateTime) then
   begin
+    deletePrih(dm.mem_texGurKSM_ID_PREP.AsInteger, dm.mem_texGurKSM_ID.AsInteger,
+                 strukId, dm.q_kartRAZDEL_ID.AsInteger);
     dm.q_kart.Delete;
   end;
   if (dm.mem_texGurKOL_RASH_EDIZ.AsFloat <> 0) and (not dm.mem_texGurDELETE.AsBoolean)
@@ -572,6 +616,8 @@ begin
       dm.q_kartKEI_ID.AsInteger := keiId;
       dm.q_kartKOL_PRIH_EDIZ.AsFloat := 0;
       dm.q_kart.Post;
+      deletePrih(dm.mem_texGurKSM_ID_PREP.AsInteger, dm.mem_texGurKSM_ID.AsInteger,
+                 strukId, dm.q_kartRAZDEL_ID.AsInteger);
     end;
     if (dm.q_kartRAZDEL_ID.AsInteger <> dm.mem_texGurRAZDEL_ID.AsInteger) then
     begin
@@ -611,7 +657,7 @@ begin
     while (not dm.q_prixKart.Eof) do
       dm.q_prixKart.Delete;
     dm.q_prixKart.ApplyUpdates;
-    dm.commitWriteTrans(true);
+    db.commitWriteTrans(true);
   end;
 end;
 
@@ -705,7 +751,7 @@ begin
   dm.q_ostatki.Insert;
   dm.q_ostatki.Post;
   dm.q_ostatki.ApplyUpdates;
-  dm.commitWriteTrans(true);
+  db.commitWriteTrans(true);
 end;
 
 function TDrugLoad.findOrCreateZagrDocument(seria : string; dateDok : TDate; docId,
@@ -724,7 +770,7 @@ begin
     if (dm.q_doc.Modified) or (dm.q_doc.State = dsInsert) or (dm.q_doc.State = dsEdit) then
       dm.q_doc.Post;
     dm.q_doc.ApplyUpdates;
-    dm.commitWriteTrans(true);
+    db.commitWriteTrans(true);
     result := true;
   end;
 end;
@@ -766,20 +812,20 @@ begin
       if (dm.q_kart.UpdatesPending) then
       begin
         dm.q_kart.ApplyUpdates;
-        dm.commitWriteTrans(true);
+        db.commitWriteTrans(true);
         addPrihod(dm.mem_texGurKOL_RASH_EDIZ.AsFloat, dm.mem_texGurKSM_ID.AsInteger,
                   curKeiId, dm.mem_texGurKSM_ID_PREP.AsInteger, dm.mem_texGurRAZDEL_ID.AsInteger);
-//        dm.commitWriteTrans(true);
+        db.commitWriteTrans(true);
       end
       else
       begin
         if (dm.mem_texGurOSTATOK_END_S.AsFloat < 0)
            or (dm.mem_texGurPRIX_PERIOD.AsFloat <> dm.mem_texGurZAG_PERIOD.AsFloat) then
         begin
-          dm.commitWriteTrans(true);
+//          db.commitWriteTrans(true);
           addPrihod(dm.mem_texGurKOL_RASH_EDIZ.AsFloat, dm.mem_texGurKSM_ID.AsInteger,
                   curKeiId, dm.mem_texGurKSM_ID_PREP.AsInteger, dm.mem_texGurRAZDEL_ID.AsInteger);
-//          dm.commitWriteTrans(true);
+          db.commitWriteTrans(true);
         end;
       end;
     except
@@ -787,7 +833,7 @@ begin
       begin
         MessageDlg('Произошла ошибка при сохранении сырья: ' + dm.mem_texGurKSM_ID.AsString
                    + '. ' + e.Message, mtWarning, [mbOK], 0);
-        dm.trans_write.RollbackRetaining;
+        db.trans_write.RollbackRetaining;
       end;
     end;
     dm.mem_texGur.Next;
@@ -850,7 +896,7 @@ var
 //  day, month, year : word;
 begin
   if (prih = nil) then
-    prih := TPrihod.Create(dm.db);
+    prih := TPrihod.Create(db);
   curMes := self.curMonth;
   curGod := self.curYear;
   if (dm.mem_texGurDATE_DOK.AsDateTime < dateBegin)

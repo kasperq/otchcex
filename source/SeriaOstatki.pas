@@ -2,7 +2,7 @@ unit SeriaOstatki;
 
 interface
 
-uses SeriaOstatkiDM, SeriaForm, CopyFiles,
+uses SeriaOstatkiDM, SeriaForm, CopyFiles, DBDM,
   IBDatabase, Forms, Controls, SysUtils, DB, Variants;
 
 type
@@ -17,7 +17,7 @@ type
 
 
   public
-    Constructor Create(var db : TIBDatabase);
+    Constructor Create(var db : TdDM);
     Destructor Destroy; override;
 
     function openSeria(ksmId : integer; seria : string) : boolean;
@@ -47,12 +47,20 @@ type
 
 implementation
 
-Constructor TSeriaOstatki.Create(var db : TIBDatabase);
+Constructor TSeriaOstatki.Create(var db : TdDM);
 begin
   inherited Create;
   dm := TSerOstDM.Create(Application);
-  dm.setDB(db);
+//  dm.setDB(db);
 //  dm.connectToDB;
+  dm.q_seria.Database := db.db;
+  dm.q_seria.Transaction := db.trans_read;
+  dm.q_ostatki.Database := db.db;
+  dm.q_ostatki.Transaction := db.trans_read;
+  dm.AddSeria.Database := db.db;
+  dm.AddSeria.Transaction := db.trans_read;
+  dm.Add_Ostatki.Database := db.db;
+  dm.Add_Ostatki.Transaction := db.trans_read;
 end;
 
 Destructor TSeriaOstatki.Destroy;

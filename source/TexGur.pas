@@ -2,7 +2,7 @@ unit TexGur;
 
 interface
 
-uses DrugReportEdit, Referance, SeriaOstatki,
+uses DrugReportEdit, Referance, SeriaOstatki, DBDM,
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, Mask, ToolEdit, StdCtrls, ImgList, ComCtrls, ToolWin, Grids,
   DBGridEh, FindDlgEh, Buttons, DB, IBCustomDataSet, IBQuery, DBCtrls,
@@ -495,6 +495,7 @@ type
     drugEdit : TDrugReportEdit;
     refer : TReferance;
     serOstDrug : TSeriaOstatki;
+    dm : TdDM;
     curDocId, curStrokaId : integer;
 
     procedure loadTexGur(seria, prepNmat : string; year, month, ksmIdPrep, strukId : integer);
@@ -1021,7 +1022,7 @@ begin
   edit_kodProd.OnChange := edit_kodProdChange;
   edit_kolSeria.text := '0';
   if (refer = nil) then
-    refer := TReferance.Create(dm1.BELMED);
+    refer := TReferance.Create(dm);
   if (refer.spprod = nil)
      or (refer.spprod.FieldByName('kod_prod').AsString <> kodProd) then
     refer.findDrug(kodProd, vStruk_Id);
@@ -1145,14 +1146,14 @@ end;
 procedure TFTexGur.loadTexGur(seria, prepNmat : string; year, month, ksmIdPrep, strukId : integer);
 begin
   if (serOstDrug = nil) then
-    serOstDrug := TSeriaOstatki.Create(dm1.BELMED);
+    serOstDrug := TSeriaOstatki.Create(dm);
   if (serOstDrug.seria <> seria) or (drugEdit.month <> month)
      or (drugEdit.year <> year) or (serOstDrug.ksmId <> ksmIdPrep) then
   begin
     if (serOstDrug.openSeria(ksmIdPrep, seria)) then
     begin
       if (drugEdit = nil) then
-        drugEdit := TDrugReportEdit.Create(dm1.BELMED, vStruk_Id);
+        drugEdit := TDrugReportEdit.Create(dm, vStruk_Id);
       drugEdit.loadTexGurLoad(true, month, year, refer.spprod.FieldByName('ksm_id').AsInteger,
                               refer.spprod.FieldByName('kei_id').AsInteger,
                               refer.spprod.FieldByName('nmat').AsString, seria);
@@ -1612,7 +1613,7 @@ begin
   begin
     skod := replacestr(edit_kodProd.text,',','.')+'%';
     if (refer = nil) then
-      refer := TReferance.Create(dm1.BELMED);
+      refer := TReferance.Create(dm);
     if (refer.findDrug(skod, vStruk_Id)) then
     begin
       Label19.Caption := refer.spprod.FieldByName('kod_PROD').Asstring
@@ -1683,7 +1684,7 @@ begin
     s_ksm := s_kodp;
 
     if (serOstDrug = nil) then
-      serOstDrug := TSeriaOstatki.Create(dm1.BELMED);
+      serOstDrug := TSeriaOstatki.Create(dm);
     if (serOstDrug.openSeria(refer.spprod.FieldByName('ksm_id').AsInteger, s_seria)) then
     begin
       vSeria_id := serOstDrug.seriaId;
@@ -1696,7 +1697,7 @@ begin
       serOstDrug.insertSeria(refer.spprod.FieldByName('ksm_id').AsInteger, s_seria);
     serOstDrug.setFormaVipusk(refer.spprod.FieldByName('NAMEFV').AsString);
     if (drugEdit = nil) then
-        drugEdit := TDrugReportEdit.Create(dm1.BELMED, vStruk_Id);
+        drugEdit := TDrugReportEdit.Create(dm, vStruk_Id);
     drugEdit.loadTexGurLoad(true, mes, god, refer.spprod.FieldByName('ksm_id').AsInteger,
                             refer.spprod.FieldByName('kei_id').AsInteger,
                             refer.spprod.FieldByName('nmat').AsString, s_seria);
@@ -1759,6 +1760,8 @@ begin
   FreeAndNil(drugEdit);
   FreeAndNil(serOstDrug);
   FreeAndNil(refer);
+  dm.disconnectFromDB;
+  FreeAndNil(dm);
   DM1.Seria.Close;
   DM1.Ostatki.Close;
   vseria_id := 0;
@@ -2034,6 +2037,14 @@ end;
 
 procedure TFTexGur.FormShow(Sender: TObject);
 begin
+  if (dm = nil) then
+  begin
+    dm := TdDM.Create(Application);
+    dm.setDB('192.168.13.13:D:\IBDATA\BELMED.GDB',
+             AnsiUpperCase(UserName), AnsiLowerCase(UserName), 'SKLAD_CEH');
+    dm.connectToDB();
+  end;
+
   if (FSprFormul = nil) then
     FSprFormul := TfSprFormul.Create(Application);
   SpinEdit3.OnChange := nil;
@@ -2062,7 +2073,7 @@ begin
   if (s_kodp <> 0) then
   begin
     if (refer = nil) then
-      refer := TReferance.Create(dm1.BELMED);
+      refer := TReferance.Create(dm);
     if (refer.findDrug(s_kodp)) then
       loadPrepInfo(refer.spprod.FieldByName('kod_prod').AsString)
     else
@@ -2395,7 +2406,7 @@ begin
   if (refer <> nil) and (refer.spprod.FieldByName('ksm_id').AsInteger <> 0) then
   begin
     if (serOstDrug = nil) then
-      serOstDrug := TSeriaOstatki.Create(dm1.BELMED);
+      serOstDrug := TSeriaOstatki.Create(dm);
     if (serOstDrug.openSeria(refer.spprod.FieldByName('ksm_id').AsInteger, '')) then
     begin
       if (serOstDrug.showViborSeria(edit_seria)) then
@@ -2409,7 +2420,7 @@ begin
         begin
           DateEdit1.Date := serOstDrug.dateLoad;
           if (drugEdit = nil) then
-            drugEdit := TDrugReportEdit.Create(dm1.BELMED, vStruk_Id);
+            drugEdit := TDrugReportEdit.Create(dm, vStruk_Id);
           drugEdit.loadTexGurLoad(true, mes, god, refer.spprod.FieldByName('ksm_id').AsInteger,
                                   refer.spprod.FieldByName('kei_id').AsInteger,
                                   refer.spprod.FieldByName('nmat').AsString, s_seria);
@@ -2436,7 +2447,7 @@ end;
 procedure TFTexGur.SpeedButton2Click(Sender: TObject);
 begin
   if (refer = nil) then
-    refer := TReferance.Create(dm1.BELMED);
+    refer := TReferance.Create(dm);
   if (refer.openSpprodSpr(vStruk_Id)) then
   begin
     loadPrepInfo(refer.spprod.FieldByName('kod_prod').AsString);

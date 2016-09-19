@@ -1,4 +1,4 @@
-object TempDM: TTempDM
+object dDM: TdDM
   OldCreateOrder = False
   Height = 521
   Width = 728

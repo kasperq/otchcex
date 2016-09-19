@@ -2,15 +2,12 @@ unit SeriaOstatkiDM;
 
 interface
 
-uses
+uses DBDM,
   SysUtils, Classes, DB, IBCustomDataSet, IBUpdateSQL, IBUpdSQLW, IBQuery,
   RxIBQuery, IBStoredProc, IBDatabase, Dialogs;
 
 type
   TSerOstDM = class(TDataModule)
-    db: TIBDatabase;
-    trans_read: TIBTransaction;
-    trans_write: TIBTransaction;
     AddSeria: TIBStoredProc;
     Add_Ostatki: TIBStoredProc;
     q_seria: TRxIBQuery;
@@ -76,15 +73,8 @@ type
     m_razdelId, m_strukId, m_strokaId, m_docId : integer;
     m_seria : string;
 
-    procedure startReadTrans;
 
   public
-    { Public declarations }
-    procedure setDB(var db : TIBDatabase); overload;
-    function connectToDB() : boolean;
-    function disconnectFromDB() : boolean;
-    procedure commitWriteTrans(retaining : boolean);
-    procedure startWriteTrans;
 
     property ksmId : integer read m_ksmId write m_ksmId;
     property ksmIdPrep : integer read m_ksmIdPrep write m_ksmIdPrep;
@@ -101,59 +91,6 @@ type
 implementation
 
 {$R *.dfm}
-
-procedure TSerOstDM.setDB(var db : TIBDatabase);
-begin
-  self.db := db;
-end;
-
-function TSerOstDM.connectToDB() : boolean;
-begin
-  result := false;
-  try
-    db.Open;
-    startReadTrans;
-    if (db.Connected) and (trans_read.Active) then
-      result := true;
-  except
-    ShowMessage('” пользовател€ нет доступа к базе данных');
-  end;
-end;
-
-function TSerOstDM.disconnectFromDB() : boolean;
-begin
-  result := false;
-  try
-    if (trans_read.InTransaction) then
-      trans_read.CommitRetaining;
-    trans_read.Active := false;
-    db.Close;
-    result := not db.Connected;
-  except
-
-  end;
-end;
-
-procedure TSerOstDM.commitWriteTrans(retaining : boolean);
-begin
-  startWriteTrans;
-  if (retaining) then
-    trans_write.CommitRetaining
-  else
-    trans_write.Commit;
-end;
-
-procedure TSerOstDM.startWriteTrans;
-begin
-  if (not trans_write.Active) then
-    trans_write.StartTransaction;
-end;
-
-procedure TSerOstDM.startReadTrans;
-begin
-  if (not trans_read.Active) then
-    trans_read.StartTransaction;
-end;
 
 procedure TSerOstDM.q_ostatkiBeforeInsert(DataSet: TDataSet);
 begin

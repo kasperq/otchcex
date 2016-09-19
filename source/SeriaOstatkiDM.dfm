@@ -2,54 +2,23 @@ object SerOstDM: TSerOstDM
   OldCreateOrder = False
   Height = 886
   Width = 1054
-  object db: TIBDatabase
-    Connected = True
-    DatabaseName = '192.168.13.13:D:\IBDATA\BELMED.GDB'
-    Params.Strings = (
-      'user_name=IGOR'
-      'password=igor'
-      'sql_role_name=SKLAD_CEH'
-      'lc_ctype=WIN1251')
-    LoginPrompt = False
-    DefaultTransaction = trans_read
-    Left = 32
-    Top = 24
-  end
-  object trans_read: TIBTransaction
-    DefaultDatabase = db
-    Params.Strings = (
-      'read_committed'
-      'rec_version'
-      'nowait')
-    Left = 32
-    Top = 80
-  end
-  object trans_write: TIBTransaction
-    DefaultDatabase = db
-    Params.Strings = (
-      'read_committed'
-      'rec_version'
-      'nowait')
-    Left = 32
-    Top = 136
-  end
   object AddSeria: TIBStoredProc
-    Database = db
-    Transaction = trans_read
+    Database = dDM.db
+    Transaction = dDM.trans_read
     StoredProcName = 'ADD_SERIA'
     Left = 40
     Top = 200
   end
   object Add_Ostatki: TIBStoredProc
-    Database = db
-    Transaction = trans_read
+    Database = dDM.db
+    Transaction = dDM.trans_read
     StoredProcName = 'ADD_OSTATKI'
     Left = 40
     Top = 256
   end
   object q_seria: TRxIBQuery
-    Database = db
-    Transaction = trans_read
+    Database = dDM.db
+    Transaction = dDM.trans_read
     BeforeInsert = q_seriaBeforeInsert
     OnNewRecord = q_seriaNewRecord
     CachedUpdates = True
@@ -259,13 +228,13 @@ object SerOstDM: TSerOstDM
       'where'
       '  SERIA_ID = :OLD_SERIA_ID')
     AutoCommit = False
-    UpdateTransaction = trans_write
+    UpdateTransaction = dDM.trans_write
     Left = 192
     Top = 371
   end
   object q_ostatki: TRxIBQuery
-    Database = db
-    Transaction = trans_read
+    Database = dDM.db
+    Transaction = dDM.trans_read
     BeforeInsert = q_ostatkiBeforeInsert
     OnNewRecord = q_ostatkiNewRecord
     CachedUpdates = True
@@ -502,7 +471,7 @@ object SerOstDM: TSerOstDM
       'where'
       '  KART_ID = :OLD_KART_ID')
     AutoCommit = False
-    UpdateTransaction = trans_write
+    UpdateTransaction = dDM.trans_write
     Left = 365
     Top = 372
   end

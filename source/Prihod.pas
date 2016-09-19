@@ -2,7 +2,7 @@ unit Prihod;
 
 interface
 
-uses PrihodDm, SeriaOstatki,
+uses PrihodDm, SeriaOstatki, DBDM,
 Controls, IBDatabase, Forms, SysUtils, Variants, UtilRIB, Math;
 
 type
@@ -10,6 +10,7 @@ type
   private
     dm : TPrihDM;
     serOst : TSeriaOstatki;
+    db : TdDM;
 
     ksmId, keiId, ksmIdPrep, strukId, razdelId, month, year : integer;
     dateBegin, dateEnd : TDate;
@@ -45,7 +46,7 @@ type
 
   public
     Constructor Create; overload;
-    constructor Create(var db : TIBDatabase); overload;
+    Constructor Create(var db : TdDM); overload;
     Destructor Destroy; override;
 
     procedure DobPrixPrep(spec : boolean; ksmId, keiId, ksmIdPrep, strukId,
@@ -61,16 +62,24 @@ begin
   //
 end;
 
-constructor TPrihod.Create(var db : TIBDatabase);
+Constructor TPrihod.Create(var db : TdDM);
 begin
   inherited Create;
   dm := TPrihDm.Create(Application);
-  dm.setDB(db);
-  dm.IBQuery1.Database := db;
-  dm.Document.Database := db;
-  dm.Kart.Database := db;
-  dm.IBdel.Database := db;
-  dm.ADD_KartDok.Database := db;
+  self.db := db;
+//  dm.setDB(db);
+  dm.IBQuery1.Database := db.db;
+  dm.IBQuery1.Transaction := db.trans_read;
+  dm.Document.Database := db.db;
+  dm.Document.Transaction := db.trans_read;
+  dm.Kart.Database := db.db;
+  dm.Kart.Transaction := db.trans_read;
+  dm.IBdel.Database := db.db;
+  dm.IBdel.Transaction := db.trans_read;
+  dm.ADD_KartDok.Database := db.db;
+  dm.ADD_KartDok.Transaction := db.trans_read;
+  dm.IBUpdateDoc.UpdateTransaction := db.trans_write;
+  dm.IBUpdateKart.UpdateTransaction := db.trans_write;
 end;
 
 Destructor TPrihod.Destroy;
@@ -91,7 +100,7 @@ begin
 //  v_tipSt := vTip_op_id;
 //  v_kartSt := vKart_id;
   if (serOst = nil) then
-    serOst := TSeriaOstatki.Create(dm.db);
+    serOst := TSeriaOstatki.Create(db);
   self.ksmId := ksmId;
   self.keiId := keiId;
   self.ksmIdPrep := ksmIdPrep;
@@ -148,7 +157,7 @@ begin
 //    findOstatkiSyrInCex(spec);
     createKartInPrixodDocumOnPrep(spec);    // запись необходимого прихода на препарат в Kart
   end;
-  dm.commitWriteTrans(true);
+//  db.commitWriteTrans(true);
 //  prihDocId := v_docSt;
 //  vTip_Op_Id := v_tipSt;
 //  vKart_id := v_kartSt;
@@ -189,7 +198,7 @@ begin
     if (keiId <> dm.IBQuery1.FieldByName('kei_id').asinteger) then
       result := RoundTo(kolRashMatrop * dm.Koef_per(keiId,
                                                     dm.IBQuery1.FieldByName('Kei_id').AsInteger,
-                                                    ksmId),
+                                                    ksmId, db),
                         -6)
     else
       result := kolRashMatrop;
@@ -218,6 +227,8 @@ end;
 //end;
 
 procedure TPrihod.createPrixodDocumOnPrep;  // создание приходного документа на препарат
+var
+  prihDocId_Var : Variant;
 begin
   prihDocId := -1;
   if (dm.Document.Active) then
@@ -226,17 +237,18 @@ begin
       prihDocId := dm.DocumentDoc_id.AsInteger;
   if (prihDocId = -1) then
   begin
-    prihDocId := SelectToVarIB('select DOcUMENT.doc_id FROM document '
+    prihDocId_Var := SelectToVarIB('select DOcUMENT.doc_id FROM document '
                                 + ' WHERE DOcUMENT.STRUK_ID = ' + IntToStr(strukId)
                                 + ' AND DOCUMENT.TIP_OP_ID = 30'
                                 + ' AND Document.Date_op between ' + ''''
                                 + DateToStr(dateBegin) + '''' + ' and ' + ''''
                                 + DateToStr(dateEnd) + ''''
                                 + ' AND DOCUMENT.KLIENT_ID = ' + IntToStr(ksmIdPrep),
-                                dm.db, dm.trans_read);
-    if (prihDocId <> Null) then
+                                db.db, db.trans_read);
+    if (prihDocId_Var <> Null) then
     begin
 //                         Удаление данных из KART
+      prihDocId := prihDocId_Var;
       removeKartByDocidKsmidRazdelid(prihDocId, ksmId, razdelId);
     end
     ELSE
@@ -247,6 +259,10 @@ begin
       dm.ksmIdPrep := ksmIdPrep;
       dm.dateOp := dateBegin;
       dm.dateDok := dateBegin;
+      dm.Document.MacroByName('usl').AsString := 'where document.struk_id='
+                                                 + IntToStr(dm.strukId)
+                                                 + ' and document.tip_op_id = '
+                                                 + IntToStr(dm.tipOpId);
       dm.Document.open;
       dm.Document.Insert;
       dm.Document.Post;
@@ -259,14 +275,14 @@ end;
 
 procedure TPrihod.removeKartByDocidKsmidRazdelid(docId, ksmId, razdelId: Integer);
 begin
-  dm.startWriteTrans;
+  db.startWriteTrans;
   dm.IbDel.Close;
   dm.IbDel.SQL.Clear;
   dm.IbDel.SQL.Add('delete from kart where doc_id = ' + inttostr(prihDocId)
                 + ' and ksm_id = ' + IntTostr(ksmId) + ' and razdel_id = '
                 + IntToStr(razdelId) + ' and parent is null ');
   dm.IbDel.Open;
-  dm.commitWriteTrans(true);
+  db.commitWriteTrans(true);
 end;
 
 function TPrihod.findOstatkiSyrInCex(spec : boolean) : boolean;   // поиск остатков сырья в цехе
@@ -310,12 +326,13 @@ begin
     dm.ibquery1.first;
     while (curKolOst <> 0) do
     begin
-      ostCexKartId := dm.IBQuery1.FieldByName('kart_id').AsInteger;
+      ostCexKartId := 0;
       if (curKolOst < 0) or   // если расход отрицательный, то вешаем его весь на текущую карточку, или
          ((curKolOst > 0) and (dm.IBQuery1.FieldByName('kot_s').AsFloat >= curKolOst)) then   // если расход >0 и на карточке хватает количества
       begin
         curKolRash := curKolOst;
         curKolOst := 0;
+        ostCexKartId := dm.IBQuery1.FieldByName('kart_id').AsInteger;
       end
       else
       begin
@@ -323,6 +340,7 @@ begin
         begin
           curKolRash := dm.IBQuery1.FieldByName('kot_s').AsFloat;
           curKolOst := curKolOst - curKolRash;
+          ostCexKartId := dm.IBQuery1.FieldByName('kart_id').AsInteger;
           dm.IBQuery1.Next;
         end;
         if (curKolOst > 0) and (dm.IBQuery1.Eof) then
@@ -332,11 +350,16 @@ begin
           curKolOst := 0;
           ostCexKartId := dm.IBQuery1.FieldByName('kart_id').AsInteger;
         end;
+        if (curKolOst > 0) and (dm.IBQuery1.FieldByName('kot_s').AsFloat <= 0) then
+          dm.IBQuery1.Next;
       end;
-      dm.Kart.Insert;
-      dm.setValues2Kart(ksmId, ksmIdPrep, razdelId, keiId, prihDocId,
-                        ostCexKartId, 30, 37, curKolRash, 0, 0, 0);
-      dm.Kart.Post;
+      if (ostCexKartId <> 0) then
+      begin
+        dm.Kart.Insert;
+        dm.setValues2Kart(ksmId, ksmIdPrep, razdelId, keiId, prihDocId,
+                          ostCexKartId, 30, 37, curKolRash, 0, 0, 0);
+        dm.Kart.Post;
+      end;
     end;
   end
   else
@@ -348,13 +371,16 @@ begin
       ostCexKartId := serOst.insertOstatki(ksmId, null, null, null, null, strukId, month, year);
       serOst.saveOstatki;
     end;
-    dm.Kart.Insert;
-    dm.setValues2Kart(ksmId, ksmIdPrep, razdelId, keiId, prihDocId, ostCexKartId,
-                   30, 37, kolRashNorm, 0, 0, 0);
-    dm.Kart.Post
+    if (ostCexKartId <> 0) then
+    begin
+      dm.Kart.Insert;
+      dm.setValues2Kart(ksmId, ksmIdPrep, razdelId, keiId, prihDocId, ostCexKartId,
+                     30, 37, kolRashNorm, 0, 0, 0);
+      dm.Kart.Post
+    end;
   end;
   dm.Kart.BeforePost := dm.KartBeforePost;
-  DM.kart.ApplyUpdates;
+  dm.kart.ApplyUpdates;
 end;
 
 end.
