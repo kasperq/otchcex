@@ -151,7 +151,7 @@ function AmountOfUnits(AUnit: TRusWord; R: Double; Precision: Integer;
 implementation
 
 uses
-  SysUtils, CopyFiles;
+  SysUtils, CopyFiles, Math;
 
 const
   TenIn: array[1..4] of Integer = (10, 100, 1000, 10000);
@@ -213,7 +213,8 @@ end;
 function AmountOfUnits(AUnit: TRusWord; R: Double; Precision: Integer;
   Options: TNumberToTextOptions): string;
 var
-  n_int, n_frac: Int64;
+  n_int, n_frac, roundDivR: Int64;
+  absR, truncR, divRtruncR, multiDivPrec : double;
 begin
   Result := '';
   // опция ntoDigits не используется за ненадобностью
@@ -239,7 +240,13 @@ begin
 
   // Дробная часть
 //  n_frac := Round((R - n_int) * TenIn[Precision]);
-  n_frac := Round((StrToFloat(FloatToStr(R)) - StrToFloat(FloatToStr(n_int))) * TenIn[Precision]);
+  divRtruncR := StrToFloat(FloatToStr(R)) - StrToFloat(FloatToStr(n_int));
+  multiDivPrec := divRtruncR * TenIn[Precision];
+//  n_frac := round(multiDivPrec);
+  multiDivPrec := SimpleRoundTo(multiDivPrec, 0);
+  n_frac := StrToInt(FloatToStr(multiDivPrec));
+//  n_frac := roundDivR * TenIn[Precision]);
+//  n_frac := Round((StrToFloat(FloatToStr(R)) - StrToFloat(FloatToStr(n_int))) * TenIn[Precision]);
 
   // Отбрасывание нулей в дробной части
   // опция ntoNotReduceFrac не работает при n_frac = 0 (т.е. не будет "ноль сотых")
