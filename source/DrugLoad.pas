@@ -20,12 +20,12 @@ type
     prepNmat : string;
     keiId : integer;
     seria : string;
-    seriaId : integer;
-    kartId : integer;
+//    seriaId : integer;
+//    kartId : integer;
     ksmIdPrep : integer;
     strukId : integer;
-    kolSeria : double;
-    dateLoadSeria : TDate;
+//    kolSeria : double;
+//    dateLoadSeria : TDate;
 
     function getMemTexGur() : TkbmMemTable;
     // loading
@@ -758,7 +758,7 @@ function TDrugLoad.findOrCreateZagrDocument(seria : string; dateDok : TDate; doc
                                            strukId, ksmIdPrep : integer) : boolean;
 begin
   result := openZagrDoc(seria, strukId, ksmIdPrep, dateDok, dateDok);
-  if (not result) or (dm.q_docDOC_ID.AsInteger <> docId) then
+  if (not result) {or ((dm.q_docDOC_ID.AsInteger <> docId) and (docId <> 0))} then
   begin
     dm.dateDok := dateDok;
     dm.strukId := strukId;
@@ -891,9 +891,7 @@ end;
 
 procedure TDrugLoad.addPrihod(kolRash : double; ksmId, keiId, klientId, razdelId : integer);
 var
-//  curSDat1, curSDat2, str_month : string;
   curMes, curGod : integer;
-//  day, month, year : word;
 begin
   if (prih = nil) then
     prih := TPrihod.Create(db);
@@ -903,55 +901,10 @@ begin
      or (dm.mem_texGurDATE_DOK.AsDateTime > dateEnd) then
   begin
     curMes := StrToInt(copy(dm.mem_texGurDATE_DOK.AsString, 4, 2));
-    curGod := StrToInt(copy(dm.mem_texGurDATE_DOK.AsString, 7, 2));
+    curGod := StrToInt(copy(dm.mem_texGurDATE_DOK.AsString, 9, 2));
   end;
   prih.DobPrixPrep(false, ksmId, keiId, ksmIdPrep, strukId, razdelId, curMes,
                    curGod, kolRash);
-
-//  v_raspred_dob := kolRash;
-//  s_ksm := ksmId;
-//  s_kei := keiId;
-//  v_kein := keiId;
-//  vklient_id := klientId;
-//  v_razdel := razdelId;
-//  tochn := -6;
-//  pr_kor := 0;
-
-//  curSDat1 := '01.01.0001';
-//  curSDat2 := '01.01.0001';
-//  curMes := 1;
-//  curGod := 1;
-//  if (dm.mem_texGurDATE_DOK.AsDateTime < dateBegin)
-//     or (dm.mem_texGurDATE_DOK.AsDateTime > dateEnd) then
-//  begin
-//    curSDat1 := DateToStr(dateBegin);
-//    curSDat2 := DateToStr(dateEnd);
-//    curMes := curMonth;
-//    curGod := curYear;
-//    DecodeDate(dm.mem_texGurDATE_DOK.AsDateTime, year, month, day);
-//    if (month < 10) then
-//      str_month := '0' + IntToStr(month)
-//    else
-//      str_month := IntToStr(month);
-//    dateBegin :=  '01.' + str_month + '.' + IntToStr(year);
-//    dateBegin := datetostr(IncMonth(dateBegin, 1) -1);
-//    curMonth := month;
-//    curYear := year;
-//  end;
-//
-//  dm1.DobPrixPrep;
-//
-//  if (curSDat1 <> '01.01.0001') then
-//    if (mem_texGurDATE_DOK.AsDateTime < StrToDate(curSDat1))
-//       or (mem_texGurDATE_DOK.AsDateTime > StrToDate(curSDat2)) then
-//    begin
-//      dateBegin := curSDat1;
-//      dateEnd := curSDat2;
-//      mes := curMes;
-//      god := curGod;
-//    end;
-
-//  dm1.commitWriteTrans(true);
 end;
 
 end.

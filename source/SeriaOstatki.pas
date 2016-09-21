@@ -150,7 +150,7 @@ end;
 function TSeriaOstatki.insertOstatki(ksmId, ksmIdPrep, razdelId, seriaId, keiId,
                                      strukId, month, year : integer) : integer;
 begin
-  dm.ksmId := ksmIdPrep;
+  dm.ksmId := ksmId;
   dm.ksmIdPrep := ksmIdPrep;
   dm.keiId := keiId;
   dm.strukId := strukId;

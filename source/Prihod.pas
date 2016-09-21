@@ -17,28 +17,8 @@ type
     kolRashNorm, kolRashMatrop : double;
     prihDocId : integer;
 
-    v_kein : integer;
-    s_dat1, s_dat2 : string;
-    vSTRUK_ID : integer;
-    s_KSM : integer;
-    vklient_id : integer;
-    v_razdel : integer;
-
-    st_Kart : integer;
-    v_dok_Kart : integer;
-    S_KODP : integer;
-    vTip_Op_Id : integer;
-    vTip_Doc_Id : integer;
-    vNDoc : string;
-    mes, god : integer;
-    vDate_op, vDate_dok : TDate;
-    vKart_id : integer;
-    tochn : integer;
-
-
     function getNeededPrixInMatropEdiz() : double;
     function getNeededPrixInNormnEdiz() : double;
-//    procedure createKartIdInOstatki;
     procedure createPrixodDocumOnPrep;
     procedure removeKartByDocidKsmidRazdelid(docId, ksmId, razdelId: Integer);
     function findOstatkiSyrInCex(spec : boolean) : boolean;
@@ -92,13 +72,7 @@ procedure TPrihod.DobPrixPrep(spec : boolean; ksmId, keiId, ksmIdPrep, strukId,
                               razdelId, month, year : integer; kolRash : double);
 var
   s_month : string;
-//  v_docSt : integer;
-//  v_tipSt : integer;
-//  v_kartSt : integer;
 begin
-//  v_docSt := vDocument_id;
-//  v_tipSt := vTip_op_id;
-//  v_kartSt := vKart_id;
   if (serOst = nil) then
     serOst := TSeriaOstatki.Create(db);
   self.ksmId := ksmId;
@@ -121,46 +95,22 @@ begin
   if (not spec) then
     kolRashMatrop := getNeededPrixInMatropEdiz();    // v_raspred- в ед.изм.справочника (табл.Matrop)
   kolRashNorm := getNeededPrixInNormnEdiz();   // v_raspred_dob - в ед.изм. норм (табл.Normn)
-// поиск карточки сырья цеха, ели нет-создать
-//  if (spec) then
-//    ostCexKartId := SelectToVarIB('select Ostatki.kart_id '
-//                                + 'FROM Ostatki WHERE Ostatki.STRUK_ID = ' + IntToStr(strukId)
-//                                + ' AND ostatki.ksm_id = ' + IntToStr(ksmId)
-//                                + ' AND (coalesce(Ostatki.Ksm_idpr, 0) = 0) '
-//                                + ' and ostatki.account = ''10/11'' '
-//                                + ' and ostatki.ot_s <> 0 ',
-//                                dm.db, dm.trans_read)
-//  else
-//    ostCexKartId := SelectToVarIB('select Ostatki.kart_id '
-//                                + 'FROM Ostatki WHERE Ostatki.STRUK_ID = ' + IntToStr(strukId)
-//                                + ' AND ostatki.ksm_id = ' + IntToStr(ksmId)
-//                                + ' AND (coalesce(Ostatki.Ksm_idpr, 0) = 0)',
-//                                dm.db, dm.trans_read);
-//  If (ostCexKartId = Null) then
-//    createKartIdInOstatki;   //  карточки нету, создаем ее
-//  else
-//    st_kart := v_dok_kart;  // карточка сырья цеха есть, получаем сумму остатка в сырье
+
   createPrixodDocumOnPrep;  //                 создаем документ прихода сырья  на препарат
   if (kolRashNorm > 0) then
   begin
-    if (not dm.Kart.Active) then
-    begin
-      DM.Kart.MacroByName('USL').AsString := 'WHERE document.klient_id = '
-                                              + IntToStr(ksmIdPrep)
-                                              + ' and document.date_op between '
-                                              + '''' + DateToStr(dateBegin) + '''' + ' and '
-                                              + '''' + DateToStr(dateEnd) + '''';
-      DM.Kart.Open
-    end;
+    dm.Kart.Close;
+    DM.Kart.MacroByName('USL').AsString := 'WHERE document.klient_id = '
+                                           + IntToStr(ksmIdPrep)
+                                           + ' and document.date_op between '
+                                           + '''' + DateToStr(dateBegin) + '''' + ' and '
+                                           + '''' + DateToStr(dateEnd) + '''';
+    DM.Kart.Open;
     dm.Kart.BeforePost := nil;
 // цикл по сериям сырья (OSTATKI)- QUERY
-//    findOstatkiSyrInCex(spec);
     createKartInPrixodDocumOnPrep(spec);    // запись необходимого прихода на препарат в Kart
   end;
 //  db.commitWriteTrans(true);
-//  prihDocId := v_docSt;
-//  vTip_Op_Id := v_tipSt;
-//  vKart_id := v_kartSt;
 end;
 
 function TPrihod.getNeededPrixInMatropEdiz() : double;   // расчет необходимого кол-ва прихода на препарат с учетом остатков
@@ -207,25 +157,6 @@ begin
     result := kolRashMatrop;
 end;
 
-//procedure TPrihod.createKartIdInOstatki;   // создание карточки сырья в остатках
-//begin
-//  IF (not dm.Ostatki.Active) THEN
-//  begin
-//    dm.Ostatki.MacroByName('usl').AsString := '0=0';
-//    dm.Ostatki.ParamByName('struk_id').AsInteger := vStruk_Id;
-//    dm.Ostatki.Open
-//  end
-//  else
-//    dm.Ostatki.First;
-//  dm.Ostatki.Insert;
-//  dm.Ostatki.FieldByName('razdel_id').AsVariant := null;
-//  dm.Ostatki.FieldByName('ksm_idpr').AsVariant := null;
-//  dm.Ostatki.FieldByName('kei_id').AsVariant := null;
-//  dm.Ostatki.Post;
-//  dm.Ostatki.ApplyUpdates;
-//  st_kart := vKart_id;
-//end;
-
 procedure TPrihod.createPrixodDocumOnPrep;  // создание приходного документа на препарат
 var
   prihDocId_Var : Variant;
@@ -259,6 +190,7 @@ begin
       dm.ksmIdPrep := ksmIdPrep;
       dm.dateOp := dateBegin;
       dm.dateDok := dateBegin;
+      dm.strukId := strukId;
       dm.Document.MacroByName('usl').AsString := 'where document.struk_id='
                                                  + IntToStr(dm.strukId)
                                                  + ' and document.tip_op_id = '
@@ -266,9 +198,8 @@ begin
       dm.Document.open;
       dm.Document.Insert;
       dm.Document.Post;
-      dm.Document.Edit;
-      dm.Document.Post;
       dm.Document.ApplyUpdates;
+      prihDocId := dm.DocumentDOC_ID.AsInteger;
     END;
   end;
 end;
@@ -314,11 +245,11 @@ end;
 
 procedure TPrihod.createKartInPrixodDocumOnPrep(spec : boolean);   // добавление необходимого прихода сырья на препарат в Kart
 var
-  curKartOst : double;
   curKolRash : double;
   curKolOst :  double;
   ostCexKartId : integer;
 begin
+  curKolRash := 0;
   dm.Kart.BeforePost := nil;
   if (findOstatkiSyrInCex(spec)) then
   begin
@@ -368,7 +299,7 @@ begin
       ostCexKartId := serOst.kartId
     else
     begin
-      ostCexKartId := serOst.insertOstatki(ksmId, null, null, null, null, strukId, month, year);
+      ostCexKartId := serOst.insertOstatki(ksmId, 0, 0, 0, keiId, strukId, month, year);
       serOst.saveOstatki;
     end;
     if (ostCexKartId <> 0) then
