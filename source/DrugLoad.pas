@@ -2,7 +2,7 @@ unit DrugLoad;
 
 interface
 
-uses DrugLoadDM, Prihod, DBDM,
+uses DrugLoadDM, Prihod, DBDM, TexGurTypes, TexGurDoc,
   kbmMemTable, IBDatabase, Forms, SysUtils, Controls, DB, SplshWnd, Windows,
   VCLUtils, Variants, Math, Dialogs, Graphics;
 
@@ -12,6 +12,9 @@ type
     dm : TFDMDrugLoad;
     prih : TPrihod;
     db : TdDM;
+    texGurT : TTexGurType;
+    texGurD : TTexGurDoc;
+
     Splash : TForm;
     bmpBook: TBitmap;
     curMonth, curYear : integer;
@@ -32,10 +35,10 @@ type
     function openNorms(year, month, ksmIdPrep, strukId : integer) : boolean;
     procedure insertNormsToTexGur(ksmIdPrep : integer);
 
-    function openZagrDoc(seria : string; strukId, ksmIdPrep : integer;
+    function openZagrDoc(docName : string; strukId, ksmIdPrep, tipOpId, tipDokId : integer;
                          dateBegin, dateEnd : TDate) : boolean;
     procedure openZagrKart(docId : integer);
-    procedure insertKartToTexGur(ksmIdPrep : integer);
+    procedure insertKartToTexGur(docNumber, seria: string; ksmIdPrep, tipOpId, tipDokId : integer);
 
     function openPrepOst(strukId, ksmIdPrep : integer; dateBegin, dateEnd : TDate) : boolean;
     procedure insertPrepOstToTexGur(ksmIdPrep : integer);
@@ -74,7 +77,8 @@ type
     constructor Create(var db : TdDM); overload;
     destructor Destroy; override;
 
-    procedure createTexGur(seria, prepNmat : string; year, month, ksmIdPrep, strukId, keiId : integer; full : boolean);
+    procedure createTexGur(texGurT : TTexGurType; seria, prepNmat : string; year,
+                           month, ksmIdPrep, strukId, keiId : integer; full : boolean);
     function saveTexGur() : boolean;
     procedure addTexGurLine;
     procedure delTexGurRecord;
@@ -169,56 +173,78 @@ begin
   result := dm.mem_texGur;
 end;
 
-procedure TDrugLoad.createTexGur(seria, prepNmat : string; year, month, ksmIdPrep,
+procedure TDrugLoad.createTexGur(texGurT : TTexGurType; seria, prepNmat : string; year, month, ksmIdPrep,
                                  strukId, keiId : integer; full : boolean);
+var
+  index : integer;
+  curSeria : string;
 begin
   Splash := ShowSplashWindow(bmpBook,
                                  'Загрузка данных. Подождите, пожалуйста...', True, nil);
   dm.q_seria.Close;
 //  db.trans_write.Active := FALSE;
 //  db.trans_read.Active := FALSE;
+  self.texGurT := texGurT;
   curMonth := month;
   curYear := year;
   self.ksmIdPrep := ksmIdPrep;
   self.seria := seria;
   self.strukId := strukId;
   self.keiId := keiId;
-  StartWait;
-  if (seria <> '') then
+  self.prepNmat := prepNmat;
+
+  dm.mem_texGur.EmptyTable;
+  dm.mem_texGur.Open;
+  dm.mem_texGur.DisableControls;
+  dm.mem_texGurKSM_ID.OnValidate := nil;
+  dm.mem_texGur.BeforePost := nil;
+
+  dateBegin := StrToDate('01.' + IntToStr(month) + '.' + IntToStr(year));
+  dateEnd := IncMonth(dateBegin, 1) - 1;
+
+//  docName := 'Заг_' + copy(prepNmat, 1, 5) + '_' + seria;
+
+  if (openNorms(year, month, ksmIdPrep, strukId)) then
+    insertNormsToTexGur(ksmIdPrep);
+
+  if (texGurT = drugLoadList) or (texGurT = drugLoadSeria) or (texGurT = drugLoadSeries)
+     or (texGurT = drugCons) or (texGurT = drugConsSeria) then
   begin
-    dm.mem_texGur.EmptyTable;
-    dm.mem_texGur.Open;
-    dm.mem_texGur.DisableControls;
-    dm.mem_texGurKSM_ID.OnValidate := nil;
-    dm.mem_texGur.BeforePost := nil;
-    dateBegin := StrToDate('01.' + IntToStr(month) + '.' + IntToStr(year));
-    dateEnd := IncMonth(dateBegin, 1) - 1;
-    self.prepNmat := prepNmat;
-    docName := 'Заг_' + copy(prepNmat, 1, 5) + '_' + seria;
-    if (openNorms(year, month, ksmIdPrep, strukId)) then
-      insertNormsToTexGur(ksmIdPrep);
-    if (openZagrDoc(seria, strukId, ksmIdPrep, dateBegin, dateEnd)) then
+    if (texGurD = nil) then
+      texGurD := TTexGurDoc.Create(texGurT, prepNmat, seria, ksmIdPrep, month, year)
+    else
+      texGurD.formDocumentParams(texGurT, prepNmat, seria, ksmIdPrep, month, year);
+    for index := 0 to texGurD.size - 1 do
     begin
-      dm.q_doc.First;
-      while (not dm.q_doc.Eof) do
+      if (openZagrDoc(texGurD.docNumber[index], strukId, ksmIdPrep,
+                      texGurD.tipOpId, texGurD.tipDokId[index], dateBegin, dateEnd)) then
       begin
-        openZagrKart(dm.q_docDOC_ID.AsInteger);
-        insertKartToTexGur(ksmIdPrep);
-        dm.q_doc.Next;
+        dm.q_doc.First;
+        while (not dm.q_doc.Eof) do
+        begin
+          if ((texGurT = drugLoadList) or (texGurT = drugLoadSeries))
+             and (texGurD.tipDokId[index] = 34) then
+            seria := copy(dm.q_docNDOK.AsString, 11, length(dm.q_docNDOK.AsString) - 10);
+          openZagrKart(dm.q_docDOC_ID.AsInteger);
+          insertKartToTexGur(dm.q_docNDOK.AsString, seria, ksmIdPrep, texGurD.tipOpId, texGurD.tipDokId[index]);
+          dm.q_doc.Next;
+        end;
       end;
     end;
-    if (openPrepOst(strukId, ksmIdPrep, dateBegin, dateEnd)) then
-      insertPrepOstToTexGur(ksmIdPrep);
-    if (openCexOst(dateBegin, dateEnd, strukId)) then
-      insertCexOstToTexGur;
-    convertKeiId(ksmIdPrep);
-    dm.mem_texGur.SortOn('kraz;nmat', []);
-    dm.mem_texGur.First;
-    dm.mem_texGur.BeforePost := dm.mem_texGurBeforePost;
-    dm.mem_texGurKSM_ID.OnValidate := dm.mem_texGurKSM_IDValidate;
-    dm.mem_texGur.EnableControls;
+
   end;
-  StopWait;
+
+  if (openPrepOst(strukId, ksmIdPrep, dateBegin, dateEnd)) then
+    insertPrepOstToTexGur(ksmIdPrep);
+  if (openCexOst(dateBegin, dateEnd, strukId)) then
+    insertCexOstToTexGur;
+  convertKeiId(ksmIdPrep);
+  dm.mem_texGur.SortOn('kraz;nmat', []);
+  dm.mem_texGur.First;
+  dm.mem_texGur.BeforePost := dm.mem_texGurBeforePost;
+  dm.mem_texGurKSM_ID.OnValidate := dm.mem_texGurKSM_IDValidate;
+  dm.mem_texGur.EnableControls;
+
   if (Splash <> nil) and (Splash.Active) then  
     Splash.Free;
 end;
@@ -258,10 +284,11 @@ begin
   end;
 end;
 
-function TDrugLoad.openZagrDoc(seria : string; strukId, ksmIdPrep : integer;
+function TDrugLoad.openZagrDoc(docName : string; strukId, ksmIdPrep,
+                               tipOpId, tipDokId : integer;
                                dateBegin, dateEnd : TDate) : boolean;
 begin
-  docName := 'Заг_' + copy(prepNmat, 1, 5) + '_' + seria;
+//  docName := 'Заг_' + copy(prepNmat, 1, 5) + '_' + seria;
   dm.q_doc.Close;
   if (dateBegin = dateEnd) then
     dm.q_doc.MacroByName('date_dok').AsString := ' document.date_op = '''
@@ -272,7 +299,9 @@ begin
                                               + DateToStr(dateEnd) + ''' ';
   dm.q_doc.ParamByName('struk_id').AsInteger := strukId;
   dm.q_doc.ParamByName('klient_id').AsInteger := ksmIdPrep;
-  dm.q_doc.MacroByName('doc_id').AsString := ' document.ndok = ' + '''' + docName + ''' ';
+  dm.q_doc.MacroByName('doc_id').AsString := ' document.ndok like ''' + docName + ''' ';
+  dm.q_doc.ParamByName('tip_op_id').AsInteger := tipOpId;
+  dm.q_doc.ParamByName('tip_dok_id').AsInteger := tipDokId;
   dm.q_doc.Open;
   dm.q_doc.First;
   result := not dm.q_doc.Eof;
@@ -285,7 +314,7 @@ begin
   dm.q_kart.Open;
 end;
 
-procedure TDrugLoad.insertKartToTexGur(ksmIdPrep : integer);
+procedure TDrugLoad.insertKartToTexGur(docNumber, seria: string; ksmIdPrep, tipOpId, tipDokId : integer);
 begin
   dm.q_kart.First;
   while (not dm.q_kart.eof) do
@@ -304,6 +333,10 @@ begin
       dm.mem_texGurDATE_DOK.AsDateTime := dm.q_docDATE_OP.AsDateTime;
       dm.mem_texGurOLD_DATE_DOK.AsDateTime := dm.q_docDATE_OP.AsDateTime;
       dm.mem_texGurUSER_NAME.AsString := dm.q_kartUSER_NAME.AsString;
+      dm.mem_texGurNDOK.AsString := docNumber;
+      dm.mem_texGurSERIA.AsString := seria;
+      dm.mem_texGurTIP_OP_ID.AsInteger := tipOpId;
+      dm.mem_texGurTIP_DOK_ID.AsInteger := tipDokId;
       dm.mem_texGur.Post;
     end
     else
@@ -326,6 +359,10 @@ begin
       dm.mem_texGurDATE_DOK.AsDateTime := dm.q_docDATE_OP.AsDateTime;
       dm.mem_texGurOLD_DATE_DOK.AsDateTime := dm.q_docDATE_OP.AsDateTime;
       dm.mem_texGurUSER_NAME.AsString := dm.q_kartUSER_NAME.AsString;
+      dm.mem_texGurNDOK.AsString := docNumber;
+      dm.mem_texGurSERIA.AsString := seria;
+      dm.mem_texGurTIP_OP_ID.AsInteger := tipOpId;
+      dm.mem_texGurTIP_DOK_ID.AsInteger := tipDokId;
       dm.mem_texGur.Post;
     end;
     dm.q_kart.Next;
@@ -568,6 +605,7 @@ procedure TDrugLoad.delEmptyZagrDocuments(seria : string; year, month, ksmIdPrep
 var
   dateBegin, dateEnd : TDate;
   str_month : string;
+  index : integer;
 begin
   if (month < 10) then
     str_month := '0' + IntToStr(month)
@@ -575,22 +613,27 @@ begin
     str_month := IntToStr(month);
   dateBegin := StrToDate('01.' + str_month + '.' + IntToStr(year));
   dateEnd := IncMonth(dateBegin, 1) - 1;
-  if (openZagrDoc(seria, strukId, ksmIdPrep, dateBegin, dateEnd)) then
+
+  for index := 0 to texGurD.size - 1 do
   begin
-    dm.q_doc.First;
-    while (not dm.q_doc.Eof) do
+    if (openZagrDoc(texGurD.docNumber[index], strukId, ksmIdPrep,
+                    texGurD.tipOpId, texGurD.tipDokId[index], dateBegin, dateEnd)) then
     begin
-      openZagrKart(dm.q_docDOC_ID.AsInteger);
-      dm.q_kart.FetchAll;
-      if (dm.q_kart.RecordCount = 0) then
-        dm.q_doc.Delete
-      else
-        dm.q_doc.Next;
-    end;
-    if (dm.q_doc.UpdatesPending) then
-    begin
-      dm.q_doc.ApplyUpdates;
-      db.commitWriteTrans(true);
+      dm.q_doc.First;
+      while (not dm.q_doc.Eof) do
+      begin
+        openZagrKart(dm.q_docDOC_ID.AsInteger);
+        dm.q_kart.FetchAll;
+        if (dm.q_kart.RecordCount = 0) then
+          dm.q_doc.Delete
+        else
+          dm.q_doc.Next;
+      end;
+      if (dm.q_doc.UpdatesPending) then
+      begin
+        dm.q_doc.ApplyUpdates;
+        db.commitWriteTrans(true);
+      end;
     end;
   end;
 end;
@@ -741,13 +784,6 @@ begin
   dm.keiId := keiId;
   dm.razdelId := razdelId;
 
-//  if (dm.ql_ostatki.Active) then
-//    if (dm.ql_ostatki.ParamByName('struk_id').AsInteger <> strukId) then
-//    begin
-//      dm.ql_ostatki.Close;
-//      dm.ql_ostatki.ParamByName('struk_ID').AsInteger := strukId;
-//      dm.ql_ostatki.Open;
-//    end;
   dm.q_ostatki.Insert;
   dm.q_ostatki.Post;
   dm.q_ostatki.ApplyUpdates;
@@ -757,7 +793,8 @@ end;
 function TDrugLoad.findOrCreateZagrDocument(seria : string; dateDok : TDate; docId,
                                            strukId, ksmIdPrep : integer) : boolean;
 begin
-  result := openZagrDoc(seria, strukId, ksmIdPrep, dateDok, dateDok);
+  result := openZagrDoc('', strukId, ksmIdPrep, texGurD.tipOpId,
+                        texGurD.tipDokId[0], dateDok, dateDok);
   if (not result) {or ((dm.q_docDOC_ID.AsInteger <> docId) and (docId <> 0))} then
   begin
     dm.dateDok := dateDok;

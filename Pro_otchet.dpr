@@ -115,7 +115,10 @@ uses
   DrugReportEdit in 'Source\DrugReportEdit.pas',
   ReferanceDM in 'Source\ReferanceDM.pas' {RefDM: TDataModule},
   Referance in 'Source\Referance.pas',
-  DBDM in 'Source\DBDM.pas' {dDM: TDataModule};
+  DBDM in 'Source\DBDM.pas' {dDM: TDataModule},
+  ReportCopier in 'Source\ReportCopier.pas',
+  TexGurTypes in 'Source\TexGurTypes.pas',
+  TexGurDoc in 'Source\TexGurDoc.pas';
 
 {$R *.res}
 

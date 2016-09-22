@@ -293,6 +293,9 @@ type
     razdelKODRAZ: TIBStringField;
     razdelNAMRAZ: TIBStringField;
     razdelKRAZ: TSmallintField;
+    mem_texGurTIP_OP_ID: TIntegerField;
+    mem_texGurTIP_DOK_ID: TIntegerField;
+    mem_texGurSERIA: TStringField;
     procedure mem_texGurBeforePost(DataSet: TDataSet);
     procedure mem_texGurKSM_IDValidate(Sender: TField);
     procedure q_seriaBeforeInsert(DataSet: TDataSet);

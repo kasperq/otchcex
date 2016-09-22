@@ -2,7 +2,7 @@ unit DrugReportEdit;
 
 interface
 
-uses SeriaOstatki, DrugLoad, DBDM,
+uses SeriaOstatki, DrugLoad, DBDM, TexGurTypes,
   IBDatabase, Controls, SysUtils, Dialogs, kbmMemTable;
 
 type
@@ -86,8 +86,12 @@ begin
   if (drSeriaLoad = nil) then
     drSeriaLoad := TDrugLoad.Create(db);
   self.full := full;
-  drSeriaLoad.createTexGur(self.seria, self.drugNmat, self.year, self.month,
-                           self.ksmIdDrug, self.strukId, self.keiId, self.full);
+//  drSeriaLoad.createTexGur(TexGurTypes.drugLoadSeria,self.seria, self.drugNmat,
+//                           self.year, self.month, self.ksmIdDrug, self.strukId,
+//                           self.keiId, self.full);
+  drSeriaLoad.createTexGur(TexGurTypes.drugLoadList, '', self.drugNmat,
+                           self.year, self.month, self.ksmIdDrug, self.strukId,
+                           self.keiId, self.full);
 end;
 
 procedure TDrugReportEdit.saveTexGurLoad();
@@ -95,7 +99,8 @@ begin
   if (drSeriaLoad <> nil) then
   begin
     if (drSeriaLoad.saveTexGur()) then
-      drSeriaLoad.createTexGur(seria, drugNmat, year, month, ksmIdDrug, strukId, keiId, full);
+      drSeriaLoad.createTexGur(TexGurTypes.drugLoadList, seria, drugNmat, year,
+                               month, ksmIdDrug, strukId, keiId, full);
   end;
 end;
 

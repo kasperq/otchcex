@@ -1858,6 +1858,15 @@ object FDMDrugLoad: TFDMDrugLoad
       FieldName = 'USER_NAME'
       Size = 10
     end
+    object mem_texGurTIP_OP_ID: TIntegerField
+      FieldName = 'TIP_OP_ID'
+    end
+    object mem_texGurTIP_DOK_ID: TIntegerField
+      FieldName = 'TIP_DOK_ID'
+    end
+    object mem_texGurSERIA: TStringField
+      FieldName = 'SERIA'
+    end
   end
   object q_kart: TRxIBQuery
     Database = dDM.db
@@ -2047,6 +2056,8 @@ object FDMDrugLoad: TFDMDrugLoad
       'and document.tip_dok_id = 34'
       'and document.struk_id = :struk_id'
       'and document.klient_id = :klient_id'
+      'and document.tip_op_id = :tip_op_id'
+      'and document.tip_dok_id = :tip_dok_id'
       'and %date_dok'
       'and %doc_id')
     UpdateObject = upd_doc
@@ -2074,6 +2085,16 @@ object FDMDrugLoad: TFDMDrugLoad
       item
         DataType = ftUnknown
         Name = 'klient_id'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'tip_op_id'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'tip_dok_id'
         ParamType = ptUnknown
       end>
     object q_docDOC_ID: TIntegerField
