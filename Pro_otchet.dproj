@@ -537,10 +537,14 @@
     <DCCReference Include="Source\DocP.pas">
       <Form>FdocP</Form>
     </DCCReference>
+    <DCCReference Include="Source\DrugDetList.pas" />
     <DCCReference Include="Source\DrugLoad.pas" />
     <DCCReference Include="Source\DrugLoadDM.pas">
       <Form>FDMDrugLoad</Form>
       <DesignClass>TDataModule</DesignClass>
+    </DCCReference>
+    <DCCReference Include="Source\DrugRashList.pas">
+      <Form>FDrugRashList</Form>
     </DCCReference>
     <DCCReference Include="Source\DrugReportEdit.pas" />
     <DCCReference Include="Source\ediz.pas">

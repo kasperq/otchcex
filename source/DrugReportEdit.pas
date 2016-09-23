@@ -3,13 +3,14 @@ unit DrugReportEdit;
 interface
 
 uses SeriaOstatki, DrugLoad, DBDM, TexGurTypes,
-  IBDatabase, Controls, SysUtils, Dialogs, kbmMemTable;
+  IBDatabase, Controls, SysUtils, Dialogs, kbmMemTable, Forms;
 
 type
   TDrugReportEdit = class
   private
     drSeriaLoad : TDrugLoad;
     db : TdDM;
+
     m_strukId, m_ksmIdDrug, m_seriaIdDrug, m_year, m_month, m_keiId : integer;
     m_seria, m_drugNmat : string;
     m_fullDrLoad : boolean;
@@ -24,7 +25,7 @@ type
 
     function getMemTexGur() : TkbmMemTable;
     procedure loadTexGurLoad(full : boolean; month, year, ksmIdDrug,
-                             keiId : integer; drugNmat, seria : string); // загружает загрузку по сериям с заданными текущими параметрами
+                             keiId, ksmId : integer; drugNmat, seria : string); // загружает загрузку по сериям с заданными текущими параметрами
     procedure saveTexGurLoad(); // сохраняет текущую загрузку по сериям
     procedure addTexGurLoadLine;
     procedure delTexGurLoadLine;
@@ -35,6 +36,7 @@ type
     procedure changeKsmId(ksmId : integer; nmat : string);
     procedure changeRazdel(razdelId, kraz : integer);
     procedure copyTexGur(sourceTexGur : TDrugReportEdit);
+    procedure showRashDetails;
 
     property strukId : integer read m_strukId write m_strukId;
     property ksmIdDrug : integer read m_ksmIdDrug write m_ksmIdDrug;
@@ -55,6 +57,8 @@ type
 
 implementation
 
+uses DrugDetList;
+
 Constructor TDrugReportEdit.Create(var db : TdDM; strukId : integer);
 begin
   inherited Create;
@@ -69,7 +73,7 @@ begin
 end;
 
 procedure TDrugReportEdit.loadTexGurLoad(full : boolean; month, year,
-                                         ksmIdDrug, keiId : integer; drugNmat, seria : string);
+                                         ksmIdDrug, keiId, ksmId : integer; drugNmat, seria : string);
 begin
   self.month := month;
   self.year := year;
@@ -77,7 +81,7 @@ begin
   self.drugNmat := drugNmat;
   self.keiId := keiId;
   self.seria := seria;
-  if (seria = '') or (year = 0) or (month = 0) or (ksmIdDrug = 0) or (strukId = 0)
+  if {(seria = '') or }(year = 0) or (month = 0) or (ksmIdDrug = 0) or (strukId = 0)
      or (keiId = 0) then
   begin
     ShowMessage('Не все параметры были заданы для отображения загрузки сырья на препарат!');
@@ -86,12 +90,14 @@ begin
   if (drSeriaLoad = nil) then
     drSeriaLoad := TDrugLoad.Create(db);
   self.full := full;
-//  drSeriaLoad.createTexGur(TexGurTypes.drugLoadSeria,self.seria, self.drugNmat,
-//                           self.year, self.month, self.ksmIdDrug, self.strukId,
-//                           self.keiId, self.full);
-  drSeriaLoad.createTexGur(TexGurTypes.drugLoadList, '', self.drugNmat,
-                           self.year, self.month, self.ksmIdDrug, self.strukId,
-                           self.keiId, self.full);
+  if (seria = '') then
+    drSeriaLoad.createTexGur(TexGurTypes.drugLoadSum, '', self.drugNmat,
+                             self.year, self.month, self.ksmIdDrug, self.strukId,
+                             self.keiId, 0, self.full)
+  else
+    drSeriaLoad.createTexGur(TexGurTypes.drugLoadSeria, self.seria, self.drugNmat,
+                             self.year, self.month, self.ksmIdDrug, self.strukId,
+                             self.keiId, 0, self.full);
 end;
 
 procedure TDrugReportEdit.saveTexGurLoad();
@@ -100,8 +106,17 @@ begin
   begin
     if (drSeriaLoad.saveTexGur()) then
       drSeriaLoad.createTexGur(TexGurTypes.drugLoadList, seria, drugNmat, year,
-                               month, ksmIdDrug, strukId, keiId, full);
+                               month, ksmIdDrug, strukId, keiId, 0, full);
   end;
+end;
+
+procedure TDrugReportEdit.showRashDetails;
+var
+  rashDet : TDrugDetList;
+begin
+  if (rashDet = nil) then
+    rashDet := TDrugDetList.Create;
+  rashDet.ShowDetails;
 end;
 
 procedure TDrugReportEdit.addTexGurLoadLine;

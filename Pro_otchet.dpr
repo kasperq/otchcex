@@ -118,7 +118,9 @@ uses
   DBDM in 'Source\DBDM.pas' {dDM: TDataModule},
   ReportCopier in 'Source\ReportCopier.pas',
   TexGurTypes in 'Source\TexGurTypes.pas',
-  TexGurDoc in 'Source\TexGurDoc.pas';
+  TexGurDoc in 'Source\TexGurDoc.pas',
+  DrugRashList in 'Source\DrugRashList.pas' {FDrugRashList},
+  DrugDetList in 'Source\DrugDetList.pas';
 
 {$R *.res}
 

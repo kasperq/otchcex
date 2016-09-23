@@ -207,6 +207,8 @@ type
     mem_texGurTIP_OP_ID: TIntegerField;
     mem_texGurTIP_DOK_ID: TIntegerField;
     mem_texGurSERIA: TStringField;
+    btn_openPrepLoad: TSpeedButton;
+    btn_allDrugLoad: TSpeedButton;
     procedure MyGetValue(const s: String; var v: Variant);
     procedure MyGetValue1(const s: String; var v: Variant);
     procedure edit_kodProdChange(Sender: TObject);
@@ -257,6 +259,8 @@ type
     procedure btn_delAllClick(Sender: TObject);
     procedure q_prepSeriesAfterScroll(DataSet: TDataSet);
     procedure SpeedButton4Click(Sender: TObject);
+    procedure btn_openPrepLoadClick(Sender: TObject);
+    procedure btn_allDrugLoadClick(Sender: TObject);
   private
     { Private declarations }
     drugEdit : TDrugReportEdit;
@@ -267,6 +271,8 @@ type
     procedure loadTexGur(seria, prepNmat : string; year, month, ksmIdPrep, strukId : integer);
     procedure setDateLoad;
     procedure acceptAndLoadSeria;
+    procedure showButtonsInRashCol(show : boolean);
+    procedure loadFullDrug;
 
     procedure openPrepSeries(dateBegin, dateEnd : TDate; strukId : integer);
     procedure loadPrepInfo(kodProd : string);
@@ -323,7 +329,10 @@ procedure TFTexGur.openZagrSeriaTab(kodProd, seria, prepNmat : string; ksmIdPrep
 begin
   loadPrepInfo(kodProd);
   edit_seria.text := seria;
-  acceptAndLoadSeria;
+  if (seria = '') then
+    loadFullDrug
+  else
+    acceptAndLoadSeria;
   PageControl1.ActivePage := tab_zagr;
   PageControl1Change(self);
 end;
@@ -437,7 +446,7 @@ begin
       if (drugEdit = nil) then
         drugEdit := TDrugReportEdit.Create(dm, vStruk_Id);
       drugEdit.loadTexGurLoad(true, month, year, refer.spprod.FieldByName('ksm_id').AsInteger,
-                              refer.spprod.FieldByName('kei_id').AsInteger,
+                              refer.spprod.FieldByName('kei_id').AsInteger, 0,
                               refer.spprod.FieldByName('nmat').AsString, seria);
       ds_texGur.DataSet := drugEdit.texGurLoad;
     end;
@@ -532,6 +541,8 @@ begin
     s_seria := edit_seria.Text;
     s_ksm := s_kodp;
 
+    showButtonsInRashCol(false);
+
     if (serOstDrug = nil) then
       serOstDrug := TSeriaOstatki.Create(dm);
     if (serOstDrug.openSeria(refer.spprod.FieldByName('ksm_id').AsInteger, s_seria)) then
@@ -548,7 +559,7 @@ begin
     if (drugEdit = nil) then
         drugEdit := TDrugReportEdit.Create(dm, vStruk_Id);
     drugEdit.loadTexGurLoad(true, mes, god, refer.spprod.FieldByName('ksm_id').AsInteger,
-                            refer.spprod.FieldByName('kei_id').AsInteger,
+                            refer.spprod.FieldByName('kei_id').AsInteger, 0,
                             refer.spprod.FieldByName('nmat').AsString, s_seria);
     ds_texGur.DataSet := drugEdit.texGurLoad;
     if (serOstDrug.dateLoad <> 0) then
@@ -561,6 +572,24 @@ begin
       DateEdit1.ReadOnly := false;
       DateEdit1.SetFocus;
     end;
+  end;
+end;
+
+procedure TFTexGur.loadFullDrug;
+begin
+  if (refer <> nil) and (refer.spprod.FieldByName('ksm_id').AsInteger <> 0) then
+  begin
+    loadPrepInfo(refer.spprod.FieldByName('kod_prod').AsString);
+    s_ksm := s_kodp;
+    if (drugEdit = nil) then
+        drugEdit := TDrugReportEdit.Create(dm, vStruk_Id);
+    drugEdit.loadTexGurLoad(true, mes, god, refer.spprod.FieldByName('ksm_id').AsInteger,
+                            refer.spprod.FieldByName('kei_id').AsInteger, 0,
+                            refer.spprod.FieldByName('nmat').AsString, '');
+    showButtonsInRashCol(true);
+
+    ds_texGur.DataSet := drugEdit.texGurLoad;
+    DateEdit1.Clear;
   end;
 end;
 
@@ -630,6 +659,12 @@ procedure TFTexGur.N4Click(Sender: TObject);
 begin
  dm1.FrReport2.LoadFromFile(reportsPath + 'P_ListKomplSer.frf');
  dm1.FrReport2.ShowReport;
+end;
+
+procedure TFTexGur.btn_openPrepLoadClick(Sender: TObject);
+begin
+  openZagrSeriaTab(q_prepSeriesKOD_PROD.AsString, '',
+                   q_prepSeriesNMAT.AsString, q_prepSeriesKSM_ID.AsInteger, mes, god, vStruk_id);
 end;
 
 procedure TFTexGur.btn_openSeriaLoadClick(Sender: TObject);
@@ -902,6 +937,14 @@ begin
   edit_kolSeria.text := '0';
 end;
 
+procedure TFTexGur.btn_allDrugLoadClick(Sender: TObject);
+begin
+  loadPrepInfo(refer.spprod.FieldByName('kod_PROD').Asstring);
+  s_seria := '';
+  edit_seria.text := s_seria;
+  loadFullDrug
+end;
+
 procedure TFTexGur.btn_delAllClick(Sender: TObject);
 begin
   drugEdit.delTexGurLoadAllLines;
@@ -959,64 +1002,58 @@ begin
 end;
 
 procedure TFTexGur.grid_zagrEditButtonClick(Sender: TObject);
-var
-  nm : integer;
 begin
-  nm := 0;
   if (grid_zagr.SelectedField.FieldName= 'NEIS') then
-    nm := 1;
+  begin
+    if (drugEdit.isKeiIdChangeable()) then
+    begin
+      if (FEdiz = nil) then
+        FEdiz := TFEdiz.Create(Application);
+      FEdiz.ShowModal;
+      if (FEdiz.ModalResult > 50) then
+        drugEdit.changeKeiId(FEdiz.EdizKei_id.AsInteger, FEdiz.EdizNeis.AsString);
+    end
+    else
+      MessageDlg('Нельзя менять единицу измерения на занормированном сырье!',
+                 mtWarning, [mbOK], 0);
+  end;
+
   if (grid_zagr.SelectedField.FieldName = 'KSM_ID') then
-    nm := 2;
+  begin
+    if (drugEdit.isKeiIdChangeable()) then
+    begin
+      if (FindMatrop = nil) then
+        FindMatrop := TfindMatrop.Create(Application);
+      FindMatrop.DataBaseName := dm1.BELMED;
+      FindMatrop.ReadOnly := true;
+      FindMatrop.ShowModal;
+      if (FindMatrop.ModalResult > 50) then
+      begin
+        drugEdit.changeKsmId(FindMatrop.ModalResult - 50, FindMatrop.IBMatropNMAT.AsString);
+        drugEdit.changeKeiId(FindMatrop.IBMatropKei_id.AsInteger, FindMatrop.IBMatropNEIS.AsString);
+      end;
+    end
+    else
+       MessageDlg('Нельзя менять код занормированного сырья! Вставьте новую строку в отчет.',
+                  mtWarning, [mbOK], 0);
+  end;
   if (grid_zagr.SelectedField.FieldName = 'KRAZ') then
-    nm := 3;
-
-  case nm of
-  1: begin
-      if (drugEdit.isKeiIdChangeable()) then
-      begin
-        if (FEdiz = nil) then
-          FEdiz := TFEdiz.Create(Application);
-        FEdiz.ShowModal;
-        if (FEdiz.ModalResult > 50) then
-          drugEdit.changeKeiId(FEdiz.EdizKei_id.AsInteger, FEdiz.EdizNeis.AsString);
-      end
-      else
-        MessageDlg('Нельзя менять единицу измерения на занормированном сырье!',
-                   mtWarning, [mbOK], 0);
-     end;
-
-  2: begin
-      if (drugEdit.isKeiIdChangeable()) then
-      begin
-        if (FindMatrop = nil) then
-          FindMatrop := TfindMatrop.Create(Application);
-        FindMatrop.DataBaseName := dm1.BELMED;
-        FindMatrop.ReadOnly := true;
-        FindMatrop.ShowModal;
-        if (FindMatrop.ModalResult > 50) then
-        begin
-          drugEdit.changeKsmId(FindMatrop.ModalResult - 50, FindMatrop.IBMatropNMAT.AsString);
-          drugEdit.changeKeiId(FindMatrop.IBMatropKei_id.AsInteger, FindMatrop.IBMatropNEIS.AsString);
-        end;
-      end
-      else
-         MessageDlg('Нельзя менять код занормированного сырья! Вставьте новую строку в отчет.',
-                    mtWarning, [mbOK], 0);
-     end;
-
-  3: begin
-      if (drugEdit.isKeiIdChangeable()) then
-      begin
-        if (FRazdel = nil) then
-          FRazdel := TFRazdel.Create(Application);
-        FRazdel.ShowModal;
-        if (FRazdel.ModalResult > 50) then
-          drugEdit.changeRazdel(FRazdel.ModalResult - 50, s_Razdel);
-      end
-      else
-        MessageDlg('Нельзя менять раздел занормированного сырья! Вставьте новую строку в отчет.',
-                    mtWarning, [mbOK], 0);
-    end;
+  begin
+    if (drugEdit.isKeiIdChangeable()) then
+    begin
+      if (FRazdel = nil) then
+        FRazdel := TFRazdel.Create(Application);
+      FRazdel.ShowModal;
+      if (FRazdel.ModalResult > 50) then
+        drugEdit.changeRazdel(FRazdel.ModalResult - 50, s_Razdel);
+    end
+    else
+      MessageDlg('Нельзя менять раздел занормированного сырья! Вставьте новую строку в отчет.',
+                 mtWarning, [mbOK], 0);
+  end;
+  if (grid_zagr.SelectedField.FieldName = 'KOL_RASH_EDIZ') then
+  begin
+    drugEdit.showRashDetails;
   end;
 end;
 
@@ -1086,13 +1123,15 @@ begin
         s_kol_seria := serOstDrug.kolSeria;
         edit_kolSeria.Text := FloatToStr(serOstDrug.kolSeria);
         edit_seria.Text := serOstDrug.seria;
+
         if (serOstDrug.dateLoad <> 0) then
         begin
           DateEdit1.Date := serOstDrug.dateLoad;
           if (drugEdit = nil) then
             drugEdit := TDrugReportEdit.Create(dm, vStruk_Id);
+          showButtonsInRashCol(false);
           drugEdit.loadTexGurLoad(true, mes, god, refer.spprod.FieldByName('ksm_id').AsInteger,
-                                  refer.spprod.FieldByName('kei_id').AsInteger,
+                                  refer.spprod.FieldByName('kei_id').AsInteger, 0,
                                   refer.spprod.FieldByName('nmat').AsString, s_seria);
           ds_texGur.DataSet := drugEdit.texGurLoad;
         end
@@ -1112,6 +1151,22 @@ begin
 //             + 'or (seria.date_vipusk is null and seria.date_pasport is null '
 //             + 'and seria.date_zag is null)) ';
 //  DM1.Seria.MacroByName('usl').AsString := usl_dat;
+end;
+
+procedure TFTexGur.showButtonsInRashCol(show : boolean);
+begin
+  if (show) then
+  begin
+    grid_zagr.Columns[6].ReadOnly := true;
+//    grid_zagr.Columns[6].AlwaysShowEditButton := true;
+//    grid_zagr.Columns[6].ButtonStyle := TColumnButtonStyleEh(cbsEllipsis);
+  end
+  else
+  begin
+    grid_zagr.Columns[6].ReadOnly := false;
+//    grid_zagr.Columns[6].AlwaysShowEditButton := false;
+//    grid_zagr.Columns[6].ButtonStyle := TColumnButtonStyleEh(cbsAuto);
+  end;
 end;
 
 procedure TFTexGur.SpeedButton2Click(Sender: TObject);

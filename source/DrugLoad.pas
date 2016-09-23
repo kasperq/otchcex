@@ -78,7 +78,7 @@ type
     destructor Destroy; override;
 
     procedure createTexGur(texGurT : TTexGurType; seria, prepNmat : string; year,
-                           month, ksmIdPrep, strukId, keiId : integer; full : boolean);
+                           month, ksmIdPrep, strukId, keiId, ksmId : integer; full : boolean);
     function saveTexGur() : boolean;
     procedure addTexGurLine;
     procedure delTexGurRecord;
@@ -174,7 +174,7 @@ begin
 end;
 
 procedure TDrugLoad.createTexGur(texGurT : TTexGurType; seria, prepNmat : string; year, month, ksmIdPrep,
-                                 strukId, keiId : integer; full : boolean);
+                                 strukId, keiId, ksmId : integer; full : boolean);
 var
   index : integer;
   curSeria : string;
@@ -404,7 +404,15 @@ begin
       dm.mem_texGurPRIX_PERIOD.AsFloat := dm.q_ostPRIX_PERIOD.AsFloat;
       dm.mem_texGurZAG.AsFloat := dm.q_ostZAG.AsFloat;
       dm.mem_texGurZAG_PERIOD.AsFloat := dm.q_ostZAG_PERIOD.AsFloat;
+      if (texGurT = drugLoadSum) then
+      begin
+        dm.mem_texGurKOL_RASH_EDIZ.AsFloat := dm.q_ostZAG_PERIOD.AsFloat;
+      end;
       dm.mem_texGurRASH_VIRAB_PERIOD.AsFloat := dm.q_ostRASH_VIRAB_PERIOD.AsFloat;
+      if (texGurT = drugConsSum) then
+      begin
+        dm.mem_texGurKOL_RASH_EDIZ.AsFloat := dm.q_ostRASH_VIRAB_PERIOD.AsFloat;
+      end;
       dm.mem_texGurPEREDANO_RASH_S.AsFloat := dm.q_ostPEREDANO_RASH_S.AsFloat;
       dm.mem_texGurPEREDANO_RASH_NZ.AsFloat := dm.q_ostPEREDANO_RASH_NZ.AsFloat;
       dm.mem_texGur.Post;
@@ -431,7 +439,15 @@ begin
       dm.mem_texGurPRIX_PERIOD.AsFloat := dm.q_ostPRIX_PERIOD.AsFloat;
       dm.mem_texGurZAG.AsFloat := dm.q_ostZAG.AsFloat;
       dm.mem_texGurZAG_PERIOD.AsFloat := dm.q_ostZAG_PERIOD.AsFloat;
+      if (texGurT = drugLoadSum) then
+      begin
+        dm.mem_texGurKOL_RASH_EDIZ.AsFloat := dm.q_ostZAG_PERIOD.AsFloat;
+      end;
       dm.mem_texGurRASH_VIRAB_PERIOD.AsFloat := dm.q_ostRASH_VIRAB_PERIOD.AsFloat;
+      if (texGurT = drugConsSum) then
+      begin
+        dm.mem_texGurKOL_RASH_EDIZ.AsFloat := dm.q_ostRASH_VIRAB_PERIOD.AsFloat;
+      end;
       dm.mem_texGurPEREDANO_RASH_S.AsFloat := dm.q_ostPEREDANO_RASH_S.AsFloat;
       dm.mem_texGurPEREDANO_RASH_NZ.AsFloat := dm.q_ostPEREDANO_RASH_NZ.AsFloat;
       dm.mem_texGurKEI_ID_OST_PREP.AsInteger := dm.q_ostKEI_ID.AsInteger;
