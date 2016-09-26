@@ -728,7 +728,7 @@ end;
 
 procedure TFGotProdNaklView.createUpakArrFor2KodaMukosat;
 var
-  kolUpak, kolUpak1000 : double;
+  kolUpak, kolUpak1000, fracKolUpak, multipleKolUpakKolTrans : double;
 begin
   upakArr.EmptyTable;
   upakArr.Open;
@@ -744,12 +744,14 @@ begin
     upakArrkol_upak_prop.AsString := SumToString(upakArrkol_upak.AsInteger);
     upakArrves_trans.AsFloat := seriaArrVES_TRANS.AsFloat;
     upakArrves_upak.AsFloat := seriaArrVES_TARA.AsFloat;
+    fracKolUpak := Frac(StrToFloat(FloatToStr(kolUpak)));
     upakArr.Post;
-    if (Frac(StrToFloat(FloatToStr(kolUpak))) <> 0) then
+    if (fracKolUpak <> 0) then
     begin
+      multipleKolUpakKolTrans := fracKolUpak * seriaArrKOL_TRANS.AsFloat;
       upakArr.Append;
       upakArr.Edit;
-      upakArrkol_trans.AsInteger := round(Frac(kolUpak) * seriaArrKOL_TRANS.AsFloat);
+      upakArrkol_trans.AsInteger := StrToInt(FloatToStr(SimpleRoundTo(multipleKolUpakKolTrans, 0)));
       upakArrkol_upak.AsInteger := 1;
       upakArrkol_upak_prop.AsString := SumToString(upakArrkol_upak.AsInteger);
       if (seriaArrKOL_GRP.AsInteger <> 0) then
@@ -804,7 +806,7 @@ begin
     begin
       upakArr.Append;
       upakArr.Edit;
-      upakArrkol_trans.AsInteger := round(Frac(kolUpak) * GotKartQueryKOL_TRANS.AsFloat);
+      upakArrkol_trans.AsInteger := StrToInt(FloatToStr(SimpleRoundTo(Frac(kolUpak) * GotKartQueryKOL_TRANS.AsFloat, 0)));
       upakArrkol_upak.AsInteger := 1;
       upakArrSERIA_ID.AsInteger := GotKartQuerySERIA_ID.AsInteger;
       upakArrKOD_PROD.AsString := GotKartQueryKOD_PROD.AsString;
@@ -871,7 +873,7 @@ begin
     begin
       upakArr.Append;
       upakArr.Edit;
-      upakArrkol_trans.AsInteger := round(Frac(kolUpak) * GotKartQueryKOL_TRANS.AsFloat);
+      upakArrkol_trans.AsInteger := StrToInt(FloatToStr(SimpleRoundTo(Frac(kolUpak) * GotKartQueryKOL_TRANS.AsFloat, 0)));
       upakArrkol_upak.AsInteger := 1;
       upakArrSERIA_ID.AsInteger := GotKartQuerySERIA_ID.AsInteger;
       upakArrKOD_PROD.AsString := GotKartQueryKOD_PROD.AsString;
@@ -887,7 +889,7 @@ begin
       end;
 
       if (GotKartQueryKOL_TRANS.AsInteger <> 0) then
-        upakArrVES_TRANS.AsFloat := roundto(((round(kolUpak1000)
+        upakArrVES_TRANS.AsFloat := roundto(((StrToInt(FloatToStr(SimpleRoundTo(kolUpak1000, 0)))
                                               - (GotKartQueryKOL_TRANS.AsInteger
                                                  * trunc(kolUpak)))
                                              * GotKartQueryVES_TRANS.AsFloat)
