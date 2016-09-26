@@ -2,7 +2,7 @@ object FDrugRashList: TFDrugRashList
   Left = 0
   Top = 0
   ClientHeight = 237
-  ClientWidth = 393
+  ClientWidth = 455
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -17,30 +17,25 @@ object FDrugRashList: TFDrugRashList
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 393
+    Width = 455
     Height = 41
     Align = alTop
     TabOrder = 0
-    ExplicitLeft = 416
-    ExplicitTop = 96
-    ExplicitWidth = 185
+    ExplicitWidth = 393
   end
   object Panel2: TPanel
     Left = 0
     Top = 41
-    Width = 393
+    Width = 455
     Height = 155
     Align = alClient
     Caption = 'Panel2'
     TabOrder = 1
-    ExplicitLeft = 440
-    ExplicitTop = 336
-    ExplicitWidth = 185
-    ExplicitHeight = 41
+    ExplicitWidth = 393
     object DBGridEh1: TDBGridEh
       Left = 1
       Top = 1
-      Width = 391
+      Width = 453
       Height = 153
       Align = alClient
       AutoFitColWidths = True
@@ -59,6 +54,11 @@ object FDrugRashList: TFDrugRashList
       TitleFont.Name = 'Tahoma'
       TitleFont.Style = []
       Columns = <
+        item
+          EditButtons = <>
+          FieldName = 'KRAZ'
+          Footers = <>
+        end
         item
           EditButtons = <>
           FieldName = 'KSM_ID'
@@ -86,13 +86,11 @@ object FDrugRashList: TFDrugRashList
   object Panel3: TPanel
     Left = 0
     Top = 196
-    Width = 393
+    Width = 455
     Height = 41
     Align = alBottom
     TabOrder = 2
-    ExplicitLeft = 320
-    ExplicitTop = 416
-    ExplicitWidth = 185
+    ExplicitWidth = 393
   end
   object ds_texGur: TDataSource
     DataSet = FDMDrugLoad.mem_texGur

@@ -16,9 +16,11 @@ type
     procedure FormShow(Sender: TObject);
   private
     drugEdit : TDrugReportEdit;
-    db : TdDM;
+    m_db : TdDM;
     m_strukId, m_month, m_year, m_ksmId, m_ksmIdPrep, m_keiId : integer;
     m_nmat : string;
+
+    procedure setDB(var db : TdDM);
 
   public
     property strukId : integer read m_strukId write m_strukId;
@@ -28,6 +30,8 @@ type
     property ksmIdPrep : integer read m_ksmIdPrep write m_ksmIdPrep;
     property keiId : integer read m_keiId write m_keiId;
     property nmat : string read m_nmat write m_nmat;
+
+    property db : TdDM read m_db write setDB;
   end;
 
 implementation
@@ -40,6 +44,11 @@ begin
         drugEdit := TDrugReportEdit.Create(db, m_strukId);
   drugEdit.loadTexGurLoad(false, m_month, m_year, m_ksmIdPrep, m_keiId, m_ksmId, m_nmat, '');
   ds_texGur.DataSet := drugEdit.texGurLoad;
+end;
+
+procedure TFDrugRashList.setDB(var db: TdDM);
+begin
+  m_db := db;
 end;
 
 end.
