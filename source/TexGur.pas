@@ -932,7 +932,12 @@ begin
     q_ostatki.FieldByName('ksm_idpr').AsInteger := ksmIdPrep;
   IF (seriaId <> 0) then
     q_ostatki.FieldByName('Seria_id').AsInteger := seriaId;
-  q_ostatki.FieldByName('Kei_Id').AsInteger := keiId;
+//  q_ostatki.FieldByName('Kei_Id').AsInteger := keiId;
+  q_ostatki.FieldByName('Kei_Id').AsInteger := SelectToVarIB('select matrop.kei_id '
+                                                             + 'FROM matrop '
+                                                             + 'WHERE matrop.ksm_id = '
+                                                             + IntToStr(ksmId),
+                                                             dm1.belmed, dm1.ibt_read);
   q_ostatki.FieldByName('Struk_Id').AsInteger := strukId;
   q_ostatki.FieldByName('Mes').AsInteger := Mes_conf;
   q_ostatki.FieldByName('God').AsInteger := God_conf;
