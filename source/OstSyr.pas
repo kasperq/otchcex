@@ -55,7 +55,7 @@ type
     procedure setDateEdits;
 
   public
-    { Public declarations }
+    ksmId : integer;
   end;
 
 var
@@ -106,7 +106,8 @@ end;
 
 procedure TFOstSyr.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
- dm1.OstSyr.Close;
+  dm1.OstSyr.Close;
+  ksmId := 0;
 end;
 
 procedure TFOstSyr.FormKeyDown(Sender: TObject; var Key: Word;
@@ -120,6 +121,8 @@ procedure TFOstSyr.FormShow(Sender: TObject);
 var
   year, month, day : word;
 begin
+  if (ksmId <> 0) then
+    s_ksm := ksmId;
   if (s_ksm <> 0) then
   begin
     curDateBeginStr := datetostr(DateEdit3.Date);

@@ -193,7 +193,7 @@ object FOstSyr: TFOstSyr
       Left = 32
       Top = 0
       Width = 118
-      Height = 30
+      Height = 13
       Margins.Bottom = 0
       Caption = '       '#1044#1074#1080#1078#1077#1085#1080#1077' '#1089#1099#1088#1100#1103':  '
       Layout = tlCenter
@@ -202,7 +202,7 @@ object FOstSyr: TFOstSyr
       Left = 150
       Top = 0
       Width = 52
-      Height = 30
+      Height = 19
       Ctl3D = False
       ParentCtl3D = False
       TabOrder = 0
@@ -239,7 +239,7 @@ object FOstSyr: TFOstSyr
       Left = 225
       Top = 0
       Width = 180
-      Height = 30
+      Height = 16
       Margins.Bottom = 0
       Caption = 'Label7'
       Constraints.MinWidth = 180
@@ -255,7 +255,7 @@ object FOstSyr: TFOstSyr
       Left = 405
       Top = 0
       Width = 48
-      Height = 30
+      Height = 13
       Margins.Bottom = 0
       Caption = '   '#1045#1076'.'#1080#1079#1084'.'
       Layout = tlCenter
@@ -264,7 +264,7 @@ object FOstSyr: TFOstSyr
       Left = 453
       Top = 0
       Width = 48
-      Height = 30
+      Height = 16
       Margins.Bottom = 0
       Caption = 'Label8'
       Font.Charset = DEFAULT_CHARSET
@@ -468,7 +468,7 @@ object FOstSyr: TFOstSyr
     Left = 512
     Top = 188
     Bitmap = {
-      494C010108000A000C0018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010108000A00140018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

@@ -2,9 +2,10 @@ unit DrugLoad;
 
 interface
 
-uses DrugLoadDM, Prihod, DBDM, TexGurTypes, TexGurDoc,
+uses DrugLoadDM, Prihod, DBDM, TexGurTypes, TexGurDoc, SeriaOstatki,
+
   kbmMemTable, IBDatabase, Forms, SysUtils, Controls, DB, SplshWnd, Windows,
-  VCLUtils, Variants, Math, Dialogs, Graphics;
+  VCLUtils, Variants, Math, Dialogs, Graphics, UtilRIB;
 
 type
   TDrugLoad = class
@@ -14,11 +15,12 @@ type
     db : TdDM;
     texGurT : TTexGurType;
     texGurD : TTexGurDoc;
+    drugSeria : TSeriaOstatki;
 
     Splash : TForm;
     bmpBook: TBitmap;
     curMonth, curYear : integer;
-    dateBegin, dateEnd : TDate;
+    m_dateBegin, m_dateEnd : TDate;
     docName : string;
     prepNmat : string;
     keiId : integer;
@@ -27,6 +29,10 @@ type
 //    kartId : integer;
     ksmIdPrep : integer;
     strukId : integer;
+    ksmId : integer;
+    keiIdSyr : integer;
+    razdelId : integer;
+    kraz : integer;
 //    kolSeria : double;
 //    dateLoadSeria : TDate;
 
@@ -38,7 +44,9 @@ type
     function openZagrDoc(docName : string; strukId, ksmIdPrep, tipOpId, tipDokId : integer;
                          dateBegin, dateEnd : TDate) : boolean;
     procedure openZagrKart(docId : integer);
-    procedure insertKartToTexGur(docNumber, seria: string; ksmIdPrep, tipOpId, tipDokId : integer);
+    procedure insertKartToTexGur(docNumber, seria: string; ksmIdPrep, tipOpId,
+                                 tipDokId, seriaId : integer);
+    function getCurSeriaId(seria : string) : integer;
 
     function openPrepOst(strukId, ksmIdPrep : integer; dateBegin, dateEnd : TDate) : boolean;
     procedure insertPrepOstToTexGur(ksmIdPrep : integer);
@@ -53,7 +61,6 @@ type
 
     procedure delEmptyZagrDocuments(seria : string; year, month, ksmIdPrep, strukId : integer);
     function saveMemTexGur() : boolean;
-    function getCurKeiId() : integer;
 
 //     Сохранение загрузки
     procedure deletePrih(ksmIdPrep, ksmId, strukId, razdelId : integer);
@@ -78,7 +85,8 @@ type
     destructor Destroy; override;
 
     procedure createTexGur(texGurT : TTexGurType; seria, prepNmat : string; year,
-                           month, ksmIdPrep, strukId, keiId, ksmId : integer; full : boolean);
+                           month, ksmIdPrep, strukId, keiId, ksmId, keiIdSyr, razdelId,
+                           kraz : integer; full : boolean);
     function saveTexGur() : boolean;
     procedure addTexGurLine;
     procedure delTexGurRecord;
@@ -87,8 +95,13 @@ type
     procedure changeKsmId(ksmId : integer; nmat : string);
     procedure changeRazdel(razdelId, kraz : integer);
     function isKeiIdChangeable() : boolean;
+    procedure changeSeria(seria : string; seriaId : integer);
+    function getCurKeiId() : integer;
+    function getKolRashSum() : double;
 
     property texGurLoad : TkbmMemTable read getMemTexGur;
+    property dateBegin : TDate read m_dateBegin;
+    property dateEnd : TDate read m_dateEnd;
 
   end;
 
@@ -174,10 +187,11 @@ begin
 end;
 
 procedure TDrugLoad.createTexGur(texGurT : TTexGurType; seria, prepNmat : string; year, month, ksmIdPrep,
-                                 strukId, keiId, ksmId : integer; full : boolean);
+                                 strukId, keiId, ksmId, keiIdSyr, razdelId,
+                                 kraz : integer; full : boolean);
 var
   index : integer;
-  curSeria : string;
+  curSeriaId : integer;
 begin
   Splash := ShowSplashWindow(bmpBook,
                                  'Загрузка данных. Подождите, пожалуйста...', True, nil);
@@ -192,6 +206,10 @@ begin
   self.strukId := strukId;
   self.keiId := keiId;
   self.prepNmat := prepNmat;
+  self.ksmId := ksmId;
+  self.razdelId := razdelId;
+  self.kraz := kraz;
+  self.keiIdSyr := keiIdSyr;
 
   dm.mem_texGur.EmptyTable;
   dm.mem_texGur.Open;
@@ -199,13 +217,13 @@ begin
   dm.mem_texGurKSM_ID.OnValidate := nil;
   dm.mem_texGur.BeforePost := nil;
 
-  dateBegin := StrToDate('01.' + IntToStr(month) + '.' + IntToStr(year));
-  dateEnd := IncMonth(dateBegin, 1) - 1;
+  m_dateBegin := StrToDate('01.' + IntToStr(month) + '.' + IntToStr(year));
+  m_dateEnd := IncMonth(m_dateBegin, 1) - 1;
 
 //  docName := 'Заг_' + copy(prepNmat, 1, 5) + '_' + seria;
 
-  if (openNorms(year, month, ksmIdPrep, strukId)) then
-    insertNormsToTexGur(ksmIdPrep);
+//  if (openNorms(year, month, ksmIdPrep, strukId)) then
+//    insertNormsToTexGur(ksmIdPrep);
 
   if (texGurT = drugLoadList) or (texGurT = drugLoadSeria) or (texGurT = drugLoadSeries)
      or (texGurT = drugCons) or (texGurT = drugConsSeria) then
@@ -217,7 +235,7 @@ begin
     for index := 0 to texGurD.size - 1 do
     begin
       if (openZagrDoc(texGurD.docNumber[index], strukId, ksmIdPrep,
-                      texGurD.tipOpId, texGurD.tipDokId[index], dateBegin, dateEnd)) then
+                      texGurD.tipOpId, texGurD.tipDokId[index], m_dateBegin, m_dateEnd)) then
       begin
         dm.q_doc.First;
         while (not dm.q_doc.Eof) do
@@ -225,21 +243,27 @@ begin
           if ((texGurT = drugLoadList) or (texGurT = drugLoadSeries))
              and (texGurD.tipDokId[index] = 34) then
             seria := copy(dm.q_docNDOK.AsString, 11, length(dm.q_docNDOK.AsString) - 10);
+          curSeriaId := getCurSeriaId(seria);
           openZagrKart(dm.q_docDOC_ID.AsInteger);
-          insertKartToTexGur(dm.q_docNDOK.AsString, seria, ksmIdPrep, texGurD.tipOpId, texGurD.tipDokId[index]);
+          insertKartToTexGur(dm.q_docNDOK.AsString, seria, ksmIdPrep, texGurD.tipOpId, texGurD.tipDokId[index], curSeriaId);
           dm.q_doc.Next;
         end;
       end;
     end;
-
   end;
 
-  if (openPrepOst(strukId, ksmIdPrep, dateBegin, dateEnd)) then
-    insertPrepOstToTexGur(ksmIdPrep);
-  if (openCexOst(dateBegin, dateEnd, strukId)) then
-    insertCexOstToTexGur;
+  if (openNorms(year, month, ksmIdPrep, strukId)) then
+    insertNormsToTexGur(ksmIdPrep);
+
+  if (full) then
+  begin
+    if (openPrepOst(strukId, ksmIdPrep, m_dateBegin, m_dateEnd)) then
+      insertPrepOstToTexGur(ksmIdPrep);
+    if (openCexOst(m_dateBegin, m_dateEnd, strukId)) then
+      insertCexOstToTexGur;
+  end;
   convertKeiId(ksmIdPrep);
-  dm.mem_texGur.SortOn('kraz;nmat', []);
+  dm.mem_texGur.SortOn('kraz;nmat;date_dok;seria', []);
   dm.mem_texGur.First;
   dm.mem_texGur.BeforePost := dm.mem_texGurBeforePost;
   dm.mem_texGurKSM_ID.OnValidate := dm.mem_texGurKSM_IDValidate;
@@ -266,21 +290,61 @@ begin
   dm.q_norm.First;
   while (not dm.q_norm.Eof) do
   begin
-    dm.mem_texGur.Append;
-    dm.mem_texGurKSM_ID.AsInteger := dm.q_normKSM_ID.AsInteger;
-    dm.mem_texGurRAZDEL_ID.AsInteger := dm.q_normRAZDEL_ID.AsInteger;
-    dm.mem_texGurKRAZ.AsInteger := dm.q_normKRAZ.AsInteger;
-    dm.mem_texGurNMAT.AsString := dm.q_normNMAT.AsString;
-    dm.mem_texGurKEI_ID_NORM.AsInteger := dm.q_normKEIN.AsInteger;
-    dm.mem_texGurKEI_ID_KART.AsInteger := dm.q_normKEIN.AsInteger;
-    dm.mem_texGurNEIS.AsString := dm.q_normNEIS.AsString;
-    dm.mem_texGurPLNORM.AsFloat := dm.q_normPLNORM.AsFloat;
-    dm.mem_texGurGOST.AsString := dm.q_normGOST.AsString;
-    dm.mem_texGurXARKT.AsString := dm.q_normXARKT.AsString;
-    dm.mem_texGurKSM_ID_PREP.AsInteger := ksmIdPrep;
-    dm.setDefaultDateDok(curMonth, dateEnd);
-    dm.mem_texGur.Post;
+    if (ksmId = 0) or (ksmId = dm.q_normKSM_ID.AsInteger) then
+    begin
+      if (dm.mem_texGur.Locate('ksm_id;razdel_id',
+                               VarArrayOf([dm.q_normKSM_ID.AsInteger,
+                                           dm.q_normRAZDEL_ID.AsInteger]),
+                               [])) then
+      begin
+        dm.mem_texGur.Edit;
+        dm.mem_texGurKEI_ID_NORM.AsInteger := dm.q_normKEIN.AsInteger;
+//        dm.mem_texGurKEI_ID_KART.AsInteger := dm.q_normKEIN.AsInteger;
+        dm.mem_texGurNEIS.AsString := dm.q_normNEIS.AsString;
+        dm.mem_texGurPLNORM.AsFloat := dm.q_normPLNORM.AsFloat;
+        dm.mem_texGurGOST.AsString := dm.q_normGOST.AsString;
+        dm.mem_texGurXARKT.AsString := dm.q_normXARKT.AsString;
+        dm.mem_texGur.Post;
+      end
+      else
+      begin
+        dm.mem_texGur.Append;
+        dm.mem_texGurKSM_ID.AsInteger := dm.q_normKSM_ID.AsInteger;
+        dm.mem_texGurRAZDEL_ID.AsInteger := dm.q_normRAZDEL_ID.AsInteger;
+        dm.mem_texGurKRAZ.AsInteger := dm.q_normKRAZ.AsInteger;
+        dm.mem_texGurNMAT.AsString := dm.q_normNMAT.AsString;
+        dm.mem_texGurKEI_ID_NORM.AsInteger := dm.q_normKEIN.AsInteger;
+        dm.mem_texGurKEI_ID_KART.AsInteger := dm.q_normKEIN.AsInteger;
+        dm.mem_texGurNEIS.AsString := dm.q_normNEIS.AsString;
+        dm.mem_texGurPLNORM.AsFloat := dm.q_normPLNORM.AsFloat;
+        dm.mem_texGurGOST.AsString := dm.q_normGOST.AsString;
+        dm.mem_texGurXARKT.AsString := dm.q_normXARKT.AsString;
+        dm.mem_texGurKSM_ID_PREP.AsInteger := ksmIdPrep;
+        dm.setDefaultDateDok(curMonth, m_dateEnd);
+        dm.mem_texGur.Post;
+      end;
+    end;
     dm.q_norm.Next;
+  end;
+  dm.mem_texGur.First;
+  while (not dm.mem_texGur.Eof) do
+  begin
+    if (dm.q_norm.Locate('ksm_id;razdel_id',
+                               VarArrayOf([dm.mem_texGurKSM_ID.AsInteger,
+                                           dm.mem_texGurRAZDEL_ID.AsInteger]),
+                               []))
+       and (dm.mem_texGurKEI_ID_NORM.AsInteger = 0) then
+    begin
+      dm.mem_texGur.Edit;
+      dm.mem_texGurKEI_ID_NORM.AsInteger := dm.q_normKEIN.AsInteger;
+      dm.mem_texGurKEI_ID_KART.AsInteger := dm.q_normKEIN.AsInteger;
+      dm.mem_texGurNEIS.AsString := dm.q_normNEIS.AsString;
+      dm.mem_texGurPLNORM.AsFloat := dm.q_normPLNORM.AsFloat;
+      dm.mem_texGurGOST.AsString := dm.q_normGOST.AsString;
+      dm.mem_texGurXARKT.AsString := dm.q_normXARKT.AsString;
+      dm.mem_texGur.Post;
+    end;
+    dm.mem_texGur.Next;
   end;
 end;
 
@@ -314,56 +378,66 @@ begin
   dm.q_kart.Open;
 end;
 
-procedure TDrugLoad.insertKartToTexGur(docNumber, seria: string; ksmIdPrep, tipOpId, tipDokId : integer);
+procedure TDrugLoad.insertKartToTexGur(docNumber, seria: string; ksmIdPrep,
+                                       tipOpId, tipDokId, seriaId : integer);
 begin
   dm.q_kart.First;
   while (not dm.q_kart.eof) do
   begin
-    if (dm.mem_texGur.Locate('ksm_id;razdel_id',
-                             VarArrayOf([dm.q_kartKSM_ID.AsInteger,
-                                         dm.q_kartRAZDEL_ID.AsInteger]),
-                             [])) and (dm.mem_texGurKOL_RASH_EDIZ.AsFloat = 0) then
+    if (ksmId = 0) or (ksmId = dm.q_kartKSM_ID.AsInteger) then
     begin
-      dm.mem_texGur.Edit;
-      dm.mem_texGurKOL_RASH_EDIZ.AsFloat := dm.q_kartKOL_RASH_EDIZ.AsFloat;
-      dm.mem_texGurKEI_ID_KART.AsInteger := dm.q_kartKEI_ID.AsInteger;
-      dm.mem_texGurDOC_ID.AsInteger := dm.q_kartDOC_ID.AsInteger;
-      dm.mem_texGurKART_ID.AsInteger := dm.q_kartKART_ID.AsInteger;
-      dm.mem_texGurSTROKA_ID.AsInteger := dm.q_kartSTROKA_ID.AsInteger;
-      dm.mem_texGurDATE_DOK.AsDateTime := dm.q_docDATE_OP.AsDateTime;
-      dm.mem_texGurOLD_DATE_DOK.AsDateTime := dm.q_docDATE_OP.AsDateTime;
-      dm.mem_texGurUSER_NAME.AsString := dm.q_kartUSER_NAME.AsString;
-      dm.mem_texGurNDOK.AsString := docNumber;
-      dm.mem_texGurSERIA.AsString := seria;
-      dm.mem_texGurTIP_OP_ID.AsInteger := tipOpId;
-      dm.mem_texGurTIP_DOK_ID.AsInteger := tipDokId;
-      dm.mem_texGur.Post;
-    end
-    else
-    begin
-      dm.mem_texGur.Append;
-      dm.mem_texGurKSM_ID.AsInteger := dm.q_kartKSM_ID.AsInteger;
-      dm.mem_texGurRAZDEL_ID.AsInteger := dm.q_kartRAZDEL_ID.AsInteger;
-      dm.mem_texGurNEIS.AsString := dm.q_kartNEIS.AsString;
-      dm.mem_texGurKRAZ.AsInteger := dm.q_kartKRAZ.AsInteger;
-      dm.mem_texGurNMAT.AsString := dm.q_kartNMAT.AsString;
-      dm.mem_texGurGOST.AsString := dm.q_kartGOST.AsString;
-      dm.mem_texGurXARKT.AsString := dm.q_kartXARKT.AsString;
-      dm.mem_texGurKSM_ID_PREP.AsInteger := ksmIdPrep;
+      if (dm.mem_texGur.Locate('ksm_id;razdel_id',
+                               VarArrayOf([dm.q_kartKSM_ID.AsInteger,
+                                           dm.q_kartRAZDEL_ID.AsInteger]),
+                               [])) and (dm.mem_texGurKOL_RASH_EDIZ.AsFloat = 0) then
+      begin
+        dm.mem_texGur.Edit;
+        dm.mem_texGurKOL_RASH_EDIZ.AsFloat := dm.q_kartKOL_RASH_EDIZ.AsFloat;
+        dm.mem_texGurKEI_ID_KART.AsInteger := dm.q_kartKEI_ID.AsInteger;
+        dm.mem_texGurDOC_ID.AsInteger := dm.q_kartDOC_ID.AsInteger;
+        dm.mem_texGurKART_ID.AsInteger := dm.q_kartKART_ID.AsInteger;
+        dm.mem_texGurSTROKA_ID.AsInteger := dm.q_kartSTROKA_ID.AsInteger;
+        dm.mem_texGurDATE_DOK.AsDateTime := dm.q_docDATE_OP.AsDateTime;
+        dm.mem_texGurOLD_DATE_DOK.AsDateTime := dm.q_docDATE_OP.AsDateTime;
+        dm.mem_texGurUSER_NAME.AsString := dm.q_kartUSER_NAME.AsString;
+        dm.mem_texGurNDOK.AsString := docNumber;
+        dm.mem_texGurSERIA.AsString := seria;
+        dm.mem_texGurSERIA_ID.AsInteger := seriaId;
+        dm.mem_texGurOLD_SERIA.AsString := seria;
+        dm.mem_texGurOLD_SERIA_ID.AsInteger := seriaId;
+        dm.mem_texGurTIP_OP_ID.AsInteger := tipOpId;
+        dm.mem_texGurTIP_DOK_ID.AsInteger := tipDokId;
+        dm.mem_texGur.Post;
+      end
+      else
+      begin
+        dm.mem_texGur.Append;
+        dm.mem_texGurKSM_ID.AsInteger := dm.q_kartKSM_ID.AsInteger;
+        dm.mem_texGurRAZDEL_ID.AsInteger := dm.q_kartRAZDEL_ID.AsInteger;
+        dm.mem_texGurNEIS.AsString := dm.q_kartNEIS.AsString;
+        dm.mem_texGurKRAZ.AsInteger := dm.q_kartKRAZ.AsInteger;
+        dm.mem_texGurNMAT.AsString := dm.q_kartNMAT.AsString;
+        dm.mem_texGurGOST.AsString := dm.q_kartGOST.AsString;
+        dm.mem_texGurXARKT.AsString := dm.q_kartXARKT.AsString;
+        dm.mem_texGurKSM_ID_PREP.AsInteger := ksmIdPrep;
 
-      dm.mem_texGurKOL_RASH_EDIZ.AsFloat := dm.q_kartKOL_RASH_EDIZ.AsFloat;
-      dm.mem_texGurKEI_ID_KART.AsInteger := dm.q_kartKEI_ID.AsInteger;
-      dm.mem_texGurDOC_ID.AsInteger := dm.q_kartDOC_ID.AsInteger;
-      dm.mem_texGurKART_ID.AsInteger := dm.q_kartKART_ID.AsInteger;
-      dm.mem_texGurSTROKA_ID.AsInteger := dm.q_kartSTROKA_ID.AsInteger;
-      dm.mem_texGurDATE_DOK.AsDateTime := dm.q_docDATE_OP.AsDateTime;
-      dm.mem_texGurOLD_DATE_DOK.AsDateTime := dm.q_docDATE_OP.AsDateTime;
-      dm.mem_texGurUSER_NAME.AsString := dm.q_kartUSER_NAME.AsString;
-      dm.mem_texGurNDOK.AsString := docNumber;
-      dm.mem_texGurSERIA.AsString := seria;
-      dm.mem_texGurTIP_OP_ID.AsInteger := tipOpId;
-      dm.mem_texGurTIP_DOK_ID.AsInteger := tipDokId;
-      dm.mem_texGur.Post;
+        dm.mem_texGurKOL_RASH_EDIZ.AsFloat := dm.q_kartKOL_RASH_EDIZ.AsFloat;
+        dm.mem_texGurKEI_ID_KART.AsInteger := dm.q_kartKEI_ID.AsInteger;
+        dm.mem_texGurDOC_ID.AsInteger := dm.q_kartDOC_ID.AsInteger;
+        dm.mem_texGurKART_ID.AsInteger := dm.q_kartKART_ID.AsInteger;
+        dm.mem_texGurSTROKA_ID.AsInteger := dm.q_kartSTROKA_ID.AsInteger;
+        dm.mem_texGurDATE_DOK.AsDateTime := dm.q_docDATE_OP.AsDateTime;
+        dm.mem_texGurOLD_DATE_DOK.AsDateTime := dm.q_docDATE_OP.AsDateTime;
+        dm.mem_texGurUSER_NAME.AsString := dm.q_kartUSER_NAME.AsString;
+        dm.mem_texGurNDOK.AsString := docNumber;
+        dm.mem_texGurSERIA.AsString := seria;
+        dm.mem_texGurSERIA_ID.AsInteger := seriaId;
+        dm.mem_texGurOLD_SERIA.AsString := seria;
+        dm.mem_texGurOLD_SERIA_ID.AsInteger := seriaId;
+        dm.mem_texGurTIP_OP_ID.AsInteger := tipOpId;
+        dm.mem_texGurTIP_DOK_ID.AsInteger := tipDokId;
+        dm.mem_texGur.Post;
+      end;
     end;
     dm.q_kart.Next;
   end;
@@ -451,7 +525,7 @@ begin
       dm.mem_texGurPEREDANO_RASH_S.AsFloat := dm.q_ostPEREDANO_RASH_S.AsFloat;
       dm.mem_texGurPEREDANO_RASH_NZ.AsFloat := dm.q_ostPEREDANO_RASH_NZ.AsFloat;
       dm.mem_texGurKEI_ID_OST_PREP.AsInteger := dm.q_ostKEI_ID.AsInteger;
-      dm.setDefaultDateDok(curMonth, dateEnd);
+      dm.setDefaultDateDok(curMonth, m_dateEnd);
       dm.mem_texGur.Post;
     end;
     dm.q_ost.Next;
@@ -725,8 +799,8 @@ begin
   dm.q_prixKart.Close;
   dm.q_prixKart.ParamByName('struk_id').AsInteger := strukId;
   dm.q_prixKart.ParamByName('klient_id').AsInteger := ksmIdPr;
-  dm.q_prixKart.ParamByName('dat1').AsDate := dateBegin;
-  dm.q_prixKart.ParamByName('dat2').AsDate := dateEnd;
+  dm.q_prixKart.ParamByName('dat1').AsDate := m_dateBegin;
+  dm.q_prixKart.ParamByName('dat2').AsDate := m_dateEnd;
   dm.q_prixKart.ParamByName('ksm_id').AsInteger := ksmId;
   dm.q_prixKart.ParamByName('razdel_id').AsInteger := razdelId;
   dm.q_prixKart.Open;
@@ -737,8 +811,8 @@ begin
   dm.q_prihSum.Close;
   dm.q_prihSum.ParamByName('struk_id').AsInteger := strukId;
   dm.q_prihSum.ParamByName('klient_id').AsInteger := ksmIdPr;
-  dm.q_prihSum.ParamByName('dat1').AsDate := dateBegin;
-  dm.q_prihSum.ParamByName('dat2').AsDate := dateEnd;
+  dm.q_prihSum.ParamByName('dat1').AsDate := m_dateBegin;
+  dm.q_prihSum.ParamByName('dat2').AsDate := m_dateEnd;
   dm.q_prihSum.ParamByName('ksm_id').AsInteger := ksmId;
   dm.q_prihSum.ParamByName('razdel_id').AsInteger := razdelId;
   dm.q_prihSum.Open;
@@ -797,7 +871,10 @@ begin
   dm.strukId := strukId;
   dm.year := curYear;
   dm.month := curMonth;
-  dm.keiId := keiId;
+//  dm.keiId := keiId;
+  dm.keiId := SelectToVarIB('select matrop.kei_id '
+                            + 'FROM matrop '
+                            + 'WHERE matrop.ksm_id = ' + IntToStr(ksmId), db.db, db.trans_read);
   dm.razdelId := razdelId;
 
   dm.q_ostatki.Insert;
@@ -905,9 +982,63 @@ begin
       result := dm.mem_texGurKEI_ID_KART.AsInteger;
 end;
 
+function TDrugLoad.getCurSeriaId(seria : string) : integer;
+begin
+  result := 0;
+  if (drugSeria = nil) then
+    drugSeria := TSeriaOstatki.Create(db);
+  if (drugSeria.openSeria(self.ksmIdPrep, seria)) then
+    result := drugSeria.seriaId;
+end;
+
+function TDrugLoad.getKolRashSum() : double;
+var
+  curKsmId, curRazdelId, curStrokaId : integer;
+  curRashKol : double;
+begin
+  curStrokaId := 0;
+  curKsmId := 0;
+  curRazdelId := 0;
+  curRashKol := 0;
+  if (dm.mem_texGur.FieldByName('stroka_id').AsInteger <> 0) then
+    curStrokaId := dm.mem_texGur.FieldByName('stroka_id').AsInteger
+  else
+  begin
+    curKsmId := dm.mem_texGur.FieldByName('ksm_id').AsInteger;
+    curRazdelId := dm.mem_texGur.FieldByName('razdel_id').AsInteger;
+    curRashKol := dm.mem_texGur.FieldByName('kol_rash_ediz').AsFloat;
+  end;
+
+  result := 0;
+  dm.mem_texGur.DisableControls;
+  dm.mem_texGur.First;
+  while (not dm.mem_texGur.Eof) do
+  begin
+    if (not dm.mem_texGurDELETE.AsBoolean) then    
+      result := result + dm.mem_texGurKOL_RASH_EDIZ.AsFloat;
+    dm.mem_texGur.Next;
+  end;
+
+  if (curStrokaId <> 0) then
+    dm.mem_texGur.Locate('stroka_id', VarArrayOf([curStrokaId]), [])
+  else
+    dm.mem_texGur.Locate('ksm_id;razdel_id;kol_rash_ediz',
+                                  VarArrayOf([curKsmId, curRazdelId, curRashKol]), []);
+  dm.mem_texGur.EnableControls;
+end;
+
 procedure TDrugLoad.addTexGurLine;
 begin
-  dm.addTexGurRecord(curMonth, dateEnd);
+  dm.addTexGurRecord(curMonth, m_dateEnd);
+  if (texGurT = drugLoadList) then
+  begin
+    dm.mem_texGur.Edit;
+    dm.mem_texGurKSM_ID.AsInteger := self.ksmId;
+    dm.mem_texGurRAZDEL_ID.AsInteger := self.razdelId;
+    dm.mem_texGurKRAZ.AsInteger := self.kraz;
+    dm.mem_texGurKEI_ID_KART.AsInteger := self.keiIdSyr;
+    dm.mem_texGurKEI_ID_NORM.AsInteger := self.keiIdSyr;
+  end;
 end;
 
 procedure TDrugLoad.delTexGurRecord;
@@ -935,6 +1066,11 @@ begin
   dm.changeRazdel(razdelId, kraz);
 end;
 
+procedure TDrugLoad.changeSeria(seria: string; seriaId: integer);
+begin
+  dm.changeSeria(seria, seriaId);
+end;
+
 function TDrugLoad.isKeiIdChangeable() : boolean;
 begin
   result := false;
@@ -950,8 +1086,8 @@ begin
     prih := TPrihod.Create(db);
   curMes := self.curMonth;
   curGod := self.curYear;
-  if (dm.mem_texGurDATE_DOK.AsDateTime < dateBegin)
-     or (dm.mem_texGurDATE_DOK.AsDateTime > dateEnd) then
+  if (dm.mem_texGurDATE_DOK.AsDateTime < m_dateBegin)
+     or (dm.mem_texGurDATE_DOK.AsDateTime > m_dateEnd) then
   begin
     curMes := StrToInt(copy(dm.mem_texGurDATE_DOK.AsString, 4, 2));
     curGod := StrToInt(copy(dm.mem_texGurDATE_DOK.AsString, 9, 2));

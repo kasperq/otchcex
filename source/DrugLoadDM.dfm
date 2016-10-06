@@ -1867,6 +1867,12 @@ object FDMDrugLoad: TFDMDrugLoad
     object mem_texGurSERIA: TStringField
       FieldName = 'SERIA'
     end
+    object mem_texGurOLD_SERIA_ID: TIntegerField
+      FieldName = 'OLD_SERIA_ID'
+    end
+    object mem_texGurOLD_SERIA: TStringField
+      FieldName = 'OLD_SERIA'
+    end
   end
   object q_kart: TRxIBQuery
     Database = dDM.db

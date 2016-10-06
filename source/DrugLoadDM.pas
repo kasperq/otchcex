@@ -296,6 +296,8 @@ type
     mem_texGurTIP_OP_ID: TIntegerField;
     mem_texGurTIP_DOK_ID: TIntegerField;
     mem_texGurSERIA: TStringField;
+    mem_texGurOLD_SERIA_ID: TIntegerField;
+    mem_texGurOLD_SERIA: TStringField;
     procedure mem_texGurBeforePost(DataSet: TDataSet);
     procedure mem_texGurKSM_IDValidate(Sender: TField);
     procedure q_seriaBeforeInsert(DataSet: TDataSet);
@@ -335,6 +337,7 @@ type
     procedure changeKeiId(keiId : integer; neis : string);
     procedure changeKsmId(ksmId : integer; nmat : string);
     procedure changeRazdel(razdelId, kraz : integer);
+    procedure changeSeria(seria: string; seriaId: integer);
 
     property ksmId : integer read m_ksmId write m_ksmId;
     property ksmIdPrep : integer read m_ksmIdPrep write m_ksmIdPrep;
@@ -671,6 +674,18 @@ begin
   mem_texGurRAZDEL_ID.AsInteger := razdelId;
   mem_texGurKRAZ.AsInteger := kraz;
   mem_texGur.Post;
+end;
+
+procedure TFDMDrugLoad.changeSeria(seria: string; seriaId: integer);
+begin
+  if (seria <> mem_texGurSERIA.AsString)
+     or (seriaId <> mem_texGurSERIA_ID.AsInteger) then
+  begin
+    mem_texGur.Edit;
+    mem_texGurSERIA_ID.AsInteger := seriaId;
+    mem_texGurSERIA.AsString := seria;
+    mem_texGur.Post;
+  end;
 end;
 
 end.

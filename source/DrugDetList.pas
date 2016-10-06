@@ -2,19 +2,21 @@ unit DrugDetList;
 
 interface
 
-uses DrugRashList,
+uses DrugRashList, DBDM,
+
   Forms;
 
 type
   TDrugDetList = class
   private
-    rashDet : TFDrugRashList;
+    rashDetForm : TFDrugRashList;
 
   public
     Constructor Create;
     Destructor Destroy; override;
 
-    procedure showDetails;
+    procedure showDetails(var db : TdDM; month, year, ksmIdDrug, keiId, ksmId,
+                          strukId, razdelId, kraz, keiIdSyr : integer; drugNmat : string);
 
   end;
 
@@ -23,7 +25,8 @@ implementation
 Constructor TDrugDetList.Create;
 begin
   inherited Create;
-
+  if (rashDetForm = nil) then
+    rashDetForm := TFDrugRashList.Create(Application);
 end;
 
 Destructor TDrugDetList.Destroy;
@@ -33,11 +36,23 @@ begin
 end;
 
 
-procedure TDrugDetList.showDetails;
+procedure TDrugDetList.showDetails(var db : TdDM; month, year, ksmIdDrug, keiId,
+                                   ksmId, strukId, razdelId, kraz, keiIdSyr : integer; drugNmat : string);
 begin
-  if (rashDet = nil) then
-    rashDet := TFDrugRashList.Create(Application);
-  rashDet.ShowModal;
+  if (rashDetForm = nil) then
+    rashDetForm := TFDrugRashList.Create(Application);
+  rashDetForm.setDB(db, strukId);
+  rashDetForm.month := month;
+  rashDetForm.year := year;
+  rashDetForm.ksmIdDrug := ksmIdDrug;
+  rashDetForm.keiId := keiId;
+  rashDetForm.ksmId := ksmId;
+  rashDetForm.drugNmat := drugNmat;
+  rashDetForm.razdelId := razdelId;
+  rashDetForm.kraz := kraz;
+  rashDetForm.keiIdSyr := keiIdSyr;
+
+  rashDetForm.ShowModal;
 end;
 
 end.
