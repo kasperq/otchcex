@@ -438,9 +438,12 @@ begin
     if (dm1.KartV.Locate('ksm_id', q_spprodDbfKSM_ID.AsInteger, [])) then
       q_spprodDbf.Next
     else
+    begin
       q_spprodDbf.Delete;
+    end;
   end;
-  q_spprodDbf.ApplyUpdates;
+  if (q_spprodDbf.UpdatesPending) then
+    q_spprodDbf.ApplyUpdates;
   q_spprodDbf.CommitUpdates;
 end;
 
@@ -449,7 +452,7 @@ begin
   dm1.KartV.First;
   while (not dm1.KartV.Eof) do
   begin
-    if (not q_spprodDbf.Locate('ksm_id', dm1.KartVKSM_ID.AsInteger, [])) then
+//    if (not q_spprodDbf.Locate('ksm_id', dm1.KartVKSM_ID.AsInteger, [])) then
       findInsertSpprodToSpprodDbf;
     dm1.KartV.Next
   end;
@@ -561,9 +564,9 @@ begin
   setSpprodDbfText;
   if (openQSpprodDbf()) then
   begin
-    isSpprodDbfInKartv;
+//    isSpprodDbfInKartv;
 //    packSpprodDbf;
-//    clearSpprodDbf;
+    clearSpprodDbf;
     isKartvInSpprodDbf;
   end;
 end;
@@ -735,7 +738,7 @@ begin
       Otchet.FieldByName('rasg').AsVariant := v_rasm;
       Otchet.FieldByName('pereg').AsVariant := s_pereras;
     END;
-// расход с на выпуск начала квартала
+// СЂР°СЃС…РѕРґ СЃ РЅР° РІС‹РїСѓСЃРє РЅР°С‡Р°Р»Р° РєРІР°СЂС‚Р°Р»Р°
     Ras_Vir.First;
     if Ras_Vir.Locate('kart_id',
                       VarArrayOf([Query_Otchet.FieldByName('KART_ID').AsInteger]),
@@ -743,7 +746,7 @@ begin
       Otchet.FieldByName('rask').AsVariant := Ras_Vir.FieldByName('Rash_virab_period').AsVariant
     else
       Otchet.FieldByName('rask').AsVariant := v_rasm;
-// ввод цены прихода из старого отчета
+// РІРІРѕРґ С†РµРЅС‹ РїСЂРёС…РѕРґР° РёР· СЃС‚Р°СЂРѕРіРѕ РѕС‚С‡РµС‚Р°
     if Otchets.Active = false then
       Otchets.Active := true;
     otchets.First;
@@ -752,7 +755,7 @@ begin
     else
       Otchet.FieldByName('otcena').AsVariant := 0;
     Otchet.Post;
-// ввод цены прихода из RASXOD главной машины
+// РІРІРѕРґ С†РµРЅС‹ РїСЂРёС…РѕРґР° РёР· RASXOD РіР»Р°РІРЅРѕР№ РјР°С€РёРЅС‹
     st_ksm1 := '00' + st_ksm;
     rasxod.Open;
     RASXOD.First;
@@ -760,7 +763,7 @@ begin
     if RASXOD.Locate('cex;numkcu', VarArrayOf([s_stkod, sT_ksm1]), []) then
       Otchet.FieldByName('otcena').AsVariant := RASXOD.FieldByName('money').AsVariant;
     Otchet.post;
-// добавление в NCMATRD
+// РґРѕР±Р°РІР»РµРЅРёРµ РІ NCMATRD
     if Length(trim(inttostr(v_kein))) = 1 then
       sv_kein := '00' + trim(inttostr(v_kein)) + ' ';
     if Length(trim(inttostr(v_kein))) = 2 then
@@ -808,7 +811,7 @@ begin
       Ncmatrd.FieldByName('ncnrds').AsVariant := v_norm;
       Ncmatrd.Post;
     end;
-  // добавление в PRIZM
+  // РґРѕР±Р°РІР»РµРЅРёРµ РІ PRIZM
     if Prizm.Active = false then
       Prizm.Active := true;
     FSprFormul.Ceh_Normz.First;
@@ -1135,7 +1138,7 @@ begin
   IF (VDOCUMENT_ID <> 0) and (not DM1.KARTV.Eof) THEN
   begin
     Splash := ShowSplashWindow(AniBmp1,
-                               'Передача данных из цеха в АСУ. Подождите, пожалуйста...',
+                               'РџРµСЂРµРґР°С‡Р° РґР°РЅРЅС‹С… РёР· С†РµС…Р° РІ РђРЎРЈ. РџРѕРґРѕР¶РґРёС‚Рµ, РїРѕР¶Р°Р»СѓР№СЃС‚Р°...',
                                True,
                                nil);
     regot.Filter := 'CEX=' + '''' + S_STKOD + '''' + ' AND MES=' + INTTOSTR(MES);
@@ -1162,7 +1165,7 @@ begin
       ELSE
       BEGIN
         Splash.Free;
-        MessageDlg(' Данные НЕ переданы, т.к. они были уже переданы и использованы!',
+        MessageDlg(' Р”Р°РЅРЅС‹Рµ РќР• РїРµСЂРµРґР°РЅС‹, С‚.Рє. РѕРЅРё Р±С‹Р»Рё СѓР¶Рµ РїРµСЂРµРґР°РЅС‹ Рё РёСЃРїРѕР»СЊР·РѕРІР°РЅС‹!',
                    mtWarning, [mbOK], 0);
         SysUtils.Abort;
       END;
@@ -1202,12 +1205,12 @@ begin
         S_DATk := '01.07.' + INTTOSTR(GOD);
       if (mes <= 12) and (mes > 9) then
         S_DATk := '01.10.' + INTTOSTR(GOD);
-// расход с начала года
+// СЂР°СЃС…РѕРґ СЃ РЅР°С‡Р°Р»Р° РіРѕРґР°
       dm1.CEH_OTCHET.Active := FALSE;
       dm1.CEH_OTCHET.ParamByName('MES').AsInteger := mes;
       dm1.CEH_OTCHET.ParamByName('GOD').AsInteger := GOD;
       dm1.CEH_OTCHET.Active := TRUE;
-// нормы
+// РЅРѕСЂРјС‹
       Normt.Active := False;
       Normt.SQL.Clear;
       Normt.SQL.Add('SELECT norm.ksm_id, norm.Kraz, norm.razdel_id, norm.plnorm, '
@@ -1215,14 +1218,14 @@ begin
       Normt.SQL.Add(' FROM norm_view' + '(' + '119,' + inttostr(god) + ','
                     + inttostr(mes) + ',' + inttostr(s_kodp) + ',0,0)' + ' NORM ');
       Normt.Active := true;
-// значность
+// Р·РЅР°С‡РЅРѕСЃС‚СЊ
       if FSprFormul.CEH_NormZ.Active then
         FSprFormul.CEH_NormZ.Close;
       FSprFormul.CEH_NormZ.MacroByName('USL').AsString := ' Where CEH_NORMZ.KSM_ID_PR='
                                                           + INTTOSTR(S_KODP);
       FSprFormul.CEH_NormZ.Open;
       FSprFormul.CEH_NORMZ.First;
-// расход на выработку с начала квартала
+// СЂР°СЃС…РѕРґ РЅР° РІС‹СЂР°Р±РѕС‚РєСѓ СЃ РЅР°С‡Р°Р»Р° РєРІР°СЂС‚Р°Р»Р°
       Ras_Vir.Active := False;
       Ras_Vir.SQL.Clear;
       Ras_Vir.SQL.Add('SELECT DISTINCT ost.ksm_id, ost.razdel_id, ost.KART_ID,');
@@ -1230,7 +1233,7 @@ begin
       Ras_Vir.SQL.Add(' FROM  SELECT_OB_VED (' + '''' + s_datk + '''' + ',' + ''''
                       + s_dat2 + '''' + ',' + inttostr(s_kodp) + ') ost');
       Ras_Vir.Active := true;
-//выпуск с начала года
+//РІС‹РїСѓСЃРє СЃ РЅР°С‡Р°Р»Р° РіРѕРґР°
       DM1.IBQuery1.Active := False;
       DM1.IBQuery1.SQL.Clear;
       DM1.IBQuery1.SQL.Add('SELECT  sum(KARTv.KOL_PRIH) vipusk_ng');
@@ -1246,7 +1249,7 @@ begin
         V_VIPUSKG := DM1.IBQuery1.FieldByName('VIPUSK_NG').AsFloat
       ELSE
         V_VIPUSKG := 0;
-//выпуск с начала квартала
+//РІС‹РїСѓСЃРє СЃ РЅР°С‡Р°Р»Р° РєРІР°СЂС‚Р°Р»Р°
       DM1.IBQuery1.Active := False;
       DM1.IBQuery1.SQL.Clear;
       DM1.IBQuery1.SQL.Add('SELECT  sum(KARTv.KOL_PRIH) vipusk_k');
@@ -1298,7 +1301,7 @@ begin
       prizprKolk1.AsVariant := v_vipuskk;
       prizprKolks1.AsVariant := v_vipuskk - dm1.KartVKOL_PRIH.AsFloat;
       prizpr.Post;
-// формирование списка препаратов для передачи
+// С„РѕСЂРјРёСЂРѕРІР°РЅРёРµ СЃРїРёСЃРєР° РїСЂРµРїР°СЂР°С‚РѕРІ РґР»СЏ РїРµСЂРµРґР°С‡Рё
       Spisok.Append;
       spisokOtprod.AsString := sT_kodp;
       spisokOtstrk.AsString := s_stkod;
@@ -1330,7 +1333,7 @@ begin
   end
   else
   begin
-    MessageDlg('Нет отчетов за заданный месяц !', mtWarning, [mbOK], 0);
+    MessageDlg('РќРµС‚ РѕС‚С‡РµС‚РѕРІ Р·Р° Р·Р°РґР°РЅРЅС‹Р№ РјРµСЃСЏС† !', mtWarning, [mbOK], 0);
     SysUtils.Abort;
   end;
 end;

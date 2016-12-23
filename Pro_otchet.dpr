@@ -120,7 +120,9 @@ uses
   TexGurTypes in 'Source\TexGurTypes.pas',
   TexGurDoc in 'Source\TexGurDoc.pas',
   DrugRashList in 'Source\DrugRashList.pas' {FDrugRashList},
-  DrugDetList in 'Source\DrugDetList.pas';
+  DrugDetList in 'Source\DrugDetList.pas',
+  ReportRash in 'Source\ReportRash.pas' {FReportRash},
+  VipuskChoose in 'Source\VipuskChoose.pas' {FVipuskChoose};
 
 {$R *.res}
 

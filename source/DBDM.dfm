@@ -3,6 +3,7 @@ object dDM: TdDM
   Height = 521
   Width = 728
   object db: TIBDatabase
+    Connected = True
     DatabaseName = '192.168.13.13:D:\IBDATA\BELMED.GDB'
     Params.Strings = (
       'user_name=SVEG'
@@ -15,6 +16,7 @@ object dDM: TdDM
     Top = 24
   end
   object trans_read: TIBTransaction
+    Active = True
     DefaultDatabase = db
     Params.Strings = (
       'read_committed'

@@ -33,6 +33,8 @@ implementation
 procedure Tfrazdel.FormActivate(Sender: TObject);
 begin
   dm1.razdel.Close;
+  if (not dm1.Razdel.Active) then
+    dm1.Razdel.Open;
 end;
 
 procedure Tfrazdel.SpeedButton1Click(Sender: TObject);

@@ -475,6 +475,9 @@
       
       
       
+      
+      
+      
       <Excluded_Packages Name="$(BDS)\bin\xhStd110.bpl">HierCube Library Runtime package</Excluded_Packages>
       <Excluded_Packages Name="C:\Documents and Settings\All Users\Документы\RAD Studio\5.0\Bpl\xhCntrls100.bpl">HierCube Library Controls</Excluded_Packages>
       <Excluded_Packages Name="C:\Delphi11\Projects\BPL\dclfs11.bpl">FastScript 1.9 Components</Excluded_Packages>
@@ -685,6 +688,9 @@
       <DesignClass>TDataModule</DesignClass>
     </DCCReference>
     <DCCReference Include="Source\ReportCopier.pas" />
+    <DCCReference Include="Source\ReportRash.pas">
+      <Form>FReportRash</Form>
+    </DCCReference>
     <DCCReference Include="Source\SelectOstKsm.pas" />
     <DCCReference Include="Source\Ser.pas">
       <Form>FSer</Form>
@@ -758,6 +764,9 @@
     </DCCReference>
     <DCCReference Include="Source\Vipusk.pas">
       <Form>FVipusk</Form>
+    </DCCReference>
+    <DCCReference Include="Source\VipuskChoose.pas">
+      <Form>FVipuskChoose</Form>
     </DCCReference>
     <DCCReference Include="Source\Vipusk_Seria.pas">
       <Form>FVipusk_Seria</Form>

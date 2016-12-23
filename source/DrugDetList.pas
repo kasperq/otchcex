@@ -12,6 +12,8 @@ type
     rashDetForm : TFDrugRashList;
 
   public
+    modified : boolean;
+
     Constructor Create;
     Destructor Destroy; override;
 
@@ -53,6 +55,7 @@ begin
   rashDetForm.keiIdSyr := keiIdSyr;
 
   rashDetForm.ShowModal;
+  modified := rashDetForm.modified;
 end;
 
 end.

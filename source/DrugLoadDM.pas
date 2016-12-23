@@ -298,6 +298,16 @@ type
     mem_texGurSERIA: TStringField;
     mem_texGurOLD_SERIA_ID: TIntegerField;
     mem_texGurOLD_SERIA: TStringField;
+    mem_texGurKOL_RASH_VIRAB: TFloatField;
+    mem_texGurDATE_DOK_RASH: TDateField;
+    mem_texGurSTROKA_ID_RASH: TIntegerField;
+    mem_texGurKOL_PRIH: TFloatField;
+    q_kartKOL_PRIH: TFMTBCDField;
+    mem_texGurSTROKA_ID_PRIH: TIntegerField;
+    q_empyDoc: TRxIBQuery;
+    upd_emptyDoc: TIBUpdateSQLW;
+    q_empyDocDOC_ID: TIntegerField;
+    q_empyDocDOC_ID1: TIntegerField;
     procedure mem_texGurBeforePost(DataSet: TDataSet);
     procedure mem_texGurKSM_IDValidate(Sender: TField);
     procedure q_seriaBeforeInsert(DataSet: TDataSet);
@@ -311,11 +321,12 @@ type
     procedure mem_texGurKRAZValidate(Sender: TField);
     procedure q_ostatki1BeforeInsert(DataSet: TDataSet);
     procedure DataModuleDestroy(Sender: TObject);
+    procedure mem_texGurKOL_RASH_EDIZChange(Sender: TField);
 
   private
 //    login, password, serverAddr, role : string;
     m_seriaId, m_ksmId, m_kartId, m_ksmIdPrep, m_keiId, m_year, m_month,
-    m_razdelId, m_strukId, m_strokaId, m_docId : integer;
+    m_razdelId, m_strukId, m_strokaId, m_docId, m_tipOpId, m_tipDokId : integer;
     seria : string;
     m_dateDok : TDate;
 
@@ -347,6 +358,8 @@ type
     property month : integer read m_month write m_month;
     property strukId : integer read m_strukId write m_strukId;
     property seriaId : integer read m_seriaId write m_seriaId;
+    property tipOpId : integer read m_tipOpId write m_tipOpId;
+    property tipDokId : integer read m_tipDokId write m_tipDokId;
     property dateDok : TDate read m_dateDok write m_dateDok;
 
   end;
@@ -472,6 +485,8 @@ begin
     result := 1;
 end;
 
+
+
 procedure TFDMDrugLoad.mem_texGurBeforePost(DataSet: TDataSet);
 begin
   If (mem_texGurRazdel_id.AsInteger = 0) then
@@ -494,9 +509,14 @@ begin
   end;
 end;
 
+procedure TFDMDrugLoad.mem_texGurKOL_RASH_EDIZChange(Sender: TField);
+begin
+  mem_texGurKOL_PRIH.AsFloat := mem_texGurKOL_RASH_EDIZ.AsFloat;
+end;
+
 procedure TFDMDrugLoad.mem_texGurKRAZValidate(Sender: TField);
 begin
-  razdel.Active := true;
+  razdel.Open;
   if (razdel.Locate('kraz', mem_texGurKraz.AsInteger,[])) then
     mem_texGurRazdel_id.AsInteger := razdelRazdel_id.AsInteger
   else
@@ -550,8 +570,8 @@ end;
 procedure TFDMDrugLoad.q_docNewRecord(DataSet: TDataSet);
 begin
   q_docDOC_ID.AsInteger := m_docId;
-  q_docTIP_OP_ID.AsInteger := 33;
-  q_docTIP_DOK_ID.AsInteger := 34;
+  q_docTIP_OP_ID.AsInteger := m_tipOpId;
+  q_docTIP_DOK_ID.AsInteger := m_tipDokId;
   q_docSTRUK_ID.AsInteger := m_strukId;
   q_docDATE_DOK.AsDateTime := m_dateDok;
   q_docDATE_OP.AsDateTime := m_dateDok;
@@ -569,9 +589,9 @@ procedure TFDMDrugLoad.q_kartNewRecord(DataSet: TDataSet);
 begin
   q_kartDOC_ID.AsInteger := q_docDOC_ID.AsInteger;
   q_kartSTROKA_ID.AsInteger := m_strokaId;
-  q_kartTIP_OP_ID.AsInteger := 33;
-  q_kartTIP_DOK_ID.AsInteger := 34;
-  q_kartKOL_PRIH_EDIZ.AsFloat := 0.0;
+  q_kartTIP_OP_ID.AsInteger := m_tipOpId;
+  q_kartTIP_DOK_ID.AsInteger := m_tipDokId;
+//  q_kartKOL_PRIH_EDIZ.AsFloat := 0.0;
 end;
 
 procedure TFDMDrugLoad.q_ostatki1BeforeInsert(DataSet: TDataSet);
@@ -631,11 +651,13 @@ begin
   begin
     mem_texGurDATE_DOK.AsDateTime := dateEnd;
     mem_texGurOLD_DATE_DOK.AsDateTime := dateEnd;
+    mem_texGurDATE_DOK_RASH.AsDateTime := dateEnd;
   end
   else
   begin
     mem_texGurDATE_DOK.AsDateTime := now;
     mem_texGurOLD_DATE_DOK.AsDateTime := now;
+    mem_texGurDATE_DOK_RASH.AsDateTime := now;
   end;
 end;
 

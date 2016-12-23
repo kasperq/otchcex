@@ -74,11 +74,16 @@ end;
 function TSeriaOstatki.openSeria(ksmId : integer; seria : string) : boolean;
 begin
   result := false;
-  self.ksmId := ksmId;
+  if (self.ksmId <> ksmId) or
+     (dm.q_seria.ParamByName('ksm_id').AsInteger <> ksmId) then
+  begin
+    self.ksmId := ksmId;
+
+    dm.q_seria.close;
+    dm.q_seria.ParamByName('ksm_id').AsInteger := ksmId;
+    dm.q_seria.Open;
+  end;
   self.seria := seria;
-  dm.q_seria.close;
-  dm.q_seria.ParamByName('ksm_id').AsInteger := ksmId;
-  dm.q_seria.Open;
   if (dm.q_seria.RecordCount > 0) then  
     result := true;
   if (seria <> '') and (not dm.q_seria.Locate('seria', seria, [])) then

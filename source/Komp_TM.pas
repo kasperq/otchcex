@@ -108,14 +108,14 @@ begin
 // Label24.Caption:=FTexgur.edit11.Text;
 // Label6.Caption:=FTexgur.edit13.Text;
 // Label7.Caption:=FTexgur.edit12.Text;
-  Label33.Caption := FTexgur.edit_kolSeria.Text;
+//  Label33.Caption := FTexgur.edit_kolSeria.Text;
 // Label9.Caption:=FTexgur.edit16.Text;
 // Label14.Caption:=FTexgur.DbeditEh3.Text;
 // Label15.Caption:=FTexgur.Label6.Caption;
 // Label3.Caption:=FTexgur.Dbedit5.Text;
-  Label2.Caption := FTexgur.edit_kodProd.Text;
-  Label3.Caption := FTexgur.edit_seria.Text;
-  Label19.Caption := FTexgur.label19.Caption;
+//  Label2.Caption := FTexgur.edit_kodProd.Text;
+//  Label3.Caption := FTexgur.edit_seria.Text;
+//  Label19.Caption := FTexgur.label19.Caption;
 // Label21.Caption:=FTexgur.edit14.Text;
   Label30.Caption := floattostr(SimpleRoundTo(strtofloat(Label21.Caption) * 100
                                               / (100 - strtofloat(Label13.Caption)),

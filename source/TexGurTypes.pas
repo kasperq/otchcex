@@ -10,11 +10,29 @@ type
                  drugLoadSeries,        // все серии загрузки на препарате списком
                  
                  drugConsSum,           // суммарный расход на препарате, не редактируется
-                 drugCons,              // все расходы на препарате списком
-                 drugConsUsual,
+                 drugConsList,              // все расходы на препарате списком
+                 drugConsUsual,         // расход из неполного отчета
                  drugConsSeria,         // расход по конкретной серии
-                 drugConsSeries         // все серии расхода на препарате списком
+                 drugConsSeries,        // все серии расхода на препарате списком
+
+                 drugIncSum,
+                 drugIncList,
+                 drugIncUsual,
+                 drugIncSeria,
+                 drugIncSeries,
+
+                 drugSum,
+                 drugList,
+                 drugUsual,
+                 drugSeria,
+                 drugSeries
                    );
+  TTexGurGroup = (
+                  incoming = 1,       // приход
+                  loading,            // загрузка
+                  consumption,        // расход
+                  full                // полный
+                );
 
 implementation
 

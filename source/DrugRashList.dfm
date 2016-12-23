@@ -3,7 +3,7 @@ object FDrugRashList: TFDrugRashList
   Top = 0
   BorderIcons = [biSystemMenu, biMaximize]
   ClientHeight = 462
-  ClientWidth = 1038
+  ClientWidth = 702
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -12,16 +12,18 @@ object FDrugRashList: TFDrugRashList
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnClose = FormClose
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 1038
+    Width = 702
     Height = 49
     Align = alTop
     TabOrder = 0
+    ExplicitWidth = 505
     object btn_insertRec: TSpeedButton
       Left = 1
       Top = 1
@@ -169,7 +171,7 @@ object FDrugRashList: TFDrugRashList
       ExplicitHeight = 50
     end
     object btn_save: TSpeedButton
-      Left = 200
+      Left = 275
       Top = 1
       Width = 63
       Height = 47
@@ -242,7 +244,7 @@ object FDrugRashList: TFDrugRashList
       ExplicitHeight = 50
     end
     object btn_syrInfo: TSpeedButton
-      Left = 147
+      Left = 222
       Top = 1
       Width = 53
       Height = 47
@@ -314,22 +316,94 @@ object FDrugRashList: TFDrugRashList
       ExplicitTop = 10
       ExplicitHeight = 50
     end
+    object btn_delAllRecs: TSpeedButton
+      Left = 147
+      Top = 1
+      Width = 75
+      Height = 47
+      Hint = 
+        #1059#1076#1072#1083#1080#1090#1100' '#1074#1089#1077' '#1089#1090#1088#1086#1082#1080' '#1080#1079' '#1089#1077#1088#1080#1080' ('#1076#1083#1103' '#1074#1086#1089#1089#1090#1072#1085#1086#1074#1083#1077#1085#1080#1103' '#1089#1085#1080#1084#1080#1090#1077' '#1086#1090#1084#1077#1090#1082#1091' ' +
+        '"'#1059#1076#1072#1083'.")'
+      Align = alLeft
+      Caption = #1059#1076#1072#1083#1080#1090#1100' '#1074#1089#1077
+      Glyph.Data = {
+        F6060000424DF606000000000000360000002800000018000000180000000100
+        180000000000C0060000120B0000120B00000000000000000000FF00FFFF00FF
+        FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF0000690000690000690000
+        69000069000069FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
+        00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF000DB10008A1000093
+        00008500007D00007600006E00006B000071000081FF00FFFF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF0013C0000CBC00
+        02B30B16AD4149B66C71C27C7FC57C7FC56365B3303196010272000062000073
+        00006EFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF0017
+        C9000BC31E2DC8787FDAD2D6F4FDFDFEFFFFFFFFFFFFFFFFFFFFFFFFF6F6FBC0
+        C1E06464AD0F0F73000061000082FF00FFFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FF001BD1000FCC5965D7E4E6F9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFCDCDE436369000005C000080FF00FFFF00FFFF
+        00FFFF00FFFF00FF0020DB0013D36071E2FBFCFEFFFFFFFFFFFFFBFCFEB3B7E9
+        7475CC5758BE5759BF7C7CCACBCCECFFFFFFFFFFFFFFFFFFE6E6F13A3A930000
+        6100007BFF00FFFF00FFFF00FFFF00FF0018DC3D54E3F7F8FFFFFFFFFFFFFFD5
+        D8F4464ECA0509AF141AB21113AF1217A612129C1818A26262C0E7E7F6FFFFFF
+        FFFFFFDADAE918187A000071FF00FFFF00FFFF00FF0024E60928E2CDD3F8FFFF
+        FFFFFFFFCACEF41B2ACA0206BB242FC31F2FCD181ABD3A3BB43435AC2C2CAA10
+        109A3030ACE1E1F3FFFFFFFFFFFF7D7EB900006B00008BFF00FFFF00FF001EE9
+        4A64EAFFFFFFFFFFFFEDEFFA263EDA000ECB071EC9151EC40F1AC51821BF272A
+        B02122A71C1CA21212A10000934545B6FAFAFDFFFFFFE1E1EC151583000089FF
+        00FF002AF20020EE90A2F7FFFFFFFFFFFF7B8EF00013DB001CD5041BCF0C15C7
+        0D19C41823BE2124AF1D1DA510109F0606A000009A000095A2A3D8FFFFFFFFFF
+        FF6464AD000089000082002CF60430F2CED7FEFFFFFFF3F6FF1D42EE001FE50A
+        2CE00F2CDA0C16CF2B39CB2D34BD2D30B0292BAE0C0CAB0F15AD080BA5000097
+        4242B4FDFDFEFFFFFFA2A3D8000097000065002DFB1741F7EDF1FFFFFFFFD4DC
+        FF0430F50022ED9BAAF6F0F2FDE6E6FBE3E5FBDDDDF3DBDBF4E1E2F6E7E7F7EF
+        EFFA787CD100009C1618A6F2F2FAFFFFFFC3C6EA0308A70000740336FF365CFC
+        F7F8FFFFFFFFC6D2FF0233FD0026F5AEBCFAFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFF878CDA0000A50C12AAEDEFFAFFFFFFCBCCEC050DA900
+        02A32853FF5274FFF5F7FFFFFFFFD9E1FF0537FF002BFD829AFECAD3FCC9D0FB
+        D9DFFAE5E8FAE1E2F8C7CDF5C5CAF3CACFF2656ED40001AE1B24B7F5F6FCFFFF
+        FFC3C6EA020CAD0005A9466BFF5B7CFFEDF1FFFFFFFFF7F8FF2652FF002EFF03
+        36FF0434F90724EE2D41E12239DB2536DA152CD50413CE041CCA0217C40004B8
+        4C57CCFEFEFFFFFFFFA1A6E30003AE0008AD0838FF5274FFE1E7FFFFFFFFFFFF
+        FF8FA6FF0027FF0031FF0031FF0B2BF60221F21E3DEC011ADF0020DB0012D500
+        19D20016CB000FC4B3B7E9FFFFFFFFFFFF5965D70002B1FF00FFFF00FF466BFF
+        CAD5FFFFFFFFFFFFFFF7F8FF3C63FF0027FF0033FF153CFF1B42FE153BF5021C
+        E81230E5041EE10020DB000DD26071E2FFFFFFFFFFFFDFE2F70F1FC1000BB8FF
+        00FFFF00FF6585FF95AAFFFEFEFFFFFFFFFFFFFFDFE5FF335AFF0229FF0832FF
+        1742FF1B46FF1838EE082FEB0222E90017E14A64EAF1F3FDFFFFFFFFFFFF727F
+        DE0007BEFF00FFFF00FFFF00FFFF00FF6281FFE1E7FFFFFFFFFFFFFFFFFFFFED
+        F1FF6C87FF113DFF022AFF0023FF0021FC0025F81B3FF38497F5F8FAFFFFFFFF
+        FFFFFFD2D6F40F23CB0011C3FF00FFFF00FFFF00FFFF00FF95AAFF8FA6FFF3F6
+        FFFFFFFFFFFFFFFFFFFFFFFFFFD4DCFF9AADFF7F98FF829AFEA1B3FFE6EBFFFF
+        FFFFFFFFFFFFFFFFD9DEF9293ED80011CBFF00FFFF00FFFF00FFFF00FFFF00FF
+        FF00FF7590FFA1B3FFF3F6FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFB8C2F6223ADD0013D3FF00FFFF00FFFF00FFFF
+        00FFFF00FFFF00FFFF00FFFF00FF91A7FF849CFFCED7FEF7F8FFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFBFBFECAD1FB6A81F1082BE2001ADCFF00FFFF00
+        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF7590FF89
+        A0FFB9C7FFDBE2FFE5EAFFE3E9FFD9E1FFBECAFD7B94FB3355F2072EE90025E5
+        FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
+        FFFF00FFFF00FFFF00FF7F98FF6585FF6987FF6987FF5B7CFF3C60FB3559F733
+        55F2FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF}
+      Layout = blGlyphTop
+      ParentShowHint = False
+      ShowHint = True
+      OnClick = btn_delAllRecsClick
+      ExplicitLeft = 184
+      ExplicitTop = 2
+    end
   end
   object Panel2: TPanel
     Left = 0
     Top = 49
-    Width = 1038
+    Width = 702
     Height = 372
     Align = alClient
     Caption = 'Panel2'
     TabOrder = 1
-    ExplicitTop = 41
-    ExplicitWidth = 455
-    ExplicitHeight = 155
+    ExplicitWidth = 505
     object grid_zagr: TDBGridEh
       Left = 1
       Top = 1
-      Width = 1036
+      Width = 700
       Height = 370
       Align = alClient
       AutoFitColWidths = True
@@ -355,24 +429,34 @@ object FDrugRashList: TFDrugRashList
           EditButtons = <>
           FieldName = 'DELETE'
           Footers = <>
+          Title.Caption = #1059#1076#1072#1083'.'
         end
         item
           ButtonStyle = cbsEllipsis
           EditButtons = <>
           FieldName = 'KRAZ'
           Footers = <>
+          Title.Caption = #1056#1072#1079
         end
         item
           ButtonStyle = cbsEllipsis
           EditButtons = <>
           FieldName = 'KSM_ID'
           Footers = <>
+          Title.Caption = #1050#1086#1076
         end
         item
           ButtonStyle = cbsEllipsis
           EditButtons = <>
           FieldName = 'NEIS'
           Footers = <>
+          Title.Caption = #1045#1076'. '#1080#1079#1084'.'
+        end
+        item
+          EditButtons = <>
+          FieldName = 'KOL_PRIH'
+          Footers = <>
+          Title.Caption = #1055#1088#1080#1093#1086#1076
         end
         item
           EditButtons = <>
@@ -380,79 +464,110 @@ object FDrugRashList: TFDrugRashList
           Footer.Color = clMoneyGreen
           Footer.ValueType = fvtStaticText
           Footers = <>
+          Title.Caption = #1047#1072#1075#1088#1091#1078#1077#1085#1086
         end
         item
           EditButtons = <>
           FieldName = 'DATE_DOK'
           Footers = <>
+          Title.Caption = #1044#1072#1090#1072' '#1079#1072#1075#1088'.'
+        end
+        item
+          EditButtons = <>
+          FieldName = 'PLNORM'
+          Footers = <>
+          Title.Caption = #1055#1083'. '#1085#1086#1088#1084#1072
+          Visible = False
+        end
+        item
+          EditButtons = <>
+          FieldName = 'KOL_RASH_VIRAB'
+          Footers = <>
+          Title.Caption = #1056#1072#1089#1093#1086#1076
+        end
+        item
+          EditButtons = <>
+          FieldName = 'DATE_DOK_RASH'
+          Footers = <>
+          Title.Caption = #1044#1072#1090#1072' '#1088#1072#1089#1093'.'
         end
         item
           ButtonStyle = cbsEllipsis
           EditButtons = <>
           FieldName = 'SERIA'
           Footers = <>
+          Title.Caption = #1057#1077#1088#1080#1103
         end
         item
           EditButtons = <>
           FieldName = 'OLD_SERIA'
           Footers = <>
+          Visible = False
         end
         item
           EditButtons = <>
           FieldName = 'SERIA_ID'
           Footers = <>
+          Visible = False
         end
         item
           EditButtons = <>
           FieldName = 'OLD_SERIA_ID'
           Footers = <>
+          Visible = False
         end
         item
           EditButtons = <>
           FieldName = 'KART_ID'
           Footers = <>
+          Visible = False
         end
         item
           EditButtons = <>
           FieldName = 'KEI_ID_KART'
           Footers = <>
+          Visible = False
         end
         item
           EditButtons = <>
           FieldName = 'KEI_ID_NORM'
           Footers = <>
+          Visible = False
         end
         item
           EditButtons = <>
           FieldName = 'SERIA_ID'
           Footers = <>
+          Visible = False
         end
         item
           EditButtons = <>
           FieldName = 'STROKA_ID'
           Footers = <>
+          Visible = False
         end
         item
           EditButtons = <>
           FieldName = 'DOC_ID'
           Footers = <>
+          Visible = False
         end
         item
           EditButtons = <>
           FieldName = 'NDOK'
           Footers = <>
+          Visible = False
         end>
     end
   end
   object Panel3: TPanel
     Left = 0
     Top = 421
-    Width = 1038
+    Width = 702
     Height = 41
     Align = alBottom
     TabOrder = 2
-    ExplicitTop = 196
-    ExplicitWidth = 455
+    ExplicitWidth = 505
   end
   object ds_texGur: TDataSource
     DataSet = FDMDrugLoad.mem_texGur

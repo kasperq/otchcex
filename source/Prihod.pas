@@ -30,7 +30,9 @@ type
     Destructor Destroy; override;
 
     procedure DobPrixPrep(spec : boolean; ksmId, keiId, ksmIdPrep, strukId,
-                          razdelId, month, year : integer; kolRash : double);
+                          razdelId, month, year, docId : integer; kolRash : double); overload;
+    procedure DobPrixPrep(spec : boolean; ksmId, keiId, ksmIdPrep, strukId,
+                          razdelId, month, year : integer; kolRash : double); overload;
   
   end;
 
@@ -47,25 +49,48 @@ begin
   inherited Create;
   dm := TPrihDm.Create(Application);
   self.db := db;
-//  dm.setDB(db);
-  dm.IBQuery1.Database := db.db;
-  dm.IBQuery1.Transaction := db.trans_read;
-  dm.Document.Database := db.db;
-  dm.Document.Transaction := db.trans_read;
-  dm.Kart.Database := db.db;
-  dm.Kart.Transaction := db.trans_read;
-  dm.IBdel.Database := db.db;
-  dm.IBdel.Transaction := db.trans_read;
-  dm.ADD_KartDok.Database := db.db;
-  dm.ADD_KartDok.Transaction := db.trans_read;
-  dm.IBUpdateDoc.UpdateTransaction := db.trans_write;
-  dm.IBUpdateKart.UpdateTransaction := db.trans_write;
+  dm.trans_read.DefaultDatabase := db.db;
+  dm.trans_write.DefaultDatabase := db.db;
 end;
 
 Destructor TPrihod.Destroy;
 begin
   FreeAndNil(dm);
   inherited Destroy;
+end;
+
+procedure TPrihod.DobPrixPrep(spec : boolean; ksmId, keiId, ksmIdPrep, strukId,
+                              razdelId, month, year, docId : integer; kolRash : double);
+var
+  s_month : string;
+begin
+  if (serOst = nil) then
+    serOst := TSeriaOstatki.Create(db);
+  self.ksmId := ksmId;
+  self.keiId := keiId;
+  self.ksmIdPrep := ksmIdPrep;
+  self.strukId := strukId;
+  self.razdelId := razdelId;
+  self.kolRashMatrop := kolRash;
+  self.month := month;
+  self.year := year;
+  self.prihDocId := docId;
+  kolRashNorm := kolRash;
+
+  if (kolRashNorm > 0) then
+  begin
+    dm.Kart.Close;
+    dm.Kart.MacroByName('USL').AsString := 'WHERE document.klient_id = '
+                                           + IntToStr(ksmIdPrep)
+                                           + ' and document.date_op between '
+                                           + '''' + DateToStr(dateBegin) + '''' + ' and '
+                                           + '''' + DateToStr(dateEnd) + '''';
+    dm.Kart.Open;
+    dm.Kart.BeforePost := nil;
+// цикл по сериям сырья (OSTATKI)- QUERY
+    createKartInPrixodDocumOnPrep(spec);    // запись необходимого прихода на препарат в Kart
+  end;
+  dm.commitWriteTrans(false);
 end;
 
 procedure TPrihod.DobPrixPrep(spec : boolean; ksmId, keiId, ksmIdPrep, strukId,
@@ -95,6 +120,7 @@ begin
   if (not spec) then
     kolRashMatrop := getNeededPrixInMatropEdiz();    // v_raspred- в ед.изм.справочника (табл.Matrop)
   kolRashNorm := getNeededPrixInNormnEdiz();   // v_raspred_dob - в ед.изм. норм (табл.Normn)
+//  kolRashNorm := kolRashNorm - kolRash;
 
   createPrixodDocumOnPrep;  //                 создаем документ прихода сырья  на препарат
   if (kolRashNorm > 0) then
@@ -110,7 +136,7 @@ begin
 // цикл по сериям сырья (OSTATKI)- QUERY
     createKartInPrixodDocumOnPrep(spec);    // запись необходимого прихода на препарат в Kart
   end;
-//  db.commitWriteTrans(true);
+  dm.commitWriteTrans(false);
 end;
 
 function TPrihod.getNeededPrixInMatropEdiz() : double;   // расчет необходимого кол-ва прихода на препарат с учетом остатков
@@ -213,7 +239,9 @@ begin
                 + ' and ksm_id = ' + IntTostr(ksmId) + ' and razdel_id = '
                 + IntToStr(razdelId) + ' and parent is null ');
   dm.IbDel.Open;
-  db.commitWriteTrans(true);
+//  db.trans_read.CommitRetaining;
+//  db.commitWriteTrans(true);
+  dm.IbDel.Close;
 end;
 
 function TPrihod.findOstatkiSyrInCex(spec : boolean) : boolean;   // поиск остатков сырья в цехе
@@ -312,6 +340,9 @@ begin
   end;
   dm.Kart.BeforePost := dm.KartBeforePost;
   dm.kart.ApplyUpdates;
+//  db.commitWriteTrans(true);
+//  db.trans_read.CommitRetaining;
+//  db.trans_write.Active := false;
 end;
 
 end.

@@ -70,6 +70,8 @@ type
     DocumentZADACHA_ID: TIBStringField;
     DocumentDOK_OSN_ID: TIntegerField;
     IBUpdateDoc: TIBUpdateSQLW;
+    trans_read: TIBTransaction;
+    trans_write: TIBTransaction;
     procedure KartBeforePost(DataSet: TDataSet);
     procedure KartBeforeInsert(DataSet: TDataSet);
     procedure KartNewRecord(DataSet: TDataSet);
@@ -101,11 +103,14 @@ type
     m_tipDokId : integer;
     m_ksmIdPrep : integer;
 
+    procedure startWriteTrans;
+
   public
     procedure setValues2Kart(ksmId, klientId, razdelId, keiId, docId, kartId,
                              tipOpId, tipDokId : integer; kolRashEdiz, kolPrihEdiz,
                              kolRash, kolPrih : double);
     function Koef_per(kei_in : integer; kei_from : integer; ksm : integer; var db : TdDM) : double;
+    procedure commitWriteTrans(retaining: boolean);
 
     property dateDok : TDate read m_dateDok write m_dateDok;
     property dateOp : TDate read m_dateOp write m_dateOp;
@@ -315,6 +320,21 @@ begin
   end
   else
     result := 1;
+end;
+
+procedure TPrihDM.startWriteTrans;
+begin
+  if (not trans_write.Active) then
+    trans_write.StartTransaction;
+end;
+
+procedure TPrihDM.commitWriteTrans(retaining: boolean);
+begin
+  startWriteTrans;
+  if (retaining) then
+    trans_write.CommitRetaining
+  else
+    trans_write.Commit;
 end;
 
 end.

@@ -98,7 +98,7 @@ object FDMDrugLoad: TFDMDrugLoad
         ','
       'matrop.xarkt, matrop.gost'
       ''
-      'FROM select_ost_ksm (:dat1,:dat2, :kodp, :struk_id, 0) ost'
+      'FROM select_ost_ksm (:dat1,:dat2, :kodp, :struk_id, :ksm_id) ost'
       'inner JOIN RAZDEL ON (ost.RAZDEL_ID = RAZDEL.RAZDEL_ID)'
       'inner join matrop on matrop.ksm_id = ost.ksm_id'
       ''
@@ -131,6 +131,11 @@ object FDMDrugLoad: TFDMDrugLoad
       item
         DataType = ftUnknown
         Name = 'struk_id'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'ksm_id'
         ParamType = ptUnknown
       end>
     object q_ostKART_ID: TIntegerField
@@ -260,7 +265,7 @@ object FDMDrugLoad: TFDMDrugLoad
       'NORM.GOD, NORM.NAZPRPF,'
       'NORM.NMAT_KSM NMAT, NORM.xarkt, NORM.gost, matrop.KEI_ID, '
       'NORM.NEIS, NORM.razdel_id'
-      'FROM norm_view(119, :god, :mes, :kodp, :struk_id, 0) NORM '
+      'FROM norm_view(119, :god, :mes, :kodp, :struk_id, :ksm_id) NORM '
       'inner join matrop on (norm.ksm_id = matrop.ksm_id)'
       'order by norm.kraz, norm.nmat_ksm')
     Macros = <>
@@ -285,6 +290,11 @@ object FDMDrugLoad: TFDMDrugLoad
       item
         DataType = ftUnknown
         Name = 'struk_id'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'ksm_id'
         ParamType = ptUnknown
       end>
     object q_normPLNORM: TFMTBCDField
@@ -363,13 +373,21 @@ object FDMDrugLoad: TFDMDrugLoad
       'inner join document on document.doc_id = kart.doc_id'
       'where document.struk_id = :struk_id'
       'and document.klient_id = :klient_id'
+      'and document.doc_id = :doc_id'
       'and document.date_dok between :dat1 and :dat2'
-      'and document.tip_op_id = 30 and document.tip_dok_id = 37'
+      'and document.tip_op_id = 30 '
+      'and document.tip_dok_id in (%tip_dok_id) '
       'and kart.ksm_id = :ksm_id'
       'and kart.razdel_id = :razdel_id'
       'and coalesce(kart.kol_rash_ediz,0) <> 0')
     UpdateObject = upd_prixKart
-    Macros = <>
+    Macros = <
+      item
+        DataType = ftString
+        Name = 'tip_dok_id'
+        ParamType = ptInput
+        Value = '0=0'
+      end>
     Left = 184
     Top = 80
     ParamData = <
@@ -382,6 +400,11 @@ object FDMDrugLoad: TFDMDrugLoad
         DataType = ftUnknown
         Name = 'klient_id'
         ParamType = ptUnknown
+      end
+      item
+        DataType = ftInteger
+        Name = 'doc_id'
+        ParamType = ptInputOutput
       end
       item
         DataType = ftUnknown
@@ -1765,6 +1788,7 @@ object FDMDrugLoad: TFDMDrugLoad
     object mem_texGurKOL_RASH_EDIZ: TFloatField
       DefaultExpression = '0'
       FieldName = 'KOL_RASH_EDIZ'
+      OnChange = mem_texGurKOL_RASH_EDIZChange
     end
     object mem_texGurPLNORM: TFloatField
       DefaultExpression = '0'
@@ -1873,6 +1897,23 @@ object FDMDrugLoad: TFDMDrugLoad
     object mem_texGurOLD_SERIA: TStringField
       FieldName = 'OLD_SERIA'
     end
+    object mem_texGurKOL_RASH_VIRAB: TFloatField
+      DefaultExpression = '0'
+      FieldName = 'KOL_RASH_VIRAB'
+    end
+    object mem_texGurDATE_DOK_RASH: TDateField
+      FieldName = 'DATE_DOK_RASH'
+    end
+    object mem_texGurSTROKA_ID_RASH: TIntegerField
+      FieldName = 'STROKA_ID_RASH'
+    end
+    object mem_texGurKOL_PRIH: TFloatField
+      DefaultExpression = '0'
+      FieldName = 'KOL_PRIH'
+    end
+    object mem_texGurSTROKA_ID_PRIH: TIntegerField
+      FieldName = 'STROKA_ID_PRIH'
+    end
   end
   object q_kart: TRxIBQuery
     Database = dDM.db
@@ -1886,15 +1927,30 @@ object FDMDrugLoad: TFDMDrugLoad
       'ediz.neis, matrop.nmat, razdel.kraz,  matrop.xarkt, matrop.gost,'
       
         'kart.tip_op_id, kart.tip_dok_id, kart.kol_prih_ediz, kart.user_n' +
-        'ame'
+        'ame,'
+      'kart.kol_prih'
       'from kart'
       'left join ediz on ediz.kei_id = kart.kei_id'
       'left join matrop on matrop.ksm_id = kart.ksm_id'
       'left join razdel on razdel.razdel_id = kart.razdel_id'
       'where kart.doc_id = :doc_id'
+      'and %usl'
+      'and %ksm_id'
       'order by razdel.kraz, matrop.nmat')
     UpdateObject = upd_kart
-    Macros = <>
+    Macros = <
+      item
+        DataType = ftString
+        Name = 'usl'
+        ParamType = ptInput
+        Value = '0=0'
+      end
+      item
+        DataType = ftString
+        Name = 'ksm_id'
+        ParamType = ptInput
+        Value = '0=0'
+      end>
     Left = 184
     Top = 16
     ParamData = <
@@ -1985,6 +2041,12 @@ object FDMDrugLoad: TFDMDrugLoad
       FixedChar = True
       Size = 10
     end
+    object q_kartKOL_PRIH: TFMTBCDField
+      FieldName = 'KOL_PRIH'
+      Origin = '"KART"."KOL_PRIH"'
+      Precision = 18
+      Size = 6
+    end
   end
   object upd_kart: TIBUpdateSQLW
     RefreshSQL.Strings = (
@@ -2058,9 +2120,7 @@ object FDMDrugLoad: TFDMDrugLoad
         'document.klient_id, document.date_op, document.tip_op_id, docume' +
         'nt.tip_dok_id'
       'from document'
-      'where document.tip_op_id = 33 '
-      'and document.tip_dok_id = 34'
-      'and document.struk_id = :struk_id'
+      'where document.struk_id = :struk_id'
       'and document.klient_id = :klient_id'
       'and document.tip_op_id = :tip_op_id'
       'and document.tip_dok_id = :tip_dok_id'
@@ -2218,5 +2278,102 @@ object FDMDrugLoad: TFDMDrugLoad
       FieldName = 'KRAZ'
       Origin = '"RAZDEL"."KRAZ"'
     end
+  end
+  object q_empyDoc: TRxIBQuery
+    Database = dDM.db
+    Transaction = dDM.trans_read
+    BeforeInsert = q_docBeforeInsert
+    OnNewRecord = q_docNewRecord
+    CachedUpdates = True
+    SQL.Strings = (
+      'select distinct document.doc_id, kart.doc_id'
+      'from document'
+      'left join kart on document.doc_id = kart.doc_id'
+      'where document.struk_id = :struk_id'
+      'and document.klient_id = :klient_id'
+      'and document.date_dok between :dat1 and :dat2'
+      'and document.tip_op_id in (30, 33, 35)'
+      'and kart.doc_id is null')
+    UpdateObject = upd_emptyDoc
+    Macros = <>
+    Left = 472
+    Top = 104
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'struk_id'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'klient_id'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'dat1'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'dat2'
+        ParamType = ptUnknown
+      end>
+    object q_empyDocDOC_ID: TIntegerField
+      FieldName = 'DOC_ID'
+      Origin = '"DOCUMENT"."DOC_ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object q_empyDocDOC_ID1: TIntegerField
+      FieldName = 'DOC_ID1'
+      Origin = '"KART"."DOC_ID"'
+    end
+  end
+  object upd_emptyDoc: TIBUpdateSQLW
+    RefreshSQL.Strings = (
+      'Select '
+      '  DOC_ID,'
+      '  NDOK,'
+      '  DATE_DOK,'
+      '  STRUK_ID,'
+      '  KLIENT_ID,'
+      '  DATE_OP,'
+      '  TIP_OP_ID,'
+      '  TIP_DOK_ID'
+      'from document '
+      'where'
+      '  DOC_ID = :DOC_ID')
+    ModifySQL.Strings = (
+      'update document'
+      'set'
+      '  DATE_DOK = :DATE_DOK,'
+      '  DATE_OP = :DATE_OP,'
+      '  DOC_ID = :DOC_ID,'
+      '  KLIENT_ID = :KLIENT_ID,'
+      '  NDOK = :NDOK,'
+      '  STRUK_ID = :STRUK_ID,'
+      '  TIP_DOK_ID = :TIP_DOK_ID,'
+      '  TIP_OP_ID = :TIP_OP_ID'
+      'where'
+      '  DOC_ID = :OLD_DOC_ID')
+    InsertSQL.Strings = (
+      'insert into document'
+      
+        '  (DATE_DOK, DATE_OP, DOC_ID, KLIENT_ID, NDOK, STRUK_ID, TIP_DOK' +
+        '_ID, TIP_OP_ID)'
+      'values'
+      
+        '  (:DATE_DOK, :DATE_OP, :DOC_ID, :KLIENT_ID, :NDOK, :STRUK_ID, :' +
+        'TIP_DOK_ID, '
+      '   :TIP_OP_ID)')
+    DeleteSQL.Strings = (
+      'delete from document'
+      'where'
+      '  DOC_ID = :OLD_DOC_ID')
+    AutoCommit = False
+    UpdateTransaction = dDM.trans_write
+    Left = 544
+    Top = 104
   end
 end

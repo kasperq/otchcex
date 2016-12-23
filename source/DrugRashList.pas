@@ -5,7 +5,7 @@ interface
 uses DrugLoadDM, DrugReportEdit, DBDM, OstSyr, SeriaOstatki,
 
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, DB, Grids, DBGridEh, ExtCtrls, Buttons;
+  Dialogs, DB, Grids, DBGridEh, ExtCtrls, Buttons, kbmMemTable;
 
 type
   TFDrugRashList = class(TForm)
@@ -18,6 +18,7 @@ type
     btn_delRecord: TSpeedButton;
     btn_save: TSpeedButton;
     btn_syrInfo: TSpeedButton;
+    btn_delAllRecs: TSpeedButton;
     procedure FormShow(Sender: TObject);
     procedure grid_zagrEditButtonClick(Sender: TObject);
     procedure btn_insertRecClick(Sender: TObject);
@@ -28,6 +29,8 @@ type
     procedure grid_zagrKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure btn_saveClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btn_delAllRecsClick(Sender: TObject);
   private
     drugEdit : TDrugReportEdit;
     serOstDrug : TSeriaOstatki;
@@ -38,10 +41,13 @@ type
     m_nmat : string;
 
     procedure chooseSeria;
+    procedure saveRash;
 
 
 
   public
+    modified : boolean;
+
     property strukId : integer read m_strukId write m_strukId;
     property month : integer read m_month write m_month;
     property year : integer read m_year write m_year;
@@ -111,18 +117,27 @@ end;
 
 procedure TFDrugRashList.grid_zagrKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
+var
+  curSeria : string;
 begin
   if (key = vk_return) and (grid_zagr.SelectedField.FieldName = 'SERIA') then
   begin
+    curSeria := grid_zagr.InplaceEditor.Text;
     if (serOstDrug = nil) then
       serOstDrug := TSeriaOstatki.Create(m_db);
-    if (serOstDrug.openSeria(self.ksmIdDrug, drugEdit.texGurLoad.FieldByName('seria').AsString)) then
+    if (serOstDrug.openSeria(self.ksmIdDrug, curSeria)) then
     begin
       drugEdit.changeSeria(serOstDrug.seria, serOstDrug.seriaId);
     end
     else
-      serOstDrug.insertSeria(self.ksmIdDrug, drugEdit.texGurLoad.FieldByName('seria').AsString);
-  end;
+      serOstDrug.insertSeria(self.ksmIdDrug, curSeria);
+  end;  
+end;
+
+procedure TFDrugRashList.btn_delAllRecsClick(Sender: TObject);
+begin
+  drugEdit.delTexGurLoadAllLines;
+  grid_zagr.Columns[4].Footer.Value := FloatToStr(drugEdit.getKolRashSum());
 end;
 
 procedure TFDrugRashList.btn_delRecordClick(Sender: TObject);
@@ -139,6 +154,12 @@ end;
 
 procedure TFDrugRashList.btn_saveClick(Sender: TObject);
 begin
+  saveRash;
+  grid_zagr.Columns[4].Footer.Value := FloatToStr(drugEdit.getKolRashSum());
+end;
+
+procedure TFDrugRashList.saveRash;
+begin
   if (serOstDrug <> nil) then
   begin
     if (serOstDrug.dateLoad > 0) then
@@ -147,6 +168,7 @@ begin
     serOstDrug.saveSeria;
   end;
   drugEdit.saveTexGurLoad();
+  modified := true;
 end;
 
 procedure TFDrugRashList.btn_syrInfoClick(Sender: TObject);
@@ -174,12 +196,26 @@ begin
     MessageDlg('Нет серий заданного препарата!', mtWarning, [mbOK], 0);
 end;
 
+procedure TFDrugRashList.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  if (drugEdit.texGurLoad.Modified) or (drugEdit.texGurLoad.State = dsEdit)
+     or (drugEdit.texGurLoad.State = dsInsert) then
+    drugEdit.texGurLoad.Post;
+  if (drugEdit.texGurLoad.IsDataModified) then
+    if (MessageDlg('Сохранить изменения?', mtConfirmation, [mbYes, mbNo], 0) = mrYes) then
+    begin
+      saveRash;
+      modified := true;
+    end;
+end;
+
 procedure TFDrugRashList.FormShow(Sender: TObject);
 begin
+  modified := false;
   if (drugEdit = nil) then
         drugEdit := TDrugReportEdit.Create(m_db, m_strukId);
-  drugEdit.loadTexGurLoad(false, m_month, m_year, m_ksmIdPrep, m_keiId, m_ksmId,
-                          m_razdelId, m_kraz, m_keiIdSyr, m_nmat, '');
+  drugEdit.loadDrugList(m_month, m_year, m_ksmIdPrep, m_keiId, m_ksmId,
+                        m_razdelId, m_kraz, m_keiIdSyr, m_nmat);
   ds_texGur.DataSet := drugEdit.texGurLoad;
   grid_zagr.Columns[4].Footer.Value := FloatToStr(drugEdit.getKolRashSum());
 end;
