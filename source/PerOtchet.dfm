@@ -31,22 +31,22 @@ object FPerOtchet: TFPerOtchet
     ParentShowHint = False
     ShowHint = True
     TabOrder = 0
-    object ToolButton4: TToolButton
-      Left = 0
-      Top = 0
-      Hint = #1055#1077#1088#1077#1076#1072#1090#1100' '#1074' '#1040#1057#1059
-      Caption = 'ToolButton4'
-      ImageIndex = 7
-      OnClick = ToolButton4Click
-    end
     object ToolButton5: TToolButton
-      Left = 32
+      Left = 0
       Top = 0
       Cursor = crHandPoint
       Hint = #1055#1077#1095#1072#1090#1100' '#1076#1086#1082#1091#1084#1077#1085#1090#1072
       Caption = 'ToolButton5'
       ImageIndex = 3
       OnClick = ToolButton5Click
+    end
+    object ToolButton4: TToolButton
+      Left = 32
+      Top = 0
+      Hint = #1055#1077#1088#1077#1076#1072#1090#1100' '#1074' '#1040#1057#1059
+      Caption = 'ToolButton4'
+      ImageIndex = 7
+      OnClick = ToolButton4Click
     end
     object ToolButton1: TToolButton
       Left = 64
@@ -80,7 +80,7 @@ object FPerOtchet: TFPerOtchet
       Height = 21
       Ctl3D = False
       DropDownCount = 12
-      ItemHeight = 0
+      ItemHeight = 13
       ParentCtl3D = False
       TabOrder = 0
       OnChange = ComboBox1Change
@@ -102,9 +102,9 @@ object FPerOtchet: TFPerOtchet
       Left = 319
       Top = 0
       Width = 69
-      Height = 30
+      Height = 21
       Ctl3D = False
-      ItemHeight = 0
+      ItemHeight = 13
       ParentCtl3D = False
       TabOrder = 1
       OnChange = ComboBox2Change
@@ -202,7 +202,7 @@ object FPerOtchet: TFPerOtchet
     Left = 448
     Top = 4
     Bitmap = {
-      494C010108000A00280018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010108000A00340018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1100,128 +1100,10 @@ object FPerOtchet: TFPerOtchet
       03F803FFE1FFFFFFFFFFFFE007F007FF00000000000000000000000000000000
       000000000000}
   end
-  object Otchet: TTable
-    DatabaseName = 'ot'
-    DefaultIndex = False
-    TableName = 'OTCHET.DBF'
-    Left = 284
-    Top = 110
-    object OtchetMES1: TStringField
-      FieldName = 'MES1'
-      Size = 2
-    end
-    object OtchetOTSTRK: TStringField
-      FieldName = 'OTSTRK'
-      Size = 4
-    end
-    object OtchetOTPROD: TStringField
-      FieldName = 'OTPROD'
-      Size = 6
-    end
-    object OtchetOTKPN: TStringField
-      FieldName = 'OTKPN'
-      Size = 1
-    end
-    object OtchetOTKVI: TStringField
-      FieldName = 'OTKVI'
-      Size = 1
-    end
-    object OtchetOTMATR: TStringField
-      FieldName = 'OTMATR'
-      Size = 5
-    end
-    object OtchetNMAT: TStringField
-      FieldName = 'NMAT'
-      Size = 25
-    end
-    object OtchetOTCENA: TFloatField
-      FieldName = 'OTCENA'
-    end
-    object OtchetCENAZA: TFloatField
-      FieldName = 'CENAZA'
-    end
-    object OtchetOSTSN: TFloatField
-      FieldName = 'OSTSN'
-    end
-    object OtchetOSTNZN: TFloatField
-      FieldName = 'OSTNZN'
-    end
-    object OtchetPRIX: TFloatField
-      FieldName = 'PRIX'
-    end
-    object OtchetZAG: TFloatField
-      FieldName = 'ZAG'
-    end
-    object OtchetRASM: TFloatField
-      FieldName = 'RASM'
-    end
-    object OtchetRASG: TFloatField
-      FieldName = 'RASG'
-    end
-    object OtchetPERS: TFloatField
-      FieldName = 'PERS'
-    end
-    object OtchetPERP: TFloatField
-      FieldName = 'PERP'
-    end
-    object OtchetOSTSK: TFloatField
-      FieldName = 'OSTSK'
-    end
-    object OtchetOSTZK: TFloatField
-      FieldName = 'OSTZK'
-    end
-    object OtchetPRIXK: TFloatField
-      FieldName = 'PRIXK'
-    end
-    object OtchetRASK: TFloatField
-      FieldName = 'RASK'
-    end
-    object OtchetFACTK: TFloatField
-      FieldName = 'FACTK'
-    end
-    object OtchetFACTM: TFloatField
-      FieldName = 'FACTM'
-    end
-    object OtchetPEREM: TFloatField
-      FieldName = 'PEREM'
-    end
-    object OtchetPEREG: TFloatField
-      FieldName = 'PEREG'
-    end
-    object OtchetOTRAZ: TStringField
-      FieldName = 'OTRAZ'
-      Size = 2
-    end
-    object OtchetPKV: TStringField
-      FieldName = 'PKV'
-      Size = 1
-    end
-    object OtchetPGD: TStringField
-      FieldName = 'PGD'
-      Size = 1
-    end
-    object OtchetMES: TStringField
-      FieldName = 'MES'
-      Size = 2
-    end
-    object OtchetPR: TSmallintField
-      FieldName = 'PR'
-    end
-    object OtchetPRS: TSmallintField
-      FieldName = 'PRS'
-    end
-    object OtchetKSM_ID: TFloatField
-      FieldName = 'KSM_ID'
-    end
-    object OtchetOTPROD_S: TStringField
-      FieldName = 'OTPROD_S'
-      Size = 6
-    end
-  end
   object regot: TTable
-    DatabaseName = 'ot'
-    DefaultIndex = False
-    TableName = 'REGOT.DBF'
+    CachedUpdates = True
+    SessionName = 'fSes'
+    TableName = 'F:\PC1\ot\otchbas\REGOT.DBF'
     Left = 244
     Top = 110
     object regotDATCEX: TStringField
@@ -1245,9 +1127,9 @@ object FPerOtchet: TFPerOtchet
     end
   end
   object Prizpr: TTable
-    DatabaseName = 'ot'
-    DefaultIndex = False
-    TableName = 'PRIZPR.DBF'
+    CachedUpdates = True
+    SessionName = 'fSes'
+    TableName = 'F:\PC1\ot\otchbas\PRIZPR.DBF'
     Left = 204
     Top = 110
     object PrizprPRGOD: TStringField
@@ -1381,15 +1263,18 @@ object FPerOtchet: TFPerOtchet
       'ost.razdel_id'
       ''
       'FROM select_ob_ved(%dat1,%dat2,:kodp) OST'
+      'left join'
+      ' ('
+      ' select ceh_otchet.kart_id, max(ceh_otchet.mes)'
+      '  from ceh_otchet'
+      '  inner join ostatki on ostatki.kart_id = ceh_otchet.kart_id'
+      '                     and ostatki.ksm_idpr = :kodp'
+      '  where ceh_otchet.mes<=%mes and ceh_otchet.god=%god'
+      '  group by ceh_otchet.kart_id'
+      ' ) co(kart_id, mes) on (ost.kart_id=co.kart_id)'
       'inner join razdel on (OST.razdel_id=razdel.razdel_id)'
       'inner join kart on (OST.kart_id=kart.kart_id)'
       'inner join matrop on (ost.ksm_id=matrop.ksm_id)'
-      'left join'
-      ' ('
-      '  select kart_id, max(mes) from ceh_otchet'
-      '  where ceh_otchet.mes<=%mes and ceh_otchet.god=%god'
-      '  group by kart_id'
-      ' ) co(kart_id, mes) on (ost.kart_id=co.kart_id)'
       
         'left join ceh_otchet on (ceh_otchet.kart_id=co.kart_id and ceh_o' +
         'tchet.god=%god'
@@ -1433,6 +1318,11 @@ object FPerOtchet: TFPerOtchet
       item
         DataType = ftUnknown
         Name = 'KODP'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'kodp'
         ParamType = ptUnknown
       end>
     object Query_OtchetKSM_ID: TIntegerField
@@ -1522,9 +1412,9 @@ object FPerOtchet: TFPerOtchet
     end
   end
   object Otchets: TTable
-    DatabaseName = 'pc1'
-    DefaultIndex = False
-    TableName = 'OTCHETS.DBF'
+    CachedUpdates = True
+    SessionName = 'workSes'
+    TableName = 'c:\work\pc1\OTCHETS.DBF'
     Left = 324
     Top = 110
     object OtchetsMES1: TStringField
@@ -1633,9 +1523,9 @@ object FPerOtchet: TFPerOtchet
     end
   end
   object Spisok: TTable
-    DatabaseName = 'ot'
-    DefaultIndex = False
-    TableName = 'SPISOK.DBF'
+    CachedUpdates = True
+    SessionName = 'fSes'
+    TableName = 'F:\PC1\ot\otchbas\SPISOK.DBF'
     Left = 156
     Top = 110
     object SpisokOTPROD: TStringField
@@ -1655,68 +1545,6 @@ object FPerOtchet: TFPerOtchet
     end
     object SpisokGOD: TSmallintField
       FieldName = 'GOD'
-    end
-  end
-  object ncmatrd: TTable
-    DatabaseName = 'ot'
-    DefaultIndex = False
-    TableName = 'NCMATRD.DBF'
-    Left = 116
-    Top = 110
-    object ncmatrdNCPROD: TStringField
-      FieldName = 'NCPROD'
-      Size = 6
-    end
-    object ncmatrdNCKPN: TStringField
-      FieldName = 'NCKPN'
-      Size = 1
-    end
-    object ncmatrdNCKVI: TStringField
-      FieldName = 'NCKVI'
-      Size = 1
-    end
-    object ncmatrdNCEDIZ: TStringField
-      FieldName = 'NCEDIZ'
-      Size = 4
-    end
-    object ncmatrdNCSTRK: TStringField
-      FieldName = 'NCSTRK'
-      Size = 4
-    end
-    object ncmatrdNCRAZ: TStringField
-      FieldName = 'NCRAZ'
-      Size = 2
-    end
-    object ncmatrdNCMATR: TStringField
-      FieldName = 'NCMATR'
-      Size = 5
-    end
-    object ncmatrdNCPROC: TFloatField
-      FieldName = 'NCPROC'
-    end
-    object ncmatrdNCEDIZM: TStringField
-      FieldName = 'NCEDIZM'
-      Size = 4
-    end
-    object ncmatrdNCNRDS: TFloatField
-      FieldName = 'NCNRDS'
-    end
-    object ncmatrdNCNRFK: TFloatField
-      FieldName = 'NCNRFK'
-    end
-    object ncmatrdNMATS: TStringField
-      FieldName = 'NMATS'
-      Size = 25
-    end
-    object ncmatrdNCCENA: TFloatField
-      FieldName = 'NCCENA'
-    end
-    object ncmatrdKSM_ID: TFloatField
-      FieldName = 'KSM_ID'
-    end
-    object ncmatrdNCPROD_S: TStringField
-      FieldName = 'NCPROD_S'
-      Size = 6
     end
   end
   object Ras_Vir: TIBQuery
@@ -1799,9 +1627,8 @@ object FPerOtchet: TFPerOtchet
     Top = 200
   end
   object rasxod: TTable
-    DatabaseName = 'bmg'
-    DefaultIndex = False
-    TableName = 'RASXOD.DBF'
+    SessionName = 'workSes'
+    TableName = 'c:\work\pc1\RASXOD.DBF'
     Left = 364
     Top = 110
     object rasxodDEBET: TStringField
@@ -1917,76 +1744,18 @@ object FPerOtchet: TFPerOtchet
       FieldName = 'SUMD'
     end
   end
-  object prizm: TTable
-    DatabaseName = 'ot'
-    DefaultIndex = False
-    TableName = 'PRIZM.DBF'
-    Left = 420
-    Top = 110
-    object prizmNCSTRK: TStringField
-      FieldName = 'NCSTRK'
-      Size = 4
-    end
-    object prizmNCPROD: TStringField
-      FieldName = 'NCPROD'
-      Size = 6
-    end
-    object prizmNCKPN: TStringField
-      FieldName = 'NCKPN'
-      Size = 1
-    end
-    object prizmNCKVI: TStringField
-      FieldName = 'NCKVI'
-      Size = 1
-    end
-    object prizmNCMATR: TStringField
-      FieldName = 'NCMATR'
-      Size = 5
-    end
-    object prizmPMFORM: TStringField
-      FieldName = 'PMFORM'
-      Size = 1
-    end
-    object prizmPMGR: TStringField
-      FieldName = 'PMGR'
-      Size = 1
-    end
-    object prizmPMFORN: TStringField
-      FieldName = 'PMFORN'
-      Size = 1
-    end
-    object prizmPMNSH: TStringField
-      FieldName = 'PMNSH'
-      Size = 1
-    end
-    object prizmNCRAZ: TStringField
-      FieldName = 'NCRAZ'
-      Size = 2
-    end
-    object prizmMARK: TStringField
-      FieldName = 'MARK'
-      Size = 1
-    end
-    object prizmKSM_ID: TFloatField
-      FieldName = 'KSM_ID'
-    end
-    object prizmNCPROD_S: TStringField
-      FieldName = 'NCPROD_S'
-      Size = 6
-    end
-  end
   object q_spprodDbf: TERxQuery
     CachedUpdates = True
     SessionName = 'workSes'
     SQL.Strings = (
       'select *'
-      'from '#39'f:\pc1\otchbas\spprod.dbf'#39' spprod'
+      'from '#39'c:\pc1\otchbas\spprod.dbf'#39' spprod'
       'where spprod.struk_id = :struk_id')
     UpdateObject = up_q_spprodDbf
     Macros = <>
     EhSQL.Strings = (
       'select *'
-      'from '#39'f:\pc1\otchbas\spprod.dbf'#39' spprod'
+      'from '#39'c:\work\pc1\spprod.dbf'#39' spprod'
       'where spprod.struk_id = :struk_id')
     EhMacros = <>
     Left = 440
@@ -2175,7 +1944,7 @@ object FPerOtchet: TFPerOtchet
   object t_spprodDbf: TTable
     CachedUpdates = True
     SessionName = 'workSes'
-    TableName = 'f:\pc1\otchbas\spprod.dbf'
+    TableName = 'c:\work\pc1\spprod.dbf'
     Left = 496
     Top = 216
     object t_spprodDbfSPROD: TStringField
@@ -2515,10 +2284,549 @@ object FPerOtchet: TFPerOtchet
     end
   end
   object workSes: TSession
-    NetFileDir = 'F:\PC1\OTCHBAS\'
-    PrivateDir = 'F:\PC1\OTCHBAS\'
+    KeepConnections = False
+    NetFileDir = 'C:\WORK\PC1\'
+    PrivateDir = 'C:\WORK\PC1\'
     SessionName = 'workSes'
     Left = 400
     Top = 216
+  end
+  object OtchetOld: TTable
+    SessionName = 'fSes'
+    TableName = 'F:\PC1\ot\otchbas\OTCHET.DBF'
+    Left = 284
+    Top = 62
+    object StringField21: TStringField
+      FieldName = 'MES1'
+      Size = 2
+    end
+    object StringField22: TStringField
+      FieldName = 'OTSTRK'
+      Size = 4
+    end
+    object StringField23: TStringField
+      FieldName = 'OTPROD'
+      Size = 6
+    end
+    object StringField24: TStringField
+      FieldName = 'OTKPN'
+      Size = 1
+    end
+    object StringField25: TStringField
+      FieldName = 'OTKVI'
+      Size = 1
+    end
+    object StringField26: TStringField
+      FieldName = 'OTMATR'
+      Size = 5
+    end
+    object StringField27: TStringField
+      FieldName = 'NMAT'
+      Size = 25
+    end
+    object FloatField28: TFloatField
+      FieldName = 'OTCENA'
+    end
+    object FloatField29: TFloatField
+      FieldName = 'CENAZA'
+    end
+    object FloatField30: TFloatField
+      FieldName = 'OSTSN'
+    end
+    object FloatField31: TFloatField
+      FieldName = 'OSTNZN'
+    end
+    object FloatField32: TFloatField
+      FieldName = 'PRIX'
+    end
+    object FloatField33: TFloatField
+      FieldName = 'ZAG'
+    end
+    object FloatField34: TFloatField
+      FieldName = 'RASM'
+    end
+    object FloatField35: TFloatField
+      FieldName = 'RASG'
+    end
+    object FloatField36: TFloatField
+      FieldName = 'PERS'
+    end
+    object FloatField37: TFloatField
+      FieldName = 'PERP'
+    end
+    object FloatField38: TFloatField
+      FieldName = 'OSTSK'
+    end
+    object FloatField39: TFloatField
+      FieldName = 'OSTZK'
+    end
+    object FloatField40: TFloatField
+      FieldName = 'PRIXK'
+    end
+    object FloatField41: TFloatField
+      FieldName = 'RASK'
+    end
+    object FloatField42: TFloatField
+      FieldName = 'FACTK'
+    end
+    object FloatField43: TFloatField
+      FieldName = 'FACTM'
+    end
+    object FloatField44: TFloatField
+      FieldName = 'PEREM'
+    end
+    object FloatField45: TFloatField
+      FieldName = 'PEREG'
+    end
+    object StringField28: TStringField
+      FieldName = 'OTRAZ'
+      Size = 2
+    end
+    object StringField29: TStringField
+      FieldName = 'PKV'
+      Size = 1
+    end
+    object StringField30: TStringField
+      FieldName = 'PGD'
+      Size = 1
+    end
+    object StringField31: TStringField
+      FieldName = 'MES'
+      Size = 2
+    end
+    object SmallintField1: TSmallintField
+      FieldName = 'PR'
+    end
+    object SmallintField2: TSmallintField
+      FieldName = 'PRS'
+    end
+    object FloatField46: TFloatField
+      FieldName = 'KSM_ID'
+    end
+    object StringField32: TStringField
+      FieldName = 'OTPROD_S'
+      Size = 6
+    end
+  end
+  object ncmatrd: TERxQuery
+    CachedUpdates = True
+    SessionName = 'workSes'
+    SQL.Strings = (
+      'select *'
+      'from '#39'c:\work\pc1\ncmatrd.dbf'#39' norm'
+      'where norm.ncstrk = :struk_id')
+    UpdateObject = upd_ncmatrd
+    Macros = <>
+    EhSQL.Strings = (
+      'select *'
+      'from '#39'c:\work\pc1\ncmatrd.dbf'#39' norm'
+      'where norm.ncstrk = :struk_id')
+    EhMacros = <>
+    Left = 80
+    Top = 80
+    ParamData = <
+      item
+        DataType = ftString
+        Name = 'struk_id'
+        ParamType = ptInput
+      end>
+    object ncmatrdNCPROD: TStringField
+      FieldName = 'NCPROD'
+      Size = 6
+    end
+    object ncmatrdNCKPN: TStringField
+      FieldName = 'NCKPN'
+      Size = 1
+    end
+    object ncmatrdNCKVI: TStringField
+      FieldName = 'NCKVI'
+      Size = 1
+    end
+    object ncmatrdNCEDIZ: TStringField
+      FieldName = 'NCEDIZ'
+      Size = 4
+    end
+    object ncmatrdNCSTRK: TStringField
+      FieldName = 'NCSTRK'
+      Size = 4
+    end
+    object ncmatrdNCRAZ: TStringField
+      FieldName = 'NCRAZ'
+      Size = 2
+    end
+    object ncmatrdNCMATR: TStringField
+      FieldName = 'NCMATR'
+      Size = 5
+    end
+    object ncmatrdNCPROC: TFloatField
+      FieldName = 'NCPROC'
+    end
+    object ncmatrdNCEDIZM: TStringField
+      FieldName = 'NCEDIZM'
+      Size = 4
+    end
+    object ncmatrdNCNRDS: TFloatField
+      FieldName = 'NCNRDS'
+    end
+    object ncmatrdNCNRFK: TFloatField
+      FieldName = 'NCNRFK'
+    end
+    object ncmatrdNMATS: TStringField
+      FieldName = 'NMATS'
+      Size = 25
+    end
+    object ncmatrdNCCENA: TFloatField
+      FieldName = 'NCCENA'
+    end
+    object ncmatrdKSM_ID: TFloatField
+      FieldName = 'KSM_ID'
+    end
+    object ncmatrdNCPROD_S: TStringField
+      FieldName = 'NCPROD_S'
+      Size = 6
+    end
+  end
+  object upd_ncmatrd: TUpdateSQL
+    ModifySQL.Strings = (
+      'update "c:\work\pc1\ncmatrd.dbf"'
+      'set'
+      '  NCPROD = :NCPROD,'
+      '  NCKPN = :NCKPN,'
+      '  NCKVI = :NCKVI,'
+      '  NCEDIZ = :NCEDIZ,'
+      '  NCSTRK = :NCSTRK,'
+      '  NCRAZ = :NCRAZ,'
+      '  NCMATR = :NCMATR,'
+      '  NCPROC = :NCPROC,'
+      '  NCEDIZM = :NCEDIZM,'
+      '  NCNRDS = :NCNRDS,'
+      '  NCNRFK = :NCNRFK,'
+      '  NMATS = :NMATS,'
+      '  NCCENA = :NCCENA,'
+      '  KSM_ID = :KSM_ID,'
+      '  NCPROD_S = :NCPROD_S'
+      'where'
+      '  NCPROD = :OLD_NCPROD and'
+      '  NCSTRK = :OLD_NCSTRK and'
+      '  NCRAZ = :OLD_NCRAZ and'
+      '  NCMATR = :OLD_NCMATR')
+    InsertSQL.Strings = (
+      'insert into "c:\work\pc1\ncmatrd.dbf"'
+      
+        '  (NCPROD, NCKPN, NCKVI, NCEDIZ, NCSTRK, NCRAZ, NCMATR, NCPROC, ' +
+        'NCEDIZM, '
+      '   NCNRDS, NCNRFK, NMATS, NCCENA, KSM_ID, NCPROD_S)'
+      'values'
+      
+        '  (:NCPROD, :NCKPN, :NCKVI, :NCEDIZ, :NCSTRK, :NCRAZ, :NCMATR, :' +
+        'NCPROC, '
+      
+        '   :NCEDIZM, :NCNRDS, :NCNRFK, :NMATS, :NCCENA, :KSM_ID, :NCPROD' +
+        '_S)')
+    DeleteSQL.Strings = (
+      'delete from "c:\work\pc1\ncmatrd.dbf"'
+      'where'
+      '  NCPROD = :OLD_NCPROD and'
+      '  NCSTRK = :OLD_NCSTRK and'
+      '  NCRAZ = :OLD_NCRAZ and'
+      '  NCMATR = :OLD_NCMATR')
+    Left = 80
+    Top = 112
+  end
+  object otchet: TERxQuery
+    CachedUpdates = True
+    SessionName = 'workSes'
+    SQL.Strings = (
+      'select *'
+      'from '#39'c:\work\pc1\otchet.dbf'#39' otc'
+      'where otc.otstrk = :struk_id'
+      'and otc.otprod = :ksm_idpr')
+    UpdateObject = upd_otchet
+    Macros = <>
+    EhSQL.Strings = (
+      'select *'
+      'from '#39'c:\work\pc1\otchet.dbf'#39' otc'
+      'where otc.otstrk = :struk_id'
+      'and otc.otprod = :ksm_idpr')
+    EhMacros = <>
+    Left = 248
+    Top = 64
+    ParamData = <
+      item
+        DataType = ftString
+        Name = 'struk_id'
+        ParamType = ptInput
+      end
+      item
+        DataType = ftString
+        Name = 'ksm_idpr'
+        ParamType = ptInput
+      end>
+    object otchetMES1: TStringField
+      FieldName = 'MES1'
+      Size = 2
+    end
+    object otchetOTSTRK: TStringField
+      FieldName = 'OTSTRK'
+      Size = 4
+    end
+    object otchetOTPROD: TStringField
+      FieldName = 'OTPROD'
+      Size = 6
+    end
+    object otchetOTKPN: TStringField
+      FieldName = 'OTKPN'
+      Size = 1
+    end
+    object otchetOTKVI: TStringField
+      FieldName = 'OTKVI'
+      Size = 1
+    end
+    object otchetOTMATR: TStringField
+      FieldName = 'OTMATR'
+      Size = 5
+    end
+    object otchetNMAT: TStringField
+      FieldName = 'NMAT'
+      Size = 25
+    end
+    object otchetOTCENA: TFloatField
+      FieldName = 'OTCENA'
+    end
+    object otchetCENAZA: TFloatField
+      FieldName = 'CENAZA'
+    end
+    object otchetOSTSN: TFloatField
+      FieldName = 'OSTSN'
+    end
+    object otchetOSTNZN: TFloatField
+      FieldName = 'OSTNZN'
+    end
+    object otchetPRIX: TFloatField
+      FieldName = 'PRIX'
+    end
+    object otchetZAG: TFloatField
+      FieldName = 'ZAG'
+    end
+    object otchetRASM: TFloatField
+      FieldName = 'RASM'
+    end
+    object otchetRASG: TFloatField
+      FieldName = 'RASG'
+    end
+    object otchetPERS: TFloatField
+      FieldName = 'PERS'
+    end
+    object otchetPERP: TFloatField
+      FieldName = 'PERP'
+    end
+    object otchetOSTSK: TFloatField
+      FieldName = 'OSTSK'
+    end
+    object otchetOSTZK: TFloatField
+      FieldName = 'OSTZK'
+    end
+    object otchetPRIXK: TFloatField
+      FieldName = 'PRIXK'
+    end
+    object otchetRASK: TFloatField
+      FieldName = 'RASK'
+    end
+    object otchetFACTK: TFloatField
+      FieldName = 'FACTK'
+    end
+    object otchetFACTM: TFloatField
+      FieldName = 'FACTM'
+    end
+    object otchetPEREM: TFloatField
+      FieldName = 'PEREM'
+    end
+    object otchetPEREG: TFloatField
+      FieldName = 'PEREG'
+    end
+    object otchetOTRAZ: TStringField
+      FieldName = 'OTRAZ'
+      Size = 2
+    end
+    object otchetPKV: TStringField
+      FieldName = 'PKV'
+      Size = 1
+    end
+    object otchetPGD: TStringField
+      FieldName = 'PGD'
+      Size = 1
+    end
+    object otchetMES: TStringField
+      FieldName = 'MES'
+      Size = 2
+    end
+    object otchetPR: TSmallintField
+      FieldName = 'PR'
+    end
+    object otchetPRS: TSmallintField
+      FieldName = 'PRS'
+    end
+    object otchetKSM_ID: TFloatField
+      FieldName = 'KSM_ID'
+    end
+    object otchetOTPROD_S: TStringField
+      FieldName = 'OTPROD_S'
+      Size = 6
+    end
+  end
+  object upd_otchet: TUpdateSQL
+    ModifySQL.Strings = (
+      'update "c:\work\pc1\otchet.dbf"'
+      'set'
+      '  MES1 = :MES1,'
+      '  OTSTRK = :OTSTRK,'
+      '  OTPROD = :OTPROD,'
+      '  OTKPN = :OTKPN,'
+      '  OTKVI = :OTKVI,'
+      '  OTMATR = :OTMATR,'
+      '  NMAT = :NMAT,'
+      '  OTCENA = :OTCENA,'
+      '  CENAZA = :CENAZA,'
+      '  OSTSN = :OSTSN,'
+      '  OSTNZN = :OSTNZN,'
+      '  PRIX = :PRIX,'
+      '  ZAG = :ZAG,'
+      '  RASM = :RASM,'
+      '  RASG = :RASG,'
+      '  PERS = :PERS,'
+      '  PERP = :PERP,'
+      '  OSTSK = :OSTSK,'
+      '  OSTZK = :OSTZK,'
+      '  PRIXK = :PRIXK,'
+      '  RASK = :RASK,'
+      '  FACTK = :FACTK,'
+      '  FACTM = :FACTM,'
+      '  PEREM = :PEREM,'
+      '  PEREG = :PEREG,'
+      '  OTRAZ = :OTRAZ,'
+      '  PKV = :PKV,'
+      '  PGD = :PGD,'
+      '  MES = :MES,'
+      '  PR = :PR,'
+      '  PRS = :PRS,'
+      '  KSM_ID = :KSM_ID,'
+      '  OTPROD_S = :OTPROD_S'
+      'where'
+      '  OTSTRK = :OLD_OTSTRK and'
+      '  OTPROD = :OLD_OTPROD and'
+      '  OTMATR = :OLD_OTMATR and'
+      '  OTRAZ = :OLD_OTRAZ')
+    InsertSQL.Strings = (
+      'insert into "c:\work\pc1\otchet.dbf"'
+      
+        '  (MES1, OTSTRK, OTPROD, OTKPN, OTKVI, OTMATR, NMAT, OTCENA, CEN' +
+        'AZA, OSTSN, '
+      
+        '   OSTNZN, PRIX, ZAG, RASM, RASG, PERS, PERP, OSTSK, OSTZK, PRIX' +
+        'K, RASK, '
+      
+        '   FACTK, FACTM, PEREM, PEREG, OTRAZ, PKV, PGD, MES, PR, PRS, KS' +
+        'M_ID, OTPROD_S)'
+      'values'
+      
+        '  (:MES1, :OTSTRK, :OTPROD, :OTKPN, :OTKVI, :OTMATR, :NMAT, :OTC' +
+        'ENA, :CENAZA, '
+      
+        '   :OSTSN, :OSTNZN, :PRIX, :ZAG, :RASM, :RASG, :PERS, :PERP, :OS' +
+        'TSK, :OSTZK, '
+      
+        '   :PRIXK, :RASK, :FACTK, :FACTM, :PEREM, :PEREG, :OTRAZ, :PKV, ' +
+        ':PGD, :MES, '
+      '   :PR, :PRS, :KSM_ID, :OTPROD_S)')
+    DeleteSQL.Strings = (
+      'delete from "c:\work\pc1\otchet.dbf"'
+      'where'
+      '  OTSTRK = :OLD_OTSTRK and'
+      '  OTPROD = :OLD_OTPROD and'
+      '  OTMATR = :OLD_OTMATR and'
+      '  OTRAZ = :OLD_OTRAZ')
+    Left = 216
+    Top = 64
+  end
+  object prizm: TERxQuery
+    CachedUpdates = True
+    SessionName = 'workSes'
+    SQL.Strings = (
+      'select *'
+      'from '#39'c:\work\pc1\prizm.dbf'#39' prizm'
+      'where prizm.ncstrk = :struk_id'
+      'and prizm.ncprod = :ksm_idpr')
+    UpdateObject = upd_prizm
+    Macros = <>
+    EhSQL.Strings = (
+      'select *'
+      'from '#39'c:\work\pc1\prizm.dbf'#39' prizm'
+      'where prizm.ncstrk = :struk_id'
+      'and prizm.ncprod = :ksm_idpr')
+    EhMacros = <>
+    Left = 432
+    Top = 72
+    ParamData = <
+      item
+        DataType = ftString
+        Name = 'struk_id'
+        ParamType = ptInput
+      end
+      item
+        DataType = ftString
+        Name = 'ksm_idpr'
+        ParamType = ptInput
+      end>
+  end
+  object upd_prizm: TUpdateSQL
+    ModifySQL.Strings = (
+      'update "c:\work\pc1\prizm.dbf"'
+      'set'
+      '  NCSTRK = :NCSTRK,'
+      '  NCPROD = :NCPROD,'
+      '  NCKPN = :NCKPN,'
+      '  NCKVI = :NCKVI,'
+      '  NCMATR = :NCMATR,'
+      '  PMFORM = :PMFORM,'
+      '  PMGR = :PMGR,'
+      '  PMFORN = :PMFORN,'
+      '  PMNSH = :PMNSH,'
+      '  NCRAZ = :NCRAZ,'
+      '  MARK = :MARK,'
+      '  KSM_ID = :KSM_ID,'
+      '  NCPROD_S = :NCPROD_S'
+      'where'
+      '  NCSTRK = :OLD_NCSTRK and'
+      '  NCPROD = :OLD_NCPROD and'
+      '  NCMATR = :OLD_NCMATR and'
+      '  NCRAZ = :OLD_NCRAZ')
+    InsertSQL.Strings = (
+      'insert into "c:\work\pc1\prizm.dbf"'
+      
+        '  (NCSTRK, NCPROD, NCKPN, NCKVI, NCMATR, PMFORM, PMGR, PMFORN, P' +
+        'MNSH, NCRAZ, '
+      '   MARK, KSM_ID, NCPROD_S)'
+      'values'
+      
+        '  (:NCSTRK, :NCPROD, :NCKPN, :NCKVI, :NCMATR, :PMFORM, :PMGR, :P' +
+        'MFORN, '
+      '   :PMNSH, :NCRAZ, :MARK, :KSM_ID, :NCPROD_S)')
+    DeleteSQL.Strings = (
+      'delete from "c:\work\pc1\prizm.dbf"'
+      'where'
+      '  NCSTRK = :OLD_NCSTRK and'
+      '  NCPROD = :OLD_NCPROD and'
+      '  NCMATR = :OLD_NCMATR and'
+      '  NCRAZ = :OLD_NCRAZ')
+    Left = 472
+    Top = 72
+  end
+  object fSes: TSession
+    KeepConnections = False
+    NetFileDir = 'F:\PC1\OT\OTCHBAS'
+    PrivateDir = 'F:\PC1\OT\OTCHBAS'
+    SessionName = 'fSes'
+    Left = 400
+    Top = 256
   end
 end
