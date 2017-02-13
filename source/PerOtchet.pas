@@ -16,40 +16,6 @@ type
     Label3: TLabel;
     DBGridEh2: TDBGridEh;
     ImageList1: TImageList;
-    Otchet: TTable;
-    OtchetMES1: TStringField;
-    OtchetOTSTRK: TStringField;
-    OtchetOTPROD: TStringField;
-    OtchetOTKPN: TStringField;
-    OtchetOTKVI: TStringField;
-    OtchetOTMATR: TStringField;
-    OtchetNMAT: TStringField;
-    OtchetOTCENA: TFloatField;
-    OtchetCENAZA: TFloatField;
-    OtchetOSTSN: TFloatField;
-    OtchetOSTNZN: TFloatField;
-    OtchetPRIX: TFloatField;
-    OtchetZAG: TFloatField;
-    OtchetRASM: TFloatField;
-    OtchetRASG: TFloatField;
-    OtchetPERS: TFloatField;
-    OtchetPERP: TFloatField;
-    OtchetOSTSK: TFloatField;
-    OtchetOSTZK: TFloatField;
-    OtchetPRIXK: TFloatField;
-    OtchetRASK: TFloatField;
-    OtchetFACTK: TFloatField;
-    OtchetFACTM: TFloatField;
-    OtchetPEREM: TFloatField;
-    OtchetPEREG: TFloatField;
-    OtchetOTRAZ: TStringField;
-    OtchetPKV: TStringField;
-    OtchetPGD: TStringField;
-    OtchetMES: TStringField;
-    OtchetPR: TSmallintField;
-    OtchetPRS: TSmallintField;
-    OtchetKSM_ID: TFloatField;
-    OtchetOTPROD_S: TStringField;
     regot: TTable;
     regotDATCEX: TStringField;
     regotSNZAP: TStringField;
@@ -144,22 +110,6 @@ type
     SpisokOTSTRK: TStringField;
     SpisokMES: TSmallintField;
     SpisokGOD: TSmallintField;
-    ncmatrd: TTable;
-    ncmatrdNCPROD: TStringField;
-    ncmatrdNCKPN: TStringField;
-    ncmatrdNCKVI: TStringField;
-    ncmatrdNCEDIZ: TStringField;
-    ncmatrdNCSTRK: TStringField;
-    ncmatrdNCRAZ: TStringField;
-    ncmatrdNCMATR: TStringField;
-    ncmatrdNCPROC: TFloatField;
-    ncmatrdNCEDIZM: TStringField;
-    ncmatrdNCNRDS: TFloatField;
-    ncmatrdNCNRFK: TFloatField;
-    ncmatrdNMATS: TStringField;
-    ncmatrdNCCENA: TFloatField;
-    ncmatrdKSM_ID: TFloatField;
-    ncmatrdNCPROD_S: TStringField;
     Ras_Vir: TIBQuery;
     normt: TIBQuery;
     frReport1: TfrReport;
@@ -195,20 +145,6 @@ type
     rasxodNMASH: TStringField;
     rasxodKORR: TStringField;
     rasxodSUMD: TFloatField;
-    prizm: TTable;
-    prizmNCSTRK: TStringField;
-    prizmNCPROD: TStringField;
-    prizmNCKPN: TStringField;
-    prizmNCKVI: TStringField;
-    prizmNCMATR: TStringField;
-    prizmPMFORM: TStringField;
-    prizmPMGR: TStringField;
-    prizmPMFORN: TStringField;
-    prizmPMNSH: TStringField;
-    prizmNCRAZ: TStringField;
-    prizmMARK: TStringField;
-    prizmKSM_ID: TFloatField;
-    prizmNCPROD_S: TStringField;
     ComboBox1: TComboBox;
     ComboBox2: TComboBox;
     q_spprodDbf: TERxQuery;
@@ -322,6 +258,95 @@ type
     q_spprodSERTIFIED: TSmallintField;
     workSes: TSession;
     ToolButton1: TToolButton;
+    OtchetOld: TTable;
+    StringField21: TStringField;
+    StringField22: TStringField;
+    StringField23: TStringField;
+    StringField24: TStringField;
+    StringField25: TStringField;
+    StringField26: TStringField;
+    StringField27: TStringField;
+    FloatField28: TFloatField;
+    FloatField29: TFloatField;
+    FloatField30: TFloatField;
+    FloatField31: TFloatField;
+    FloatField32: TFloatField;
+    FloatField33: TFloatField;
+    FloatField34: TFloatField;
+    FloatField35: TFloatField;
+    FloatField36: TFloatField;
+    FloatField37: TFloatField;
+    FloatField38: TFloatField;
+    FloatField39: TFloatField;
+    FloatField40: TFloatField;
+    FloatField41: TFloatField;
+    FloatField42: TFloatField;
+    FloatField43: TFloatField;
+    FloatField44: TFloatField;
+    FloatField45: TFloatField;
+    StringField28: TStringField;
+    StringField29: TStringField;
+    StringField30: TStringField;
+    StringField31: TStringField;
+    SmallintField1: TSmallintField;
+    SmallintField2: TSmallintField;
+    FloatField46: TFloatField;
+    StringField32: TStringField;
+    ncmatrd: TERxQuery;
+    upd_ncmatrd: TUpdateSQL;
+    ncmatrdNCPROD: TStringField;
+    ncmatrdNCKPN: TStringField;
+    ncmatrdNCKVI: TStringField;
+    ncmatrdNCEDIZ: TStringField;
+    ncmatrdNCSTRK: TStringField;
+    ncmatrdNCRAZ: TStringField;
+    ncmatrdNCMATR: TStringField;
+    ncmatrdNCPROC: TFloatField;
+    ncmatrdNCEDIZM: TStringField;
+    ncmatrdNCNRDS: TFloatField;
+    ncmatrdNCNRFK: TFloatField;
+    ncmatrdNMATS: TStringField;
+    ncmatrdNCCENA: TFloatField;
+    ncmatrdKSM_ID: TFloatField;
+    ncmatrdNCPROD_S: TStringField;
+    otchet: TERxQuery;
+    upd_otchet: TUpdateSQL;
+    otchetMES1: TStringField;
+    otchetOTSTRK: TStringField;
+    otchetOTPROD: TStringField;
+    otchetOTKPN: TStringField;
+    otchetOTKVI: TStringField;
+    otchetOTMATR: TStringField;
+    otchetNMAT: TStringField;
+    otchetOTCENA: TFloatField;
+    otchetCENAZA: TFloatField;
+    otchetOSTSN: TFloatField;
+    otchetOSTNZN: TFloatField;
+    otchetPRIX: TFloatField;
+    otchetZAG: TFloatField;
+    otchetRASM: TFloatField;
+    otchetRASG: TFloatField;
+    otchetPERS: TFloatField;
+    otchetPERP: TFloatField;
+    otchetOSTSK: TFloatField;
+    otchetOSTZK: TFloatField;
+    otchetPRIXK: TFloatField;
+    otchetRASK: TFloatField;
+    otchetFACTK: TFloatField;
+    otchetFACTM: TFloatField;
+    otchetPEREM: TFloatField;
+    otchetPEREG: TFloatField;
+    otchetOTRAZ: TStringField;
+    otchetPKV: TStringField;
+    otchetPGD: TStringField;
+    otchetMES: TStringField;
+    otchetPR: TSmallintField;
+    otchetPRS: TSmallintField;
+    otchetKSM_ID: TFloatField;
+    otchetOTPROD_S: TStringField;
+    prizm: TERxQuery;
+    upd_prizm: TUpdateSQL;
+    fSes: TSession;
     procedure SpinEdit3Change(Sender: TObject);
     procedure SpinEdit4Change(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -337,9 +362,23 @@ type
     procedure ToolButton1Click(Sender: TObject);
   private
     machine : string;
+    S_DATk : string;
+    localDirPath, oldFilePath : string;
 
+    procedure perOtchet;
+    function copyDbfToLocalDir() : boolean;
+    function copyDbfToNetDir() : boolean;
+    procedure openSpisokPreps;
+    procedure copyRegot;
+    procedure copyPrizpr;
+    procedure copySpisok;
+
+    procedure setOtchetText;
+    procedure setPrizmText;
+    procedure setNcmatrdText;
     procedure setSpprodDbfText;
     procedure openWorkSes;
+    procedure openFSes;
     function openQSpprodDbf() : boolean;
     function openTSpprodDbf() : boolean;
     procedure clearSpprodDbf;
@@ -390,9 +429,9 @@ begin
       q_spprodDbfSPPRN.AsString := '0'
     else
       if (length(q_spprodKSM_ID.AsString) = 4) then
-        q_spprodDbfSPPRN.AsString := copy(q_spprodKSM_ID.AsString, 0, 1)
+        q_spprodDbfSPPRN.AsString := copy(q_spprodKSM_ID.AsString, 1, 1)
       else
-        q_spprodDbfSPPRN.AsString := copy(q_spprodKSM_ID.AsString, 1, 1);
+        q_spprodDbfSPPRN.AsString := copy(q_spprodKSM_ID.AsString, 2, 1);
 
     if (length(q_spprodKSM_ID.AsString) <= 2) then
       q_spprodDbfSPVIS.AsString := '0'
@@ -469,14 +508,368 @@ begin
     DbiPackTable(t_spprodDbf.dbhandle, t_spprodDbf.Handle, nil, nil, false);
     t_spprodDbf.Close;
   end;
+  workSes.Active := false;
+  workSes.Close;
+end;
+
+procedure TFPerOtchet.copyRegot;
+begin
+  regot.Filter := 'CEX=' + '''' + S_STKOD + '''' + ' AND MES=' + INTTOSTR(MES);
+  regot.Filtered := TRUE;
+  regot.Open;
+  if (REGOT.Eof) then
+  begin
+    regot.Insert;
+    regotdatcex.AsString := datetostr(date);
+    regotCex.AsString := s_stkod;
+    regotMes.AsInteger := mes;
+    regot.Post;
+  end
+  else
+  begin
+    regot.Last;
+    if (regotDATACY.AsString = '') then
+    begin
+      regot.Edit;
+      regotdatcex.AsString := datetostr(date);
+      regotMes.AsInteger := mes;
+      regot.Post;
+    end
+    else
+    begin
+//      Splash.Free;
+      MessageDlg(' Данные НЕ переданы, т.к. они были уже переданы и использованы!',
+                 mtWarning, [mbOK], 0);
+      SysUtils.Abort;
+    end;
+  end;
+  regot.ApplyUpdates;
+  regot.CommitUpdates;
+  regot.Close;
+end;
+
+procedure TFPerOtchet.copyPrizpr;
+var
+  v_vipuskk : double;
+begin
+  //выпуск с начала года
+  DM1.IBQuery1.Close;
+  DM1.IBQuery1.SQL.Clear;
+  DM1.IBQuery1.SQL.Add('SELECT  sum(KARTv.KOL_PRIH) vipusk_ng');
+  DM1.IBQuery1.SQL.Add(' FROM KARTv');
+  DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
+  DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID=' + INTTOSTR(VsTRUK_ID)
+                       + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
+                       + ' AND KARTv.KSM_ID=' + INTTOSTR(s_KODP)
+                       + ' AND Document.Date_op between ' + '''' + s_datn
+                       + '''' + ' and ' + '''' + s_dat2 + '''');
+  DM1.IBQuery1.Open;
+  if (not dm1.IBQuery1.Eof) then
+    V_VIPUSKG := DM1.IBQuery1.FieldByName('VIPUSK_NG').AsFloat
+  else
+    V_VIPUSKG := 0;
+  //выпуск с начала квартала
+  DM1.IBQuery1.Close;
+  DM1.IBQuery1.SQL.Clear;
+  DM1.IBQuery1.SQL.Add('SELECT  sum(KARTv.KOL_PRIH) vipusk_k');
+  DM1.IBQuery1.SQL.Add(' FROM KARTv');
+  DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
+  DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID=' + INTTOSTR(VsTRUK_ID)
+                       + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
+                       + ' AND KARTv.KSM_ID=' + INTTOSTR(s_KODP)
+                       + ' AND Document.Date_op between ' + '''' + s_datk
+                       + '''' + ' and ' + '''' + s_dat2 + '''');
+  DM1.IBQuery1.Open;
+  if (not dm1.IBQuery1.Eof) then
+    v_vipuskk := DM1.IBQuery1.FieldByName('VIPUSK_k').AsFloat
+  else
+    v_vipuskk := 0;
+  DM1.IBQuery1.Close;
+  
+  prizpr.Close;
+  prizpr.Open;
+  if (prizpr.Locate('sprod', st_kodp, [])) then
+    prizpr.Edit
+  else
+  begin
+    prizpr.Insert;
+    prizprSprod.AsString := sT_kodp;
+    prizprSpceh.AsString := s_stkod;
+    prizprSpprn.AsString := s_spprn;
+    prizprSpvis.AsString := s_spvis;
+  end;
+  prizprPrgod.AsString := inttostr(god);
+  if (mes < 10) then
+    prizprPrmes.AsString := ' ' + inttostr(mes)
+  else
+    prizprPrmes.AsString := inttostr(mes);
+  prizprPrg1.AsVariant := dm1.KartVKOL_PRIH.AsFloat;
+  prizprKolg1.AsVariant := v_vipuskg;
+  prizprKolgs1.AsVariant := v_vipuskg - dm1.KartVKOL_PRIH.AsFloat;
+  prizprKolk1.AsVariant := v_vipuskk;
+  prizprKolks1.AsVariant := v_vipuskk - dm1.KartVKOL_PRIH.AsFloat;
+  prizpr.Post;
+end;
+
+procedure TFPerOtchet.copySpisok;
+begin
+// формирование списка препаратов для передачи
+  Spisok.Append;
+  spisokOtprod.AsString := sT_kodp;
+  spisokOtstrk.AsString := s_stkod;
+  spisokNmat.AsString := DM1.KARTVNmat.AsString;
+  spisokMes.AsInteger := mes;
+  spisokGod.AsInteger := god;
+  spisok.Post;
+end;
+
+procedure TFPerOtchet.openSpisokPreps;
+begin
+  if (VDOCUMENT_ID = 0) or (DM1.KARTV.Eof) then
+  begin
+    DM1.DOCUMENT.Close;
+    DM1.DOcUMENT.MacroByName('USL').AsString := 'WHERE DOcUMENT.STRUK_ID = '
+                                                + INTTOSTR(VsTRUK_ID)
+                                                + ' AND DOCUMENT.TIP_OP_ID = 36 and document.tip_dok_id=74'
+                                                + ' AND Document.Date_op between '
+                                                + '''' + s_dat1 + '''' + ' and '
+                                                + '''' + s_dat2 + '''';
+    DM1.DOCUMENT.OPEN;
+    if (not DM1.Document.Eof) then
+      VDOCUMENT_ID := DM1.DocumentDOC_ID.AsInteger
+    else
+      VDOCUMENT_ID := 0;
+    DM1.KARTV.Close;
+    DM1.KartV.MacroByName('USL').AsString := 'WHERE KARTv.DOC_ID = ' + INTTOSTR(VDOCUMENT_id);
+    DM1.KartV.MacroByName('SORT').AsString := 'ORDER BY SPPROD.Kod_prod';
+    DM1.KARTV.OPEN;
+  end;
+end;
+
+function TFPerOtchet.copyDbfToLocalDir() : boolean;
+begin
+  result := false;
+  try
+    if (DirectoryExists('c:\work\')) then
+    begin
+      localDirPath := 'c:\work\' + machine + '\';
+      oldFilePath := 'f:\' + machine + '\';
+      if (ForceDirectories(localDirPath)) then
+      begin
+        fileCopy('f:\bmomts\bmg\zerno1\rasxod.dbf', localDirPath + 'rasxod.dbf');
+        fileCopy(oldFilePath + 'ot\otchbas\prizm.dbf', localDirPath + 'prizm.dbf');
+        fileCopy(oldFilePath + 'otchbas\otchets.dbf', localDirPath + 'otchets.dbf');
+        fileCopy(oldFilePath + 'ot\otchbas\otchet.dbf', localDirPath + 'otchet.dbf');
+        fileCopy(oldFilePath + 'ot\otchbas\ncmatrd.dbf', localDirPath + 'ncmatrd.dbf');
+        fileCopy(oldFilePath + 'otchbas\spprod.dbf', localDirPath + 'spprod.dbf');
+        if (FileExists(localDirPath + 'rasxod.dbf')) and
+           (FileExists(localDirPath + 'prizm.dbf')) and
+           (FileExists(localDirPath + 'otchets.dbf')) and
+           (FileExists(localDirPath + 'otchet.dbf')) and
+           (FileExists(localDirPath + 'ncmatrd.dbf')) then
+        begin
+          openFSes;
+          OtchetOld.Close;
+          otchetOld.Exclusive := true;
+          otchetOld.Open;
+
+          result := true;
+        end;
+      end
+      else
+        ShowMessage('Не создали локальную папку.');
+    end;
+  except
+    on e : exception do
+    begin
+//      Splash.free;
+      MessageDlg('Не удалось скопировать файлы в локальную папку. ' + e.Message, mtWarning, [mbOK], 0);
+      SysUtils.Abort;
+    end;
+  end;
+//  Splash.free;
+end;
+
+function TFPerOtchet.copyDbfToNetDir() : boolean;
+begin
+  result := false;
+  try
+    otchetOld.Close;
+    fSes.Active := false;
+    fileCopy(localDirPath + 'otchet.dbf', oldFilePath + 'ot\otchbas\otchet.dbf');
+    fileCopy(localDirPath + 'prizm.dbf', oldFilePath + 'ot\otchbas\prizm.dbf');
+    fileCopy(localDirPath + 'ncmatrd.dbf', oldFilePath + 'ot\otchbas\ncmatrd.dbf');
+    fileCopy(localDirPath + 'spprod.dbf', oldFilePath + 'otchbas\spprod.dbf');
+
+    while (not FileExists(oldFilePath + 'ot\otchbas\otchet.dbf'))
+           and (not FileExists(oldFilePath + 'ot\otchbas\ncmatrd.dbf'))
+           and (not FileExists(oldFilePath + 'ot\otchbas\prizm.dbf'))
+           and (not FileExists(oldFilePath + 'otchbas\spprod.dbf')) do
+    begin
+
+    end;
+  except
+    on e : exception do
+    begin
+      MessageDlg('Не удалось скопировать обновленные файлы на сетевой диск. #10#13 '
+                 + ' Обратитесь к программисту! ', mtWarning, [mbOK], 0);
+    end;
+  end;
+end;
+
+procedure TFPerOtchet.perOtchet;
+begin
+  openSpisokPreps;
+  if (VDOCUMENT_ID <> 0) and (not DM1.KARTV.Eof) then
+  begin
+    try
+      copyDbfToLocalDir();
+  //    Splash := ShowSplashWindow(AniBmp1,
+  //                               'Передача данных из цеха в АСУ. Подождите, пожалуйста...',
+  //                               True,
+  //                               nil);
+      openWorkSes;
+      copyRegot;
+
+      if (not Otchets.Active) then
+        Otchets.Active := true;
+
+      Otchet.Close;
+      otchet.ParamByName('struk_id').AsString := s_stkod;
+      otchet.ParamByName('ksm_idpr').AsString := '';
+      Otchet.Open;
+      otchet.First;
+      while (not otchet.Eof) do
+        otchet.Delete;
+      otchet.ApplyUpdates;
+      otchet.CommitUpdates;
+      otchet.Close;
+
+      Spisok.Close;
+      Spisok.Filter := 'otstrk=' + '''' + s_stkod + '''';
+      Spisok.Open;
+      Spisok.Filtered := true;
+      Spisok.First;
+      while (not Spisok.Eof) do
+        Spisok.Delete;
+      spisok.ApplyUpdates;
+      spisok.CommitUpdates;
+
+      DM1.KARTV.First;
+      while (not DM1.KARTV.Eof) do
+      begin
+        S_KODP := DM1.KARTVKSM_ID.ASINTEGER;
+        v_vipusk := dm1.KartVKOL_PRIH.AsFloat;
+        s_spprn := INTTOSTR(DM1.KARTVSpprn.AsInteger);
+        s_spvis := inttostr(DM1.KARTVSpvis.AsInteger);
+        s_keip := DM1.KARTVKei_id.AsInteger;
+        S_DATN := '01.01.' + INTTOSTR(GOD);
+        if (mes < 4) and (mes >= 1) then
+          S_DATk := '01.01.' + INTTOSTR(GOD);
+        if (mes < 7) and (mes > 3) then
+          S_DATk := '01.04.' + INTTOSTR(GOD);
+        if (mes < 10) and (mes > 6) then
+          S_DATk := '01.07.' + INTTOSTR(GOD);
+        if (mes <= 12) and (mes > 9) then
+          S_DATk := '01.10.' + INTTOSTR(GOD);
+  // расход с начала года
+        dm1.CEH_OTCHET.Active := FALSE;
+        dm1.CEH_OTCHET.ParamByName('MES').AsInteger := mes;
+        dm1.CEH_OTCHET.ParamByName('GOD').AsInteger := GOD;
+        dm1.CEH_OTCHET.Active := TRUE;
+  // нормы
+        Normt.Active := False;
+        Normt.SQL.Clear;
+        Normt.SQL.Add('SELECT norm.ksm_id, norm.Kraz, norm.razdel_id, norm.plnorm, '
+                      + 'norm.kei_id kein');
+        Normt.SQL.Add(' FROM norm_view' + '(' + '119,' + inttostr(god) + ','
+                      + inttostr(mes) + ',' + inttostr(s_kodp) + ',0,0)' + ' NORM ');
+        Normt.Active := true;
+  // значность
+        FSprFormul.CEH_NormZ.Close;
+        FSprFormul.CEH_NormZ.MacroByName('USL').AsString := ' Where CEH_NORMZ.KSM_ID_PR='
+                                                            + INTTOSTR(S_KODP);
+        FSprFormul.CEH_NormZ.Open;
+        FSprFormul.CEH_NORMZ.First;
+  // расход на выработку с начала квартала
+        Ras_Vir.Active := False;
+        Ras_Vir.SQL.Clear;
+        Ras_Vir.SQL.Add('SELECT DISTINCT ost.ksm_id, ost.razdel_id, ost.KART_ID,');
+        Ras_Vir.SQL.Add('ost.rash_virab_period');
+        Ras_Vir.SQL.Add(' FROM  SELECT_OB_VED (' + '''' + s_datk + '''' + ',' + ''''
+                        + s_dat2 + '''' + ',' + inttostr(s_kodp) + ') ost');
+        Ras_Vir.Active := true;
+
+        if lenGTH(trim(inttostr(dm1.KartvKSM_ID.AsInteger))) = 1 then
+          sT_kodp := '00000' + trim(inttostr(dm1.KartvKSM_ID.AsInteger));
+        if lenGTH(trim(inttostr(dm1.KartvKSM_ID.AsInteger))) = 2 then
+          sT_kodp := '0000' + trim(inttostr(dm1.KartvKSM_ID.AsInteger));
+        if lenGTH(trim(inttostr(dm1.KartvKSM_ID.AsInteger))) = 3 then
+          sT_kodp := '000' + trim(inttostr(dm1.KartvKSM_ID.AsInteger));
+        if lenGTH(trim(inttostr(dm1.KartvKSM_ID.AsInteger))) = 4 then
+          sT_kodp := '00' + trim(inttostr(dm1.KartvKSM_ID.AsInteger));
+        if lenGTH(trim(inttostr(dm1.KartvKSM_ID.AsInteger))) = 5 then
+          sT_kodp := '0' + trim(inttostr(dm1.KartvKSM_ID.AsInteger));
+        if lenGTH(trim(inttostr(dm1.KartvKSM_ID.AsInteger))) = 6 then
+          sT_kodp := trim(inttostr(dm1.KartvKSM_ID.AsInteger));
+
+        copyPrizpr;
+        copySpisok;
+
+        OTCHET_ST;
+        DM1.KARTV.Next;
+      end;
+      prizpr.ApplyUpdates;
+      prizpr.CommitUpdates;
+      prizpr.Close;
+      spisok.ApplyUpdates;
+      spisok.CommitUpdates;
+      spisok.Close;
+      otchet.ApplyUpdates;
+      otchet.CommitUpdates;
+      otchet.Close;
+      otchets.Close;
+      prizm.ApplyUpdates;
+      prizm.CommitUpdates;
+      prizm.Close;
+      ncmatrd.ApplyUpdates;
+      ncmatrd.CommitUpdates;
+      ncmatrd.Close;
+      rasxod.Close;
+      updatePCSppod;
+      workSes.Active := false;
+      copyDbfToNetDir();
+  //    Splash.Free;
+    except
+      on e : exception do
+      begin
+        prizpr.Close;
+        spisok.Close;
+        otchet.Close;
+        otchets.Close;
+        prizm.Close;
+        ncmatrd.Close;
+        rasxod.Close;
+        q_spprodDbf.Close;
+        t_spprodDbf.Close;
+        OtchetOld.Close;
+        workSes.Active := false;
+        fSes.Active := false;
+      end;  
+    end;
+  end
+  else
+  begin
+    MessageDlg('Нет отчетов за заданный месяц !', mtWarning, [mbOK], 0);
+    SysUtils.Abort;
+  end;
 end;
 
 function TFPerOtchet.openQSpprodDbf() : boolean;
 begin
   result := false;
   openWorkSes;
-  if (q_spprodDbf.Active) then
-    q_spprodDbf.Close;
+  q_spprodDbf.Close;
   q_spprodDbf.Open;
   if (q_spprodDbf.Active) then
     result := true;
@@ -493,33 +886,131 @@ begin
   StrLangDriver.Free;
   if (not workSes.Active) then
   begin
-    workSes.NetFileDir := 'f:\' + machine + '\otchbas\';
-    workSes.PrivateDir := 'f:\' + machine + '\otchbas\';
+    workSes.NetFileDir := 'c:\work\' + machine + '\';
+    workSes.PrivateDir := 'c:\work\' + machine + '\';
     workSes.Active := true;
+  end;
+end;
+
+procedure TFPerOtchet.openFSes;
+var
+  StrLangDriver : TStringList;
+begin
+  StrLangDriver := TStringList.Create;
+  StrLangDriver.Add('LANGDRIVER=db866ru0');
+  StrLangDriver.Add('LEVEL=4');
+  fSes.ModifyDriver('DBASE', StrLangDriver);
+  StrLangDriver.Free;
+  if (not fSes.Active) then
+  begin
+    fSes.NetFileDir := 'f:\' + machine + 'ot\otchbas\';
+    fSes.PrivateDir := 'f:\' + machine + 'ot\otchbas\';
+    fSes.Active := true;
   end;
 end;
 
 function TFPerOtchet.openTSpprodDbf() : boolean;
 begin
   result := false;
-  openWorkSes;
+//  openWorkSes;
   if (t_spprodDbf.Active) then
     t_spprodDbf.Close;
   t_spprodDbf.Exclusive := true;
-  t_spprodDbf.Open;
+  t_spprodDbf.Open;                                    // table is busy ОШИБКА
   if (t_spprodDbf.RecordCount > 0) then
     result := true;
 end;
 
+procedure TFPerOtchet.setNcmatrdText;
+begin
+  ncmatrd.Close;
+  ncmatrd.EhSQL.Text := 'select * from ''c:\work\' + machine + '\ncmatrd.dbf'' norm '
+                        + 'where norm.ncstrk = :struk_id ';
+  upd_ncmatrd.DeleteSQL.Text := 'delete from "c:\work\' + machine + '\ncmatrd.dbf" '
+                                + 'where NCPROD = :OLD_NCPROD and NCSTRK = :OLD_NCSTRK and '
+                                + 'NCRAZ = :OLD_NCRAZ and NCMATR = :OLD_NCMATR ';
+  upd_ncmatrd.InsertSQL.Text := 'insert into "c:\work\' + machine + '\ncmatrd.dbf" '
+                                + '(NCPROD, NCKPN, NCKVI, NCEDIZ, NCSTRK, NCRAZ, '
+                                + 'NCMATR, NCPROC, NCEDIZM, NCNRDS, NCNRFK, NMATS, '
+                                + 'NCCENA, KSM_ID, NCPROD_S) '
+                                + 'values (:NCPROD, :NCKPN, :NCKVI, :NCEDIZ, :NCSTRK, '
+                                + ':NCRAZ, :NCMATR, :NCPROC, :NCEDIZM, :NCNRDS, '
+                                + ':NCNRFK, :NMATS, :NCCENA, :KSM_ID, :NCPROD_S) ';
+  upd_ncmatrd.ModifySQL.Text := 'update "c:\work\' + machine + '\ncmatrd.dbf" '
+                                + 'set NCPROD = :NCPROD, NCKPN = :NCKPN, NCKVI = :NCKVI, '
+                                + 'NCEDIZ = :NCEDIZ, NCSTRK = :NCSTRK, NCRAZ = :NCRAZ, '
+                                + 'NCMATR = :NCMATR, NCPROC = :NCPROC, NCEDIZM = :NCEDIZM, '
+                                + 'NCNRDS = :NCNRDS, NCNRFK = :NCNRFK, NMATS = :NMATS, '
+                                + 'NCCENA = :NCCENA, KSM_ID = :KSM_ID, NCPROD_S = :NCPROD_S '
+                                + 'where NCPROD = :OLD_NCPROD and NCSTRK = :OLD_NCSTRK and '
+                                + 'NCRAZ = :OLD_NCRAZ and NCMATR = :OLD_NCMATR ';
+end;
+
+procedure TFPerOtchet.setOtchetText;
+begin
+  otchet.Close;
+  otchet.EhSQL.Text := 'select * from ''c:\work\' + machine + '\otchet.dbf'' otc '
+                       + 'where otc.otstrk = :struk_id and otc.otprod = :ksm_idpr ';
+  upd_otchet.DeleteSQL.Text := 'delete from "c:\work\' + machine + '\otchet.dbf" '
+                               + 'where OTSTRK = :OLD_OTSTRK and OTPROD = :OLD_OTPROD and '
+                               + 'OTMATR = :OLD_OTMATR and OTRAZ = :OLD_OTRAZ ';
+  upd_otchet.InsertSQL.Text := 'insert into "c:\work\' + machine + '\otchet.dbf" '
+                               + '(MES1, OTSTRK, OTPROD, OTKPN, OTKVI, OTMATR, NMAT, '
+                               + 'OTCENA, CENAZA, OSTSN, OSTNZN, PRIX, ZAG, RASM, '
+                               + 'RASG, PERS, PERP, OSTSK, OSTZK, PRIXK, RASK, FACTK, '
+                               + 'FACTM, PEREM, PEREG, OTRAZ, PKV, PGD, MES, PR, '
+                               + 'PRS, KSM_ID, OTPROD_S) '
+                               + 'values (:MES1, :OTSTRK, :OTPROD, :OTKPN, :OTKVI, '
+                               + ':OTMATR, :NMAT, :OTCENA, :CENAZA, :OSTSN, :OSTNZN, '
+                               + ':PRIX, :ZAG, :RASM, :RASG, :PERS, :PERP, :OSTSK, '
+                               + ':OSTZK, :PRIXK, :RASK, :FACTK, :FACTM, :PEREM, '
+                               + ':PEREG, :OTRAZ, :PKV, :PGD, :MES, :PR, :PRS, :KSM_ID, :OTPROD_S) ';
+  upd_otchet.ModifySQL.Text := 'update "c:\work\' + machine + '\otchet.dbf" '
+                               + 'set MES1 = :MES1, OTSTRK = :OTSTRK, OTPROD = :OTPROD, '
+                               + 'OTKPN = :OTKPN, OTKVI = :OTKVI, OTMATR = :OTMATR, '
+                               + 'NMAT = :NMAT, OTCENA = :OTCENA, CENAZA = :CENAZA, '
+                               + 'OSTSN = :OSTSN, OSTNZN = :OSTNZN, PRIX = :PRIX, '
+                               + 'ZAG = :ZAG, RASM = :RASM, RASG = :RASG, PERS = :PERS, '
+                               + 'PERP = :PERP, OSTSK = :OSTSK, OSTZK = :OSTZK, '
+                               + 'PRIXK = :PRIXK, RASK = :RASK, FACTK = :FACTK, '
+                               + 'FACTM = :FACTM, PEREM = :PEREM, PEREG = :PEREG, '
+                               + 'OTRAZ = :OTRAZ, PKV = :PKV, PGD = :PGD, MES = :MES, '
+                               + 'PR = :PR, PRS = :PRS, KSM_ID = :KSM_ID, OTPROD_S = :OTPROD_S '
+                               + 'where OTSTRK = :OLD_OTSTRK and OTPROD = :OLD_OTPROD and '
+                               + 'OTMATR = :OLD_OTMATR and OTRAZ = :OLD_OTRAZ ';
+end;
+
+procedure TFPerOtchet.setPrizmText;
+begin
+  prizm.Close;
+  prizm.EhSQL.Text := 'select * from ''c:\work\' + machine + '\prizm.dbf'' prizm '
+                      + 'where prizm.ncstrk = :struk_id and prizm.ncprod = :ksm_idpr ';
+  upd_prizm.DeleteSQL.Text := 'delete from "c:\work\' + machine + '\prizm.dbf" '
+                              + 'where NCSTRK = :OLD_NCSTRK and NCPROD = :OLD_NCPROD and '
+                              + 'NCMATR = :OLD_NCMATR and NCRAZ = :OLD_NCRAZ ';
+  upd_prizm.InsertSQL.Text := 'insert into "c:\work\' + machine + '\prizm.dbf" '
+                              + '(NCSTRK, NCPROD, NCKPN, NCKVI, NCMATR, PMFORM, '
+                              + 'PMGR, PMFORN, PMNSH, NCRAZ, MARK, KSM_ID, NCPROD_S) '
+                              + 'values (:NCSTRK, :NCPROD, :NCKPN, :NCKVI, :NCMATR, '
+                              + ':PMFORM, :PMGR, :PMFORN, :PMNSH, :NCRAZ, :MARK, :KSM_ID, :NCPROD_S) ';
+  upd_prizm.ModifySQL.Text := 'update "c:\work\' + machine + '\prizm.dbf" '
+                              + 'set NCSTRK = :NCSTRK, NCPROD = :NCPROD, NCKPN = :NCKPN, '
+                              + 'NCKVI = :NCKVI, NCMATR = :NCMATR, PMFORM = :PMFORM, '
+                              + 'PMGR = :PMGR, PMFORN = :PMFORN, PMNSH = :PMNSH, '
+                              + 'NCRAZ = :NCRAZ, MARK = :MARK, KSM_ID = :KSM_ID, '
+                              + 'NCPROD_S = :NCPROD_S '
+                              + 'where NCSTRK = :OLD_NCSTRK and NCPROD = :OLD_NCPROD and '
+                              + 'NCMATR = :OLD_NCMATR and NCRAZ = :OLD_NCRAZ ';
+end;
+
 procedure TFPerOtchet.setSpprodDbfText;
 begin
-  if (q_spprodDbf.Active) then
-    q_spprodDbf.Close;
-  q_spprodDbf.EhSQL.Text := 'select * from ''f:\' + machine + '\otchbas\spprod.dbf'' spprod '
+  q_spprodDbf.Close;
+  q_spprodDbf.EhSQL.Text := 'select * from ''c:\work\' + machine + '\spprod.dbf'' spprod '
                             + 'where spprod.struk_id = ' + IntToStr(vStruk_id) + ' ';
-  up_q_spprodDbf.DeleteSQL.Text := 'delete from "f:\' + machine + '\otchbas\spprod.dbf" '
+  up_q_spprodDbf.DeleteSQL.Text := 'delete from "c:\work\' + machine + '\spprod.dbf" '
                                    + 'where KSM_ID = :OLD_KSM_ID ';
-  up_q_spprodDbf.InsertSQL.Text := 'insert into "f:\' + machine + '\otchbas\spprod.dbf" '
+  up_q_spprodDbf.InsertSQL.Text := 'insert into "c:\work\' + machine + '\spprod.dbf" '
                                    + '(SPROD, SPPOL, SPPRN, SPVIS, SPSTAD, SPNAME, SPSNAM, '
                                    + 'SPKEI, SPCENA, SPCENAB, SPCENAR, SPCEH, SPXRKT, '
                                    + 'SPRODS, CODE, SPKEIS, INPUT1, INPUT2, UMN, SPRIZ, '
@@ -531,7 +1022,7 @@ begin
                                    + ':INPUT1, :INPUT2, :UMN, :SPRIZ, :SPKEY, :SPNAMES, '
                                    + ':EAN13, :KORG, :STRUK_ID, :GOST, :NEW_KOD, :KSM_ID, '
                                    + ':ACTIVP, :NAM) ';
-  up_q_spprodDbf.ModifySQL.Text := 'update "f:\' + machine + '\otchbas\spprod.dbf" '
+  up_q_spprodDbf.ModifySQL.Text := 'update "c:\work\' + machine + '\spprod.dbf" '
                                    + 'set SPROD = :SPROD, SPPOL = :SPPOL, SPPRN = :SPPRN, '
                                    + 'SPVIS = :SPVIS, SPSTAD = :SPSTAD, SPNAME = :SPNAME, '
                                    + 'SPSNAM = :SPSNAM, SPKEI = :SPKEI, SPCENA = :SPCENA, '
@@ -543,9 +1034,8 @@ begin
                                    + 'STRUK_ID = :STRUK_ID, GOST = :GOST, NEW_KOD = :NEW_KOD, '
                                    + 'KSM_ID = :KSM_ID, ACTIVP = :ACTIVP, NAM = :NAM '
                                    + 'where KSM_ID = :OLD_KSM_ID ';
-  if (t_spprodDbf.Active) then
-    t_spprodDbf.Close;
-  t_spprodDbf.TableName := 'f:\' + machine + '\otchbas\spprod.dbf';
+  t_spprodDbf.Close;
+  t_spprodDbf.TableName := 'c:\work\' + machine + '\spprod.dbf';
 end;
 
 procedure TFPerOtchet.saveSpprodDbfFile;
@@ -597,27 +1087,31 @@ begin
 // + ' AND NORM.mes='+INTTOSTR(mes)
 // + ' AND NORM.god='+INTTOSTR(god));
 { DM1.IBQuery1.Active := True;}
-  if not otchet.Active then
-    otchet.Active := true;
-  Query_Otchet.Active := False;
+  if (not otchet.Active) then
+  begin
+    otchet.ParamByName('struk_id').AsString := s_stkod;
+    otchet.ParamByName('ksm_idpr').AsString := st_kodp;
+    otchet.Open;
+  end;
+  Query_Otchet.Close;
 // Query_otchet.ParamByName('struk').AsInteger:=vStruk_id;
   Query_otchet.ParamByName('KODP').AsInteger := s_kodp;
   Query_otchet.MacroByName('DAT1').AsSTRING := '''' + s_DAT1 + '''';
   Query_otchet.MacroByName('DAT2').AsSTRING := '''' + s_DAT2 + '''';
   Query_otchet.MacroByName('Mes').AsSTRING := inttostr(mes);
   Query_otchet.MacroByName('God').AsSTRING := inttostr(god);
-  Query_Otchet.Active := True;
-  While not Query_Otchet.Eof do
+  Query_Otchet.Open;
+  While (not Query_Otchet.Eof) do
   begin
-    if Length(trim(inttostr(Query_OtchetKSM_ID.AsInteger))) = 1 then
+    if (Length(trim(inttostr(Query_OtchetKSM_ID.AsInteger))) = 1) then
       sT_ksm := '0000' + trim(inttostr(Query_OtchetKSM_ID.AsInteger));
-    if length(trim(inttostr(Query_OtchetKSM_ID.AsInteger))) = 2 then
+    if (length(trim(inttostr(Query_OtchetKSM_ID.AsInteger))) = 2) then
       sT_ksm := '000' + trim(inttostr(Query_OtchetKSM_ID.AsInteger));
-    if length(trim(inttostr(Query_OtchetKSM_ID.AsInteger))) = 3 then
+    if (length(trim(inttostr(Query_OtchetKSM_ID.AsInteger))) = 3) then
       sT_ksm := '00' + trim(inttostr(Query_OtchetKSM_ID.AsInteger));
-    if length(trim(inttostr(Query_OtchetKSM_ID.AsInteger))) = 4 then
+    if (length(trim(inttostr(Query_OtchetKSM_ID.AsInteger))) = 4) then
       sT_ksm := '0' + trim(inttostr(Query_OtchetKSM_ID.AsInteger));
-    if length(trim(inttostr(Query_OtchetKSM_ID.AsInteger))) = 5 then
+    if (length(trim(inttostr(Query_OtchetKSM_ID.AsInteger))) = 5) then
       sT_ksm := trim(inttostr(Query_OtchetKSM_ID.AsInteger));
     s_kei := Query_OtchetKEI_ID.AsInteger;
     s_ksm := Query_OtchetKsm_ID.AsInteger;
@@ -625,9 +1119,9 @@ begin
 //  DM1.IBQuery1.First;
 //  IF DM1.IBQuery1.Locate('ksm_id;Kraz',VarArrayOf([Query_OtchetKsm_id.AsInteger,Query_OtchetKRaz.AsInteger]),[]) THEN
     Normt.first;
-    if Normt.Locate('razdel_id;ksm_id',
-                    VarArrayOf([Query_Otchetrazdel_id.AsInteger,
-                                Query_OtchetKsm_id.AsInteger]), []) then
+    if (Normt.Locate('razdel_id;ksm_id',
+                     VarArrayOf([Query_Otchetrazdel_id.AsInteger,
+                                 Query_OtchetKsm_id.AsInteger]), [])) then
     begin
       v_norm := Normt.FieldByName('plnorm').asfloat;
       s_pereras := v_rasm - Normt.FieldByName('PLNORM').AsFloat * v_vipusk;
@@ -650,7 +1144,7 @@ begin
    v_keiN:=s_kei;
   end;}
     v_rasm := Query_OtchetRash_virab_period.AsFloat * dm1.Koef_per(v_kein, s_kei, s_ksm);
-    if mes < 10 then
+    if (mes < 10) then
       mmes := ' ' + inttostr(mes)
     else
       mmes := inttostr(mes);
@@ -681,7 +1175,7 @@ begin
     Otchet.FieldByName('Ostzk').AsVariant := Query_Otchet.FieldByName('Ostatok_end_NZ').AsFloat
                                              * dm1.Koef_per(v_kein, s_kei, s_ksm);
     Otchet.FieldByName('perem').AsVariant := s_pereras;
-    if Query_OtchetPers.AsFloat <> 0 then
+    if (Query_OtchetPers.AsFloat <> 0) then           // передача на другой препарат из сырья
     begin
       V_PERE := SelectToVarIB('SELECT DOCUMENT.TIP_OP_ID '
                               + ' FROM document'
@@ -692,7 +1186,7 @@ begin
                               + '''' + ' and ' + '''' + s_dat2 + ''''
                               + ' AND KART.KART_ID=' + INTTOSTR(S_KART),
                               dm1.belmed, dm1.ibt_read);
-      if v_PERE <> NULL then
+      if (v_PERE <> NULL) then
         OtchetPrs.AsVariant := 1
       else
         OtchetPrs.AsInteger := 0;
@@ -700,7 +1194,7 @@ begin
     else
       OtchetPrs.AsInteger := 0;
 
-    if Query_OtchetPerNZ.AsFloat <> 0 then
+    if (Query_OtchetPerNZ.AsFloat <> 0) then          // передача из незавершенки
     begin
       V_PERE := SelectToVarIB('SELECT DOCUMENT.TIP_OP_ID '
                               + ' FROM document'
@@ -711,21 +1205,21 @@ begin
                               + '''' + ' and ' + '''' + s_dat2 + ''''
                               + ' AND KART.KART_ID=' + INTTOSTR(S_KART),
                               dm1.belmed, dm1.ibt_read);
-      if v_PERE <> NULL then
+      if (v_PERE <> NULL) then
         OtchetPr.AsVariant := 1
       else
         OtchetPr.AsInteger := 0;
     end
     else
       OtchetPr.AsInteger := 0;
-    if v_vipusk <> 0 then
+    if (v_vipusk <> 0) then
       Otchet.FieldByName('factm').AsVariant := v_rasm / v_vipusk
     else
       Otchet.FieldByName('factm').AsVariant := 0;
     dm1.CEH_OTCHET.First;
-    if dm1.CEH_OTCHET.Locate('kart_id',
-                             VarArrayOf([Query_Otchet.FieldByName('KART_ID').AsInteger]),
-                             []) then
+    if (dm1.CEH_OTCHET.Locate('kart_id',
+                              VarArrayOf([Query_Otchet.FieldByName('KART_ID').AsInteger]),
+                              [])) then
     begin
       Otchet.FieldByName('rasg').AsVariant := dm1.CEH_OtchetKol_Rasx.AsVariant;
       Otchet.FieldByName('pereg').AsVariant := dm1.CEH_OtchetKol.AsVariant;
@@ -737,17 +1231,17 @@ begin
     END;
 // расход с на выпуск начала квартала
     Ras_Vir.First;
-    if Ras_Vir.Locate('kart_id',
-                      VarArrayOf([Query_Otchet.FieldByName('KART_ID').AsInteger]),
-                      []) then
+    if (Ras_Vir.Locate('kart_id',
+                       VarArrayOf([Query_Otchet.FieldByName('KART_ID').AsInteger]),
+                       [])) then
       Otchet.FieldByName('rask').AsVariant := Ras_Vir.FieldByName('Rash_virab_period').AsVariant
     else
       Otchet.FieldByName('rask').AsVariant := v_rasm;
 // ввод цены прихода из старого отчета
-    if Otchets.Active = false then
-      Otchets.Active := true;
+    if (not Otchets.Active) then
+      Otchets.Open;
     otchets.First;
-    if otchets.Locate('otstrk;otmatr', VarArrayOf([s_stkod, sT_ksm]), []) then
+    if (otchets.Locate('otstrk;otmatr', VarArrayOf([s_stkod, sT_ksm]), [])) then
       Otchet.FieldByName('otcena').AsVariant := Otchets.FieldByName('otcena').AsVariant
     else
       Otchet.FieldByName('otcena').AsVariant := 0;
@@ -757,33 +1251,36 @@ begin
     rasxod.Open;
     RASXOD.First;
     Otchet.edit;
-    if RASXOD.Locate('cex;numkcu', VarArrayOf([s_stkod, sT_ksm1]), []) then
+    if (RASXOD.Locate('cex;numkcu', VarArrayOf([s_stkod, sT_ksm1]), [])) then
       Otchet.FieldByName('otcena').AsVariant := RASXOD.FieldByName('money').AsVariant;
     Otchet.post;
 // добавление в NCMATRD
-    if Length(trim(inttostr(v_kein))) = 1 then
+    if (Length(trim(inttostr(v_kein))) = 1) then
       sv_kein := '00' + trim(inttostr(v_kein)) + ' ';
-    if Length(trim(inttostr(v_kein))) = 2 then
+    if (Length(trim(inttostr(v_kein))) = 2) then
       sv_kein := '0' + trim(inttostr(v_kein)) + ' ';
-    if Length(trim(inttostr(v_kein))) = 3 then
+    if (Length(trim(inttostr(v_kein))) = 3) then
       sv_kein := trim(inttostr(v_kein)) + ' ';
-    if Length(trim(inttostr(S_keiP))) = 1 then
+    if (Length(trim(inttostr(S_keiP))) = 1) then
       sv_keiP := '00' + trim(inttostr(S_keiP)) + ' ';
-    if Length(trim(inttostr(S_keiP))) = 2 then
+    if (Length(trim(inttostr(S_keiP))) = 2) then
       sv_keiP := '0' + trim(inttostr(S_keiP)) + ' ';
-    if Length(trim(inttostr(S_keiP))) = 3 then
+    if (Length(trim(inttostr(S_keiP))) = 3) then
       sv_keiP := trim(inttostr(S_keiP)) + ' ';
-    if Ncmatrd.Active = false then
-      Ncmatrd.Active := true;
+    if (not Ncmatrd.Active) then
+    begin
+      ncmatrd.ParamByName('struk_id').AsString := s_stkod;
+      Ncmatrd.Open;
+    end;
 {  Normt.first;
   if Normt.Locate('razdel_id;ksm_id',VarArrayOf([Query_Otchetrazdel_id.AsInteger,Query_OtchetKsm_id.AsInteger]),[]) then
     v_norm:=Normt.FieldByName('plnorm').asfloat
   else
     v_norm:=0;}
     Ncmatrd.First;
-    if not Ncmatrd.Locate('ncstrk;ncprod;ncraz;ncmatr',
-                          VarArrayOf([s_stkod, sT_kodp, inttostr(Query_OtchetKraz.AsInteger), sT_ksm]),
-                          []) then
+    if (not Ncmatrd.Locate('ncstrk;ncprod;ncraz;ncmatr',
+                           VarArrayOf([s_stkod, sT_kodp, inttostr(Query_OtchetKraz.AsInteger), sT_ksm]),
+                           [])) then
     begin
       Ncmatrd.Append;
       Ncmatrd.FieldByName('ncstrk').AsVariant := s_stkod;
@@ -809,22 +1306,26 @@ begin
       Ncmatrd.Post;
     end;
   // добавление в PRIZM
-    if Prizm.Active = false then
-      Prizm.Active := true;
+    if (not Prizm.Active) then
+    begin
+      prizm.ParamByName('struk_id').AsString := s_stkod;
+      prizm.ParamByName('ksm_idpr').AsString := sT_kodp;
+      Prizm.Open;
+    end;
     FSprFormul.Ceh_Normz.First;
-    if FSprFormul.Ceh_Normz.Locate('razdel_id;ksm_id_mat',
-                                   VarArrayOf([Query_Otchetrazdel_id.AsInteger, Query_OtchetKsm_id.AsInteger]),
-                                   []) then
-      IF FSprFormul.Ceh_Normz.FieldByName('decznak').AsVariant <> NULL THEN
+    if (FSprFormul.Ceh_Normz.Locate('razdel_id;ksm_id_mat',
+                                    VarArrayOf([Query_Otchetrazdel_id.AsInteger, Query_OtchetKsm_id.AsInteger]),
+                                    [])) then
+      IF (FSprFormul.Ceh_Normz.FieldByName('decznak').AsVariant <> NULL) THEN
         v_znak := FSprFormul.Ceh_Normz.FieldByName('decznak').AsInteger
       else
         v_znak := 3
     else
       v_znak := 3;
     Prizm.First;
-    if not Prizm.Locate('ncstrk;ncprod;ncraz;ncmatr',
-                        VarArrayOf([s_stkod, sT_kodp, inttostr(Query_OtchetKraz.AsInteger), sT_ksm]),
-                        []) then
+    if (not Prizm.Locate('ncstrk;ncprod;ncraz;ncmatr',
+                         VarArrayOf([s_stkod, sT_kodp, inttostr(Query_OtchetKraz.AsInteger), sT_ksm]),
+                         [])) then
     begin
       Prizm.Append;
       Prizm.FieldByName('ncstrk').AsVariant := s_stkod;
@@ -903,26 +1404,22 @@ begin
        or (s_stkod = '1200') or (s_stkod = '2100') or (s_stkod = '0800')
        or (s_stkod = '0100') or (s_stkod = '0400')then
     begin
-      spisok.DatabaseName := 'ot';
-      otchet.DatabaseName := 'ot';
-      otchets.DatabaseName := 'pc1';
-      prizpr.DatabaseName := 'ot';
-      prizm.DatabaseName := 'ot';
-      ncmatrd.DatabaseName := 'ot';
-      regot.DatabaseName := 'ot';
       machine := 'pc1';
     end
     else
     begin
-      spisok.DatabaseName := 'ot_pc2';
-      otchet.DatabaseName := 'ot_pc2';
-      otchets.DatabaseName := 'pc2';
-      prizpr.DatabaseName := 'ot_pc2';
-      prizm.DatabaseName := 'ot_pc2';
-      ncmatrd.DatabaseName := 'ot_pc2';
-      regot.DatabaseName := 'ot_pc2';
       machine := 'pc2';
     end;
+    spisok.TableName := 'F:\' + machine + '\ot\otchbas\spisok.dbf';
+    otchetOld.TableName := 'f:\' + machine + '\ot\otchbas\otchet.dbf';
+    otchets.TableName := 'c:\work\' + machine + '\otchets.dbf';
+    prizpr.TableName := 'F:\' + machine + '\ot\otchbas\prizpr.dbf';
+    regot.TableName := 'F:\' + machine + '\ot\otchbas\regot.dbf';
+    rasxod.TableName := 'c:\work\' + machine + '\rasxod.dbf';
+    setPrizmText;
+    setOtchetText;
+    setNcmatrdText;
+
     ComboBox2.OnChange := nil;
     ComboBox1.OnChange := nil;
     ComboBox1.ItemIndex := mes - 1;
@@ -1084,22 +1581,15 @@ begin
   dm1.VoprosWriteDoc;
   mes := mes_vib;
   god := god_vib;
-  if (Otchet.Active = true) then
-    Otchet.Close;
-  if (Otchets.Active = true) then
-    Otchets.Close;
-  if (Prizpr.active = true) then
-    Prizpr.Close;
-  if (Prizm.active = true) then
-    Prizm.Close;
-  if (regot.active = true) then
-    regot.Close;
-  if (Spisok.Active = true) then
-    Spisok.close;
-  if (ncmatrd.Active = true) then
-    ncmatrd.Close;
-  if (rasxod.Active = true) then
-    rasxod.Close;
+  Otchet.Close;
+  Otchets.Close;
+  Prizpr.Close;
+  Prizm.Close;
+  regot.Close;
+  Spisok.close;
+  ncmatrd.Close;
+  rasxod.Close;
+  First_vxod := true;
 end;
 
 
@@ -1109,230 +1599,8 @@ begin
 end;
 
 procedure TFPerOtchet.ToolButton4Click(Sender: TObject);
-var
-  S_DATk : string;
-  v_vipuskk : double;
 begin
-  IF (VDOCUMENT_ID = 0) OR (DM1.KARTV.Eof) THEN
-  begin
-    DM1.DOCUMENT.Close;
-    DM1.DOcUMENT.MacroByName('USL').AsString := 'WHERE DOcUMENT.STRUK_ID = '
-                                                + INTTOSTR(VsTRUK_ID)
-                                                + ' AND DOCUMENT.TIP_OP_ID = 36 and document.tip_dok_id=74'
-                                                + ' AND Document.Date_op between '
-                                                + '''' + s_dat1 + '''' + ' and '
-                                                + '''' + s_dat2 + '''';
-    DM1.DOCUMENT.OPEN;
-    IF NOT DM1.Document.Eof THEN
-      VDOCUMENT_ID := DM1.DocumentDOc_ID.ASINTEGER
-    else
-      VDOCUMENT_ID := 0;
-    DM1.KARTV.Close;
-    DM1.KartV.MacroByName('USL').AsString := 'WHERE KARTv.DOC_ID = ' + INTTOSTR(VDOCUMENT_id);
-    DM1.KartV.MacroByName('SORT').AsString := 'ORDER BY SPPROD.Kod_prod';
-    DM1.KARTV.OPEN;
-  end;
-  IF (VDOCUMENT_ID <> 0) and (not DM1.KARTV.Eof) THEN
-  begin
-    Splash := ShowSplashWindow(AniBmp1,
-                               'Передача данных из цеха в АСУ. Подождите, пожалуйста...',
-                               True,
-                               nil);
-    regot.Filter := 'CEX=' + '''' + S_STKOD + '''' + ' AND MES=' + INTTOSTR(MES);
-    regot.Filtered := TRUE;
-    regot.Open;
-    IF REGOT.Eof THEN
-    BEGIN
-      regot.Insert;
-      regotdatcex.AsString := datetostr(date);
-      regotCex.AsString := s_stkod;
-      regotMes.AsInteger := mes;
-      regot.Post;
-    END
-    ELSE
-    BEGIN
-      regot.Last;
-      IF regotDATACY.AsString = '' THEN
-      BEGIN
-        regot.Edit;
-        regotdatcex.AsString := datetostr(date);
-        regotMes.AsInteger := mes;
-        regot.Post;
-      END
-      ELSE
-      BEGIN
-        Splash.Free;
-        MessageDlg(' Данные НЕ переданы, т.к. они были уже переданы и использованы!',
-                   mtWarning, [mbOK], 0);
-        SysUtils.Abort;
-      END;
-    END;
-    if Otchets.Active = false then
-      Otchets.Active := true;
-    if Otchet.Active = true then
-      Otchet.Close;
-    otchet.Filter := 'otstrk=' + '''' + s_stkod + '''';
-    Otchet.Open;
-    otchet.Filtered := true;
-    otchet.First;
-    while (not otchet.Eof) do
-      otchet.Delete;
-    if Spisok.Active = true then
-      Spisok.Close;
-    Spisok.Filter := 'otstrk=' + '''' + s_stkod + '''';
-    Spisok.Open;
-    Spisok.Filtered := true;
-    Spisok.First;
-    while (not Spisok.Eof) do
-      Spisok.Delete;
-    DM1.KARTV.First;
-    while not DM1.KARTV.Eof do
-    begin
-      S_KODP := DM1.KARTVKSM_ID.ASINTEGER;
-      v_vipusk := dm1.KartVKOL_PRIH.AsFloat;
-      s_spprn := INTTOSTR(DM1.KARTVSpprn.AsInteger);
-      s_spvis := inttostr(DM1.KARTVSpvis.AsInteger);
-      s_keip := DM1.KARTVKei_id.AsInteger;
-      S_DATN := '01.01.' + INTTOSTR(GOD);
-      if (mes < 4) and (mes >= 1) then
-        S_DATk := '01.01.' + INTTOSTR(GOD);
-      if (mes < 7) and (mes > 3) then
-        S_DATk := '01.04.' + INTTOSTR(GOD);
-      if (mes < 10) and (mes > 6) then
-        S_DATk := '01.07.' + INTTOSTR(GOD);
-      if (mes <= 12) and (mes > 9) then
-        S_DATk := '01.10.' + INTTOSTR(GOD);
-// расход с начала года
-      dm1.CEH_OTCHET.Active := FALSE;
-      dm1.CEH_OTCHET.ParamByName('MES').AsInteger := mes;
-      dm1.CEH_OTCHET.ParamByName('GOD').AsInteger := GOD;
-      dm1.CEH_OTCHET.Active := TRUE;
-// нормы
-      Normt.Active := False;
-      Normt.SQL.Clear;
-      Normt.SQL.Add('SELECT norm.ksm_id, norm.Kraz, norm.razdel_id, norm.plnorm, '
-                    + 'norm.kei_id kein');
-      Normt.SQL.Add(' FROM norm_view' + '(' + '119,' + inttostr(god) + ','
-                    + inttostr(mes) + ',' + inttostr(s_kodp) + ',0,0)' + ' NORM ');
-      Normt.Active := true;
-// значность
-      if FSprFormul.CEH_NormZ.Active then
-        FSprFormul.CEH_NormZ.Close;
-      FSprFormul.CEH_NormZ.MacroByName('USL').AsString := ' Where CEH_NORMZ.KSM_ID_PR='
-                                                          + INTTOSTR(S_KODP);
-      FSprFormul.CEH_NormZ.Open;
-      FSprFormul.CEH_NORMZ.First;
-// расход на выработку с начала квартала
-      Ras_Vir.Active := False;
-      Ras_Vir.SQL.Clear;
-      Ras_Vir.SQL.Add('SELECT DISTINCT ost.ksm_id, ost.razdel_id, ost.KART_ID,');
-      Ras_Vir.SQL.Add('ost.rash_virab_period');
-      Ras_Vir.SQL.Add(' FROM  SELECT_OB_VED (' + '''' + s_datk + '''' + ',' + ''''
-                      + s_dat2 + '''' + ',' + inttostr(s_kodp) + ') ost');
-      Ras_Vir.Active := true;
-//выпуск с начала года
-      DM1.IBQuery1.Active := False;
-      DM1.IBQuery1.SQL.Clear;
-      DM1.IBQuery1.SQL.Add('SELECT  sum(KARTv.KOL_PRIH) vipusk_ng');
-      DM1.IBQuery1.SQL.Add(' FROM KARTv');
-      DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
-      DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID=' + INTTOSTR(VsTRUK_ID)
-                           + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
-                           + ' AND KARTv.KSM_ID=' + INTTOSTR(s_KODP)
-                           + ' AND Document.Date_op between ' + '''' + s_datn
-                           + '''' + ' and ' + '''' + s_dat2 + '''');
-      DM1.IBQuery1.Active := True;
-      if not dm1.IBQuery1.Eof then
-        V_VIPUSKG := DM1.IBQuery1.FieldByName('VIPUSK_NG').AsFloat
-      ELSE
-        V_VIPUSKG := 0;
-//выпуск с начала квартала
-      DM1.IBQuery1.Active := False;
-      DM1.IBQuery1.SQL.Clear;
-      DM1.IBQuery1.SQL.Add('SELECT  sum(KARTv.KOL_PRIH) vipusk_k');
-      DM1.IBQuery1.SQL.Add(' FROM KARTv');
-      DM1.IBQuery1.SQL.Add(' INNER JOIN DOCUMENT ON (KARTv.DOC_ID = DOCUMENT.DOC_ID)');
-      DM1.IBQuery1.SQL.Add(' WHERE DOCUMENT.STRUK_ID=' + INTTOSTR(VsTRUK_ID)
-                           + ' AND DOCUMENT.TIP_OP_ID=36 and document.tip_dok_id=74'
-                           + ' AND KARTv.KSM_ID=' + INTTOSTR(s_KODP)
-                           + ' AND Document.Date_op between ' + '''' + s_datk
-                           + '''' + ' and ' + '''' + s_dat2 + '''');
-      DM1.IBQuery1.Active := True;
-      if not dm1.IBQuery1.Eof then
-        V_VIPUSKk := DM1.IBQuery1.FieldByName('VIPUSK_k').AsFloat
-      ELSE
-        V_VIPUSKk := 0;
-      if lenGTH(trim(inttostr(dm1.KartvKSM_ID.AsInteger))) = 1 then
-        sT_kodp := '00000' + trim(inttostr(dm1.KartvKSM_ID.AsInteger));
-      if lenGTH(trim(inttostr(dm1.KartvKSM_ID.AsInteger))) = 2 then
-        sT_kodp := '0000' + trim(inttostr(dm1.KartvKSM_ID.AsInteger));
-      if lenGTH(trim(inttostr(dm1.KartvKSM_ID.AsInteger))) = 3 then
-        sT_kodp := '000' + trim(inttostr(dm1.KartvKSM_ID.AsInteger));
-      if lenGTH(trim(inttostr(dm1.KartvKSM_ID.AsInteger))) = 4 then
-        sT_kodp := '00' + trim(inttostr(dm1.KartvKSM_ID.AsInteger));
-      if lenGTH(trim(inttostr(dm1.KartvKSM_ID.AsInteger))) = 5 then
-        sT_kodp := '0' + trim(inttostr(dm1.KartvKSM_ID.AsInteger));
-      if lenGTH(trim(inttostr(dm1.KartvKSM_ID.AsInteger))) = 6 then
-        sT_kodp := trim(inttostr(dm1.KartvKSM_ID.AsInteger));
-      if prizpr.Active then
-        prizpr.Close;
-      prizpr.Open;
-      if prizpr.Locate('sprod', st_kodp, []) then
-        prizpr.Edit
-      else
-      begin
-        prizpr.Insert;
-        prizprSprod.AsString := sT_kodp;
-        prizprSpceh.AsString := s_stkod;
-        prizprSpprn.AsString := s_spprn;
-        prizprSpvis.AsString := s_spvis;
-      end;
-      prizprPrgod.AsString := inttostr(god);
-      if mes < 10 then
-        prizprPrmes.AsString := ' ' + inttostr(mes)
-      else
-        prizprPrmes.AsString := inttostr(mes);
-      prizprPrg1.AsVariant := dm1.KartVKOL_PRIH.AsFloat;
-      prizprKolg1.AsVariant := v_vipuskg;
-      prizprKolgs1.AsVariant := v_vipuskg - dm1.KartVKOL_PRIH.AsFloat;
-      prizprKolk1.AsVariant := v_vipuskk;
-      prizprKolks1.AsVariant := v_vipuskk - dm1.KartVKOL_PRIH.AsFloat;
-      prizpr.Post;
-// формирование списка препаратов для передачи
-      Spisok.Append;
-      spisokOtprod.AsString := sT_kodp;
-      spisokOtstrk.AsString := s_stkod;
-      spisokNmat.AsString := DM1.KARTVNmat.AsString;
-      spisokMes.AsInteger := mes;
-      spisokGod.AsInteger := god;
-      spisok.Post;
-      OTCHET_ST;
-      DM1.KARTV.Next;
-    end;
-    updatePCSppod;
-    Splash.Free;
-    if spisok.Active then
-      spisok.Close;
-    if otchet.Active then
-      otchet.Close;
-    if otchets.Active then
-      otchet.Close;
-    if prizpr.Active then
-      prizpr.Close;
-    if prizm.Active then
-      prizpr.Close;
-    if ncmatrd.Active then
-      ncmatrd.Close;
-    if regot.Active then
-      regot.Close;
-    if rasxod.Active then
-      rasxod.Close;
-  end
-  else
-  begin
-    MessageDlg('Нет отчетов за заданный месяц !', mtWarning, [mbOK], 0);
-    SysUtils.Abort;
-  end;
+  perOtchet;
 end;
 
 procedure TFPerOtchet.ToolButton5Click(Sender: TObject);
