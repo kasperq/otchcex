@@ -724,10 +724,11 @@ begin
   begin
     try
       copyDbfToLocalDir();
-  //    Splash := ShowSplashWindow(AniBmp1,
-  //                               'Передача данных из цеха в АСУ. Подождите, пожалуйста...',
-  //                               True,
-  //                               nil);
+      Splash := ShowSplashWindow(AniBmp1, FGlMenu.RxLabel1.Caption + '. Машина: '
+                                 + machine + #10#13
+                                 + 'Передача данных из цеха в АСУ. Подождите, пожалуйста...',
+                                 True,
+                                 nil);
       openWorkSes;
       copyRegot;
 
@@ -754,10 +755,17 @@ begin
         Spisok.Delete;
       spisok.ApplyUpdates;
       spisok.CommitUpdates;
-
+      splash.Free;
       DM1.KARTV.First;
       while (not DM1.KARTV.Eof) do
       begin
+        Splash := ShowSplashWindow(AniBmp1, FGlMenu.RxLabel1.Caption + '. Машина: '
+                                   + machine + #10#13
+                                   + IntToStr(dm1.KartV.RecNo) + ' / '
+                                   + IntToStr(dm1.KartV.RecordCount) + #10#13
+                                   + dm1.KartVKOD_PROD.AsString,
+                                   True,
+                                   nil);
         S_KODP := DM1.KARTVKSM_ID.ASINTEGER;
         v_vipusk := dm1.KartVKOL_PRIH.AsFloat;
         s_spprn := INTTOSTR(DM1.KARTVSpprn.AsInteger);
@@ -818,7 +826,13 @@ begin
 
         OTCHET_ST;
         DM1.KARTV.Next;
+        splash.Free;
       end;
+      Splash := ShowSplashWindow(AniBmp1, FGlMenu.RxLabel1.Caption + '. Машина: '
+                                 + machine + #10#13
+                                 + 'Формирование SPPROD.dbf. Подождите, пожалуйста...',
+                                 True,
+                                 nil);
       prizpr.ApplyUpdates;
       prizpr.CommitUpdates;
       prizpr.Close;
@@ -839,7 +853,7 @@ begin
       updatePCSppod;
       workSes.Active := false;
       copyDbfToNetDir();
-  //    Splash.Free;
+      Splash.Free;
     except
       on e : exception do
       begin
@@ -855,6 +869,7 @@ begin
         OtchetOld.Close;
         workSes.Active := false;
         fSes.Active := false;
+        Splash.Free;
       end;  
     end;
   end
@@ -878,16 +893,16 @@ end;
 procedure TFPerOtchet.openWorkSes;
 var
   StrLangDriver : TStringList;
-begin
-  StrLangDriver := TStringList.Create;
-  StrLangDriver.Add('LANGDRIVER=db866ru0');
-  StrLangDriver.Add('LEVEL=4');
-  workSes.ModifyDriver('DBASE', StrLangDriver);
-  StrLangDriver.Free;
+begin  
   if (not workSes.Active) then
   begin
     workSes.NetFileDir := 'c:\work\' + machine + '\';
     workSes.PrivateDir := 'c:\work\' + machine + '\';
+    StrLangDriver := TStringList.Create;
+    StrLangDriver.Add('LANGDRIVER=db866ru0');
+    StrLangDriver.Add('LEVEL=4');
+    workSes.ModifyDriver('DBASE', StrLangDriver);
+    StrLangDriver.Free;
     workSes.Active := true;
   end;
 end;
@@ -896,15 +911,15 @@ procedure TFPerOtchet.openFSes;
 var
   StrLangDriver : TStringList;
 begin
-  StrLangDriver := TStringList.Create;
-  StrLangDriver.Add('LANGDRIVER=db866ru0');
-  StrLangDriver.Add('LEVEL=4');
-  fSes.ModifyDriver('DBASE', StrLangDriver);
-  StrLangDriver.Free;
   if (not fSes.Active) then
   begin
-    fSes.NetFileDir := 'f:\' + machine + 'ot\otchbas\';
-    fSes.PrivateDir := 'f:\' + machine + 'ot\otchbas\';
+    fSes.NetFileDir := 'f:\' + machine + '\ot\otchbas\';
+    fSes.PrivateDir := 'f:\' + machine + '\ot\otchbas\';
+    StrLangDriver := TStringList.Create;
+    StrLangDriver.Add('LANGDRIVER=db866ru0');
+    StrLangDriver.Add('LEVEL=4');
+    fSes.ModifyDriver('DBASE', StrLangDriver);
+    StrLangDriver.Free;
     fSes.Active := true;
   end;
 end;
