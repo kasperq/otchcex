@@ -586,7 +586,7 @@ begin
     v_vipuskk := 0;
   DM1.IBQuery1.Close;
   
-  prizpr.Close;
+//  prizpr.Close;
   prizpr.Open;
   if (prizpr.Locate('sprod', st_kodp, [])) then
     prizpr.Edit
@@ -609,6 +609,8 @@ begin
   prizprKolk1.AsVariant := v_vipuskk;
   prizprKolks1.AsVariant := v_vipuskk - dm1.KartVKOL_PRIH.AsFloat;
   prizpr.Post;
+//  prizpr.ApplyUpdates;
+//  prizpr.CommitUpdates;
 end;
 
 procedure TFPerOtchet.copySpisok;
@@ -724,7 +726,7 @@ begin
   begin
     try
       copyDbfToLocalDir();
-      Splash := ShowSplashWindow(AniBmp1, FGlMenu.RxLabel1.Caption + '. Машина: '
+      Splash := ShowSplashWindow(AniBmp1, trim(FGlMenu.RxLabel1.Caption) + '. Машина: '
                                  + machine + #10#13
                                  + 'Передача данных из цеха в АСУ. Подождите, пожалуйста...',
                                  True,
@@ -756,10 +758,11 @@ begin
       spisok.ApplyUpdates;
       spisok.CommitUpdates;
       splash.Free;
+      dm1.KartV.FetchAll;
       DM1.KARTV.First;
       while (not DM1.KARTV.Eof) do
       begin
-        Splash := ShowSplashWindow(AniBmp1, FGlMenu.RxLabel1.Caption + '. Машина: '
+        Splash := ShowSplashWindow(AniBmp1, trim(FGlMenu.RxLabel1.Caption) + '. Машина: '
                                    + machine + #10#13
                                    + IntToStr(dm1.KartV.RecNo) + ' / '
                                    + IntToStr(dm1.KartV.RecordCount) + #10#13
@@ -828,7 +831,7 @@ begin
         DM1.KARTV.Next;
         splash.Free;
       end;
-      Splash := ShowSplashWindow(AniBmp1, FGlMenu.RxLabel1.Caption + '. Машина: '
+      Splash := ShowSplashWindow(AniBmp1, trim(FGlMenu.RxLabel1.Caption) + '. Машина: '
                                  + machine + #10#13
                                  + 'Формирование SPPROD.dbf. Подождите, пожалуйста...',
                                  True,
