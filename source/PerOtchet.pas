@@ -1613,7 +1613,17 @@ end;
 
 procedure TFPerOtchet.ToolButton1Click(Sender: TObject);
 begin
+  if (DirectoryExists('c:\work\')) then
+  begin
+    localDirPath := 'c:\work\' + machine + '\';
+    oldFilePath := 'f:\' + machine + '\';
+    if (ForceDirectories(localDirPath)) then
+    begin
+      fileCopy(oldFilePath + 'otchbas\spprod.dbf', localDirPath + 'spprod.dbf');
+    end;
+  end;
   updatePCSppod;
+  fileCopy(localDirPath + 'spprod.dbf', oldFilePath + 'otchbas\spprod.dbf');
 end;
 
 procedure TFPerOtchet.ToolButton4Click(Sender: TObject);
