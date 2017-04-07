@@ -302,7 +302,6 @@ object Fact_spirt: TFact_spirt
         EditButtons = <>
         FieldName = 'ZNAK'
         Footers = <>
-        Visible = False
       end>
   end
   object DBGridEh3: TDBGridEh
@@ -442,7 +441,7 @@ object Fact_spirt: TFact_spirt
     Left = 520
     Top = 4
     Bitmap = {
-      494C01010A000C003C0018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010A000C00400018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1746,7 +1745,7 @@ object Fact_spirt: TFact_spirt
     PrintOptions.Printer = #1055#1086' '#1091#1084#1086#1083#1095#1072#1085#1080#1102
     PrintOptions.PrintOnSheet = 0
     ReportOptions.CreateDate = 40528.524028067100000000
-    ReportOptions.LastChange = 42229.579367870400000000
+    ReportOptions.LastChange = 42800.680910682900000000
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
       ''
@@ -1755,7 +1754,8 @@ object Fact_spirt: TFact_spirt
       '  if (<frxDBDataset1."struk_id"> = 551)'
       '  or (<frxDBDataset1."struk_id"> = 540)'
       '  or (<frxDBDataset1."struk_id"> = 541)'
-      '  or (<frxDBDataset1."struk_id"> = -540) then'
+      '  or (<frxDBDataset1."struk_id"> = -540)'
+      '  or (<frxDBDataset1."struk_id"> = 760) then'
       '  begin'
       '      Memo104.Text := '#39#1053#1072#1095'. '#1087#1088#1086#1080#1079#1074#1086#1076#1089#1090#1074#1072#39';'
       '      Memo105.Text := '#39#1053#1072#1095#1072#1083#1100#1085#1080#1082' '#1094#1077#1093#1072#39';'
@@ -1844,7 +1844,7 @@ object Fact_spirt: TFact_spirt
         Font.Style = []
         Height = 222.992270000000000000
         ParentFont = False
-        Top = 18.897650000000000000
+        Top = 16.000000000000000000
         Width = 1084.725110000000000000
         object Memo2: TfrxMemoView
           Left = 869.291900000000000000
@@ -2472,7 +2472,7 @@ object Fact_spirt: TFact_spirt
         Font.Style = []
         Height = 39.795300000000000000
         ParentFont = False
-        Top = 385.512060000000000000
+        Top = 380.000000000000000000
         Width = 1084.725110000000000000
         DataSet = frxDBDataset1
         DataSetName = 'frxDBDataset1'
@@ -2493,14 +2493,14 @@ object Fact_spirt: TFact_spirt
           Font.Name = 'Arial'
           Font.Style = []
           Memo.UTF8 = (
-            '[frxDBDataset1."NMAT_PROD"]')
+            '[copy(<frxDBDataset1."NMAT_PROD">,1,37)]')
           ParentFont = False
           WordWrap = False
         end
         object Memo35: TfrxMemoView
           Top = 19.897650000000000000
           Width = 120.724490000000000000
-          Height = 14.897650000000000000
+          Height = 15.611935710000000000
           ShowHint = False
           DataField = 'KOD_PROD'
           DataSet = frxDBDataset1
@@ -2527,10 +2527,9 @@ object Fact_spirt: TFact_spirt
           DataSetName = 'frxDBDataset1'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -11
+          Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = []
-          HAlign = haCenter
           Memo.UTF8 = (
             '[frxDBDataset1."NEIS_PROD"]')
           ParentFont = False
@@ -2828,10 +2827,10 @@ object Fact_spirt: TFact_spirt
           ParentFont = False
         end
         object Memo50: TfrxMemoView
-          Left = 165.637910000000000000
+          Left = 177.637795280000000000
           Top = 19.897650000000000000
-          Width = 45.795300000000000000
-          Height = 14.897650000000000000
+          Width = 37.795300000000000000
+          Height = 15.611935710000000000
           ShowHint = False
           DataSet = frxDBDataset1
           DataSetName = 'frxDBDataset1'
@@ -2851,8 +2850,8 @@ object Fact_spirt: TFact_spirt
         object Memo51: TfrxMemoView
           Left = 120.724490000000000000
           Top = 19.897650000000000000
-          Width = 44.913420000000000000
-          Height = 14.897650000000000000
+          Width = 57.484848570000000000
+          Height = 15.611935710000000000
           ShowHint = False
           DataSet = frxDBDataset1
           DataSetName = 'frxDBDataset1'
@@ -2910,7 +2909,7 @@ object Fact_spirt: TFact_spirt
         Font.Style = []
         Height = 20.779530000000000000
         ParentFont = False
-        Top = 737.008350000000000000
+        Top = 724.000000000000000000
         Width = 1084.725110000000000000
         object Memo74: TfrxMemoView
           Left = -26.456710000000000000
@@ -2938,7 +2937,7 @@ object Fact_spirt: TFact_spirt
         Font.Style = []
         Height = 18.897650000000000000
         ParentFont = False
-        Top = 264.567100000000000000
+        Top = 260.000000000000000000
         Width = 1084.725110000000000000
         PrintOnFirstPage = False
         object Memo54: TfrxMemoView
@@ -2965,7 +2964,7 @@ object Fact_spirt: TFact_spirt
         Font.Style = []
         Height = 18.897650000000000000
         ParentFont = False
-        Top = 343.937230000000000000
+        Top = 340.000000000000000000
         Width = 1084.725110000000000000
         ReprintOnNewPage = True
         object Memo55: TfrxMemoView
@@ -3299,7 +3298,7 @@ object Fact_spirt: TFact_spirt
         Font.Style = []
         Height = 224.874150000000000000
         ParentFont = False
-        Top = 449.764070000000000000
+        Top = 440.000000000000000000
         Width = 1084.725110000000000000
         object Shape2: TfrxShapeView
           Left = 1.000000000000000000
@@ -3312,7 +3311,7 @@ object Fact_spirt: TFact_spirt
           Left = 1.000000000000000000
           Top = 4.000000000000000000
           Width = 1084.000000000000000000
-          Height = 20.000000000000000000
+          Height = 21.921259842519700000
           ShowHint = False
           Color = 15790320
         end
@@ -3339,7 +3338,7 @@ object Fact_spirt: TFact_spirt
         end
         object Memo78: TfrxMemoView
           Left = 3.000000000000000000
-          Top = 3.779530000000020000
+          Top = 3.779530000000000000
           Width = 94.488250000000000000
           Height = 18.897650000000000000
           ShowHint = False
@@ -3435,7 +3434,7 @@ object Fact_spirt: TFact_spirt
         end
         object Memo83: TfrxMemoView
           Left = 532.913730000000000000
-          Top = 3.779530000000000000
+          Top = 3.779530000000020000
           Width = 68.252010000000000000
           Height = 18.897650000000000000
           ShowHint = False
@@ -3455,9 +3454,9 @@ object Fact_spirt: TFact_spirt
         end
         object Memo84: TfrxMemoView
           Left = 646.299630000000000000
-          Top = 3.779530000000020000
+          Top = 3.779530000000000000
           Width = 68.031540000000000000
-          Height = 18.897650000000000000
+          Height = 20.031496062992100000
           ShowHint = False
           DisplayFormat.DecimalSeparator = ','
           DisplayFormat.FormatStr = '%2.6f'
@@ -3474,10 +3473,10 @@ object Fact_spirt: TFact_spirt
           VAlign = vaCenter
         end
         object Memo85: TfrxMemoView
-          Left = 714.331170000000000000
-          Top = 3.779530000000020000
+          Left = 710.551181100000000000
+          Top = 3.779530000000000000
           Width = 68.031540000000000000
-          Height = 18.897650000000000000
+          Height = 20.031496062992100000
           ShowHint = False
           DisplayFormat.DecimalSeparator = ','
           DisplayFormat.FormatStr = '%2.6f'
@@ -3495,9 +3494,9 @@ object Fact_spirt: TFact_spirt
         end
         object Memo86: TfrxMemoView
           Left = 884.410020000000000000
-          Top = 3.779530000000020000
+          Top = 3.779530000000000000
           Width = 56.692950000000000000
-          Height = 18.897650000000000000
+          Height = 20.031496062992100000
           ShowHint = False
           DisplayFormat.DecimalSeparator = ','
           DisplayFormat.FormatStr = '%2.6f'
@@ -3515,9 +3514,9 @@ object Fact_spirt: TFact_spirt
         end
         object Memo87: TfrxMemoView
           Left = 835.276130000000000000
-          Top = 3.779530000000020000
-          Width = 52.913420000000000000
-          Height = 18.897650000000000000
+          Top = 3.779530000000000000
+          Width = 49.133858270000000000
+          Height = 20.031496062992100000
           ShowHint = False
           DisplayFormat.DecimalSeparator = ','
           DisplayFormat.FormatStr = '%2.6f'
@@ -3535,9 +3534,9 @@ object Fact_spirt: TFact_spirt
         end
         object Memo88: TfrxMemoView
           Left = 778.583180000000000000
-          Top = 3.779530000000020000
+          Top = 3.779530000000000000
           Width = 56.692950000000000000
-          Height = 18.897650000000000000
+          Height = 20.031496062992100000
           ShowHint = False
           DisplayFormat.DecimalSeparator = ','
           DisplayFormat.FormatStr = '%2.6f'
@@ -3555,9 +3554,9 @@ object Fact_spirt: TFact_spirt
         end
         object Memo89: TfrxMemoView
           Left = 941.102970000000000000
-          Top = 3.779530000000020000
+          Top = 3.779530000000000000
           Width = 65.133890000000000000
-          Height = 18.897650000000000000
+          Height = 20.031496062992100000
           ShowHint = False
           DisplayFormat.DecimalSeparator = ','
           DisplayFormat.FormatStr = '%2.6f'
