@@ -642,6 +642,7 @@ begin
     spirt.Post;
     spirt.Next;
   end;
+  spirt.EnableControls;
 end;
 
 procedure TFact_spirt.SpeedButton1Click(Sender: TObject);
