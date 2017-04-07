@@ -205,6 +205,7 @@ type
     procedure Spirt_OtchetCalcFields(DataSet: TDataSet);
   private
     procedure uniteDepartments;
+    procedure setZnak;
 
   public
     { Public declarations }
@@ -467,10 +468,16 @@ begin
       Dob_Prix.ParamByName('ksm').AsInteger := s_ksm;
       Dob_Prix.Open;
       if (not Dob_Prix.Eof) then
+      begin
         Spirt.LoadFromDataSet(Dob_Prix, 0, lmAppend);
+        setZnak;
+      end;
     end;
     if (not Spirt_Otchet.Eof) then
+    begin
       Spirt.LoadFromDataSet(Spirt_Otchet, 0, lmAppend);
+      setZnak;
+    end;
     if (vStruk_Id = 760) then
       uniteDepartments;
     Splash.Free;
@@ -603,6 +610,37 @@ begin
     prix_cex := prix_cex - SpirtPRIX_PERIOD.AsFloat;
     spisano := spisano - SpirtPEREDANO_RASH_S.AsFloat;
     spirt.Delete;
+  end;
+end;
+
+procedure TFact_spirt.setZnak;
+begin
+  spirt.DisableControls;
+  spirt.First;
+  while (not spirt.Eof) do
+  begin
+    if (dm1.stkod = '1800') or (dm1.stkod = '1600') then
+    begin
+      tochn := getCurZnak(SpirtOSTATOK_BEGIN_S.AsFloat, 3);
+      if (getCurZnak(SpirtPRIX_PERIOD.AsFloat, 3) > tochn) then
+        tochn := getCurZnak(SpirtPRIX_PERIOD.AsFloat, 3);
+      if (getCurZnak(SpirtZAG_PERIOD.AsFloat, 3) > tochn) then
+        tochn := getCurZnak(SpirtZAG_PERIOD.AsFloat, 3);
+      if (getCurZnak(SpirtRASH_VIRAB_PERIOD.AsFloat, 3) > tochn) then
+        tochn := getCurZnak(SpirtRASH_VIRAB_PERIOD.AsFloat, 3);
+      if (getCurZnak(SpirtPEREDANO_RASH_S.AsFloat, 3) > tochn) then
+        tochn := getCurZnak(SpirtPEREDANO_RASH_S.AsFloat, 3);
+      if (getCurZnak(SpirtPEREDANO_RASH_NZ.AsFloat, 3) > tochn) then
+        tochn := getCurZnak(SpirtPEREDANO_RASH_NZ.AsFloat, 3);
+      if (getCurZnak(SpirtOSTATOK_END_S.AsFloat, 3) > tochn) then
+        tochn := getCurZnak(SpirtOSTATOK_END_S.AsFloat, 3);
+    end
+    else
+      tochn := 3;
+    spirt.Edit;
+    spirtZNAK.AsInteger := tochn;
+    spirt.Post;
+    spirt.Next;
   end;
 end;
 
