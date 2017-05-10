@@ -2249,7 +2249,7 @@ begin
 //      RMUpak.FieldByName('kol_trans').AsFloat := vv - (MD_Nakl_s.FieldByName('KOL_trans').AsFloat * v_kol_upak);
 //      vv := Trunc(StrToFloat(FloatToStr(MD_Nakl_s.FieldByName('KOL_RASH').AsFloat * 1000)));
 
-      RMUpak.FieldByName('kol_trans').AsFloat := vv - StrToInt(FloatToStr((MD_Nakl_s.FieldByName('KOL_trans').AsFloat * v_kol_upak)));
+      RMUpak.FieldByName('kol_trans').AsFloat := vv - StrToFloat(FloatToStr((MD_Nakl_s.FieldByName('KOL_trans').AsFloat * v_kol_upak)));
 
       if (cbRF.Checked) then
       begin
