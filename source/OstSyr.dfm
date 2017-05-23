@@ -36,6 +36,7 @@ object FOstSyr: TFOstSyr
     FooterRowCount = 1
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
     OptionsEh = [dghFixed3D, dghHighlightFocus, dghClearSelection, dghEnterAsTab]
+    PopupMenu = popMenu_print
     RowLines = 1
     SumList.Active = True
     TabOrder = 0
@@ -468,7 +469,7 @@ object FOstSyr: TFOstSyr
     Left = 512
     Top = 188
     Bitmap = {
-      494C010108000A000C0018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010108000A00100018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1365,5 +1366,21 @@ object FOstSyr: TFOstSyr
       000003000003FFE000F0FFC1E00003E00003FFE001FFFFE3E00003E00003FFE0
       03FFFFF7E1FFFFFFFFFFFFE007FFFFFF00000000000000000000000000000000
       000000000000}
+  end
+  object popMenu_print: TPopupMenu
+    Left = 144
+    Top = 208
+    object menu_print: TMenuItem
+      Caption = #1055#1077#1095#1072#1090#1100
+      OnClick = menu_printClick
+    end
+    object menu_printBalans: TMenuItem
+      Caption = #1055#1077#1095#1072#1090#1100' '#1089' '#1073#1072#1083#1072#1085#1089#1086#1084
+      OnClick = menu_printBalansClick
+    end
+    object N21: TMenuItem
+      Caption = #1055#1077#1095#1072#1090#1100' '#1089' '#1073#1072#1083#1072#1085#1089#1086#1084' 2'
+      OnClick = N21Click
+    end
   end
 end

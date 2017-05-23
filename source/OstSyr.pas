@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, Grids, DBGridEh, DBCtrls, StdCtrls, ExtCtrls, FR_Class, FR_DSet, FR_DBSet,
-  Buttons, ImgList, ComCtrls, ToolWin, Mask, ToolEdit, Spin;
+  Buttons, ImgList, ComCtrls, ToolWin, Mask, ToolEdit, Spin, Menus;
 
 type
   TFOstSyr = class(TForm)
@@ -33,6 +33,10 @@ type
     ToolButton2: TToolButton;
     ToolButton3: TToolButton;
     Label1: TLabel;
+    popMenu_print: TPopupMenu;
+    menu_print: TMenuItem;
+    menu_printBalans: TMenuItem;
+    N21: TMenuItem;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
@@ -49,6 +53,9 @@ type
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure DBGridEh1KeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure menu_printClick(Sender: TObject);
+    procedure menu_printBalansClick(Sender: TObject);
+    procedure N21Click(Sender: TObject);
 
   private
     curDateBeginStr, curDateEndStr : string; 
@@ -218,6 +225,22 @@ begin
  end;
 end;
 
+procedure TFOstSyr.menu_printBalansClick(Sender: TObject);
+begin
+  dm1.OstSyr.DisableControls;
+  FrReport1.LoadFromFile(reportsPath + 'P_balans_1.frf');
+  FrReport1.ShowReport;
+  dm1.OstSyr.EnableControls;
+end;
+
+procedure TFOstSyr.menu_printClick(Sender: TObject);
+begin
+  dm1.OstSyr.DisableControls;
+  FrReport1.LoadFromFile(reportsPath + 'P_balans.frf');
+  FrReport1.ShowReport;
+  dm1.OstSyr.EnableControls;
+end;
+
 procedure TFOstSyr.monthSpnBtnDownClick(Sender: TObject);
 begin
   if (curMonthCombo.ItemIndex > 0) then
@@ -244,6 +267,14 @@ begin
     curMonthCombo.ItemIndex := 0;
     curMonthComboChange(sender);
   end;
+end;
+
+procedure TFOstSyr.N21Click(Sender: TObject);
+begin
+  dm1.OstSyr.DisableControls;
+  FrReport1.LoadFromFile(reportsPath + 'P_balans_2.frf');
+  FrReport1.ShowReport;
+  dm1.OstSyr.EnableControls;
 end;
 
 procedure TFOstSyr.ToolButton1Click(Sender: TObject);
