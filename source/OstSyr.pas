@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, Grids, DBGridEh, DBCtrls, StdCtrls, ExtCtrls, FR_Class, FR_DSet, FR_DBSet,
-  Buttons, ImgList, ComCtrls, ToolWin, Mask, ToolEdit, Spin, Menus;
+  Buttons, ImgList, ComCtrls, ToolWin, Mask, ToolEdit, Spin, Menus, FR_Desgn;
 
 type
   TFOstSyr = class(TForm)
@@ -37,6 +37,7 @@ type
     menu_print: TMenuItem;
     menu_printBalans: TMenuItem;
     N21: TMenuItem;
+    frDesigner1: TfrDesigner;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
