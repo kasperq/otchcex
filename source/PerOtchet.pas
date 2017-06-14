@@ -78,7 +78,6 @@ type
     OtchetsOTPROD: TStringField;
     OtchetsOTKPN: TStringField;
     OtchetsOTKVI: TStringField;
-    OtchetsOTMATR: TStringField;
     OtchetsOTCENA: TFloatField;
     OtchetsCENAZA: TFloatField;
     OtchetsOSTSN: TFloatField;
@@ -264,7 +263,6 @@ type
     StringField23: TStringField;
     StringField24: TStringField;
     StringField25: TStringField;
-    StringField26: TStringField;
     StringField27: TStringField;
     FloatField28: TFloatField;
     FloatField29: TFloatField;
@@ -300,7 +298,6 @@ type
     ncmatrdNCEDIZ: TStringField;
     ncmatrdNCSTRK: TStringField;
     ncmatrdNCRAZ: TStringField;
-    ncmatrdNCMATR: TStringField;
     ncmatrdNCPROC: TFloatField;
     ncmatrdNCEDIZM: TStringField;
     ncmatrdNCNRDS: TFloatField;
@@ -316,7 +313,6 @@ type
     otchetOTPROD: TStringField;
     otchetOTKPN: TStringField;
     otchetOTKVI: TStringField;
-    otchetOTMATR: TStringField;
     otchetNMAT: TStringField;
     otchetOTCENA: TFloatField;
     otchetCENAZA: TFloatField;
@@ -347,6 +343,15 @@ type
     prizm: TERxQuery;
     upd_prizm: TUpdateSQL;
     fSes: TSession;
+    otchetKSM_ID_S: TFloatField;
+    otchetOTMATR: TStringField;
+    OtchetOldOTMATR: TStringField;
+    OtchetOldKSM_ID_S: TFloatField;
+    OtchetsOTMATR: TStringField;
+    OtchetsKSM_ID_S: TFloatField;
+    SpisokKSM_ID: TFloatField;
+    ncmatrdNCMATR: TStringField;
+    ncmatrdKSM_ID_S: TFloatField;
     procedure SpinEdit3Change(Sender: TObject);
     procedure SpinEdit4Change(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -608,6 +613,7 @@ begin
   prizprKolgs1.AsVariant := v_vipuskg - dm1.KartVKOL_PRIH.AsFloat;
   prizprKolk1.AsVariant := v_vipuskk;
   prizprKolks1.AsVariant := v_vipuskk - dm1.KartVKOL_PRIH.AsFloat;
+  PrizprKSM_ID.AsInteger := dm1.KartVKSM_ID.AsInteger;
   prizpr.Post;
 //  prizpr.ApplyUpdates;
 //  prizpr.CommitUpdates;
@@ -622,6 +628,7 @@ begin
   spisokNmat.AsString := DM1.KARTVNmat.AsString;
   spisokMes.AsInteger := mes;
   spisokGod.AsInteger := god;
+  SpisokKSM_ID.AsInteger := dm1.KartVKSM_ID.AsInteger;
   spisok.Post;
 end;
 
@@ -950,16 +957,16 @@ begin
   upd_ncmatrd.InsertSQL.Text := 'insert into "c:\work\' + machine + '\ncmatrd.dbf" '
                                 + '(NCPROD, NCKPN, NCKVI, NCEDIZ, NCSTRK, NCRAZ, '
                                 + 'NCMATR, NCPROC, NCEDIZM, NCNRDS, NCNRFK, NMATS, '
-                                + 'NCCENA, KSM_ID, NCPROD_S) '
+                                + 'NCCENA, KSM_ID, NCPROD_S, KSM_ID_S) '
                                 + 'values (:NCPROD, :NCKPN, :NCKVI, :NCEDIZ, :NCSTRK, '
                                 + ':NCRAZ, :NCMATR, :NCPROC, :NCEDIZM, :NCNRDS, '
-                                + ':NCNRFK, :NMATS, :NCCENA, :KSM_ID, :NCPROD_S) ';
+                                + ':NCNRFK, :NMATS, :NCCENA, :KSM_ID, :NCPROD_S, :KSM_ID_S) ';
   upd_ncmatrd.ModifySQL.Text := 'update "c:\work\' + machine + '\ncmatrd.dbf" '
                                 + 'set NCPROD = :NCPROD, NCKPN = :NCKPN, NCKVI = :NCKVI, '
                                 + 'NCEDIZ = :NCEDIZ, NCSTRK = :NCSTRK, NCRAZ = :NCRAZ, '
                                 + 'NCMATR = :NCMATR, NCPROC = :NCPROC, NCEDIZM = :NCEDIZM, '
                                 + 'NCNRDS = :NCNRDS, NCNRFK = :NCNRFK, NMATS = :NMATS, '
-                                + 'NCCENA = :NCCENA, KSM_ID = :KSM_ID, NCPROD_S = :NCPROD_S '
+                                + 'NCCENA = :NCCENA, KSM_ID = :KSM_ID, NCPROD_S = :NCPROD_S, KSM_ID_S = :KSM_ID_S '
                                 + 'where NCPROD = :OLD_NCPROD and NCSTRK = :OLD_NCSTRK and '
                                 + 'NCRAZ = :OLD_NCRAZ and NCMATR = :OLD_NCMATR ';
 end;
@@ -977,12 +984,12 @@ begin
                                + 'OTCENA, CENAZA, OSTSN, OSTNZN, PRIX, ZAG, RASM, '
                                + 'RASG, PERS, PERP, OSTSK, OSTZK, PRIXK, RASK, FACTK, '
                                + 'FACTM, PEREM, PEREG, OTRAZ, PKV, PGD, MES, PR, '
-                               + 'PRS, KSM_ID, OTPROD_S) '
+                               + 'PRS, KSM_ID, OTPROD_S, KSM_ID_S) '
                                + 'values (:MES1, :OTSTRK, :OTPROD, :OTKPN, :OTKVI, '
                                + ':OTMATR, :NMAT, :OTCENA, :CENAZA, :OSTSN, :OSTNZN, '
                                + ':PRIX, :ZAG, :RASM, :RASG, :PERS, :PERP, :OSTSK, '
                                + ':OSTZK, :PRIXK, :RASK, :FACTK, :FACTM, :PEREM, '
-                               + ':PEREG, :OTRAZ, :PKV, :PGD, :MES, :PR, :PRS, :KSM_ID, :OTPROD_S) ';
+                               + ':PEREG, :OTRAZ, :PKV, :PGD, :MES, :PR, :PRS, :KSM_ID, :OTPROD_S, :KSM_ID_S) ';
   upd_otchet.ModifySQL.Text := 'update "c:\work\' + machine + '\otchet.dbf" '
                                + 'set MES1 = :MES1, OTSTRK = :OTSTRK, OTPROD = :OTPROD, '
                                + 'OTKPN = :OTKPN, OTKVI = :OTKVI, OTMATR = :OTMATR, '
@@ -993,7 +1000,7 @@ begin
                                + 'PRIXK = :PRIXK, RASK = :RASK, FACTK = :FACTK, '
                                + 'FACTM = :FACTM, PEREM = :PEREM, PEREG = :PEREG, '
                                + 'OTRAZ = :OTRAZ, PKV = :PKV, PGD = :PGD, MES = :MES, '
-                               + 'PR = :PR, PRS = :PRS, KSM_ID = :KSM_ID, OTPROD_S = :OTPROD_S '
+                               + 'PR = :PR, PRS = :PRS, KSM_ID = :KSM_ID, OTPROD_S = :OTPROD_S, KSM_ID_S = :KSM_ID_S '
                                + 'where OTSTRK = :OLD_OTSTRK and OTPROD = :OLD_OTPROD and '
                                + 'OTMATR = :OLD_OTMATR and OTRAZ = :OLD_OTRAZ ';
 end;
@@ -1008,15 +1015,15 @@ begin
                               + 'NCMATR = :OLD_NCMATR and NCRAZ = :OLD_NCRAZ ';
   upd_prizm.InsertSQL.Text := 'insert into "c:\work\' + machine + '\prizm.dbf" '
                               + '(NCSTRK, NCPROD, NCKPN, NCKVI, NCMATR, PMFORM, '
-                              + 'PMGR, PMFORN, PMNSH, NCRAZ, MARK, KSM_ID, NCPROD_S) '
+                              + 'PMGR, PMFORN, PMNSH, NCRAZ, MARK, KSM_ID, NCPROD_S, KSM_ID_S) '
                               + 'values (:NCSTRK, :NCPROD, :NCKPN, :NCKVI, :NCMATR, '
-                              + ':PMFORM, :PMGR, :PMFORN, :PMNSH, :NCRAZ, :MARK, :KSM_ID, :NCPROD_S) ';
+                              + ':PMFORM, :PMGR, :PMFORN, :PMNSH, :NCRAZ, :MARK, :KSM_ID, :NCPROD_S, :KSM_ID_S) ';
   upd_prizm.ModifySQL.Text := 'update "c:\work\' + machine + '\prizm.dbf" '
                               + 'set NCSTRK = :NCSTRK, NCPROD = :NCPROD, NCKPN = :NCKPN, '
                               + 'NCKVI = :NCKVI, NCMATR = :NCMATR, PMFORM = :PMFORM, '
                               + 'PMGR = :PMGR, PMFORN = :PMFORN, PMNSH = :PMNSH, '
                               + 'NCRAZ = :NCRAZ, MARK = :MARK, KSM_ID = :KSM_ID, '
-                              + 'NCPROD_S = :NCPROD_S '
+                              + 'NCPROD_S = :NCPROD_S, KSM_ID_S = :KSM_ID_S '
                               + 'where NCSTRK = :OLD_NCSTRK and NCPROD = :OLD_NCPROD and '
                               + 'NCMATR = :OLD_NCMATR and NCRAZ = :OLD_NCRAZ ';
 end;
@@ -1122,14 +1129,16 @@ begin
   While (not Query_Otchet.Eof) do
   begin
     if (Length(trim(inttostr(Query_OtchetKSM_ID.AsInteger))) = 1) then
-      sT_ksm := '0000' + trim(inttostr(Query_OtchetKSM_ID.AsInteger));
+      sT_ksm := '00000' + trim(inttostr(Query_OtchetKSM_ID.AsInteger));
     if (length(trim(inttostr(Query_OtchetKSM_ID.AsInteger))) = 2) then
-      sT_ksm := '000' + trim(inttostr(Query_OtchetKSM_ID.AsInteger));
+      sT_ksm := '0000' + trim(inttostr(Query_OtchetKSM_ID.AsInteger));
     if (length(trim(inttostr(Query_OtchetKSM_ID.AsInteger))) = 3) then
-      sT_ksm := '00' + trim(inttostr(Query_OtchetKSM_ID.AsInteger));
+      sT_ksm := '000' + trim(inttostr(Query_OtchetKSM_ID.AsInteger));
     if (length(trim(inttostr(Query_OtchetKSM_ID.AsInteger))) = 4) then
-      sT_ksm := '0' + trim(inttostr(Query_OtchetKSM_ID.AsInteger));
+      sT_ksm := '00' + trim(inttostr(Query_OtchetKSM_ID.AsInteger));
     if (length(trim(inttostr(Query_OtchetKSM_ID.AsInteger))) = 5) then
+      sT_ksm := '0' + trim(inttostr(Query_OtchetKSM_ID.AsInteger));
+    if (length(trim(inttostr(Query_OtchetKSM_ID.AsInteger))) = 6) then
       sT_ksm := trim(inttostr(Query_OtchetKSM_ID.AsInteger));
     s_kei := Query_OtchetKEI_ID.AsInteger;
     s_ksm := Query_OtchetKsm_ID.AsInteger;
@@ -1170,6 +1179,8 @@ begin
     Otchet.FieldByName('otstrk').AsVariant := s_stkod;
     Otchet.FieldByName('otprod').AsVariant := st_kodp;
     Otchet.FieldByName('otmatr').AsVariant := st_ksm;
+    Otchet.FieldByName('ksm_id_s').AsInteger := Query_OtchetKSM_ID.AsInteger;
+    Otchet.FieldByName('ksm_id').AsInteger := dm1.KartVKSM_ID.AsInteger;
     Otchet.FieldByName('mes').AsVariant := mmes;
     Otchet.FieldByName('otraz').AsVariant := inttostr(Query_OtchetKraz.AsInteger);
     Otchet.FieldByName('NMAT').AsVariant := Query_OtchetNMAT.AsString;
@@ -1265,7 +1276,7 @@ begin
       Otchet.FieldByName('otcena').AsVariant := 0;
     Otchet.Post;
 // ввод цены прихода из RASXOD главной машины
-    st_ksm1 := '00' + st_ksm;
+    st_ksm1 := '0' + st_ksm;
     rasxod.Open;
     RASXOD.First;
     Otchet.edit;
@@ -1312,6 +1323,8 @@ begin
       Ncmatrd.FieldByName('ncediz').AsVariant := sv_keip;
       Ncmatrd.FieldByName('ncedizm').AsVariant := sv_keiN;
       Ncmatrd.FieldByName('ncnrds').AsVariant := v_norm;
+      Ncmatrd.FieldByName('KSM_ID').AsInteger := dm1.KartVKSM_ID.AsInteger;
+      Ncmatrd.FieldByName('KSM_ID_S').AsInteger := Query_OtchetKSM_ID.AsInteger;
       Ncmatrd.Post;
     end
     else
@@ -1321,6 +1334,8 @@ begin
       Ncmatrd.FieldByName('ncediz').AsVariant := sv_keip;
       Ncmatrd.FieldByName('ncedizm').AsVariant := Sv_keiN;
       Ncmatrd.FieldByName('ncnrds').AsVariant := v_norm;
+      Ncmatrd.FieldByName('KSM_ID').AsInteger := dm1.KartVKSM_ID.AsInteger;
+      Ncmatrd.FieldByName('KSM_ID_S').AsInteger := Query_OtchetKSM_ID.AsInteger;
       Ncmatrd.Post;
     end;
   // добавление в PRIZM
@@ -1356,6 +1371,8 @@ begin
       Prizm.FieldByName('pmforn').AsString := inttostr(v_znak);
       Prizm.FieldByName('pmnsh').AsVariant := 0;
       Prizm.FieldByName('pmgr').AsVariant := 1;
+      Prizm.FieldByName('KSM_ID').AsInteger := dm1.KartVKSM_ID.AsInteger;
+      Prizm.FieldByName('KSM_ID_S').AsInteger := Query_OtchetKSM_ID.AsInteger;
       Prizm.Post;
     end
     else
@@ -1363,6 +1380,8 @@ begin
       Prizm.Edit;
       Prizm.FieldByName('pmform').AsString := inttostr(v_znak);
       Prizm.FieldByName('pmforn').AsString := inttostr(v_znak);
+      Prizm.FieldByName('KSM_ID').AsInteger := dm1.KartVKSM_ID.AsInteger;
+      Prizm.FieldByName('KSM_ID_S').AsInteger := Query_OtchetKSM_ID.AsInteger;
       Prizm.Post;
     end;
     Query_Otchet.Next;
