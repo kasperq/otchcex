@@ -202,7 +202,7 @@ object FPerOtchet: TFPerOtchet
     Left = 448
     Top = 4
     Bitmap = {
-      494C010108000A00400018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010108000A004C0018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1437,10 +1437,6 @@ object FPerOtchet: TFPerOtchet
       FieldName = 'OTKVI'
       Size = 1
     end
-    object OtchetsOTMATR: TStringField
-      FieldName = 'OTMATR'
-      Size = 5
-    end
     object OtchetsOTCENA: TFloatField
       FieldName = 'OTCENA'
     end
@@ -1521,6 +1517,13 @@ object FPerOtchet: TFPerOtchet
       FieldName = 'OTPROD_S'
       Size = 6
     end
+    object OtchetsOTMATR: TStringField
+      FieldName = 'OTMATR'
+      Size = 6
+    end
+    object OtchetsKSM_ID_S: TFloatField
+      FieldName = 'KSM_ID_S'
+    end
   end
   object Spisok: TTable
     CachedUpdates = True
@@ -1545,6 +1548,9 @@ object FPerOtchet: TFPerOtchet
     end
     object SpisokGOD: TSmallintField
       FieldName = 'GOD'
+    end
+    object SpisokKSM_ID: TFloatField
+      FieldName = 'KSM_ID'
     end
   end
   object Ras_Vir: TIBQuery
@@ -2316,10 +2322,6 @@ object FPerOtchet: TFPerOtchet
       FieldName = 'OTKVI'
       Size = 1
     end
-    object StringField26: TStringField
-      FieldName = 'OTMATR'
-      Size = 5
-    end
     object StringField27: TStringField
       FieldName = 'NMAT'
       Size = 25
@@ -2407,6 +2409,13 @@ object FPerOtchet: TFPerOtchet
       FieldName = 'OTPROD_S'
       Size = 6
     end
+    object OtchetOldOTMATR: TStringField
+      FieldName = 'OTMATR'
+      Size = 6
+    end
+    object OtchetOldKSM_ID_S: TFloatField
+      FieldName = 'KSM_ID_S'
+    end
   end
   object ncmatrd: TERxQuery
     CachedUpdates = True
@@ -2454,10 +2463,6 @@ object FPerOtchet: TFPerOtchet
       FieldName = 'NCRAZ'
       Size = 2
     end
-    object ncmatrdNCMATR: TStringField
-      FieldName = 'NCMATR'
-      Size = 5
-    end
     object ncmatrdNCPROC: TFloatField
       FieldName = 'NCPROC'
     end
@@ -2485,6 +2490,13 @@ object FPerOtchet: TFPerOtchet
       FieldName = 'NCPROD_S'
       Size = 6
     end
+    object ncmatrdNCMATR: TStringField
+      FieldName = 'NCMATR'
+      Size = 5
+    end
+    object ncmatrdKSM_ID_S: TFloatField
+      FieldName = 'KSM_ID_S'
+    end
   end
   object upd_ncmatrd: TUpdateSQL
     ModifySQL.Strings = (
@@ -2504,7 +2516,8 @@ object FPerOtchet: TFPerOtchet
       '  NMATS = :NMATS,'
       '  NCCENA = :NCCENA,'
       '  KSM_ID = :KSM_ID,'
-      '  NCPROD_S = :NCPROD_S'
+      '  NCPROD_S = :NCPROD_S,'
+      '  KSM_ID_S = :KSM_ID_S'
       'where'
       '  NCPROD = :OLD_NCPROD and'
       '  NCSTRK = :OLD_NCSTRK and'
@@ -2515,14 +2528,14 @@ object FPerOtchet: TFPerOtchet
       
         '  (NCPROD, NCKPN, NCKVI, NCEDIZ, NCSTRK, NCRAZ, NCMATR, NCPROC, ' +
         'NCEDIZM, '
-      '   NCNRDS, NCNRFK, NMATS, NCCENA, KSM_ID, NCPROD_S)'
+      '   NCNRDS, NCNRFK, NMATS, NCCENA, KSM_ID, NCPROD_S, KSM_ID_S)'
       'values'
       
         '  (:NCPROD, :NCKPN, :NCKVI, :NCEDIZ, :NCSTRK, :NCRAZ, :NCMATR, :' +
         'NCPROC, '
       
         '   :NCEDIZM, :NCNRDS, :NCNRFK, :NMATS, :NCCENA, :KSM_ID, :NCPROD' +
-        '_S)')
+        '_S, :KSM_ID_S)')
     DeleteSQL.Strings = (
       'delete from "c:\work\pc1\ncmatrd.dbf"'
       'where'
@@ -2581,10 +2594,6 @@ object FPerOtchet: TFPerOtchet
     object otchetOTKVI: TStringField
       FieldName = 'OTKVI'
       Size = 1
-    end
-    object otchetOTMATR: TStringField
-      FieldName = 'OTMATR'
-      Size = 5
     end
     object otchetNMAT: TStringField
       FieldName = 'NMAT'
@@ -2673,6 +2682,13 @@ object FPerOtchet: TFPerOtchet
       FieldName = 'OTPROD_S'
       Size = 6
     end
+    object otchetKSM_ID_S: TFloatField
+      FieldName = 'KSM_ID_S'
+    end
+    object otchetOTMATR: TStringField
+      FieldName = 'OTMATR'
+      Size = 6
+    end
   end
   object upd_otchet: TUpdateSQL
     ModifySQL.Strings = (
@@ -2710,7 +2726,8 @@ object FPerOtchet: TFPerOtchet
       '  PR = :PR,'
       '  PRS = :PRS,'
       '  KSM_ID = :KSM_ID,'
-      '  OTPROD_S = :OTPROD_S'
+      '  OTPROD_S = :OTPROD_S,'
+      '  KSM_ID_S = :KSM_ID_S'
       'where'
       '  OTSTRK = :OLD_OTSTRK and'
       '  OTPROD = :OLD_OTPROD and'
@@ -2720,24 +2737,27 @@ object FPerOtchet: TFPerOtchet
       'insert into "c:\work\pc1\otchet.dbf"'
       
         '  (MES1, OTSTRK, OTPROD, OTKPN, OTKVI, OTMATR, NMAT, OTCENA, CEN' +
-        'AZA, OSTSN, '
+        'AZA, '
+      'OSTSN, '
       
         '   OSTNZN, PRIX, ZAG, RASM, RASG, PERS, PERP, OSTSK, OSTZK, PRIX' +
         'K, RASK, '
       
         '   FACTK, FACTM, PEREM, PEREG, OTRAZ, PKV, PGD, MES, PR, PRS, KS' +
-        'M_ID, OTPROD_S)'
+        'M_ID, '
+      'OTPROD_S, KSM_ID_S)'
       'values'
       
         '  (:MES1, :OTSTRK, :OTPROD, :OTKPN, :OTKVI, :OTMATR, :NMAT, :OTC' +
-        'ENA, :CENAZA, '
+        'ENA, '
+      ':CENAZA, '
       
         '   :OSTSN, :OSTNZN, :PRIX, :ZAG, :RASM, :RASG, :PERS, :PERP, :OS' +
         'TSK, :OSTZK, '
       
         '   :PRIXK, :RASK, :FACTK, :FACTM, :PEREM, :PEREG, :OTRAZ, :PKV, ' +
         ':PGD, :MES, '
-      '   :PR, :PRS, :KSM_ID, :OTPROD_S)')
+      '   :PR, :PRS, :KSM_ID, :OTPROD_S, :KSM_ID_S)')
     DeleteSQL.Strings = (
       'delete from "c:\work\pc1\otchet.dbf"'
       'where'
@@ -2794,7 +2814,8 @@ object FPerOtchet: TFPerOtchet
       '  NCRAZ = :NCRAZ,'
       '  MARK = :MARK,'
       '  KSM_ID = :KSM_ID,'
-      '  NCPROD_S = :NCPROD_S'
+      '  NCPROD_S = :NCPROD_S,'
+      '  KSM_ID_S = :KSM_ID_S'
       'where'
       '  NCSTRK = :OLD_NCSTRK and'
       '  NCPROD = :OLD_NCPROD and'
@@ -2805,12 +2826,12 @@ object FPerOtchet: TFPerOtchet
       
         '  (NCSTRK, NCPROD, NCKPN, NCKVI, NCMATR, PMFORM, PMGR, PMFORN, P' +
         'MNSH, NCRAZ, '
-      '   MARK, KSM_ID, NCPROD_S)'
+      '   MARK, KSM_ID, NCPROD_S, KSM_ID_S)'
       'values'
       
         '  (:NCSTRK, :NCPROD, :NCKPN, :NCKVI, :NCMATR, :PMFORM, :PMGR, :P' +
         'MFORN, '
-      '   :PMNSH, :NCRAZ, :MARK, :KSM_ID, :NCPROD_S)')
+      '   :PMNSH, :NCRAZ, :MARK, :KSM_ID, :NCPROD_S, :KSM_ID_S)')
     DeleteSQL.Strings = (
       'delete from "c:\work\pc1\prizm.dbf"'
       'where'
