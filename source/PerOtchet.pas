@@ -352,6 +352,7 @@ type
     SpisokKSM_ID: TFloatField;
     ncmatrdNCMATR: TStringField;
     ncmatrdKSM_ID_S: TFloatField;
+    q_spprodDbfOTPROD: TStringField;
     procedure SpinEdit3Change(Sender: TObject);
     procedure SpinEdit4Change(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -418,6 +419,9 @@ uses dm, SprFormul, GlMenu, CopyFiles;
 {$R *.dfm}
 
 procedure TFPerOtchet.findInsertSpprodToSpprodDbf;
+var
+  otprod : string;
+  i : integer;
 begin
   q_spprod.Close;
   q_spprod.ParamByName('ksm_id').AsInteger := dm1.KartVKSM_ID.AsInteger;
@@ -425,6 +429,10 @@ begin
   if (q_spprod.RecordCount > 0) then
   begin
     q_spprodDbf.Insert;
+    otprod := q_spprodKSM_ID.AsString;
+    for i := 1 to 6 - length(q_spprodKSM_ID.AsString) do
+     otprod := '0' + otprod;
+
     if (length(q_spprodKSM_ID.AsString) > 4) then
       q_spprodDbfSPROD.AsString := '0' + Copy(q_spprodKSM_ID.AsString, 1, 1)
     else
@@ -461,6 +469,7 @@ begin
     q_spprodDbfNEW_KOD.AsString := q_spprodKOD_PROD.AsString;
     q_spprodDbfKSM_ID.AsString := q_spprodKSM_ID.AsString;
     q_spprodDbfACTIVP.AsInteger := 1;
+    q_spprodDbfOTPROD.AsString := otprod;
     q_spprodDbf.Post;
   end;
 end;
@@ -1040,13 +1049,13 @@ begin
                                    + 'SPKEI, SPCENA, SPCENAB, SPCENAR, SPCEH, SPXRKT, '
                                    + 'SPRODS, CODE, SPKEIS, INPUT1, INPUT2, UMN, SPRIZ, '
                                    + 'SPKEY, SPNAMES, EAN13, KORG, STRUK_ID, GOST, NEW_KOD, '
-                                   + 'KSM_ID, ACTIVP, NAM) '
+                                   + 'KSM_ID, ACTIVP, NAM, OTPROD) '
                                    + 'values (:SPROD, :SPPOL, :SPPRN, :SPVIS, :SPSTAD, '
                                    + ':SPNAME, :SPSNAM, :SPKEI, :SPCENA, :SPCENAB, '
                                    + ':SPCENAR, :SPCEH, :SPXRKT, :SPRODS, :CODE, :SPKEIS, '
                                    + ':INPUT1, :INPUT2, :UMN, :SPRIZ, :SPKEY, :SPNAMES, '
                                    + ':EAN13, :KORG, :STRUK_ID, :GOST, :NEW_KOD, :KSM_ID, '
-                                   + ':ACTIVP, :NAM) ';
+                                   + ':ACTIVP, :NAM, :OTPROD) ';
   up_q_spprodDbf.ModifySQL.Text := 'update "c:\work\' + machine + '\spprod.dbf" '
                                    + 'set SPROD = :SPROD, SPPOL = :SPPOL, SPPRN = :SPPRN, '
                                    + 'SPVIS = :SPVIS, SPSTAD = :SPSTAD, SPNAME = :SPNAME, '
@@ -1057,7 +1066,8 @@ begin
                                    + 'UMN = :UMN, SPRIZ = :SPRIZ, SPKEY = :SPKEY, '
                                    + 'SPNAMES = :SPNAMES, EAN13 = :EAN13, KORG = :KORG, '
                                    + 'STRUK_ID = :STRUK_ID, GOST = :GOST, NEW_KOD = :NEW_KOD, '
-                                   + 'KSM_ID = :KSM_ID, ACTIVP = :ACTIVP, NAM = :NAM '
+                                   + 'KSM_ID = :KSM_ID, ACTIVP = :ACTIVP, NAM = :NAM, '
+                                   + 'OTPROD = :OTPROD '
                                    + 'where KSM_ID = :OLD_KSM_ID ';
   t_spprodDbf.Close;
   t_spprodDbf.TableName := 'c:\work\' + machine + '\spprod.dbf';
