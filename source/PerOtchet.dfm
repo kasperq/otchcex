@@ -202,7 +202,7 @@ object FPerOtchet: TFPerOtchet
     Left = 448
     Top = 4
     Bitmap = {
-      494C010108000A004C0018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010108000A00500018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1755,7 +1755,7 @@ object FPerOtchet: TFPerOtchet
     SessionName = 'workSes'
     SQL.Strings = (
       'select *'
-      'from '#39'c:\pc1\otchbas\spprod.dbf'#39' spprod'
+      'from '#39'c:\work\pc1\spprod.dbf'#39' spprod'
       'where spprod.struk_id = :struk_id')
     UpdateObject = up_q_spprodDbf
     Macros = <>
@@ -1880,6 +1880,10 @@ object FPerOtchet: TFPerOtchet
       FieldName = 'NAM'
       Size = 50
     end
+    object q_spprodDbfOTPROD: TStringField
+      FieldName = 'OTPROD'
+      Size = 6
+    end
   end
   object up_q_spprodDbf: TUpdateSQL
     ModifySQL.Strings = (
@@ -1914,7 +1918,8 @@ object FPerOtchet: TFPerOtchet
       '  NEW_KOD = :NEW_KOD,'
       '  KSM_ID = :KSM_ID,'
       '  ACTIVP = :ACTIVP,'
-      '  NAM = :NAM'
+      '  NAM = :NAM,'
+      '  OTPROD = :OTPROD'
       'where'
       '  KSM_ID = :OLD_KSM_ID')
     InsertSQL.Strings = (
@@ -1928,7 +1933,7 @@ object FPerOtchet: TFPerOtchet
       
         '   SPKEY, SPNAMES, EAN13, KORG, STRUK_ID, GOST, NEW_KOD, KSM_ID,' +
         ' ACTIVP, '
-      '   NAM)'
+      '   NAM, OTPROD)'
       'values'
       
         '  (:SPROD, :SPPOL, :SPPRN, :SPVIS, :SPSTAD, :SPNAME, :SPSNAM, :S' +
@@ -1939,7 +1944,7 @@ object FPerOtchet: TFPerOtchet
       
         '   :INPUT2, :UMN, :SPRIZ, :SPKEY, :SPNAMES, :EAN13, :KORG, :STRU' +
         'K_ID, :GOST, '
-      '   :NEW_KOD, :KSM_ID, :ACTIVP, :NAM)')
+      '   :NEW_KOD, :KSM_ID, :ACTIVP, :NAM, :OTPROD)')
     DeleteSQL.Strings = (
       'delete from "f:\pc1\otchbas\spprod.dbf"'
       'where'
