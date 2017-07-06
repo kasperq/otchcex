@@ -387,6 +387,8 @@ type
     mem_seriaVES_GRP: TFloatField;
     mem_seriaUPAK_TRANS: TStringField;
     frxDBDataset8: TfrxDBDataset;
+    MemDocumentPRIZ_ID: TIntegerField;
+    GotDocumentPRIZ_ID: TSmallintField;
 
     procedure setDokDate(value : string);
     function isDateValid(value : string) : boolean;
@@ -3204,6 +3206,11 @@ begin
   if (SkladCombo.KeyValue = null) then
   begin
     MessageDlg('Выберите склад отправки препарата', mtWarning, [mbOK], 0);
+    result := false;
+  end;
+  if (GotDocumentPRIZ_ID.AsInteger > 1) then
+  begin
+    MessageDlg('Документ проведен! Для корректировки необходимо отмениеть проведение.', mtWarning, [mbOK], 0);
     result := false;
   end;
 end;
