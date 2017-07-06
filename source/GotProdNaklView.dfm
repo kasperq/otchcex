@@ -1795,7 +1795,8 @@ object FGotProdNaklView: TFGotProdNaklView
         'nt.struk_id,'
       
         'document.klient_id, document.date_op, document.tip_op_id, docume' +
-        'nt.tip_dok_id'
+        'nt.tip_dok_id,'
+      'document.priz_id'
       'from document'
       'where document.tip_op_id = 93 and document.tip_dok_id = 90'
       'and document.doc_id = :doc_id')
@@ -1846,6 +1847,10 @@ object FGotProdNaklView: TFGotProdNaklView
       FieldName = 'TIP_DOK_ID'
       Origin = '"DOCUMENT"."TIP_DOK_ID"'
       Required = True
+    end
+    object GotDocumentPRIZ_ID: TSmallintField
+      FieldName = 'PRIZ_ID'
+      Origin = '"DOCUMENT"."PRIZ_ID"'
     end
   end
   object GotDocumentUpd: TIBUpdateSQLW
@@ -3556,6 +3561,9 @@ object FGotProdNaklView: TFGotProdNaklView
       FieldName = 'TIP_DOK_ID'
       Origin = '"DOCUMENT"."TIP_DOK_ID"'
       Required = True
+    end
+    object MemDocumentPRIZ_ID: TIntegerField
+      FieldName = 'PRIZ_ID'
     end
   end
   object seriaArr: TRxMemoryData
