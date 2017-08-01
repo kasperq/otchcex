@@ -766,6 +766,8 @@ uses
     OstatkiNOMU_ID_GRP: TSmallintField;
     OstatkiVOL_TRANS: TFMTBCDField;
     OstatkiUpdate: TIBUpdateSQLW;
+    PechOtchetprih_s: TFloatField;
+    PechOtchetprih_nz: TFloatField;
     procedure DataModuleCreate(Sender: TObject);
     procedure FormToObject(PopupForm : TForm; ControlObject : TControl; HTop:Integer=0; YesWidth:Integer=1);
     procedure VoprosWriteDoc;

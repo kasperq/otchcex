@@ -125,6 +125,12 @@ type
     ComboBox1: TComboBox;
     ComboBox2: TComboBox;
     tbtn_delLine: TToolButton;
+    Otchetprih_s: TFloatField;
+    Otchetprih_nz: TFloatField;
+    Query_OtchetPRIH_S: TFMTBCDField;
+    Query_OtchetPRIH_NZ: TFMTBCDField;
+    Query_OtchetKOL_RASXG: TFloatField;
+    Query_OtchetKOL: TFloatField;
     procedure Edit1Change(Sender: TObject);
     procedure Edit1Click(Sender: TObject);
     procedure Edit1KeyDown(Sender: TObject; var Key: Word;
@@ -422,6 +428,10 @@ begin
     Otchet.FieldByName('OT_NZ').AsVariant := Query_Otchet.FieldByName('Ostatok_end_NZ').AsFloat
                                              * dm1.Koef_per(v_kein, s_kei, s_ksm);
     Otchet.FieldByName('KART_ID').AsVariant := Query_OtchetKART_ID.AsInteger;
+    Otchet.FieldByName('PRIH_S').AsVariant := Query_OtchetPRIH_S.AsFloat
+                                              * dm1.Koef_per(v_kein, s_kei, s_ksm);
+    Otchet.FieldByName('PRIH_NZ').AsVariant := Query_OtchetPRIH_NZ.AsFloat
+                                              * dm1.Koef_per(v_kein, s_kei, s_ksm);
     Otchet.Post;
     Query_Otchet.Next;
   end;
