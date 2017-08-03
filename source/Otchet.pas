@@ -80,19 +80,11 @@ type
     Query_Otchet: TRxIBQuery;
     Query_OtchetKSM_ID: TIntegerField;
     Query_OtchetKART_ID: TIntegerField;
-    Query_OtchetOSTATOK_END_S: TFMTBCDField;
-    Query_OtchetOSTATOK_END_NZ: TFMTBCDField;
-    Query_OtchetOSTATOK_BEGIN_NZ: TFMTBCDField;
-    Query_OtchetOSTATOK_BEGIN_S: TFMTBCDField;
     Query_OtchetRAZDEL_ID: TSmallintField;
     Query_OtchetKRAZ: TSmallintField;
     Query_OtchetNMAT: TIBStringField;
     Query_OtchetNAMRAZ: TIBStringField;
     Query_OtchetKEI_IDN: TSmallintField;
-    Query_OtchetZAG_PERIOD: TFMTBCDField;
-    Query_OtchetRASH_VIRAB_PERIOD: TFMTBCDField;
-    Query_OtchetPRIX_PERIOD: TFMTBCDField;
-    Query_OtchetRASX_PERIOD: TFMTBCDField;
     DataSource1: TDataSource;
     Query_OtchetNEIS: TIBStringField;
     Query_OtchetNEISN: TIBStringField;
@@ -110,9 +102,7 @@ type
     ANasrtPecht: TAction;
     N4: TMenuItem;
     Otchetkart_id: TIntegerField;
-    Query_OtchetPERS: TFMTBCDField;
     frxReport1: TfrxReport;
-    Query_OtchetPERNZ: TFMTBCDField;
     ToolButton3: TToolButton;
     IBQuery1: TIBQuery;
     Query_OtchetKEI_ID: TSmallintField;
@@ -127,10 +117,20 @@ type
     tbtn_delLine: TToolButton;
     Otchetprih_s: TFloatField;
     Otchetprih_nz: TFloatField;
-    Query_OtchetPRIH_S: TFMTBCDField;
-    Query_OtchetPRIH_NZ: TFMTBCDField;
     Query_OtchetKOL_RASXG: TFloatField;
     Query_OtchetKOL: TFloatField;
+    Query_OtchetOSTATOK_END_S: TFMTBCDField;
+    Query_OtchetOSTATOK_END_NZ: TFMTBCDField;
+    Query_OtchetOSTATOK_BEGIN_NZ: TFMTBCDField;
+    Query_OtchetOSTATOK_BEGIN_S: TFMTBCDField;
+    Query_OtchetZAG_PERIOD: TFMTBCDField;
+    Query_OtchetRASH_VIRAB_PERIOD: TFMTBCDField;
+    Query_OtchetPRIX_PERIOD: TFMTBCDField;
+    Query_OtchetPRIH_S: TFMTBCDField;
+    Query_OtchetPRIH_NZ: TFMTBCDField;
+    Query_OtchetRASX_PERIOD: TFMTBCDField;
+    Query_OtchetPERS: TFMTBCDField;
+    Query_OtchetPERNZ: TFMTBCDField;
     procedure Edit1Change(Sender: TObject);
     procedure Edit1Click(Sender: TObject);
     procedure Edit1KeyDown(Sender: TObject; var Key: Word;
@@ -348,10 +348,10 @@ begin
   Query_Otchet.Active := False;
   Query_otchet.ParamByName('struk').AsInteger := vStruk_id;
   Query_otchet.ParamByName('KODP').AsInteger := s_kodp;
-  Query_otchet.MacroByName('DAT1').AsSTRING := '''' + s_DAT1 + '''';
-  Query_otchet.MacroByName('DAT2').AsSTRING:= '''' + s_DAT2 + '''';
-  Query_otchet.MacroByName('Mes').AsSTRING := inttostr(mes);
-  Query_otchet.MacroByName('God').AsSTRING := inttostr(god);
+  Query_otchet.ParamByName('DAT1').AsDate := StrToDate(s_DAT1);
+  Query_otchet.ParamByName('DAT2').AsDate := StrToDate(s_DAT2);
+  Query_otchet.ParamByName('Mes').AsInteger := mes;
+  Query_otchet.ParamByName('God').AsInteger := god;
   Query_Otchet.Active := True;
   Otchet.Active := True;
   Otchet.DisableControls;
@@ -428,9 +428,9 @@ begin
     Otchet.FieldByName('OT_NZ').AsVariant := Query_Otchet.FieldByName('Ostatok_end_NZ').AsFloat
                                              * dm1.Koef_per(v_kein, s_kei, s_ksm);
     Otchet.FieldByName('KART_ID').AsVariant := Query_OtchetKART_ID.AsInteger;
-    Otchet.FieldByName('PRIH_S').AsVariant := Query_OtchetPRIH_S.AsFloat
+    Otchet.FieldByName('PRIH_S').AsFloat := Query_OtchetPRIH_S.AsFloat
                                               * dm1.Koef_per(v_kein, s_kei, s_ksm);
-    Otchet.FieldByName('PRIH_NZ').AsVariant := Query_OtchetPRIH_NZ.AsFloat
+    Otchet.FieldByName('PRIH_NZ').AsFloat := Query_OtchetPRIH_NZ.AsFloat
                                               * dm1.Koef_per(v_kein, s_kei, s_ksm);
     Otchet.Post;
     Query_Otchet.Next;
