@@ -774,6 +774,10 @@ object FGotProdNaklTbl: TFGotProdNaklTbl
       
         '            and document.struk_id = :struk_id) doc_prih on doc_p' +
         'rih.kart_id = kart.kart_id'
+      
+        '                                                                ' +
+        '                    and doc_prih.kol_prih_ediz = kart.kol_rash_e' +
+        'diz'
       'where document.tip_op_id = 93 and document.tip_dok_id = 90'
       'and document.struk_id = :struk_id'
       'and document.date_dok between :date1 and :date2'
@@ -988,7 +992,7 @@ object FGotProdNaklTbl: TFGotProdNaklTbl
     Left = 680
     Top = 328
     Bitmap = {
-      494C010105000700180010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101050007001C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000A87D7800B781
       8300B7818300B7818300B7818300B7818300B7818300B7818300B7818300B781
