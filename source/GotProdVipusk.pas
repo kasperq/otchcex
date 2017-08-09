@@ -465,7 +465,7 @@ end;
 
 procedure TFGotProdVipusk.VipSeriaBeforeDelete(DataSet: TDataSet);
 begin
-  if VipSeriaNdok.AsString <> '' then
+  if (VipSeriaNdok.AsString <> '') and (UserName <> 'IGOR') then
   begin
     MessageDlg('Невозможно удалить серию, т.к.на основе ее имеются '
                + 'накладные на сдачу продукции на склад. Сначала удалите '

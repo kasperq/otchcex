@@ -62,13 +62,15 @@ type
     SpinButton1: TSpinButton;
     GotNaklQuerySTRUK_ID: TSmallintField;
     GotNaklMemSTRUK_ID: TSmallintField;
-    GotNaklQueryHAS_PRIH: TIntegerField;
     GotNaklMemHAS_PRIH: TIntegerField;
     frxReport1: TfrxReport;
     frxDBDataset1: TfrxDBDataset;
     frxDialogControls1: TfrxDialogControls;
     frxRTFExport1: TfrxRTFExport;
     frxXLSExport1: TfrxXLSExport;
+    GotNaklQueryKART_ID: TIntegerField;
+    GotNaklQuerySTROKA_ID: TIntegerField;
+    GotNaklQueryHAS_PRIH: TIntegerField;
 
     procedure activateGotNaklQuery;
     procedure assignGotNaklQueryToGotNaklMem;

@@ -751,34 +751,59 @@ object FGotProdNaklTbl: TFGotProdNaklTbl
         'spprod.nmat, seria.seria_id, seria.seria, kart.kol_rash, struk.s' +
         'tname, struk.struk_id,'
       
-        'iif(kart.kei_id is null, ed2.neis, ediz.neis) neis, iif(coalesce' +
-        '(doc_prih.doc_id, 0) = 0, 0, 1) has_prih'
-      'from document'
-      'left join kart on kart.doc_id = document.doc_id'
+        'iif(kart.kei_id is null, ed2.neis, ediz.neis) neis, kart.kart_id' +
+        ', kart.stroka_id,'
+      'iif(coalesce(doc_pri.doc_id, 0) <> 0, 1,'
+      '    iif(coalesce(doc_prih.doc_id, 0) = 0, 0, 1)) has_prih'
+      'from kart'
+      'inner join document on kart.doc_id = document.doc_id'
       'left join struk on document.klient_id = struk.struk_id'
       'left join spprod on spprod.ksm_id = kart.ksm_id'
       'left join ostatki on ostatki.kart_id = kart.kart_id'
       'left join seria on seria.seria_id = ostatki.seria_id'
       'left join ediz on ediz.kei_id = kart.kei_id'
       'left join ediz ed2 on ed2.kei_id = spprod.kei_id'
-      
-        'left join (select document.ndok,  document.doc_id, document.tip_' +
-        'op_id, document.date_dok,'
-      '            kart.kol_prih_ediz, kart.kart_id'
+      'left join (select document.doc_id,'
+      '            sum(kart.kol_prih_ediz) kol_prih_ediz, kart.kart_id'
       '            from kart'
       '            inner join document on document.doc_id = kart.doc_id'
       
         '            where document.tip_op_id = 36 and document.tip_dok_i' +
         'd = 90'
       '            and document.date_dok between :date1 and :date2'
+      '            and document.struk_id = :struk_id'
       
-        '            and document.struk_id = :struk_id) doc_prih on doc_p' +
-        'rih.kart_id = kart.kart_id'
+        '            group by kart.kol_prih_ediz, kart.kart_id, document.' +
+        'doc_id'
+      '            ) doc_prih on doc_prih.kart_id = kart.kart_id'
       
-        '                                                                ' +
-        '                    and doc_prih.kol_prih_ediz = kart.kol_rash_e' +
-        'diz'
+        '                                                        and doc_' +
+        'prih.kol_prih_ediz = kart.kol_rash_ediz'
+      'left join (select document.doc_id,'
+      
+        '            sum(kart.kol_prih_ediz) kol_prih_ediz, kart.kart_id,' +
+        ' kart.parent'
+      '            from kart'
+      '            inner join document on document.doc_id = kart.doc_id'
+      
+        '            where document.tip_op_id = 36 and document.tip_dok_i' +
+        'd = 90'
+      '            and kart.parent is not null'
+      '            and document.date_dok between :date1 and :date2'
+      '            and document.struk_id = :struk_id'
+      
+        '            group by kart.kol_prih_ediz, kart.kart_id, document.' +
+        'doc_id, kart.parent'
+      '            ) doc_pri on doc_pri.kart_id = kart.kart_id'
+      
+        '                                                        and doc_' +
+        'pri.kol_prih_ediz = kart.kol_rash_ediz'
+      
+        '                                                        and doc_' +
+        'pri.parent = kart.stroka_id'
+      ''
       'where document.tip_op_id = 93 and document.tip_dok_id = 90'
+      ''
       'and document.struk_id = :struk_id'
       'and document.date_dok between :date1 and :date2'
       'ORDER BY %USL_ORD')
@@ -793,6 +818,21 @@ object FGotProdNaklTbl: TFGotProdNaklTbl
     Left = 488
     Top = 232
     ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'date1'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'date2'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'struk_id'
+        ParamType = ptUnknown
+      end
       item
         DataType = ftUnknown
         Name = 'date1'
@@ -895,6 +935,15 @@ object FGotProdNaklTbl: TFGotProdNaklTbl
       Origin = '"STRUK"."STRUK_ID"'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
     end
+    object GotNaklQueryKART_ID: TIntegerField
+      FieldName = 'KART_ID'
+      Origin = '"KART"."KART_ID"'
+    end
+    object GotNaklQuerySTROKA_ID: TIntegerField
+      FieldName = 'STROKA_ID'
+      Origin = '"KART"."STROKA_ID"'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+    end
     object GotNaklQueryHAS_PRIH: TIntegerField
       FieldName = 'HAS_PRIH'
       ProviderFlags = []
@@ -992,7 +1041,7 @@ object FGotProdNaklTbl: TFGotProdNaklTbl
     Left = 680
     Top = 328
     Bitmap = {
-      494C0101050007001C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010105000700200010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000A87D7800B781
       8300B7818300B7818300B7818300B7818300B7818300B7818300B7818300B781

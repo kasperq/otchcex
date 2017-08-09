@@ -1098,7 +1098,12 @@ object FGotProdVipusk: TFGotProdVipusk
       
         'kart.tip_op_id, kart.tip_dok_id, iif(kart.kei_id is null, spprod' +
         '.kei_id, kart.kei_id) kei_id,'
-      'doc.ndok, doc.doc_id ddoc_id,'
+      
+        'iif(coalesce(docP.doc_id, 0) = 0, '#39'  '#39' || doc.ndok, docP.ndok) n' +
+        'dok,'
+      
+        'iif(coalesce(docP.doc_id, 0) = 0, doc.doc_id, docP.doc_id) ddoc_' +
+        'id,'
       'SERIA.SERIA, seria.seria_id, SERIA.DATE_VIPUSK, seria.comment,'
       
         'U1.NAME_UPAK UPAK_TRANS, u1.vol_up VOL_TRANS, U1.VES_UPAk, OSTAT' +
@@ -1126,8 +1131,26 @@ object FGotProdVipusk: TFGotProdVipusk
         '2 ) doc on (kart.kart_id = doc.kart_id)'
       
         '                                                                ' +
-        '                                          and (kart.kol_prih = d' +
-        'oc.kol_rash)'
+        '        and (kart.kol_prih = doc.kol_rash)'
+      
+        '    left join (select kart.kart_id, kart.stroka_id, document.ndo' +
+        'k, document.doc_id,'
+      '                  kart.kol_rash'
+      '                  from kart'
+      
+        '                  inner join document on document.doc_id = kart.' +
+        'doc_id'
+      '                  where document.tip_op_id = 93 '
+      '                  and struk_id = :struk_id '
+      
+        '                  and document.date_dok between :date1 and :date' +
+        '2 ) docP on (kart.kart_id = docP.kart_id)'
+      
+        '                                                                ' +
+        '        and (kart.kol_prih = docP.kol_rash)'
+      
+        '                                                                ' +
+        '        and (kart.parent = docP.stroka_id)'
       'where kart.doc_id = :doc_id'
       'order by SERIA.SERIA, kart.stroka_id')
     UpdateObject = VipSeriaUpd
@@ -1135,6 +1158,21 @@ object FGotProdVipusk: TFGotProdVipusk
     Left = 672
     Top = 224
     ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'struk_id'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'date1'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'date2'
+        ParamType = ptUnknown
+      end
       item
         DataType = ftUnknown
         Name = 'struk_id'
@@ -1387,7 +1425,7 @@ object FGotProdVipusk: TFGotProdVipusk
     Top = 200
   end
   object frxReport1: TfrxReport
-    Version = '4.7.109'
+    Version = '4.9.32'
     DotMatrixReport = False
     IniFile = '\Software\Fast Reports'
     PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator, pbExportQuick]
