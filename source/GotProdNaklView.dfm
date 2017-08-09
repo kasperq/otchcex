@@ -2648,7 +2648,7 @@ object FGotProdNaklView: TFGotProdNaklView
     OnNewRecord = VipKartNewRecord
     CachedUpdates = True
     SQL.Strings = (
-      'SELECT KART.DOC_ID, KART.KSM_ID, KART.STROKA_ID, '
+      'SELECT KART.DOC_ID, KART.KSM_ID, KART.STROKA_ID, kart.parent,'
       
         'iif(kart.KOL_RASH_EDIZ is null, kart.KOL_RASH, KART.KOL_Rash_EDI' +
         'Z) KOL_RASH_EDIZ, KART.KART_ID,'
@@ -2716,7 +2716,8 @@ object FGotProdNaklView: TFGotProdNaklView
       ''
       'where kart.doc_id = :doc_id'
       'and kart.kart_id = :kart_id'
-      'and kart.ksm_id = :ksm_id')
+      'and kart.ksm_id = :ksm_id'
+      'and kart.parent = :stroka_id')
     UpdateObject = VipKartUpd
     Macros = <>
     Left = 264
@@ -2735,6 +2736,11 @@ object FGotProdNaklView: TFGotProdNaklView
       item
         DataType = ftUnknown
         Name = 'ksm_id'
+        ParamType = ptUnknown
+      end
+      item
+        DataType = ftUnknown
+        Name = 'stroka_id'
         ParamType = ptUnknown
       end>
     object VipKartDOC_ID: TIntegerField
@@ -2875,12 +2881,6 @@ object FGotProdNaklView: TFGotProdNaklView
       Precision = 18
       Size = 2
     end
-    object VipKartKOL_SERIA: TFMTBCDField
-      FieldName = 'KOL_SERIA'
-      Origin = '"SERIA"."KOL_SERIA"'
-      Precision = 18
-      Size = 6
-    end
     object VipKartNAM: TIBStringField
       FieldName = 'NAM'
       Origin = '"REGION"."NAM"'
@@ -2916,6 +2916,14 @@ object FGotProdNaklView: TFGotProdNaklView
       FieldName = 'COMMENT'
       Origin = '"SERIA"."COMMENT"'
       Size = 120
+    end
+    object VipKartPARENT: TIntegerField
+      FieldName = 'PARENT'
+      Origin = '"KART"."PARENT"'
+    end
+    object VipKartKOL_SERIA: TFloatField
+      FieldName = 'KOL_SERIA'
+      Origin = '"SERIA"."KOL_SERIA"'
     end
   end
   object VipKartUpd: TIBUpdateSQLW
@@ -2957,7 +2965,8 @@ object FGotProdNaklView: TFGotProdNaklView
       '  KOL_SERIA,'
       '  NAM,'
       '  VES_TARA,'
-      '  KEI_ID'
+      '  KEI_ID,'
+      '  PARENT'
       'from KART '
       'where'
       '  STROKA_ID = :STROKA_ID')
@@ -2972,7 +2981,8 @@ object FGotProdNaklView: TFGotProdNaklView
       '  KSM_ID = :KSM_ID,'
       '  STROKA_ID = :STROKA_ID,'
       '  TIP_DOK_ID = :TIP_DOK_ID,'
-      '  TIP_OP_ID = :TIP_OP_ID'
+      '  TIP_OP_ID = :TIP_OP_ID,'
+      '  PARENT = :PARENT'
       'where'
       '  STROKA_ID = :OLD_STROKA_ID')
     InsertSQL.Strings = (
@@ -2980,12 +2990,12 @@ object FGotProdNaklView: TFGotProdNaklView
       
         '  (DOC_ID, KART_ID, KOL_PRIH_EDIZ, KOL_RASH_EDIZ, KSM_ID, STROKA' +
         '_ID, TIP_DOK_ID, '
-      '   TIP_OP_ID, KEI_ID)'
+      '   TIP_OP_ID, KEI_ID, PARENT)'
       'values'
       
         '  (:DOC_ID, :KART_ID, :KOL_PRIH_EDIZ, :KOL_RASH_EDIZ, :KSM_ID, :' +
         'STROKA_ID, '
-      '   :TIP_DOK_ID, :TIP_OP_ID, :KEI_ID)')
+      '   :TIP_DOK_ID, :TIP_OP_ID, :KEI_ID, :PARENT)')
     DeleteSQL.Strings = (
       'delete from KART'
       'where'

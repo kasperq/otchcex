@@ -181,7 +181,6 @@ type
     VipKartVOL_TRANS: TFMTBCDField;
     VipKartUPAK_GRP: TIBStringField;
     VipKartVES_GRP: TIBBCDField;
-    VipKartKOL_SERIA: TFMTBCDField;
     VipKartNAM: TIBStringField;
     VipKartVES_TARA: TIBBCDField;
     VipKartDATE_VIPUSK: TDateField;
@@ -389,6 +388,8 @@ type
     frxDBDataset8: TfrxDBDataset;
     MemDocumentPRIZ_ID: TIntegerField;
     GotDocumentPRIZ_ID: TSmallintField;
+    VipKartPARENT: TIntegerField;
+    VipKartKOL_SERIA: TFloatField;
 
     procedure setDokDate(value : string);
     function isDateValid(value : string) : boolean;
@@ -431,7 +432,7 @@ type
     procedure createVipDocument(klientId : integer; strukId : integer;
                                                                 docDate : TDate);
     procedure createVipKart(docId : integer; kolRashEdiz : double; ksmId : integer;
-                            keiId, kartId : integer);
+                            keiId, kartId, strokaId : integer);
     procedure deleteVipKart(ksmId, kartId, docId : integer);
     procedure deleteVipusk(ksmId, kartId : integer; docDate : TDate;
                            strukId : integer);
@@ -1596,12 +1597,13 @@ begin
 end;
 
 procedure TFGotProdNaklView.createVipKart(docId: Integer; kolRashEdiz: Double;
-                                          ksmId, keiId, kartId: Integer);
+                                          ksmId, keiId, kartId, strokaId: Integer);
 begin
   VipKart.Close;
   VipKart.ParamByName('doc_id').AsInteger := docId;
   VipKart.ParamByName('kart_id').AsInteger := kartId;
   VipKart.ParamByName('ksm_id').AsInteger := ksmId;
+  VipKart.ParamByName('stroka_id').AsInteger := strokaId;
   dm1.startReadTrans;
   VipKart.Open;
   VipKart.FetchAll;
@@ -1616,6 +1618,7 @@ begin
     VipKartKOL_PRIH_EDIZ.AsFloat := kolRashEdiz;
     VipKartKART_ID.AsInteger := kartId;
     VipKartKEI_ID.AsInteger := keiId;
+    VipKartPARENT.AsInteger := strokaId;
     VipKart.Post;
     VipKart.ApplyUpdates;
     dm1.commitWriteTrans(true);
@@ -1668,7 +1671,7 @@ begin
                     GotDocumentDATE_DOK.AsDateTime);
   createVipKart(VipDocumentDOC_ID.AsInteger, GotKartQueryKOL_RASH_EDIZ.AsFloat,
                 GotKartQueryKSM_ID.AsInteger, GotKartQueryKEI_ID.AsInteger,
-                GotKartQueryKART_ID.AsInteger);
+                GotKartQueryKART_ID.AsInteger, GotKartQuerySTROKA_ID.AsInteger);
 end;
 
 procedure TFGotProdNaklView.rollbackVipusk;
