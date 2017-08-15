@@ -2861,7 +2861,8 @@ procedure TFGotProdNaklView.loadUndersigns;
 var
   docParamId : string;
 begin
-	if (vStruk_Id = 696) or (vStruk_Id = 1) or (vStruk_Id = 106) or (vStruk_Id = 29) then		// для медпрепаратов надо ставить Галейшу Е.А., зам. нач. ОКК
+	if (vStruk_Id = 696) or (vStruk_Id = 1) or (vStruk_Id = 106) or (vStruk_Id = 29)
+     or (vStruk_Id = 540) then		// для медпрепаратов надо ставить Галейшу Е.А., зам. нач. ОКК
   begin
   	docParamId := ' 542 ';
     if (vStruk_Id = 696) then
@@ -2869,6 +2870,11 @@ begin
       docParamId := ' 1364 ';
       SdalEdit.Text := 'Нач. уч. упак. Ковалев А. И.';
 //      SdalEdit.Text := 'Ст. мастер уч. упак. Ерёменко Е.Ю.';
+    end;
+    if (vStruk_Id = 540) then
+    begin
+      docParamId := ' 1925 ';
+//      SdalEdit.Text := 'Нач. уч. упак. Ковалев А. И.';
     end;
   end
   else
@@ -2996,12 +3002,17 @@ begin
   begin
     TempQuery.Active := False;
     TempQuery.SQL.Clear;
-    if (vStruk_Id = 696) or (vStruk_Id = 1) or (vStruk_Id = 106) or (vStruk_Id = 29) then		// для медпрепаратов надо ставить Галейшу Е.А., зам. нач. ОКК
+    if (vStruk_Id = 696) or (vStruk_Id = 1) or (vStruk_Id = 106) or (vStruk_Id = 29)
+       or (vStruk_Id = 540) then		// для медпрепаратов надо ставить Галейшу Е.А., зам. нач. ОКК
     begin
       docParamId := ' 542 ';
       if (vStruk_Id = 696) then
       begin
         docParamId := ' 1364 ';
+      end;
+      if (vStruk_Id = 540) then
+      begin
+        docParamId := ' 1925 ';
       end;
     end
     else
