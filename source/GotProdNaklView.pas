@@ -433,9 +433,9 @@ type
                                                                 docDate : TDate);
     procedure createVipKart(docId : integer; kolRashEdiz : double; ksmId : integer;
                             keiId, kartId, strokaId : integer);
-    procedure deleteVipKart(ksmId, kartId, docId : integer);
+    procedure deleteVipKart(ksmId, kartId, docId, strokaId : integer);
     procedure deleteVipusk(ksmId, kartId : integer; docDate : TDate;
-                           strukId : integer);
+                           strukId, strokaId : integer);
     procedure rollbackVipusk;
 
     procedure enableGrid;
@@ -1564,8 +1564,8 @@ begin
 //  frxReport1.Script.Variables['kod_prod'] := kod;
 end;
 
-procedure TFGotProdNaklView.deleteVipusk(ksmId: Integer; kartId: Integer;
-                                         docDate : TDate; strukId : integer);
+procedure TFGotProdNaklView.deleteVipusk(ksmId, kartId: Integer;
+                                         docDate : TDate; strukId, strokaId : integer);
 var
   curYear, curMonth, curDay : word;
 begin
@@ -1577,16 +1577,16 @@ begin
   VipDocument.ParamByName('date_dok').AsDate := docDate;
   VipDocument.Active := true;
   if (not VipDocument.Eof) then
-    deleteVipKart(ksmId, kartId, VipDocumentDOC_ID.AsInteger);
+    deleteVipKart(ksmId, kartId, VipDocumentDOC_ID.AsInteger, strokaId);
 end;
 
-procedure TFGotProdNaklView.deleteVipKart(ksmId: Integer; kartId: Integer;
-                                          docId: Integer);
+procedure TFGotProdNaklView.deleteVipKart(ksmId, kartId, docId, strokaId: Integer);
 begin
   VipKart.Active := false;
   VipKart.ParamByName('doc_id').AsInteger := docId;
   VipKart.ParamByName('kart_id').AsInteger := kartId;
   VipKart.ParamByName('ksm_id').AsInteger := ksmId;
+  VipKart.ParamByName('stroka_id').AsInteger := strokaId;
   VipKart.Active := true;
   if (not VipKart.Eof) then
   begin
@@ -3050,7 +3050,8 @@ begin
   while (not GotKartQuery.Eof) do
   begin
     deleteVipusk(GotKartQueryKSM_ID.AsInteger, GotKartQueryKART_ID.AsInteger,
-               GotDocumentDATE_DOK.AsDateTime, GotDocumentSTRUK_ID.AsInteger);
+               GotDocumentDATE_DOK.AsDateTime, GotDocumentSTRUK_ID.AsInteger,
+               GotKartQuerySTROKA_ID.AsInteger);
     GotKartQuery.Delete;
   end;
 end;
@@ -3058,7 +3059,8 @@ end;
 procedure TFGotProdNaklView.DelRecClick(Sender: TObject);
 begin
   deleteVipusk(GotKartQueryKSM_ID.AsInteger, GotKartQueryKART_ID.AsInteger,
-               GotDocumentDATE_DOK.AsDateTime, GotDocumentSTRUK_ID.AsInteger);
+               GotDocumentDATE_DOK.AsDateTime, GotDocumentSTRUK_ID.AsInteger,
+               GotKartQuerySTROKA_ID.AsInteger);
   GotKartQuery.Delete;
 end;
 
