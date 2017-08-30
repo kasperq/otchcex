@@ -20,6 +20,7 @@ object FViborPrep: TFViborPrep
     Top = 8
     Width = 169
     Height = 26
+    Margins.Bottom = 0
     Caption = #1042#1074#1077#1076#1080#1090#1077' '#1082#1086#1076' '#1087#1088#1077#1087#1072#1088#1072#1090#1072' '#1080#1083#1080#13#10#1074#1086#1089#1087#1086#1083#1100#1079#1091#1081#1090#1077#1089#1100' '#1082#1085#1086#1087#1082#1086#1081' '#1087#1086#1080#1089#1082#1072':'
     Transparent = False
   end
@@ -28,6 +29,7 @@ object FViborPrep: TFViborPrep
     Top = 56
     Width = 48
     Height = 16
+    Margins.Bottom = 0
     Caption = 'Label2'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clPurple
@@ -41,6 +43,7 @@ object FViborPrep: TFViborPrep
     Top = 80
     Width = 39
     Height = 13
+    Margins.Bottom = 0
     Caption = 'Label3'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clPurple
@@ -54,6 +57,7 @@ object FViborPrep: TFViborPrep
     Top = 80
     Width = 39
     Height = 13
+    Margins.Bottom = 0
     Caption = 'Label4'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clPurple
@@ -67,6 +71,7 @@ object FViborPrep: TFViborPrep
     Top = 104
     Width = 39
     Height = 13
+    Margins.Bottom = 0
     Caption = 'Label5'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clPurple
@@ -80,6 +85,7 @@ object FViborPrep: TFViborPrep
     Top = 81
     Width = 37
     Height = 13
+    Margins.Bottom = 0
     Caption = #1061#1072#1088'-'#1082#1072':'
   end
   object Label7: TLabel
@@ -87,6 +93,7 @@ object FViborPrep: TFViborPrep
     Top = 80
     Width = 31
     Height = 13
+    Margins.Bottom = 0
     Caption = #1043#1054#1057#1058':'
   end
   object SpeedButton3: TSpeedButton
@@ -176,8 +183,6 @@ object FViborPrep: TFViborPrep
     Ctl3D = False
     ParentCtl3D = False
     TabOrder = 1
-    ExplicitTop = 113
-    ExplicitWidth = 459
     DesignSize = (
       531
       31)
@@ -267,7 +272,7 @@ object FViborPrep: TFViborPrep
     Left = 208
     Top = 8
     Bitmap = {
-      494C01010D000E00040018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010D000E00080018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000006000000001002000000000000090
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

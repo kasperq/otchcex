@@ -56,7 +56,7 @@ begin
   s_xarkt := dm1.VipuskMemXARKT.AsString;
   s_nmat := dm1.VipuskMemNMAT.AsString;
   s_kei := dm1.VipuskMemKEI_ID.VALUE;
-  s_korg := dm1.VipuskMemKORG.VALUE;
+  s_korg := dm1.VipuskMemKORG.AsInteger;
   s_kodProd := dm1.VipuskMemKOD_PROD.AsString;
   s_namorg := dm1.VipuskMemNAME_ORG.AsString;
   s_neiz := dm1.VipuskMemNEIS.AsString;
@@ -163,7 +163,7 @@ begin
     s_xarkt := FindSpprod.IBSpprodXARKT.AsString;
     s_nmat := FindSpprod.IBSpprodNMAT.AsString;
     s_kei := FindSpprod.IBSpprodKEI_ID.VALUE;
-    s_korg := FindSpprod.IBSpprodKORG.VALUE;
+    s_korg := FindSpprod.IBSpprodKORG.AsInteger;
     s_kodProd := FindSpprod.IBSpprodKOD_PROD.AsString;
     s_namorg := FindSpprod.IBSpprodNAME_ORG.AsString;
     s_neiz := FindSpprod.IBSpprodNEIS.AsString;

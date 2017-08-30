@@ -42,10 +42,6 @@ object FNormCex: TFNormCex
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel1: TPanel
         Left = 0
         Top = 0
@@ -286,7 +282,7 @@ object FNormCex: TFNormCex
           Left = 54
           Top = 6
           Width = 131
-          Height = 19
+          Height = 22
           Color = clWhite
           Ctl3D = False
           Font.Charset = DEFAULT_CHARSET
@@ -773,7 +769,7 @@ object FNormCex: TFNormCex
     Left = 616
     Top = 36
     Bitmap = {
-      494C010107000900040018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010107000900080018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
