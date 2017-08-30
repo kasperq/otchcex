@@ -1057,7 +1057,7 @@ begin
   s_xarkt := q_spprod.FieldByName('XARKT').AsString;
   s_nmat := q_spprod.FieldByName('NMAT').AsString;
   s_kei := q_spprod.FieldByName('KEI_ID').VALUE;
-  s_korg := q_spprod.FieldByName('KORG').VALUE;
+  s_korg := q_spprod.FieldByName('KORG').AsInteger;
   s_kodProd := q_spprod.FieldByName('kod_prod').AsString;
   s_Lek_id := q_spprod.FieldByName('Lek_Id').VALUE;
   s_namorg := q_spprod.FieldByName('NAM').AsString;
@@ -2128,7 +2128,7 @@ begin
       s_xarkt := DM1.IBQuery1.FieldByName('XARKT').AsString;
       s_nmat := DM1.IBQuery1.FieldByName('NMAT').AsString;
       s_kei := DM1.IBQuery1.FieldByName('KEI_ID').VALUE;
-      s_korg := DM1.IBQuery1.FieldByName('KORG').VALUE;
+      s_korg := DM1.IBQuery1.FieldByName('KORG').AsInteger;
       s_kodProd := DM1.IBQuery1.FieldByName('KOD_PROD').AsString;
       s_Lek_id := DM1.IBQuery1.FieldByName('Lek_Id').VALUE;
       s_namorg := DM1.IBQuery1.FieldByName('NAM').AsString;

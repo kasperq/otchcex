@@ -1393,8 +1393,8 @@ begin
       s_gost:=DM1.IBQuery1.FieldByName('GOST').AsString;
       s_xarkt:=DM1.IBQuery1.FieldByName('XARKT').AsString;
       s_nmat:=DM1.IBQuery1.FieldByName('NMAT').AsString;
-      s_kei:=DM1.IBQuery1.FieldByName('KEI_ID').VALUE;
-      s_korg:=DM1.IBQuery1.FieldByName('KORG').VALUE;
+      s_kei:=DM1.IBQuery1.FieldByName('KEI_ID').AsInteger;
+      s_korg:=DM1.IBQuery1.FieldByName('KORG').AsInteger;
       s_kodProd:=DM1.IBQuery1.FieldByName('KOD_PROD').AsString;
       s_namorg:=DM1.IBQuery1.FieldByName('NAM').AsString;
       s_neiz:=DM1.IBQuery1.FieldByName('NEIS').AsString;
@@ -1794,7 +1794,7 @@ begin
   s_xarkt:=DM1.IBQuery1.FieldByName('XARKT').AsString;
   s_nmat:=DM1.IBQuery1.FieldByName('NMAT').AsString;
   s_kei:=DM1.IBQuery1.FieldByName('KEI_ID').VALUE;
-  s_korg:=DM1.IBQuery1.FieldByName('KORG').VALUE;
+  s_korg:=DM1.IBQuery1.FieldByName('KORG').AsInteger;
   s_kodProd:=DM1.IBQuery1.FieldByName('KOD_PROD').AsString;
   s_Lek_id:=DM1.IBQuery1.FieldByName('Lek_Id').VALUE;
   s_namorg:=DM1.IBQuery1.FieldByName('NAM').AsString;
@@ -2028,7 +2028,7 @@ begin
     s_xarkt:=DM1.IBQuery1.FieldByName('XARKT').AsString;
     s_nmat:=DM1.IBQuery1.FieldByName('NMAT').AsString;
     s_kei:=DM1.IBQuery1.FieldByName('KEI_ID').VALUE;
-    s_korg:=DM1.IBQuery1.FieldByName('KORG').VALUE;
+    s_korg:=DM1.IBQuery1.FieldByName('KORG').AsInteger;
     s_kodProd:=DM1.IBQuery1.FieldByName('KOD_PROD').AsString;
     s_Lek_id:=DM1.IBQuery1.FieldByName('Lek_Id').VALUE;
     s_namorg:=DM1.IBQuery1.FieldByName('NAM').AsString;

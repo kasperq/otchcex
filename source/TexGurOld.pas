@@ -558,7 +558,7 @@ if key=vk_return then
     s_xarkt:=DM1.IBQuery1.FieldByName('XARKT').AsString;
     s_nmat:=DM1.IBQuery1.FieldByName('NMAT').AsString;
     s_kei:=DM1.IBQuery1.FieldByName('KEI_ID').VALUE;
-    s_korg:=DM1.IBQuery1.FieldByName('KORG').VALUE;
+    s_korg:=DM1.IBQuery1.FieldByName('KORG').AsInteger;
     s_kodProd:=DM1.IBQuery1.FieldByName('KOD_PROD').AsString;
     s_Lek_id:=DM1.IBQuery1.FieldByName('Lek_Id').VALUE;
     s_namorg:=DM1.IBQuery1.FieldByName('NAM').AsString;
@@ -1351,7 +1351,7 @@ begin
     s_xarkt:=DM1.IBQuery1.FieldByName('XARKT').AsString;
     s_nmat:=DM1.IBQuery1.FieldByName('NMAT').AsString;
     s_kei:=DM1.IBQuery1.FieldByName('KEI_ID').VALUE;
-    s_korg:=DM1.IBQuery1.FieldByName('KORG').VALUE;
+    s_korg:=DM1.IBQuery1.FieldByName('KORG').AsInteger;
     s_kodProd:=DM1.IBQuery1.FieldByName('KOD_PROD').AsString;
     s_Lek_id:=DM1.IBQuery1.FieldByName('Lek_Id').VALUE;
     s_namorg:=DM1.IBQuery1.FieldByName('NAM').AsString;
@@ -1938,7 +1938,7 @@ if FindSpprod=nil then FindSpprod:=TfindSpprod.Create(Application);
   s_xarkt:=DM1.IBQuery1.FieldByName('XARKT').AsString;
   s_nmat:=DM1.IBQuery1.FieldByName('NMAT').AsString;
   s_kei:=DM1.IBQuery1.FieldByName('KEI_ID').VALUE;
-  s_korg:=DM1.IBQuery1.FieldByName('KORG').VALUE;
+  s_korg:=DM1.IBQuery1.FieldByName('KORG').AsInteger;
   s_kodProd:=DM1.IBQuery1.FieldByName('KOD_PROD').AsString;
   s_Lek_id:=DM1.IBQuery1.FieldByName('Lek_Id').VALUE;
   s_namorg:=DM1.IBQuery1.FieldByName('NAM').AsString;

@@ -22,7 +22,6 @@ object FPlanVipusk: TFPlanVipusk
     Height = 57
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 721
     object OpenSprBtn: TSpeedButton
       Left = 135
       Top = 1
@@ -293,7 +292,6 @@ object FPlanVipusk: TFPlanVipusk
     Height = 35
     Align = alTop
     TabOrder = 1
-    ExplicitWidth = 721
     object Label3: TLabel
       Left = 8
       Top = 10

@@ -126,7 +126,7 @@ object FKorOtchet: TFKorOtchet
       Height = 21
       Ctl3D = False
       DropDownCount = 12
-      ItemHeight = 0
+      ItemHeight = 13
       ParentCtl3D = False
       TabOrder = 0
       OnChange = ComboBox1Change
@@ -148,9 +148,9 @@ object FKorOtchet: TFKorOtchet
       Left = 580
       Top = 0
       Width = 69
-      Height = 30
+      Height = 21
       Ctl3D = False
-      ItemHeight = 0
+      ItemHeight = 13
       ParentCtl3D = False
       TabOrder = 1
       OnChange = ComboBox2Change
@@ -1171,7 +1171,7 @@ object FKorOtchet: TFKorOtchet
     Left = 776
     Top = 212
     Bitmap = {
-      494C010108000900700018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010108000900740018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

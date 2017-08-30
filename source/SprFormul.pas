@@ -97,7 +97,7 @@ if FindSpprod.ModalResult > 50 then
   s_xarkt:=FindSpprod.IBSpprodXARKT.AsString;
   s_nmat:=FindSpprod.IBSpprodNMAT.AsString;
   s_kei:=FindSpprod.IBSpprodKEI_ID.VALUE;
-  s_korg:=FindSpprod.IBSpprodKORG.VALUE;
+  s_korg:=FindSpprod.IBSpprodKORG.AsInteger;
   s_kodProd:=FindSpprod.IBSpprodKOD_PROD.AsString;
   s_namorg:=FindSpprod.IBSpprodNAME_ORG.AsString;
   s_neiz:=FindSpprod.IBSpprodNEIS.AsString;
@@ -183,7 +183,7 @@ if key=vk_return then
     s_xarkt:=DM1.IBQuery1.FieldByName('XARKT').AsString;
     s_nmat:=DM1.IBQuery1.FieldByName('NMAT').AsString;
     s_kei:=DM1.IBQuery1.FieldByName('KEI_ID').VALUE;
-    s_korg:=DM1.IBQuery1.FieldByName('KORG').VALUE;
+    s_korg:=DM1.IBQuery1.FieldByName('KORG').AsInteger;
     s_kodProd:=DM1.IBQuery1.FieldByName('KOD_PROD').AsString;
     s_namorg:=DM1.IBQuery1.FieldByName('NAM').AsString;
     s_neiz:=DM1.IBQuery1.FieldByName('NEIS').AsString;
@@ -329,7 +329,7 @@ if FindSpprod.ModalResult > 50 then
   s_xarkt:=FindSpprod.IBSpprodXARKT.AsString;
   s_nmat:=FindSpprod.IBSpprodNMAT.AsString;
   s_kei:=FindSpprod.IBSpprodKEI_ID.VALUE;
-  s_korg:=FindSpprod.IBSpprodKORG.VALUE;
+  s_korg:=FindSpprod.IBSpprodKORG.AsInteger;
   s_kodProd:=FindSpprod.IBSpprodKOD_PROD.AsString;
   s_namorg:=FindSpprod.IBSpprodNAME_ORG.AsString;
   s_neiz:=FindSpprod.IBSpprodNEIS.AsString;
