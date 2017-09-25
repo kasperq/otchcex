@@ -531,6 +531,7 @@ type
 
   private
     lookUnderS : TFLookupUnderSign;
+    curParamId1, curParamId2 : integer;
 
     function isNecessaryDocFieldsValid() : boolean;
     function isNecessaryKartFieldsValid() : boolean;
@@ -2859,33 +2860,35 @@ end;
 
 procedure TFGotProdNaklView.loadUndersigns;
 var
-  docParamId : string;
+  docTipParamId : string;
 begin
+  curParamId1 := 0;
+  curParamId2 := 0;
 	if (vStruk_Id = 696) or (vStruk_Id = 1) or (vStruk_Id = 106) or (vStruk_Id = 29)
      or (vStruk_Id = 540) then		// для медпрепаратов надо ставить Галейшу Е.А., зам. нач. ОКК
   begin
-  	docParamId := ' 542 ';
+  	docTipParamId := ' 542 ';
     if (vStruk_Id = 696) then
     begin
-      docParamId := ' 1364 ';
+      docTipParamId := ' 1364 ';
       SdalEdit.Text := 'Нач. уч. упак. Ковалев А. И.';
 //      SdalEdit.Text := 'Ст. мастер уч. упак. Ерёменко Е.Ю.';
     end;
     if (vStruk_Id = 540) then
     begin
-      docParamId := ' 1925 ';
+      docTipParamId := ' 1925 ';
 //      SdalEdit.Text := 'Нач. уч. упак. Ковалев А. И.';
     end;
   end
   else
-    docParamId := ' 544 ';           // зам. нач. ОКК Солодкова Г.С.
+    docTipParamId := ' 544 ';           // зам. нач. ОКК Солодкова Г.С.
   if (GotDocument.RecordCount > 0) then   // пытаемся загрузить подписи для данного документа
   begin
     TempQuery.Active := false;
     TempQuery.SQL.Clear;
-    TempQuery.SQL.Add('select doc_param.param_value '
+    TempQuery.SQL.Add('select doc_param.param_value, doc_param.param_id '
                       + 'from doc_param '
-                      + 'where doc_param.tip_param_id = ' + docParamId
+                      + 'where doc_param.tip_param_id = ' + docTipParamId
                       + 'and doc_param.doc_id = ' + IntToStr(GotDocumentDOC_ID.AsInteger));
     TempQuery.Active := true;
   end;
@@ -2896,7 +2899,7 @@ begin
     TempQuery.SQL.Clear;
     TempQuery.SQL.Add('SELECT default_value '
                       + 'from doc_tip_param '
-                      + 'where tip_param_id = ' + docParamId);
+                      + 'where tip_param_id = ' + docTipParamId);
     TempQuery.Active := True;
     NachOkkEdit.Text := TempQuery.FieldByName('default_value').asstring;
     param1IsHere := false;
@@ -2904,6 +2907,7 @@ begin
   else
   begin
     param1IsHere := true;      // если есть, то ставим в отпуск разрешил
+    curParamId1 := tempQuery.FieldByName('param_id').AsInteger;
     NachOkkEdit.Text := TempQuery.FieldByName('param_value').asstring;
   end;
   TempQuery.Active := False;
@@ -2911,7 +2915,7 @@ begin
   begin
     TempQuery.Active := false;
     TempQuery.SQL.Clear;
-    TempQuery.SQL.Add('select doc_param.param_value '
+    TempQuery.SQL.Add('select doc_param.param_value, doc_param.param_id '
                       + 'from doc_param '
                       + 'where doc_param.tip_param_id = 543 '
                       + 'and doc_param.doc_id = ' + IntToStr(GotDocumentDOC_ID.AsInteger));
@@ -2921,6 +2925,7 @@ begin
   if (not TempQuery.Eof) {and (not GotDocument.Eof)} then
   begin
     SdalEdit.Text := TempQuery.FieldByName('param_value').asstring;
+    curParamId2 := tempQuery.FieldByName('param_id').AsInteger;
     param2IsHere := true;
   end
 end;
@@ -3025,7 +3030,7 @@ begin
     else
       TempQuery.SQL.Add('update doc_param set param_value = ''' + NachOkkEdit.Text
                         + ''' where tip_param_id = ' + docParamId + ' and doc_id = '
-                        + GotDocumentDOC_ID.AsString);
+                        + GotDocumentDOC_ID.AsString + ' and param_id = ' + IntToStr(curParamId1) );
     TempQuery.Active := true;
     dm1.commitReadTrans(true);
   end;
@@ -3039,7 +3044,7 @@ begin
   else
     TempQuery.SQL.Add('update doc_param set param_value = ''' + SdalEdit.Text
                          + ''' where tip_param_id = 543 and doc_id = '
-                         + GotDocumentDOC_ID.AsString);
+                         + GotDocumentDOC_ID.AsString + ' and param_id = ' + IntToStr(curParamId2));
   TempQuery.Active := true;
   dm1.commitReadTrans(true);
 end;
