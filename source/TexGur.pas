@@ -1234,7 +1234,7 @@ function TFTexGur.openZagrDoc(seria : string; strukId, ksmIdPrep : integer;
                               dateBegin, dateEnd : TDate) : boolean;
 begin
   result := false;
-  vNDoc := 'Заг_' + copy(label19.Caption, 1, 5) + '_' + seria;
+  vNDoc := 'Заг_' + copy(s_nmat, 1, 5) + '_' + seria;
   q_doc.Close;
   if (dateBegin = dateEnd) then
     q_doc.MacroByName('date_dok').AsString := ' document.date_op = '''
@@ -1256,7 +1256,7 @@ function TFTexGur.findOrCreateZagrDocument(seria : string; dateDok : TDate; docI
                                            strukId, ksmIdPrep : integer) : boolean;
 begin
   result := openZagrDoc(seria, strukId, ksmIdPrep, dateDok, dateDok);
-  if (not result) or (q_docDOC_ID.AsInteger <> docId) then
+  if (not result){ or (q_docDOC_ID.AsInteger <> docId)} then
   begin
     q_doc.Insert;
     q_docNDOK.AsString := vNDoc;
