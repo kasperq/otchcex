@@ -755,8 +755,8 @@ object FGotProdNaklTbl: TFGotProdNaklTbl
         ', kart.stroka_id,'
       'iif(coalesce(doc_pri.doc_id, 0) <> 0, 1,'
       '    iif(coalesce(doc_prih.doc_id, 0) = 0, 0, 1)) has_prih'
-      'from kart'
-      'inner join document on kart.doc_id = document.doc_id'
+      'from document'
+      'left join kart on kart.doc_id = document.doc_id'
       'left join struk on document.klient_id = struk.struk_id'
       'left join spprod on spprod.ksm_id = kart.ksm_id'
       'left join ostatki on ostatki.kart_id = kart.kart_id'
@@ -1041,7 +1041,7 @@ object FGotProdNaklTbl: TFGotProdNaklTbl
     Left = 680
     Top = 328
     Bitmap = {
-      494C010105000700200010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010105000700240010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000A87D7800B781
       8300B7818300B7818300B7818300B7818300B7818300B7818300B7818300B781
