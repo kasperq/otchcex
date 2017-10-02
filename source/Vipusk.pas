@@ -7,7 +7,7 @@ uses
   Dialogs, IBCustomDataSet, IBUpdateSQL, IBUpdSQLW, RxIBQuery, DB, IBQuery,
   Buttons, Grids, DBGridEh, ImgList, StdCtrls, ComCtrls, ToolWin, Spin,
   RxMemDS, FR_DSet, FR_DBSet, FR_Class, ExtCtrls, kbmMemTable,
-  OtdelDropDown;
+  OtdelDropDown, Menus, frxClass, frxDBSet;
 
 type
   TFVipusk = class(TForm)
@@ -48,7 +48,7 @@ type
     Splitter1: TSplitter;
     Panel2: TPanel;
     mem_factVipusk: TkbmMemTable;
-    ds_mem_factVipusk: TDataSource;
+    da: TDataSource;
     mem_factVipuskDOC_ID: TIntegerField;
     mem_factVipuskSTROKA_ID: TIntegerField;
     mem_factVipuskKSM_ID: TIntegerField;
@@ -68,6 +68,10 @@ type
     mem_factVipuskOTDELID: TIntegerField;
     mem_factVipuskOTDEL: TStringField;
     mem_factVipuskOTDEL_DOC_ID: TIntegerField;
+    frxDBDataset1: TfrxDBDataset;
+    menu_printVib: TPopupMenu;
+    N1: TMenuItem;
+    N2: TMenuItem;
     procedure FormShow(Sender: TObject);
     procedure SpinEdit3Change(Sender: TObject);
     procedure SpinEdit4Change(Sender: TObject);
@@ -88,6 +92,8 @@ type
       var Handled: Boolean);
     procedure DBGridEh2Columns0EditButtonClick(Sender: TObject;
       var Handled: Boolean);
+    procedure N1Click(Sender: TObject);
+    procedure N2Click(Sender: TObject);
   private
     otdelViborForm : TFOtdelDropDown;
 
@@ -220,6 +226,22 @@ begin
     DM1.KARTV.Next;
   end;
   dm1.KartV.EnableControls;
+end;
+
+procedure TFVipusk.N1Click(Sender: TObject);
+begin
+  FrReport1.LoadFromFile(reportsPath + 'P_VIPUSK.frf');
+  FrReport1.ShowReport;
+end;
+
+procedure TFVipusk.N2Click(Sender: TObject);
+begin
+  dm1.frxReport1.LoadFromFile(reportsPath + 'p_vipusk_alb.fr3');
+  nammes := dm1.getStrMes(mes);
+  dm1.frxReport1.Script.Variables['nammes'] := nammes;
+  dm1.frxReport1.Script.Variables['namceh'] := FGlMenu.RxLabel1.Caption;
+  dm1.frxReport1.Script.Variables['god'] := god;
+  dm1.frxReport1.ShowReport;
 end;
 
 procedure TFVipusk.loadOtdelKartvVipuskRecord;
@@ -379,8 +401,9 @@ end;
 
 procedure TFVipusk.ToolButton5Click(Sender: TObject);
 begin
-  FrReport1.LoadFromFile(reportsPath + 'P_VIPUSK.frf');
-  FrReport1.ShowReport;
+{  FrReport1.LoadFromFile(reportsPath + 'P_VIPUSK.frf');
+  FrReport1.ShowReport; }
+  menu_printVib.Popup(Mouse.CursorPos.x,Mouse.CursorPos.y);
 end;
 
 procedure TFVipusk.ToolButton7Click(Sender: TObject);
