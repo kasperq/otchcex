@@ -408,7 +408,7 @@ object FVipusk: TFVipusk
     Left = 552
     Top = 4
     Bitmap = {
-      494C0101070009002C0018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010107000900300018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1226,9 +1226,29 @@ object FVipusk: TFVipusk
       FieldName = 'OTDEL_DOC_ID'
     end
   end
-  object ds_mem_factVipusk: TDataSource
+  object da: TDataSource
     DataSet = mem_factVipusk
     Left = 640
     Top = 480
+  end
+  object frxDBDataset1: TfrxDBDataset
+    UserName = 'frxKartv'
+    CloseDataSource = False
+    DataSet = DM1.KartV
+    BCDToCurrency = False
+    Left = 512
+    Top = 376
+  end
+  object menu_printVib: TPopupMenu
+    Left = 160
+    Top = 120
+    object N1: TMenuItem
+      Caption = #1055#1077#1095#1072#1090#1100' '#1074#1077#1088#1090#1080#1082#1072#1083#1100#1085#1072#1103' '
+      OnClick = N1Click
+    end
+    object N2: TMenuItem
+      Caption = #1055#1077#1095#1072#1090#1100' '#1075#1086#1088#1080#1079#1086#1085#1090#1072#1083#1100#1085#1072#1103
+      OnClick = N2Click
+    end
   end
 end
