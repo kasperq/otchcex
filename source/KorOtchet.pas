@@ -1017,7 +1017,56 @@ begin
                                                           {tochn}-6));
 //    else RaspSyrPrepOst_c.AsVariant:=0;
           RaspSyrPrep.Post;
-        END;
+        END
+        else
+        begin
+          tochn := dm1.getTochn(s_kodp, IBQuery1.FieldByName('KSM_ID').AsInteger);
+
+          RaspSyrPrep.Edit;
+
+          if (IBQuery1.FieldByName('Ot_s').ASFLOAT <> 0)
+              and (IBQuery1.FieldByName('Ot_s').AsVariant <> null) then
+            RaspSyrPrepOt_s.ASstring := FloatToStr(RoundTo(IBQuery1.FieldByName('Ot_s').ASFLOAT
+                                                           * dm1.Koef_per(IBQuery1.FieldByName('Kein').AsInteger,
+                                                                          IBQuery1.FieldByName('Kei_id').AsInteger,
+                                                                          IBQuery1.FieldByName('Ksm_id').AsInteger),
+                                                           {tochn}-6))
+          else
+            RaspSyrPrepOt_s.AsVariant := 0;
+          if (IBQuery1.FieldByName('Ot_nz').ASFLOAT <> 0)
+              and (IBQuery1.FieldByName('Ot_nz').AsVariant <> null)then
+            RaspSyrPrepOt_Nz.ASstring := FloatToStr(RoundTo(IBQuery1.FieldByName('Ot_nz').ASFLOAT
+                                                            * dm1.Koef_per(IBQuery1.FieldByName('Kein').AsInteger,
+                                                                           IBQuery1.FieldByName('Kei_id').AsInteger,
+                                                                           IBQuery1.FieldByName('Ksm_id').AsInteger),
+                                                            {tochn}-6))
+          else
+            RaspSyrPrepOt_nz.AsVariant := 0;
+          if (IBQuery1.FieldByName('Onm_s').ASFLOAT <> 0)
+              and (IBQuery1.FieldByName('Onm_s').AsvARIant <> null) then
+            RaspSyrPrepOnm_s.ASstring := FloatToStr(RoundTo(IBQuery1.FieldByName('Onm_s').AsFloat
+                                                            * dm1.Koef_per(IBQuery1.FieldByName('Kein').AsInteger,
+                                                                           IBQuery1.FieldByName('Kei_id').AsInteger,
+                                                                           IBQuery1.FieldByName('Ksm_id').AsInteger),
+                                                            {tochn}-6))
+          else
+            RaspSyrPrepOnm_s.AsVariant := 0;
+          if (IBQuery1.FieldByName('Onm_NZ').AsFloat <> 0)
+              and (IBQuery1.FieldByName('Onm_NZ').AsVariant <> null)then
+            RaspSyrPrepOnm_Nz.ASstring := FloatToStr(RoundTo(IBQuery1.FieldByName('Onm_NZ').AsFloat
+                                                             * dm1.Koef_per(IBQuery1.FieldByName('Kein').AsInteger,
+                                                                            IBQuery1.FieldByName('Kei_id').AsInteger,
+                                                                            IBQuery1.FieldByName('Ksm_id').AsInteger),
+                                                             {tochn}-6))
+          else
+            RaspSyrPrepOnm_nz.AsVariant := 0;
+          RaspSyrPrepOst_c.ASstring := FloatToStr(RoundTo(s_Ost
+                                                          * dm1.Koef_per(IBQuery1.FieldByName('Kein').AsInteger,
+                                                                         IBQuery1.FieldByName('Kei_id').AsInteger,
+                                                                         IBQuery1.FieldByName('Ksm_id').AsInteger),
+                                                          {tochn}-6));
+          RaspSyrPrep.Post;
+        end;
         IBQuery1.Next;
       end;
       RaspSyrPrep.First;
