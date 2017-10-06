@@ -641,6 +641,14 @@ object FKorOtchet: TFKorOtchet
         OnGetCellParams = DBGridEh4GetCellParams
         Columns = <
           item
+            EditButtons = <>
+            FieldName = 'OPER_NAM'
+            Footers = <>
+            MaxWidth = 130
+            Title.Caption = #1054#1087#1077#1088#1072#1094#1080#1103
+            Width = 130
+          end
+          item
             ButtonStyle = cbsEllipsis
             EditButtons = <>
             FieldName = 'KSM_ID'
@@ -1171,7 +1179,7 @@ object FKorOtchet: TFKorOtchet
     Left = 776
     Top = 212
     Bitmap = {
-      494C010108000900780018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101080009007C0018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2917,19 +2925,22 @@ object FKorOtchet: TFKorOtchet
       'SELECT'
       
         ' DOCUMENT.TIP_OP_ID, DOCUMENT.KLIENT_ID, SPPROD.KOD_PROD, SPPROD' +
-        '.KEI_ID KEI_PREP, SPPROD.XARKT, SPPROD.NMAT, DOCUMENT.STRUK_ID, ' +
-        'cast('#39' '#39' as char(20)) stname,'
+        '.NMAT, DOCUMENT.STRUK_ID, cast('#39' '#39' as char(20)) stname,'
       
         ' DOCUMENT.DATE_DOK, DOCUMENT.DOC_ID, KART.KOL_PRIH_ediz, KART.KS' +
         'M_ID, MATROP.NMAT nmat1,'
-      ' KART.KART_ID, KART.STROKA_ID, OSTATKI.OT_S, OSTATKI.OT_NZ,'
+      ' KART.KART_ID, KART.STROKA_ID,'
       
         ' OSTATKI. RAZDEL_ID RAZDEL_IDO,RAZDEL.KRAZ,kart.KEI_ID KEI_ID_SY' +
         'R,'
       ' OSTATKI.KSM_IDPR,kart.KOL_RASH_ediz,EDIZ.NEIS,'
-      ' razkyda.kraz kraz1,ostkyda.razdel_id'
+      ' razkyda.kraz kraz1,ostkyda.razdel_id,'
+      ' cast(iif(document.tip_op_id = 34,'
+      '          '#39#1055#1077#1088'. '#1080#1079' '#1089#1099#1088#1100#1103' '#1085#1072' '#1076#1088'. '#1087#1088#1077#1087'.'#39','
+      '          '#39#1055#1077#1088'. '#1080#1079' '#1085'/'#1079#39') as char(30)) oper_nam'
       'FROM DOCUMENT'
       '   INNER JOIN KART ON (DOCUMENT.DOC_ID = KART.DOC_ID)'
+      '                    and coalesce(kart.kol_rash_ediz,0) <> 0'
       
         '   left JOIN OSTATKI ostkyda ON (KART.Ksm_ID = OSTKyda.Ksm_ID  a' +
         'nd    document.klient_id=ostkyda.ksm_idpr  AND  KART.RAZDEL_ID=O' +
@@ -2943,73 +2954,66 @@ object FKorOtchet: TFKorOtchet
         'AZDEL_ID)'
       '    left JOIN EDIZ ON (kart.KEI_ID =EDIZ.KEI_ID)'
       '  '
-      '  WHERE '
-      '      (DOCUMENT.DATE_Op  between :dat1 and :dat2)'
-      '   and '
-      '      (OSTATKI.KSM_IDPR = :ksm)'
-      '   and '
-      '      (DOCUMENT.TIP_OP_ID = 34 or DOCUMENT.TIP_OP_ID = 37) '
-      '   and'
-      '      (DOCUMENT.struk_ID = :cex)'
+      '  WHERE (DOCUMENT.DATE_Op  between :dat1 and :dat2)'
+      '   and (OSTATKI.KSM_IDPR = :ksm)'
+      '   and (DOCUMENT.TIP_OP_ID = 34 or DOCUMENT.TIP_OP_ID = 37)'
+      '   and (DOCUMENT.struk_ID = :cex)'
       ''
-      'UNION'
+      'union'
       ''
       
         ' SELECT DOCUMENT.TIP_OP_ID, DOCUMENT.KLIENT_ID,  cast('#39' '#39' as cha' +
         'r(18))  KOD_PROD,'
-      
-        '  cast(0 as smallint)  KEI_PREP, cast('#39' '#39' as VARchar(30))   XARK' +
-        'T, cast('#39' '#39' as VARchar(60)) nmat,'
-      ' DOCUMENT.STRUK_ID,struk.stname,'
+      ' cast('#39' '#39' as VARchar(60)) nmat,'
+      ' DOCUMENT.STRUK_ID,  struk.stname,'
       
         ' DOCUMENT.DATE_DOK, DOCUMENT.DOC_ID, KART.KOL_PRIH_ediz, KART.KS' +
         'M_ID, MATROP.NMAT nmat1,'
-      ' KART.KART_ID, KART.STROKA_ID, OSTATKI.OT_S, OSTATKI.OT_NZ,'
+      ' KART.KART_ID, KART.STROKA_ID,'
       
-        ' OSTATKI. RAZDEL_ID RAZDEL_IDO,RAZDEL.KRAZ,kart.KEI_ID KEI_ID_SY' +
-        'R,'
-      ' OSTATKI.KSM_IDPR,kart.KOL_RASH_ediz,EDIZ.NEIS,'
-      ' razkyda.kraz kraz1,ostkyda.razdel_id'
+        ' OSTATKI.RAZDEL_ID RAZDEL_IDO, RAZDEL.KRAZ, kart.KEI_ID KEI_ID_S' +
+        'YR,'
+      ' OSTATKI.KSM_IDPR, kart.KOL_RASH_ediz, EDIZ.NEIS,'
+      ' razkyda.kraz kraz1, ostkyda.razdel_id,'
+      'cast('#39#1055#1077#1088'. '#1080#1079' '#1089#1099#1088#1100#1103' '#1074' '#1076#1088'. '#1094#1077#1093#39' as char(30)) oper_nam'
       'FROM DOCUMENT'
-      '   INNER JOIN KART ON (DOCUMENT.DOC_ID = KART.DOC_ID)'
+      '    INNER JOIN KART ON (DOCUMENT.DOC_ID = KART.DOC_ID)'
       
-        '   left JOIN OSTATKI ostkyda ON (KART.Ksm_ID = ostkyda.Ksm_ID  a' +
-        'nd    document.klient_id=ostkyda.ksm_idpr  AND  KART.RAZDEL_ID=o' +
-        'stkyda.RAZDEL_ID)'
-      '   inner JOIN OSTATKI ON (KART.KART_ID = OSTATKI.KART_ID)'
-      '   left JOIN MATROP ON (KART.KSM_ID =MATROP.KSM_ID)'
-      '   left JOIN RAZDEL ON (kart.RAZDEL_ID = RAZDEL.RAZDEL_ID)'
+        '    left JOIN OSTATKI ostkyda ON (KART.Ksm_ID = ostkyda.Ksm_ID  ' +
+        'and document.klient_id=ostkyda.ksm_idpr  AND  KART.RAZDEL_ID=ost' +
+        'kyda.RAZDEL_ID)'
+      '    inner JOIN OSTATKI ON (KART.KART_ID = OSTATKI.KART_ID)'
+      '    left JOIN MATROP ON (KART.KSM_ID =MATROP.KSM_ID)'
+      '    left JOIN RAZDEL ON (kart.RAZDEL_ID = RAZDEL.RAZDEL_ID)'
       
-        '   left join RAZDEL razkyda ON (ostkyda.RAZDEL_ID =    RAZkyda.R' +
-        'AZDEL_ID)'
+        '    left join RAZDEL razkyda ON (ostkyda.RAZDEL_ID =    RAZkyda.' +
+        'RAZDEL_ID)'
       '    left JOIN EDIZ ON (kart.KEI_ID =EDIZ.KEI_ID)'
       '    left JOIN struk ON (document.Klient_ID =struk.struk_ID)'
-      '  WHERE '
-      '      (DOCUMENT.DATE_Op  between :dat1 and :dat2)'
-      '   and '
-      '      (OSTATKI.KSM_IDPR = :ksm)'
-      '   and '
-      '      (DOCUMENT.TIP_OP_ID = 8   ) '
-      '   and'
-      '      (DOCUMENT.struk_ID = :cex)'
+      ''
+      '  WHERE (DOCUMENT.DATE_Op  between :dat1 and :dat2)'
+      '   and (OSTATKI.KSM_IDPR = :ksm)'
+      '   and (DOCUMENT.TIP_OP_ID = 8)'
+      '   and (DOCUMENT.struk_ID = :cex)'
       ''
       'UNION'
       ''
       'SELECT DOCUMENT.TIP_OP_ID, DOCUMENT.KLIENT_ID,'
       'cast('#39' '#39' as  char(18))  KOD_PROD,'
-      
-        'cast(0 as smallint)  KEI_PREP, cast('#39' '#39' as VARchar(30))  XARKT, ' +
-        'cast('#39' '#39' as VARchar(60)) NMAT,DOCUMENT.STRUK_ID,'
+      'cast('#39' '#39' as VARchar(60)) NMAT,DOCUMENT.STRUK_ID,'
       'cast('#39' '#39' as char(20)) stname,'
       
         ' DOCUMENT.DATE_DOK, DOCUMENT.DOC_ID, KART.KOL_PRIH_ediz, KART.KS' +
         'M_ID, MATROP.NMAT nmat1,'
-      ' KART.KART_ID, KART.STROKA_ID, OSTATKI.OT_S, OSTATKI.OT_NZ,'
+      ' KART.KART_ID, KART.STROKA_ID,'
       
-        ' OSTATKI. RAZDEL_ID RAZDEL_IDO,RAZDEL.KRAZ,kart.KEI_ID KEI_ID_SY' +
-        'R,'
-      ' OSTATKI.KSM_IDPR,kart.KOL_RASH_ediz,EDIZ.NEIS,'
-      ' razkyda.kraz kraz1,ostkyda.razdel_id'
+        ' OSTATKI. RAZDEL_ID RAZDEL_IDO, RAZDEL.KRAZ, kart.KEI_ID KEI_ID_' +
+        'SYR,'
+      ' OSTATKI.KSM_IDPR, kart.KOL_RASH_ediz, EDIZ.NEIS,'
+      ' razkyda.kraz kraz1, ostkyda.razdel_id,'
+      'cast(iif(document.tip_op_id = 32,'
+      '    '#39#1057#1087#1080#1089'. '#1080#1079' '#1089#1099#1088#1100#1103#39','
+      '    '#39#1057#1087#1080#1089'. '#1080#1079' '#1085'/'#1079#39') as char(30)) oper_nam'
       'FROM DOCUMENT'
       '   INNER JOIN KART ON (DOCUMENT.DOC_ID = KART.DOC_ID)'
       
@@ -3018,62 +3022,72 @@ object FKorOtchet: TFKorOtchet
         'ostkyda.RAZDEL_ID)'
       '   inner JOIN OSTATKI ON (KART.KART_ID = OSTATKI.KART_ID)'
       '  '
-      ' left JOIN MATROP ON (KART.KSM_ID =MATROP.KSM_ID)'
-      '   left JOIN RAZDEL ON (kart.RAZDEL_ID = RAZDEL.RAZDEL_ID)'
+      '    left JOIN MATROP ON (KART.KSM_ID =MATROP.KSM_ID)'
+      '    left JOIN RAZDEL ON (kart.RAZDEL_ID = RAZDEL.RAZDEL_ID)'
       
-        '   left join RAZDEL razkyda ON (ostkyda.RAZDEL_ID =    RAZkyda.R' +
-        'AZDEL_ID)'
+        '    left join RAZDEL razkyda ON (ostkyda.RAZDEL_ID =    RAZkyda.' +
+        'RAZDEL_ID)'
       '    left JOIN EDIZ ON (kart.KEI_ID =EDIZ.KEI_ID)'
+      
+        '    left join tip_oper on document.tip_op_id = tip_oper.tip_op_i' +
+        'd'
       ''
-      ' WHERE '
-      '      (DOCUMENT.DATE_Op  between :dat1 and :dat2)'
-      '   and '
-      '      (OSTATKI.KSM_IDPR = :ksm)'
-      '   and '
-      '      (DOCUMENT.TIP_OP_ID = 32 or document.tip_op_id=85 )'
-      '   and'
-      '      (DOCUMENT.struk_ID = :cex)'
+      ' WHERE (DOCUMENT.DATE_Op  between :dat1 and :dat2)'
+      '   and (OSTATKI.KSM_IDPR = :ksm)'
+      '   and (DOCUMENT.TIP_OP_ID = 32 or document.tip_op_id = 85 )'
+      '   and (DOCUMENT.struk_ID = :cex)'
       ''
       'union'
       ''
-      'SELECT'
       
-        ' DOCUMENT.TIP_OP_ID, DOCUMENT.KLIENT_ID, SPPROD.KOD_PROD, SPPROD' +
-        '.KEI_ID KEI_PREP, SPPROD.XARKT, SPPROD.NMAT, DOCUMENT.STRUK_ID,s' +
-        'truk.stname,'
+        'select document.tip_op_id, document.klient_id, spprod.kod_prod, ' +
+        'spprod.nmat,'
+      'document.struk_id,'
+      'confkyda.stname,'
+      'document.date_dok, document.doc_id,'
+      'kart.kol_prih_ediz, kart.ksm_id, matrop.nmat nmat1,'
+      'kartkyda.kart_id,'
       
-        ' DOCUMENT.DATE_DOK, DOCUMENT.DOC_ID, KART.KOL_PRIH_ediz, KART.KS' +
-        'M_ID, MATROP.NMAT nmat1,'
-      ' KART.KART_ID, KART.STROKA_ID, OSTATKI.OT_S, OSTATKI.OT_NZ,'
+        'kart.stroka_id, ostotkyda.razdel_id razdel_ido, razotkyda.kraz, ' +
+        'kart.kei_id kei_id_syr,'
+      'ostotkyda.ksm_idpr, kart.kol_rash_ediz,  edizotkyda.neis,'
+      'razkyda.kraz kraz1, ostkyda.razdel_id,'
+      'cast(iif(document.tip_op_id = 34,'
+      '    '#39#1055#1077#1088'. '#1080#1079' '#1089#1099#1088#1100#1103' '#1085#1072' '#1076#1088'. '#1087#1088#1077#1087'.'#39','
+      '    iif(document.tip_op_id = 37,'
+      '        '#39#1055#1077#1088'. '#1080#1079' '#1085'/'#1079#39','
+      '        '#39#1055#1077#1088'. '#1080#1079' '#1085'/'#1079' '#1074' '#1076#1088'. '#1094#1077#1093#39')) as char(30)) oper_nam--,'
+      ''
+      '--kartkyda.kol_prih_ediz prih_kol, edizkyda.neis prih_neis'
+      ''
+      ''
+      'from document'
+      'inner join kart on kart.doc_id = document.doc_id'
+      'left join spprod on spprod.ksm_id = document.klient_id'
+      'inner join ostatki ostotkyda on ostotkyda.kart_id = kart.kart_id'
       
-        ' OSTATKI. RAZDEL_ID RAZDEL_IDO,RAZDEL.KRAZ,kart.KEI_ID KEI_ID_SY' +
-        'R,'
-      ' OSTATKI.KSM_IDPR,kart.KOL_RASH_ediz,EDIZ.NEIS,'
-      ' razkyda.kraz kraz1,ostkyda.razdel_id'
-      'FROM DOCUMENT'
-      '   INNER JOIN KART ON (DOCUMENT.DOC_ID = KART.DOC_ID)'
+        'left join document dockyda on dockyda.dok_osn_id = document.doc_' +
+        'id'
       
-        '   left JOIN OSTATKI ostkyda ON (KART.Ksm_ID = OSTKyda.Ksm_ID  a' +
-        'nd    document.klient_id=ostkyda.ksm_idpr  AND  KART.RAZDEL_ID=O' +
-        'STKyda.RAZDEL_ID)'
-      '   inner JOIN OSTATKI ON (KART.KART_ID = OSTatki.KART_ID)'
-      '   left JOIN SPPROD ON (DOCUMENT.KLIENT_ID = SPPROD.KSM_ID)'
-      '   left JOIN MATROP ON (KART.KSM_ID =MATROP.KSM_ID)'
-      '  left JOIN struk ON ( ostkyda.struk_ID =struk.struk_ID)'
-      '   left JOIN RAZDEL ON (kart.RAZDEL_ID = RAZDEL.RAZDEL_ID)'
+        'left join configumc confkyda on confkyda.struk_id = dockyda.stru' +
+        'k_id'
+      'left join kart kartkyda on kartkyda.doc_id = dockyda.doc_id'
+      '                        and kartkyda.kol_prih_ediz <> 0'
+      'inner join ostatki ostkyda on ostkyda.kart_id = kartkyda.kart_id'
+      'left join ediz edizotkyda on edizotkyda.kei_id = kart.kei_id'
+      'left join ediz edizkyda on edizkyda.kei_id = kartkyda.kei_id'
       
-        '   left join RAZDEL razkyda ON (ostkyda.RAZDEL_ID =    RAZkyda.R' +
-        'AZDEL_ID)'
-      '    left JOIN EDIZ ON (kart.KEI_ID =EDIZ.KEI_ID)'
-      '  '
-      '  WHERE '
-      '      (DOCUMENT.DATE_Op  between :dat1 and :dat2)'
-      '   and '
-      '      (OSTATKI.KSM_IDPR = :ksm)'
-      '   and '
-      '      (DOCUMENT.TIP_OP_ID =139 ) '
-      '   and'
-      '      (DOCUMENT.struk_ID = :cex)')
+        'left join razdel razotkyda on razotkyda.razdel_id = kart.razdel_' +
+        'id'
+      
+        'left join razdel razkyda on razkyda.razdel_id = ostkyda.razdel_i' +
+        'd'
+      'left join matrop on matrop.ksm_id = kart.ksm_id'
+      'WHERE document.date_op  between :dat1 and :dat2'
+      'and document.tip_op_id in (139)'
+      'and document.struk_id = :cex'
+      'and ostotkyda.ksm_idpr = :ksm'
+      'and kart.kol_rash_ediz <> 0')
     UpdateObject = IBPerdanoSyr
     Macros = <>
     Left = 320
@@ -3151,12 +3165,12 @@ object FKorOtchet: TFKorOtchet
       end
       item
         DataType = ftInteger
-        Name = 'ksm'
+        Name = 'cex'
         ParamType = ptInput
       end
       item
         DataType = ftInteger
-        Name = 'cex'
+        Name = 'ksm'
         ParamType = ptInput
       end>
     object PeredanoSyrTIP_OP_ID: TSmallintField
@@ -3173,15 +3187,6 @@ object FKorOtchet: TFKorOtchet
       OnValidate = PeredanoSyrKOD_PRODValidate
       FixedChar = True
       Size = 18
-    end
-    object PeredanoSyrKEI_PREP: TSmallintField
-      FieldName = 'KEI_PREP'
-      ProviderFlags = []
-    end
-    object PeredanoSyrXARKT: TIBStringField
-      FieldName = 'XARKT'
-      ProviderFlags = []
-      Size = 30
     end
     object PeredanoSyrNMAT: TIBStringField
       FieldName = 'NMAT'
@@ -3223,18 +3228,6 @@ object FKorOtchet: TFKorOtchet
       FieldName = 'STROKA_ID'
       ProviderFlags = []
     end
-    object PeredanoSyrOT_NZ: TFMTBCDField
-      FieldName = 'OT_NZ'
-      ProviderFlags = []
-      Precision = 18
-      Size = 6
-    end
-    object PeredanoSyrOT_S: TFMTBCDField
-      FieldName = 'OT_S'
-      ProviderFlags = []
-      Precision = 18
-      Size = 6
-    end
     object PeredanoSyrRAZDEL_IDO: TSmallintField
       FieldName = 'RAZDEL_IDO'
       ProviderFlags = []
@@ -3275,6 +3268,12 @@ object FKorOtchet: TFKorOtchet
       FieldName = 'KART_ID'
       Origin = '"KART"."KART_ID"'
       Required = True
+    end
+    object PeredanoSyrOPER_NAM: TIBStringField
+      FieldName = 'OPER_NAM'
+      ProviderFlags = []
+      FixedChar = True
+      Size = 30
     end
   end
   object IBPerdanoSyr: TIBUpdateSQLW

@@ -319,7 +319,7 @@ begin
   DM1.IBQuery1.SQL.Add(' INNER JOIN RAZDEL ON (NORM.KRAZ = RAZDEL.KRAZ)');
   DM1.IBQuery1.SQL.Add(' LEFT JOIN ostatki ON (NORM.Kodp = ostatki.Ksm_IDpr and '
                        + 'norm.ksm_id = ostatki.ksm_id and razdel.razdel_id = '
-                       + 'ostatki.razdel_id)');
+                       + 'ostatki.razdel_id and norm.struk_id = ostatki.struk_id)');
   DM1.IBQuery1.SQL.Add(' ORDER BY  NORM.KRAZ, NORM.NMAT');
   DM1.IBQuery1.Active := True;
   if (DM1.IBQuery1.Eof) then
