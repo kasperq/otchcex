@@ -600,6 +600,10 @@ begin
       tochn := getCurZnak(SpirtPEREDANO_RASH_NZ.AsFloat, 3);
     if (getCurZnak(SpirtOSTATOK_END_S.AsFloat, 3) > tochn) then
       tochn := getCurZnak(SpirtOSTATOK_END_S.AsFloat, 3);
+    if (getCurZnak(SpirtOSTATOK_END_NZ.AsFloat, 3) > tochn) then
+      tochn := getCurZnak(SpirtOSTATOK_END_NZ.AsFloat, 3);
+    if (getCurZnak(SpirtOSTATOK_BEGIN_NZ.AsFloat, 3) > tochn) then
+      tochn := getCurZnak(SpirtOSTATOK_BEGIN_NZ.AsFloat, 3);
   end
   else
     tochn := 3;
@@ -634,6 +638,10 @@ begin
         tochn := getCurZnak(SpirtPEREDANO_RASH_NZ.AsFloat, 3);
       if (getCurZnak(SpirtOSTATOK_END_S.AsFloat, 3) > tochn) then
         tochn := getCurZnak(SpirtOSTATOK_END_S.AsFloat, 3);
+      if (getCurZnak(SpirtOSTATOK_END_NZ.AsFloat, 3) > tochn) then
+        tochn := getCurZnak(SpirtOSTATOK_END_NZ.AsFloat, 3);
+      if (getCurZnak(SpirtOSTATOK_BEGIN_NZ.AsFloat, 3) > tochn) then
+        tochn := getCurZnak(SpirtOSTATOK_BEGIN_NZ.AsFloat, 3);
     end
     else
       tochn := 3;
@@ -765,6 +773,10 @@ begin
         tochn := getCurZnak(Spirt_OtchetPEREDANO_RASH_NZ.AsFloat, 3);
       if (getCurZnak(Spirt_OtchetOSTATOK_END_S.AsFloat, 3) > tochn) then
         tochn := getCurZnak(Spirt_OtchetOSTATOK_END_S.AsFloat, 3);
+      if (getCurZnak(Spirt_OtchetOSTATOK_END_NZ.AsFloat, 3) > tochn) then
+        tochn := getCurZnak(Spirt_OtchetOSTATOK_END_NZ.AsFloat, 3);
+      if (getCurZnak(Spirt_OtchetOSTATOK_BEGIN_NZ.AsFloat, 3) > tochn) then
+        tochn := getCurZnak(Spirt_OtchetOSTATOK_BEGIN_NZ.AsFloat, 3);
     end
     else
       tochn := 3;
