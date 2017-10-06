@@ -126,8 +126,6 @@ type
     PeredanoSyrTIP_OP_ID: TSmallintField;
     PeredanoSyrKLIENT_ID: TIntegerField;
     PeredanoSyrKOD_PROD: TIBStringField;
-    PeredanoSyrKEI_PREP: TSmallintField;
-    PeredanoSyrXARKT: TIBStringField;
     PeredanoSyrNMAT: TIBStringField;
     PeredanoSyrSTRUK_ID: TSmallintField;
     PeredanoSyrSTNAME: TIBStringField;
@@ -137,8 +135,6 @@ type
     PeredanoSyrKSM_ID: TIntegerField;
     PeredanoSyrNMAT1: TIBStringField;
     PeredanoSyrSTROKA_ID: TIntegerField;
-    PeredanoSyrOT_S: TFMTBCDField;
-    PeredanoSyrOT_NZ: TFMTBCDField;
     PeredanoSyrRAZDEL_IDO: TSmallintField;
     PeredanoSyrKRAZ: TSmallintField;
     PeredanoSyrKEI_ID_SYR: TSmallintField;
@@ -271,6 +267,7 @@ type
     q_ostPrepRAZDEL_ID: TSmallintField;
     q_ostPrepKART_ID: TIntegerField;
     q_ostPrepKEI_ID: TSmallintField;
+    PeredanoSyrOPER_NAM: TIBStringField;
 
     procedure FormShow(Sender: TObject);
     procedure Edit1KeyDown(Sender: TObject; var Key: Word;
