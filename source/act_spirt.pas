@@ -625,7 +625,9 @@ begin
   begin
     if (dm1.stkod = '1800') or (dm1.stkod = '1600') then
     begin
-      tochn := getCurZnak(SpirtOSTATOK_BEGIN_S.AsFloat, 3);
+      tochn := -1 * dm1.getTochn(SpirtKODP.AsInteger, SpirtKSM_ID.AsInteger);
+      if (getCurZnak(SpirtOSTATOK_BEGIN_S.AsFloat, 3) > tochn) then
+        tochn := getCurZnak(SpirtOSTATOK_BEGIN_S.AsFloat, 3);
       if (getCurZnak(SpirtPRIX_PERIOD.AsFloat, 3) > tochn) then
         tochn := getCurZnak(SpirtPRIX_PERIOD.AsFloat, 3);
       if (getCurZnak(SpirtZAG_PERIOD.AsFloat, 3) > tochn) then
