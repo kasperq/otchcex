@@ -642,6 +642,8 @@ begin
         tochn := getCurZnak(SpirtOSTATOK_END_NZ.AsFloat, 3);
       if (getCurZnak(SpirtOSTATOK_BEGIN_NZ.AsFloat, 3) > tochn) then
         tochn := getCurZnak(SpirtOSTATOK_BEGIN_NZ.AsFloat, 3);
+      if (getCurZnak(SpirtPLNORM.AsFloat, 3) > tochn) then
+        tochn := getCurZnak(SpirtPLNORM.AsFloat, 3);
     end
     else
       tochn := 3;
