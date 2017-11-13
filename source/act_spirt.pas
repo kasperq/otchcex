@@ -59,31 +59,6 @@ type
     frxDotMatrixExport1: TfrxDotMatrixExport;
     frxDesigner1: TfrxDesigner;
     Spirt_Otchet: TRxIBQuery;
-    Spirt_OtchetKSM_ID: TIntegerField;
-    Spirt_OtchetNEIS_PROD: TIBStringField;
-    Spirt_OtchetKEIN: TLargeintField;
-    Spirt_OtchetKRAZ: TLargeintField;
-    Spirt_OtchetNMAT_PROD: TIBStringField;
-    Spirt_OtchetKOD_PROD: TIBStringField;
-    Spirt_OtchetNAM: TIBStringField;
-    Spirt_OtchetRAZDEL_ID: TSmallintField;
-    Spirt_OtchetNEIS_SYR: TIBStringField;
-    Spirt_OtchetKODP: TIntegerField;
-    Spirt_OtchetOST_NN: TFMTBCDField;
-    Spirt_OtchetOST_NK: TFMTBCDField;
-    Spirt_OtchetOSTATOK_BEGIN_NZ: TFMTBCDField;
-    Spirt_OtchetOSTATOK_BEGIN_S: TFMTBCDField;
-    Spirt_OtchetOSTATOK_END_NZ: TFMTBCDField;
-    Spirt_OtchetOSTATOK_END_S: TFMTBCDField;
-    Spirt_OtchetZAG_PERIOD: TFMTBCDField;
-    Spirt_OtchetRASH_VIRAB_PERIOD: TFMTBCDField;
-    Spirt_OtchetPRIX_PERIOD: TFMTBCDField;
-    Spirt_OtchetRASX_PERIOD: TFMTBCDField;
-    Spirt_OtchetPEREDANO_RASH_S: TFMTBCDField;
-    Spirt_OtchetPEREDANO_RASH_NZ: TFMTBCDField;
-    Spirt_OtchetFACTNORM: TFMTBCDField;
-    Spirt_OtchetVIP: TFMTBCDField;
-    Spirt_OtchetSTRUK_ID: TIntegerField;
     Dob_prix: TIBQuery;
     Spirt: TRxMemoryData;
     SpirtKSM_ID: TIntegerField;
@@ -161,8 +136,6 @@ type
     dob_normKEIN: TSmallintField;
     dob_normNAM: TIBStringField;
     dob_normRAZDEL_ID: TSmallintField;
-    Spirt_OtchetPLNORM: TFMTBCDField;
-    Spirt_OtchetZNAK: TIntegerField;
     SpirtZNAK: TIntegerField;
     mem_spirt: TRxMemoryData;
     mem_spirtKSM_ID: TIntegerField;
@@ -192,6 +165,33 @@ type
     mem_spirtVIP: TFloatField;
     mem_spirtSTRUK_ID: TIntegerField;
     mem_spirtZNAK: TIntegerField;
+    Spirt_OtchetKSM_ID: TIntegerField;
+    Spirt_OtchetNEIS_PROD: TIBStringField;
+    Spirt_OtchetPLNORM: TFMTBCDField;
+    Spirt_OtchetKEIN: TLargeintField;
+    Spirt_OtchetKRAZ: TLargeintField;
+    Spirt_OtchetNMAT_PROD: TIBStringField;
+    Spirt_OtchetKOD_PROD: TIBStringField;
+    Spirt_OtchetNAM: TIBStringField;
+    Spirt_OtchetRAZDEL_ID: TSmallintField;
+    Spirt_OtchetNEIS_SYR: TIBStringField;
+    Spirt_OtchetKODP: TIntegerField;
+    Spirt_OtchetOST_NN: TFloatField;
+    Spirt_OtchetOST_NK: TFloatField;
+    Spirt_OtchetOSTATOK_BEGIN_NZ: TFloatField;
+    Spirt_OtchetOSTATOK_BEGIN_S: TFloatField;
+    Spirt_OtchetOSTATOK_END_NZ: TFloatField;
+    Spirt_OtchetOSTATOK_END_S: TFloatField;
+    Spirt_OtchetZAG_PERIOD: TFloatField;
+    Spirt_OtchetRASH_VIRAB_PERIOD: TFloatField;
+    Spirt_OtchetPRIX_PERIOD: TFloatField;
+    Spirt_OtchetRASX_PERIOD: TFloatField;
+    Spirt_OtchetPEREDANO_RASH_S: TFloatField;
+    Spirt_OtchetPEREDANO_RASH_NZ: TFloatField;
+    Spirt_OtchetFACTNORM: TFMTBCDField;
+    Spirt_OtchetVIP: TFMTBCDField;
+    Spirt_OtchetSTRUK_ID: TIntegerField;
+    Spirt_OtchetZNAK: TFloatField;
     procedure ProsmSpirt;
     procedure SpeedButton2Click(Sender: TObject);
     procedure Edit1Click(Sender: TObject);
@@ -623,7 +623,7 @@ begin
   spirt.First;
   while (not spirt.Eof) do
   begin
-    if (dm1.stkod = '1800') or (dm1.stkod = '1600') then
+    if (dm1.stkod = '1800') or (dm1.stkod = '1600') or (dm1.stkod = '0400') then
     begin
       tochn := -1 * dm1.getTochn(SpirtKODP.AsInteger, SpirtKSM_ID.AsInteger);
       if (getCurZnak(SpirtOSTATOK_BEGIN_S.AsFloat, 3) > tochn) then

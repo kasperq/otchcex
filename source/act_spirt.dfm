@@ -442,7 +442,7 @@ object Fact_spirt: TFact_spirt
     Left = 520
     Top = 4
     Bitmap = {
-      494C01010A000C00500018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010A000C00540018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -4074,21 +4074,41 @@ object Fact_spirt: TFact_spirt
       'ostatki.kod_prep as KOD_PROD, (cast('#39#39' as char(15))) as nam,'
       'ostatki.razdel_id, ostatki.NEIS neis_syr, OSTATKI.KSM_IDPR KODP,'
       
-        'sum(ostatki.ostatok_begin_nz+ostatki.ostatok_begin_s)  as ost_nn' +
-        ','
-      'sum(ostatki.ostatok_end_nz+ostatki.ostatok_end_s) as ost_nk,'
-      'sum(ostatki.ostatok_begin_nz) as ostatok_begin_nz,'
-      'sum(ostatki.ostatok_begin_s) as ostatok_begin_s,'
-      'sum(ostatki.ostatok_end_nz) as ostatok_end_nz,'
-      'sum(ostatki.ostatok_end_s) as ostatok_end_s,'
-      'sum(ostatki.zag_period+ostatki.peredano_prih_nz) as zag_period,'
-      'sum(ostatki.rash_virab_period) as rash_virab_period,'
+        'cast(sum(ostatki.ostatok_begin_nz+ostatki.ostatok_begin_s)  as d' +
+        'ouble precision) as ost_nn,'
       
-        'sum(ostatki.prix_period+ostatki.peredano_prih_nz) as prix_period' +
-        ','
-      'sum(ostatki.rasx_period) as rasx_period,'
-      'sum(ostatki.PEREDANO_RASH_s) as PEREDANO_RASH_s,'
-      'sum(ostatki.PEREDANO_RASH_NZ) as PEREDANO_RASH_NZ,'
+        'cast(sum(ostatki.ostatok_end_nz+ostatki.ostatok_end_s) as double' +
+        ' precision) as ost_nk,'
+      
+        'cast(sum(ostatki.ostatok_begin_nz) as double precision) as ostat' +
+        'ok_begin_nz,'
+      
+        'cast(sum(ostatki.ostatok_begin_s) as double precision) as ostato' +
+        'k_begin_s,'
+      
+        'cast(sum(ostatki.ostatok_end_nz) as double precision) as ostatok' +
+        '_end_nz,'
+      
+        'cast(sum(ostatki.ostatok_end_s) as double precision) as ostatok_' +
+        'end_s,'
+      
+        'cast(sum(ostatki.zag_period+ostatki.peredano_prih_nz) as double ' +
+        'precision) as zag_period,'
+      
+        'cast(sum(ostatki.rash_virab_period) as double precision) as rash' +
+        '_virab_period,'
+      
+        'cast(sum(ostatki.prix_period+ostatki.peredano_prih_nz) as double' +
+        ' precision) as prix_period,'
+      
+        'cast(sum(ostatki.rasx_period) as double precision) as rasx_perio' +
+        'd,'
+      
+        'cast(sum(ostatki.PEREDANO_RASH_s) as double precision) as PEREDA' +
+        'NO_RASH_s,'
+      
+        'cast(sum(ostatki.PEREDANO_RASH_NZ) as double precision) as PERED' +
+        'ANO_RASH_NZ,'
       'sum(cast(0 as numeric(15,6))) as factnorm,'
       'sum(cast(0 as numeric(15,6))) as vip,'
       'ostatki.struk_id'
@@ -4303,9 +4323,15 @@ object Fact_spirt: TFact_spirt
     end
     object Spirt_OtchetNEIS_PROD: TIBStringField
       FieldName = 'NEIS_PROD'
-      Origin = '"NORM_VIEW"."NEIS_PROD"'
+      ProviderFlags = []
       FixedChar = True
       Size = 10
+    end
+    object Spirt_OtchetPLNORM: TFMTBCDField
+      FieldName = 'PLNORM'
+      ProviderFlags = []
+      Precision = 18
+      Size = 6
     end
     object Spirt_OtchetKEIN: TLargeintField
       FieldName = 'KEIN'
@@ -4328,8 +4354,9 @@ object Fact_spirt: TFact_spirt
     end
     object Spirt_OtchetNAM: TIBStringField
       FieldName = 'NAM'
-      Origin = '"NORM_VIEW"."NAM"'
+      ProviderFlags = []
       FixedChar = True
+      Size = 15
     end
     object Spirt_OtchetRAZDEL_ID: TSmallintField
       FieldName = 'RAZDEL_ID'
@@ -4345,77 +4372,53 @@ object Fact_spirt: TFact_spirt
       FieldName = 'KODP'
       ProviderFlags = []
     end
-    object Spirt_OtchetOST_NN: TFMTBCDField
+    object Spirt_OtchetOST_NN: TFloatField
       FieldName = 'OST_NN'
       ProviderFlags = []
-      Precision = 18
-      Size = 6
     end
-    object Spirt_OtchetOST_NK: TFMTBCDField
+    object Spirt_OtchetOST_NK: TFloatField
       FieldName = 'OST_NK'
       ProviderFlags = []
-      Precision = 18
-      Size = 6
     end
-    object Spirt_OtchetOSTATOK_BEGIN_NZ: TFMTBCDField
+    object Spirt_OtchetOSTATOK_BEGIN_NZ: TFloatField
       FieldName = 'OSTATOK_BEGIN_NZ'
       ProviderFlags = []
-      Precision = 18
-      Size = 6
     end
-    object Spirt_OtchetOSTATOK_BEGIN_S: TFMTBCDField
+    object Spirt_OtchetOSTATOK_BEGIN_S: TFloatField
       FieldName = 'OSTATOK_BEGIN_S'
       ProviderFlags = []
-      Precision = 18
-      Size = 6
     end
-    object Spirt_OtchetOSTATOK_END_NZ: TFMTBCDField
+    object Spirt_OtchetOSTATOK_END_NZ: TFloatField
       FieldName = 'OSTATOK_END_NZ'
       ProviderFlags = []
-      Precision = 18
-      Size = 6
     end
-    object Spirt_OtchetOSTATOK_END_S: TFMTBCDField
+    object Spirt_OtchetOSTATOK_END_S: TFloatField
       FieldName = 'OSTATOK_END_S'
       ProviderFlags = []
-      Precision = 18
-      Size = 6
     end
-    object Spirt_OtchetZAG_PERIOD: TFMTBCDField
+    object Spirt_OtchetZAG_PERIOD: TFloatField
       FieldName = 'ZAG_PERIOD'
       ProviderFlags = []
-      Precision = 18
-      Size = 6
     end
-    object Spirt_OtchetRASH_VIRAB_PERIOD: TFMTBCDField
+    object Spirt_OtchetRASH_VIRAB_PERIOD: TFloatField
       FieldName = 'RASH_VIRAB_PERIOD'
       ProviderFlags = []
-      Precision = 18
-      Size = 6
     end
-    object Spirt_OtchetPRIX_PERIOD: TFMTBCDField
+    object Spirt_OtchetPRIX_PERIOD: TFloatField
       FieldName = 'PRIX_PERIOD'
       ProviderFlags = []
-      Precision = 18
-      Size = 6
     end
-    object Spirt_OtchetRASX_PERIOD: TFMTBCDField
+    object Spirt_OtchetRASX_PERIOD: TFloatField
       FieldName = 'RASX_PERIOD'
       ProviderFlags = []
-      Precision = 18
-      Size = 6
     end
-    object Spirt_OtchetPEREDANO_RASH_S: TFMTBCDField
+    object Spirt_OtchetPEREDANO_RASH_S: TFloatField
       FieldName = 'PEREDANO_RASH_S'
       ProviderFlags = []
-      Precision = 18
-      Size = 6
     end
-    object Spirt_OtchetPEREDANO_RASH_NZ: TFMTBCDField
+    object Spirt_OtchetPEREDANO_RASH_NZ: TFloatField
       FieldName = 'PEREDANO_RASH_NZ'
       ProviderFlags = []
-      Precision = 18
-      Size = 6
     end
     object Spirt_OtchetFACTNORM: TFMTBCDField
       FieldName = 'FACTNORM'
@@ -4433,13 +4436,7 @@ object Fact_spirt: TFact_spirt
       FieldName = 'STRUK_ID'
       Origin = '"SELECT_OST_KSM"."STRUK_ID"'
     end
-    object Spirt_OtchetPLNORM: TFMTBCDField
-      FieldName = 'PLNORM'
-      ProviderFlags = []
-      Precision = 18
-      Size = 6
-    end
-    object Spirt_OtchetZNAK: TIntegerField
+    object Spirt_OtchetZNAK: TFloatField
       FieldKind = fkCalculated
       FieldName = 'ZNAK'
       Calculated = True
