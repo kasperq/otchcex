@@ -390,6 +390,9 @@ type
     GotDocumentPRIZ_ID: TSmallintField;
     VipKartPARENT: TIntegerField;
     VipKartKOL_SERIA: TFloatField;
+    seriaArrTOCH: TIntegerField;
+    MD_NakladTOCH: TIntegerField;
+    RMUpakTOCH: TIntegerField;
 
     procedure setDokDate(value : string);
     function isDateValid(value : string) : boolean;
@@ -1904,6 +1907,7 @@ begin
     begin
       RMUpak.Append;
       RMUpak.FieldByName('kol_upak').AsInteger := v_kol_upak;
+      RMUpak.FieldByName('TOCH').AsInteger := KolZnakovPosleZap(MD_Nakl_s.FieldByName('KOL_trans').AsFloat);
       RMUpak.FieldByName('kol_trans').AsFloat := MD_Nakl_s.FieldByName('KOL_trans').AsFloat;
       RMUpak.FieldByName('seria').AsString := MD_Nakl_s.FieldByName('seria').AsString;
       st := SumToString(v_kol_upak);
@@ -1920,6 +1924,7 @@ begin
       RMUpak.FieldByName('kol_upak').AsInteger := v_kol_upak1;
       vvv := MD_Nakl_s.FieldByName('KOL_RASH').AsFloat;
       RMUpak.FieldByName('kol_trans').AsFloat := vvv - (MD_Nakl_s.FieldByName('KOL_trans').AsFloat * v_kol_upak);
+      RMUpak.FieldByName('TOCH').AsInteger := KolZnakovPosleZap(kolRash);
       if (MD_Nakl_s.FieldByName('KOL_grp').AsInteger <> 0) then
         RMUpak.FieldByName('ves_upak').AsFloat := MD_Nakl_s.FieldByName('Ves_upak').AsFloat
                                                   + (RMUpak.FieldByName('kol_trans').AsInteger
@@ -2776,6 +2781,7 @@ procedure TFGotProdNaklView.loadAndInitMDNaklad;
 var
   st : string;
   kolRash1000000, kolRash, kolRash1000 : double;
+  toch : integer;
 begin
   MD_Naklad.Close;
   MD_Naklad.Open;
@@ -2786,11 +2792,13 @@ begin
     kolRash1000000 := StrToFloat(MD_Naklad.FieldByName('KOL_RASH').AsString) * 1000000;
     kolRash1000 := StrToFloat(MD_Naklad.FieldByName('KOL_RASH').AsString) * 1000;
     kolRash := StrToFloat(MD_Naklad.FieldByName('KOL_RASH').AsString);
+    toch := KolZnakovPosleZap(kolRash);
     MD_Naklad.edit;
     st := '';
     if ((keiId = 166) or (keiId = 170) or (keiId = 163) or (keiId = 122)) then
 //      st := AnsiUpperCase(FloatToText(MD_Naklad.FieldByName('KOL_RASH').AsFloat, 3))
-      st := AnsiUpperCase(FloatToText(StrToFloat(FloatToStr(kolRash)), 3))
+//      st := AnsiUpperCase(FloatToText(StrToFloat(FloatToStr(kolRash)), 3))
+      st := AnsiUpperCase(FloatToText(StrToFloat(FloatToStr(kolRash)), toch))
     else
     begin
       if (keiId = 660) or (keiId = 800) then
@@ -2811,6 +2819,7 @@ begin
 //      st := FloatToText(StrToFloat(FloatToStr(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000)),
 //                        KolZnakovPosleZap(MD_Naklad.FieldByName('KOL_RASH').AsFloat * 1000));
     MD_Naklad.FieldByName('SUM_PROP').AsString := st;
+    MD_Naklad.FieldByName('TOCH').AsInteger := toch;
     MD_Naklad.Post;
     MD_Naklad.next;
   end;
