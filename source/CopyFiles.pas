@@ -2,7 +2,7 @@ unit CopyFiles;
 
 interface
 uses
-  Windows, Messages, SysUtils, Math;
+  Windows, Messages, SysUtils, Math, StrUtils;
 
   Procedure FileCopy(Const SourceFileName, TargetFileName: String);
   function WindowsCopyFile(FromFile, ToDir : string) : boolean;

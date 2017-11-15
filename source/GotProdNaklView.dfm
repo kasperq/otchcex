@@ -1924,11 +1924,12 @@ object FGotProdNaklView: TFGotProdNaklView
     FieldAliases.Strings = (
       'ves_trans=ves_trans'
       'kol_upak=kol_upak'
-      'kol_trans=kol_trans'
       'kol_upak_prop=kol_upak_prop'
       'ves_upak=ves_upak'
       'ves_trans1=ves_trans1'
-      'seria=seria')
+      'seria=seria'
+      'kol_trans=kol_trans'
+      'TOCH=TOCH')
     DataSet = RMUpak
     BCDToCurrency = False
     Left = 784
@@ -1943,7 +1944,7 @@ object FGotProdNaklView: TFGotProdNaklView
     PrintOptions.Printer = #1055#1086' '#1091#1084#1086#1083#1095#1072#1085#1080#1102
     PrintOptions.PrintOnSheet = 0
     ReportOptions.CreateDate = 40323.521267361100000000
-    ReportOptions.LastChange = 42453.492779143500000000
+    ReportOptions.LastChange = 43054.421751712970000000
     ScriptLanguage = 'PascalScript'
     StoreInDFM = False
     OnGetValue = frxReport1GetValue
@@ -1953,6 +1954,27 @@ object FGotProdNaklView: TFGotProdNaklView
   object frxDBDataset1: TfrxDBDataset
     UserName = 'frxDBDataset4'
     CloseDataSource = False
+    FieldAliases.Strings = (
+      'kol_rash=kol_rash'
+      'seria=seria'
+      'neis=neis'
+      'vol_trans=vol_trans'
+      'ves_trans=ves_trans'
+      'kod_prod=kod_prod'
+      'kol_upak=kol_upak'
+      'kol_upak_prop=kol_upak_prop'
+      'size_upak=size_upak'
+      'upak_trans=upak_trans'
+      'ves_upak=ves_upak'
+      'nam=nam'
+      'vol_up=vol_up'
+      'KOL_GRP=KOL_GRP'
+      'sum_prop=sum_prop'
+      'ves_trans1=ves_trans1'
+      'ves_tara=ves_tara'
+      'nmat=nmat'
+      'kol_trans=kol_trans'
+      'TOCH=TOCH')
     DataSet = MD_Naklad
     BCDToCurrency = False
     Left = 832
@@ -2045,6 +2067,10 @@ object FGotProdNaklView: TFGotProdNaklView
       item
         Name = 'kol_trans'
         DataType = ftFloat
+      end
+      item
+        Name = 'TOCH'
+        DataType = ftInteger
       end>
     Left = 872
     Top = 264
@@ -2111,6 +2137,9 @@ object FGotProdNaklView: TFGotProdNaklView
     object MD_Nakladkol_trans: TFloatField
       FieldName = 'kol_trans'
     end
+    object MD_NakladTOCH: TIntegerField
+      FieldName = 'TOCH'
+    end
   end
   object DSnaklad: TDataSource
     DataSet = MD_Naklad
@@ -2123,7 +2152,6 @@ object FGotProdNaklView: TFGotProdNaklView
     Top = 312
   end
   object RMUpak: TRxMemoryData
-    Active = True
     FieldDefs = <
       item
         Name = 'ves_trans'
@@ -2178,6 +2206,9 @@ object FGotProdNaklView: TFGotProdNaklView
     end
     object RMUpakkol_trans: TFloatField
       FieldName = 'kol_trans'
+    end
+    object RMUpakTOCH: TIntegerField
+      FieldName = 'TOCH'
     end
   end
   object frxDBDataset2: TfrxDBDataset
@@ -3577,7 +3608,6 @@ object FGotProdNaklView: TFGotProdNaklView
     end
   end
   object seriaArr: TRxMemoryData
-    Active = True
     FieldDefs = <
       item
         Name = 'SERIA'
@@ -3688,6 +3718,9 @@ object FGotProdNaklView: TFGotProdNaklView
     end
     object seriaArrUPAK_TRANS: TStringField
       FieldName = 'UPAK_TRANS'
+    end
+    object seriaArrTOCH: TIntegerField
+      FieldName = 'TOCH'
     end
   end
   object upakArr: TRxMemoryData
