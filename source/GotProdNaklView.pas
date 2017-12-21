@@ -848,7 +848,7 @@ end;
 
 procedure TFGotProdNaklView.createUpakArrFor3Koda;
 var
-  kolUpak, kolUpak1000 : double;
+  kolUpak, kolUpak1000, fracRash, kolUpak1 : double;
 begin
   upakArr.EmptyTable;
   upakArr.Open;
@@ -859,6 +859,18 @@ begin
     upakArr.Edit;
     kolUpak1000 := GotKartQueryKOL_RASH.AsFloat * 1000;
     kolUpak := kolUpak1000 / GotKartQueryKOL_TRANS.AsFloat;
+
+    if (cbRF.Checked) then
+    begin
+      kolUpak := trunc(kolUpak1000);
+      if (kolUpak = 0) then
+        kolUpak := trunc(1 / kolUpak1000);
+
+      fracRash := frac(kolUpak1000);
+      if (fracRash > 0) then
+        kolUpak1 := 1;
+    end;
+
     upakArrkol_trans.AsFloat := GotKartQueryKOL_TRANS.AsFloat;
     upakArrkol_upak.AsInteger := trunc(StrToFloat(FloatToStr(kolUpak)));
     upakArrkol_upak_prop.AsString := SumToString(upakArrkol_upak.AsInteger);
@@ -866,6 +878,7 @@ begin
     upakArrves_upak.AsFloat := GotKartQueryVES_TARA.AsFloat;
     upakArrSERIA_ID.AsInteger := GotKartQuerySERIA_ID.AsInteger;
     upakArrKOD_PROD.AsString := GotKartQueryKOD_PROD.AsString;
+
     if (seriaArr.Locate('kod_prod', GotKartQueryKOD_PROD.AsString, [])) then
     begin
       upakArrKOL_RASH.AsFloat := seriaArrKOL_RASH.AsFloat;
@@ -876,11 +889,20 @@ begin
     upakArrNEIS.AsString := GotKartQueryNEIS.AsString;
     upakArrSERIA.AsString := GotKartQuerySERIA.AsString;
     upakArr.Post;
-    if (Frac(StrToFloat(FloatToStr(kolUpak))) <> 0) then
+
+    if ((Frac(StrToFloat(FloatToStr(kolUpak))) <> 0) and (not cbRf.Checked))
+       or ((cbRf.Checked) and (kolUpak1 = 1)) then
     begin
       upakArr.Append;
       upakArr.Edit;
       upakArrkol_trans.AsInteger := StrToInt(FloatToStr(SimpleRoundTo(Frac(kolUpak) * GotKartQueryKOL_TRANS.AsFloat, 0)));
+
+      if (cbRF.Checked) then
+      begin
+        upakArrkol_trans.AsInteger := trunc(SimpleRoundTo(fracRash
+                                                          * GotKartQueryKOL_TRANS.AsInteger, 0));
+      end;
+
       upakArrkol_upak.AsInteger := 1;
       upakArrSERIA_ID.AsInteger := GotKartQuerySERIA_ID.AsInteger;
       upakArrKOD_PROD.AsString := GotKartQueryKOD_PROD.AsString;
@@ -904,6 +926,10 @@ begin
                                             -2)
       else
         upakArrVES_TRANS.AsFloat := 0;
+      if (cbRF.Checked) then                                                                          // реополюглюкин на РФ для 1 цеха
+        upakArrVES_TRANS.AsFloat := upakArrkol_trans.AsFloat
+                                    / GotKartQueryKOL_TRANS.AsFloat
+                                    * GotKartQueryVES_TRANS.AsFloat;
       upakArr.Post;
     end;
     GotKartQuery.Next;
